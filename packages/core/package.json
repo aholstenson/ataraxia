@@ -1,0 +1,7 @@
+{
+  "name": "ataraxia",
+  "version": "0.1.0",
+  "description": "P2P messaging",
+  "main": "index.js",
+  "license": "MIT"
+}

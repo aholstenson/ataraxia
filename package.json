@@ -1,0 +1,7 @@
+{
+	"devDependencies": {
+		"eslint": "^4.11.0",
+		"eslint-plugin-node": "^5.2.1",
+		"lerna": "^2.5.1"
+	}
+}
