@@ -3,5 +3,10 @@
   "version": "0.1.0",
   "description": "P2P messaging",
   "main": "index.js",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "debug": "^3.1.0",
+    "end-of-stream": "^1.4.0",
+    "msgpack-lite": "^0.1.26"
+  }
 }
