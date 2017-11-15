@@ -5,6 +5,8 @@
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
-    "ataraxia": "^0.1.0"
+    "ataraxia": "^0.1.0",
+    "debug": "^3.1.0",
+    "unix-socket-leader": "^0.1.2"
   }
 }
