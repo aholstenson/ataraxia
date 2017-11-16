@@ -40,7 +40,7 @@ module.exports = class Peer {
 
 		// Setup the decoder for incoming messages
 		const decoder = msgpack.createDecodeStream();
-		s.pipe(decoder);
+		const pipe = s.pipe(decoder);
 
 		decoder.on('data', data => {
 			const type = data[0];
@@ -49,6 +49,10 @@ module.exports = class Peer {
 			this.debug('Incoming', type, 'with payload', payload);
 			this.events.emit(type, payload);
 		});
+
+		// Catch errors on pipe and decoder
+		decoder.on('error', err => this.debug('Error from decoder', err));
+		pipe.on('error', err => this.debug('Error from pipe', err));
 
 		return this.negotiate();
 	}

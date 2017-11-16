@@ -41,13 +41,17 @@ module.exports = class AbstractTransport {
 
 			if(this.peers.has(peer.id)) {
 				/*
-				 * This peer is already available via this transport. This is
-				 * common for transports that both start a server and connect
-				 * to clients.
+				 * This peer is already available via this transport. Two
+				 * options:
 				 *
-				 * This peer is ignored and disconnected.
+				 * 1) Merge the peers if the peer-implementation supports it
+				 * 2) Disconnect this peer
 				 */
-				peer.disconnect();
+				if(peer.merge) {
+					this.peers.get(peer.id).merge(peer);
+				} else {
+					peer.disconnect();
+				}
 			} else {
 				// New peer, connect to it
 				this.peers.set(peer.id, peer);
