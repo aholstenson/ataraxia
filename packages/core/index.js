@@ -5,6 +5,8 @@ const debug = require('debug')('th:net');
 
 const id = require('./id');
 
+const hasSeen = Symbol('hasSeen');
+
 module.exports = class Network {
 	constructor(options={}) {
 		if(! options.name) throw new Error('name of network is required');
@@ -30,8 +32,13 @@ module.exports = class Network {
 			const node = new Node(this, peer.id);
 			node.addReachability(peer, []);
 
-			peer.on('message', msg => this._handleMessage(peer, msg));
-			peer.on('disconnected', () => this._peerDisconnected(peer, node));
+			if(! peer[hasSeen]) {
+				// Register listeners, but only if we haven't done so before
+				peer[hasSeen] = true;
+
+				peer.on('message', msg => this._handleMessage(peer, msg));
+				peer.on('disconnected', () => this._peerDisconnected(peer, node));
+			}
 
 			this._peerConnected(peer, node);
 		});
