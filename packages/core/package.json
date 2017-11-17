@@ -4,6 +4,7 @@
   "description": "P2P messaging over mesh networks",
   "main": "index.js",
   "license": "MIT",
+  "repository": "https://github.com/aholstenson/ataraxia/tree/master/packages/core",
   "keywords": [
     "p2p",
     "mesh",

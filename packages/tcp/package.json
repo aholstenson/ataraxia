@@ -4,6 +4,7 @@
   "description": "TCP transport for Ataraxia P2P messaging",
   "main": "index.js",
   "license": "MIT",
+  "repository": "https://github.com/aholstenson/ataraxia/tree/master/packages/tcp",
   "dependencies": {
     "ataraxia": "^0.2.1",
     "debug": "^3.1.0",
