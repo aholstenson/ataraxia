@@ -55,7 +55,7 @@ module.exports = class Network {
 	}
 
 	off(event, listener) {
-		this[events].off(event, listener);
+		this[events].removeListener(event, listener);
 	}
 
 	addTransport(transport) {
