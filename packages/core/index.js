@@ -11,6 +11,8 @@ const Topology = require('./topology');
 const topologySymbol = Symbol('topology');
 const events = Symbol('events');
 
+const nodesSymbol = Symbol('nodes');
+
 module.exports = class Network {
 	constructor(options={}) {
 		if(! options.name) throw new Error('name of network is required');
@@ -26,7 +28,7 @@ module.exports = class Network {
 
 		// Setup the topology of the network
 		const topology = this[topologySymbol] = new Topology(this, options);
-		const nodes = new Map();
+		const nodes = this[nodesSymbol] = new Map();
 		topology.on('available', n => {
 			nodes.set(n.id, new Node(n));
 			this[events].emit('node:available', n);
@@ -104,7 +106,7 @@ module.exports = class Network {
 	*/
 	broadcast(type, payload, options=null) {
 		// Send to all connected nodes
-		for(const node of this.nodes.values()) {
+		for(const node of this[nodesSymbol].values()) {
 			node.send(type, payload);
 		}
 	}
