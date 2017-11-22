@@ -1,5 +1,7 @@
 'use strict';
 
+const isDeepEqual = require('deep-equal');
+
 function reachabilityComparator(a, b) {
 	return a.path.length - b.path.length;
 }
@@ -54,8 +56,13 @@ module.exports = class Node {
 				// This node is now reachable via the host, so we should remove it
 				this.reachability.splice(idx, 1);
 			} else {
-				// Update the path to the new one
-				this.reachability[idx].path = path;
+				if(isDeepEqual(this.reachability[idx].path, path)) {
+					// Paths are equal, skip updating
+					return false;
+				} else {
+					// Update the path to the new one
+					this.reachability[idx].path = path;
+				}
 			}
 		} else {
 			if(routedViaHostNode) {
