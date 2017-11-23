@@ -35,11 +35,12 @@ module.exports = class TCP extends AbstractTransport {
 
 			this.server.listen(() => {
 				this.port = this.server.address().port;
-				this.stoppables.push(mdns.expose({
+				mdns.expose({
 					name: this.networkId,
 					type: options.name,
 					port: this.port
-				}));
+				}).then(handle => this.stoppables.push(handle))
+				.catch(err => this.debug('Could not expose service via mDNS;', err));
 			});
 		}
 
@@ -58,6 +59,8 @@ module.exports = class TCP extends AbstractTransport {
 			peer.setReachableVia(service.addresses, service.port);
 			peer.tryConnect();
 		});
+
+		browser.start();
 	}
 
 	stop() {
