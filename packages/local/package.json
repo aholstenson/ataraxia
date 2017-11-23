@@ -1,12 +1,12 @@
 {
   "name": "ataraxia-local",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Machine-local transport for Ataraxia P2P messaging",
   "main": "index.js",
   "license": "MIT",
   "repository": "https://github.com/aholstenson/ataraxia/tree/master/packages/local",
   "dependencies": {
-    "ataraxia": "^0.2.2",
+    "ataraxia": "^0.2.3",
     "debug": "^3.1.0",
     "unix-socket-leader": "^0.1.2"
   }
