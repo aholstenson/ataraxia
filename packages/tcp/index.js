@@ -149,7 +149,10 @@ class TCPPeer extends Peer {
 			host: address,
 			port: this.port
 		});
+		client.setKeepAlive(true);
 		client.on('connect', () => {
+			this.attempt = 0;
+			this.addressAttempt--;
 			this.debug('Connected via ' + address + ':' + this.port);
 		});
 		this.setSocket(client);
