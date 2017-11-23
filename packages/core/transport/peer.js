@@ -101,6 +101,10 @@ module.exports = class Peer {
 
 	write(type, payload) {
 		const data = msgpack.encode([ String(type), payload ]);
-		this.socket.write(data);
+		try {
+			this.socket.write(data);
+		} catch(err) {
+			this.debug('Could not write;', err);
+		}
 	}
 };
