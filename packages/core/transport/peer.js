@@ -21,6 +21,7 @@ module.exports = class Peer {
 
 			if(this.helloTimeout) {
 				clearTimeout(this.helloTimeout);
+				this.helloTimeout = null;
 			}
 
 			// Assume we are connected when hello is received
@@ -75,9 +76,10 @@ module.exports = class Peer {
 		});
 
 		// Wait a few seconds for the hello from the other side
-		this.helloTimeout = setTimeout(() => {
-			this.socket.destroy();
-		}, 5000);
+		if(this.helloTimeout) {
+			clearTimeout(this.helloTimeout);
+		}
+		this.helloTimeout = setTimeout(() => this.socket.destroy(), 5000);
 	}
 
 	on(event, handler) {
