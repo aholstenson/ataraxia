@@ -1,10 +1,14 @@
 'use strict';
 
 const { EventEmitter2 } = require('eventemitter2');
+const proxy = require('./service-proxy');
 
 module.exports = class Service {
 	constructor() {
 		this.events = new EventEmitter2();
+
+		// Create the public proxy
+		this.proxy = proxy(this);
 	}
 
 	emitEvent(event, data) {

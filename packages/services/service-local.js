@@ -1,7 +1,8 @@
 'use strict';
 
 const Service = require('./service');
-const generateId = require('../utils/id');
+const customInspect = require('util').inspect.custom;
+const metadataChanged = Symbol('metadataChanged');
 
 /**
  * Service that has been registered locally.
@@ -68,7 +69,7 @@ module.exports = class LocalService extends Service {
 		}
 	}
 
-	rebroadcast() {
+	[metadataChanged]() {
 		this.parent.network.broadcast('service:available', this.definition);
 	}
 
@@ -124,7 +125,9 @@ module.exports = class LocalService extends Service {
 		this.parent.remove(this.id);
 	}
 
-	inspect() {
+	[customInspect]() {
 		return 'LocalService[' + this.id + ']';
 	}
-}
+};
+
+module.exports.metadataChanged = metadataChanged;

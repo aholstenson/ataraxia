@@ -46,24 +46,47 @@ module.exports = class Services {
 		}
 	}
 
+	/**
+	 * Start listening for the given event to be emitted.
+	 *
+	 * @param {string} event
+	 * @param {function} listener
+	 */
 	on(event, listener) {
 		this.events.on(event, listener);
 	}
 
+	/**
+	 * Remove listener for the given event.
+	 *
+	 * @param {string} event
+	 * @param {function} listener
+	 */
 	off(event, listener) {
 		this.events.removeListener(event, listener);
 	}
 
+	/**
+	 * Register that a new service is being provided by this node.
+	 *
+	 * @param {string} id
+	 * @param {object} instance
+	 */
 	register(id, instance) {
 		const service = new LocalService(this, id, instance);
 		this.services.set(id, service);
-		this.network.broadcast('service:available', service.definition);
+		this.network.broadcast('service:available', service.definition.proxy);
 
-		this.events.emit('available', service);
+		this.events.emit('available', service.proxy);
 
 		return service;
 	}
 
+	/**
+	 * Remove a previously registered local service.
+	 *
+	 * @param {string} id
+	 */
 	remove(id) {
 		const service = this.services.get(id);
 		if(! service || ! (service instanceof LocalService)) return;
@@ -71,7 +94,17 @@ module.exports = class Services {
 		this.services.delete(service.id);
 		this.network.broadcast('service:unavailable', service.definition);
 
-		this.events.emit('unavailable', service);
+		this.events.emit('unavailable', service.proxy);
+	}
+
+	/**
+	 * Get a local or remove service that is already in the registry.
+	 *
+	 * @param {string} id
+	 */
+	get(id) {
+		const service = this.services.get(id);
+		return service ? service.proxy : null;
 	}
 
 	_handleMessage(msg) {
@@ -108,10 +141,10 @@ module.exports = class Services {
 			service = new RemoteService(this, node, data);
 			this.services.set(data.id, service);
 
-			this.events.emit('available', service);
+			this.events.emit('available', service.proxy);
 		} else {
 			service.updateDefinition(data);
-			this.events.emit('available', service);
+			this.events.emit('available', service.proxy);
 		}
 	}
 
@@ -188,3 +221,5 @@ module.exports = class Services {
 		service.receiveReply(message);
 	}
 };
+
+module.exports.metadataChanged = LocalService.metadataChanged;

@@ -1,6 +1,8 @@
 'use strict';
 
 const Service = require('./service');
+const customInspect = require('util').inspect.custom;
+
 let seq = 0;
 
 module.exports = class RemoteService extends Service {
@@ -126,7 +128,7 @@ module.exports = class RemoteService extends Service {
 		}
 	}
 
-	inspect() {
-		return 'RemoteService[' + this.id + ' on ' + this.node.inspect() + ']';
+	[customInspect]() {
+		return 'RemoteService[' + this.id + ' on ' + this.node.id + ']';
 	}
 }
