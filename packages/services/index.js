@@ -75,7 +75,7 @@ module.exports = class Services {
 	register(id, instance) {
 		const service = new LocalService(this, id, instance);
 		this.services.set(id, service);
-		this.network.broadcast('service:available', service.definition.proxy);
+		this.network.broadcast('service:available', service.definition);
 
 		this.events.emit('available', service.proxy);
 
