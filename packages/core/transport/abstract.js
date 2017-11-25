@@ -8,6 +8,7 @@ module.exports = class AbstractTransport {
 		this.events = new EventEmitter(this);
 		this.peers = new Map();
 
+		this.started = false;
 		this.debug = debug('ataraxia:' + name);
 	}
 
@@ -20,14 +21,25 @@ module.exports = class AbstractTransport {
 	}
 
 	start(options) {
+		if(this.started) {
+			throw new Error('Transport already started');
+		}
+
 		this.debug('Starting with id `' + options.id + '`');
+		this.started = true;
 		this.networkId = options.id;
 	}
 
 	stop() {
+		if(this.started) {
+			return;
+		}
+
 		for(const peer of this.peers.values()) {
 			peer.disconnect();
 		}
+
+		this.started = false;
 	}
 
 	addPeer(peer) {

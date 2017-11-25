@@ -19,20 +19,41 @@ module.exports = class MachineLocal extends AbstractTransport {
 		super.start(options);
 
 		const id = path.join(os.tmpdir(), options.name + '');
-		this.leader = leader(id);
-		this.leader.on('leader', () => {
-			// Emit an event when this node becomes the leader
-			this.events.emit('leader');
-		});
 
-		const handlePeer = sock => {
-			const peer = new LocalPeer(this);
-			peer.setSocket(sock);
-			this.addPeer(peer);
+		const connect = () => {
+			this.leader = leader(id);
+			this.leader.on('leader', () => {
+				// Emit an event when this node becomes the leader
+				this.debug('This node is now the leader of the machine local network');
+				this.events.emit('leader');
+			});
+
+			const handlePeer = sock => {
+				const peer = new LocalPeer(this);
+				peer.setSocket(sock);
+				this.addPeer(peer);
+			};
+
+			this.leader.on('connection', handlePeer);
+			this.leader.on('client', handlePeer);
+			this.leader.on('error', err => {
+				this.debug('Trouble connecting to machine local network;', err);
+
+				try {
+					this.leader.close();
+				} catch(ex) {
+					// Do nothing
+				}
+
+				if(this.started) {
+					const delay = Math.floor(50 * Math.random() + 100);
+					this.debug('Retrying connection in ' + delay + 'ms');
+					setTimeout(connect, delay);
+				}
+			});
 		};
 
-		this.leader.on('connection', handlePeer);
-		this.leader.on('client', handlePeer);
+		connect();
 	}
 
 	stop() {
