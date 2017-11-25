@@ -5,17 +5,20 @@ const { EventEmitter } = require('events');
 const eos = require('end-of-stream');
 const msgpack = require('msgpack-lite');
 
+const CURRENT_VERSION = 2;
+
 module.exports = class Peer {
 	constructor(transport) {
 		this.networkId = transport.networkId;
 		const ns = transport.debug ? transport.debug.namespace + ':peer' : 'ataraxia:peer';
 		this.debug = debug(ns);
 		this.events = new EventEmitter();
+		this.connected = false;
 
 		// Reply to hello messages with our metadata
 		this.events.on('hello', msg => {
 			this.id = msg.id;
-			this.version = msg.version;
+			this.version = Math.min(msg.version, CURRENT_VERSION);
 
 			this.debug = debug(ns + ':' + msg.id);
 
@@ -24,8 +27,27 @@ module.exports = class Peer {
 				this.helloTimeout = null;
 			}
 
-			// Assume we are connected when hello is received
-			this.events.emit('connected');
+			if(this.version >= 2) {
+				// Setup a ping every 5 seconds
+				const pingInterval = 5000;
+				this.pingSender = setInterval(() => this.write('ping'), pingInterval);
+				this.pingTimeout = setTimeout(() => this.socket.destroy(), pingInterval * 4);
+				this.on('ping', () => {
+					if(! this.connected) {
+						// Consider the peer connected
+						this.connected = true;
+						this.events.emit('connected');
+					}
+
+					clearTimeout(this.pingTimeout);
+					this.pingTimeout = setTimeout(() => this.socket.destroy(), pingInterval * 4);
+				});
+
+				this.write('ping');
+			} else {
+				// Assume we are connected when hello is received
+				this.events.emit('connected');
+			}
 		});
 	}
 
@@ -65,6 +87,12 @@ module.exports = class Peer {
 			this.debug('Disconnected gracefully');
 		}
 
+		clearTimeout(this.helloTimeout);
+
+		clearInterval(this.pingSender);
+		clearTimeout(this.pingTimeout);
+
+		this.connected = false;
 		this.events.emit('disconnected');
 	}
 
@@ -72,7 +100,7 @@ module.exports = class Peer {
 		// Write the hello message
 		this.write('hello', {
 			id: this.networkId,
-			version: 1
+			version: CURRENT_VERSION
 		});
 
 		// Wait a few seconds for the hello from the other side
