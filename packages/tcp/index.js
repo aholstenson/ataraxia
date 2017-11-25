@@ -19,6 +19,8 @@ module.exports = class TCP extends AbstractTransport {
 	start(options) {
 		super.start(options);
 
+		this.foundPeers = new Map();
+
 		if(! options.endpoint) {
 			this.server = net.createServer();
 
@@ -50,14 +52,31 @@ module.exports = class TCP extends AbstractTransport {
 		}, 600);
 		this.stoppables.push(browser);
 
+		// When a new peer is available, connect to it
 		browser.on('available', service => {
 			// Protect against connecting to ourselves
 			if(service.name === this.networkId) return;
+
+			// Check if we have started connections to this peer
+			if(this.foundPeers.has(service.name)) return;
 
 			const peer = new TCPPeer(this, service.name);
 			this.addPeer(peer);
 			peer.setReachableVia(service.addresses, service.port);
 			peer.tryConnect();
+
+			// Track the peer
+			this.foundPeers.set(service.name, peer);
+		});
+
+		// If a peer is no longer available, stop connecting to it
+		browser.on('unavailable', service => {
+			const peer = this.foundPeers.get(service.name);
+			if(! peer) return;
+
+			peer.disconnect();
+
+			this.foundPeers.delete(service.name);
 		});
 
 		browser.start();
