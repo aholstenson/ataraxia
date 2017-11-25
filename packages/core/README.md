@@ -5,6 +5,8 @@ different NodeJS instances together and allows messages to be passed between
 these instances. Some instances may act as routers for other instances to
 create a mesh network.
 
+For support for services with RPC and events see [ataraxia-services]((https://github.com/aholstenson/ataraxia/tree/master/packages/services).
+
 ## Installation
 
 ```
@@ -13,8 +15,8 @@ npm install ataraxia
 
 Also install one or more transports:
 
-* [ataraxia-local](packages/local) provides a machine-local transport
-* [ataraxia-tcp](packages/tcp) provides a TCP-based transport with local network discovery
+* [ataraxia-local](https://github.com/aholstenson/ataraxia/tree/master/packages/local) provides a machine-local transport
+* [ataraxia-tcp](https://github.com/aholstenson/ataraxia/tree/master/packages/tcp) provides a TCP-based transport with local network discovery
 
 ## Example with TCP transport
 
