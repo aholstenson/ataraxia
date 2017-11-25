@@ -198,6 +198,7 @@ module.exports = class Services {
 			debug('Invoking', message.action, 'on', service);
 			service.call(message.action, message.arguments)
 				.then(value => {
+					debug(message.action + ' successful:', value);
 					node.send('service:invoke-result', {
 						service: message.service,
 						seq: message.seq,
@@ -205,6 +206,7 @@ module.exports = class Services {
 					});
 				})
 				.catch(err => {
+					debug(message.action + ' failed:', err);
 					node.send('service:invoke-result', {
 						service: message.service,
 						seq: message.seq,
