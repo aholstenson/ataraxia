@@ -1,6 +1,6 @@
 {
   "name": "ataraxia",
-  "version": "0.2.4",
+  "version": "0.3.0",
   "description": "P2P messaging over mesh networks",
   "main": "index.js",
   "license": "MIT",
