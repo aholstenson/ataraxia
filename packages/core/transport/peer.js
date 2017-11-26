@@ -130,6 +130,7 @@ module.exports = class Peer {
 	}
 
 	write(type, payload) {
+		this.debug('Sending', type, 'with data', payload);
 		const data = msgpack.encode([ String(type), payload ]);
 		try {
 			this.socket.write(data);
