@@ -161,7 +161,7 @@ module.exports = class Services {
 	_handleServiceUnavailable0(service) {
 		debug(service.id, 'is no longer available');
 		this.services.delete(service.id);
-		this.events.emit('unavailable', service);
+		this.events.emit('unavailable', service.proxy);
 	}
 
 	_handleServiceSubscribe(node, message) {
