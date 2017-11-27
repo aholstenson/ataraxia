@@ -6,6 +6,7 @@ const eos = require('end-of-stream');
 const msgpack = require('msgpack-lite');
 
 const CURRENT_VERSION = 2;
+const pingInterval = 5000;
 
 module.exports = class Peer {
 	constructor(transport) {
@@ -29,25 +30,26 @@ module.exports = class Peer {
 
 			if(this.version >= 2) {
 				// Setup a ping every 5 seconds
-				const pingInterval = 5000;
 				this.pingSender = setInterval(() => this.write('ping'), pingInterval);
 				this.pingTimeout = setTimeout(() => this.socket.destroy(), pingInterval * 4);
-				this.on('ping', () => {
-					if(! this.connected) {
-						// Consider the peer connected
-						this.connected = true;
-						this.events.emit('connected');
-					}
-
-					clearTimeout(this.pingTimeout);
-					this.pingTimeout = setTimeout(() => this.socket.destroy(), pingInterval * 4);
-				});
 
 				this.write('ping');
 			} else {
 				// Assume we are connected when hello is received
 				this.events.emit('connected');
 			}
+		});
+
+		// Handle pings
+		this.on('ping', () => {
+			if(! this.connected && this.version) {
+				// Consider the peer connected
+				this.connected = true;
+				this.events.emit('connected');
+			}
+
+			clearTimeout(this.pingTimeout);
+			this.pingTimeout = setTimeout(() => this.socket.destroy(), pingInterval * 4);
 		});
 	}
 
@@ -57,6 +59,9 @@ module.exports = class Peer {
 	 */
 	setSocket(s) {
 		this.socket = s;
+
+		// Reset version
+		this.version = 0;
 
 		// Setup error and disconnected events
 		eos(s, this.handleDisconnect.bind(this));
@@ -90,6 +95,7 @@ module.exports = class Peer {
 		clearInterval(this.pingSender);
 		clearTimeout(this.pingTimeout);
 
+		this.socket = null;
 		this.connected = false;
 		this.events.emit('disconnected');
 	}
