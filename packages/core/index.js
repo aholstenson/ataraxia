@@ -21,6 +21,7 @@ module.exports = class Network {
 
 		this.id = id();
 		this.name = options.name;
+		this.endpoint = options.endpoint || false;
 
 		this.transports = [];
 
@@ -69,7 +70,8 @@ module.exports = class Network {
 		if(this.active) {
 			transport.start({
 				id: this.id,
-				name: this.name
+				name: this.name,
+				endpoint: this.endpoint
 			});
 		}
 	}
@@ -84,7 +86,8 @@ module.exports = class Network {
 
 		const options = {
 			id: this.id,
-			name: this.name
+			name: this.name,
+			endpoint: this.endpoint
 		};
 
 		for(const transport of this.transports) {
