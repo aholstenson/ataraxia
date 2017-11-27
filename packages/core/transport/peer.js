@@ -76,8 +76,6 @@ module.exports = class Peer {
 		// Catch errors on pipe and decoder
 		decoder.on('error', err => this.debug('Error from decoder', err));
 		pipe.on('error', err => this.debug('Error from pipe', err));
-
-		return this.negotiate();
 	}
 
 	handleDisconnect(err) {

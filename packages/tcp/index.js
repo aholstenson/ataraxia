@@ -115,6 +115,7 @@ class TCPPeer extends Peer {
 		if(! this.socket) {
 			// Use this connection if there is no other connection active
 			this.setSocket(socket);
+			this.negotiate();
 		}
 	}
 
@@ -156,6 +157,7 @@ class TCPPeer extends Peer {
 		if(this.serverSocket) {
 			// Seems like there is an incoming connection, use it
 			this.setSocket(this._serverSocket);
+			this.negotiate();
 			return;
 		}
 
@@ -176,6 +178,8 @@ class TCPPeer extends Peer {
 			this.attempt = 0;
 			this.addressAttempt--;
 			this.debug('Connected via ' + address + ':' + this.port);
+
+			this.negotiate();
 		});
 		this.setSocket(client);
 	}

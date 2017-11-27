@@ -36,6 +36,7 @@ module.exports = class MachineLocal extends AbstractTransport {
 			const handlePeer = sock => {
 				const peer = new LocalPeer(this);
 				peer.setSocket(sock);
+				peer.negotiate();
 				this.addPeer(peer);
 			};
 
