@@ -143,7 +143,7 @@ class TCPPeer extends Peer {
 			this.debug('Attempting to connect to next address');
 			this.tryConnect();
 		} else {
-			if(this.attempts >= this.maxAttempts) {
+			if(this.attempt >= this.maxAttempts) {
 				this.debug('Reached the connection attempt limit');
 			} else {
 				this.debug('No more addresses to try, trying in 60 seconds');
