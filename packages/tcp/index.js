@@ -112,7 +112,7 @@ class TCPPeer extends Peer {
 			eos(socket, () => this.serverSocket = null);
 		}
 
-		if(! this.socket) {
+		if(! this.socket && socket) {
 			// Use this connection if there is no other connection active
 			this.setSocket(socket);
 			this.negotiate();
