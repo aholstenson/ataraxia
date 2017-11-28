@@ -1,6 +1,6 @@
 {
   "name": "ataraxia-tcp",
-  "version": "0.4.4",
+  "version": "0.4.5",
   "description": "TCP transport for Ataraxia P2P messaging",
   "main": "index.js",
   "license": "MIT",
