@@ -34,7 +34,7 @@ net.on('node:available', node => {
 });
 
 net.on('message', msg => {
-  console.log('A message was received', msg.type, 'with data', msg.payload, 'from', msg.returnPath.id);
+  console.log('A message was received', msg.type, 'with data', msg.data, 'from', msg.returnPath.id);
 });
 ```
 
