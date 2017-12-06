@@ -5,7 +5,7 @@ different NodeJS instances together and allows messages to be passed between
 these instances. Some instances may act as routers for other instances to
 create a mesh network.
 
-For support for services with RPC and events see [ataraxia-services]((https://github.com/aholstenson/ataraxia/tree/master/packages/services).
+For support for services with RPC and events see [ataraxia-services](https://github.com/aholstenson/ataraxia/tree/master/packages/services).
 
 ## Installation
 
