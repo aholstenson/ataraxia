@@ -122,7 +122,7 @@ module.exports = class RemoteService extends Service {
 		this.promises.delete(message.seq);
 	}
 
-	remove() {
+	destroy() {
 		for(const promise of this.promises.values()) {
 			promise.reject(new Error('Service is no longer available'));
 		}
