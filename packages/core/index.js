@@ -31,8 +31,9 @@ module.exports = class Network {
 		const topology = this[topologySymbol] = new Topology(this, options);
 		const nodes = this[nodesSymbol] = new Map();
 		topology.on('available', n => {
-			nodes.set(n.id, new Node(n));
-			this[events].emit('node:available', n);
+			const node = new Node(n);
+			nodes.set(n.id, node);
+			this[events].emit('node:available', node);
 		});
 
 		topology.on('unavailable', n => {
