@@ -1,6 +1,7 @@
 'use strict';
 
 const Service = require('./service');
+const deepEqual = require('deep-equal');
 const customInspect = require('util').inspect.custom;
 
 let seq = 0;
@@ -24,7 +25,12 @@ module.exports = class RemoteService extends Service {
 	}
 
 	updateDefinition(def) {
-		this.metadata = def.metadata;
+		if(! deepEqual(this.metadata, def.metadata)) {
+			this.metadata = def.metadata;
+			return true;
+		}
+
+		return false;
 	}
 
 	_updateListenerRegistration() {

@@ -70,7 +70,7 @@ module.exports = class LocalService extends Service {
 	}
 
 	[metadataChanged]() {
-		this.parent.network.broadcast('service:available', this.definition);
+		this.parent._serviceUpdated(this);
 	}
 
 	/**
