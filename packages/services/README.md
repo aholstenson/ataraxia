@@ -42,4 +42,42 @@ service.hello()
 service.on('hello', data => console.log('got', data));
 ```
 
-## Creat
+## Creating services
+
+Services are simple objects:
+
+```javascript
+services.register('service-id', {
+  hello(what='world') {
+    return 'Hello ' + what;
+  },
+
+  property: 1234
+});
+```
+
+The only special part of services is that the `metadata` property is
+automatically distributed througout the network.
+
+```javascript
+services.register('service-with-metadata', {
+  metadata: {
+    type: 'cookie-factory'
+  },
+  
+  cookiesMade: 0,
+
+  makeCookie() {
+    return ++this.cookiesMade;
+  }
+});
+```
+
+The metadata can be access on any node:
+
+```javascript
+const service = services.get('service-with-metadata');
+if(service) {
+  console.log(service.metadata.type);
+}
+```
