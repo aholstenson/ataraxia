@@ -1,6 +1,7 @@
 'use strict';
 
 const wrapped = Symbol('wrapped');
+const customInspect = require('util').inspect.custom;
 
 /**
  * Node in the network. Thin wrapper around a topology node to provide a
@@ -18,5 +19,9 @@ module.exports = class Node {
 
 	get reachable() {
 		return this[wrapped].reachable;
+	}
+
+	[customInspect]() {
+		return 'Node{' + this.id + '}';
 	}
 };
