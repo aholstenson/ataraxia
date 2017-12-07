@@ -100,7 +100,7 @@ module.exports = class Network {
 	* Leave the currently joined network.
 	*/
 	stop() {
-		this.transports.forEach(t => t.leave());
+		this.transports.forEach(t => t.stop());
 
 		this.active = false;
 	}
