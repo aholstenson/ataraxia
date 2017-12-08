@@ -31,7 +31,7 @@ module.exports = class Peer {
 			if(this.version >= 2) {
 				// Setup a ping every 5 seconds
 				this.pingSender = setInterval(() => this.write('ping'), pingInterval);
-				this.pingTimeout = setTimeout(() => this.socket.destroy(), pingInterval * 4);
+				this.pingTimeout = setTimeout(() => this.socket && this.socket.destroy(), pingInterval * 4);
 
 				this.write('ping');
 			} else {
@@ -49,8 +49,15 @@ module.exports = class Peer {
 			}
 
 			clearTimeout(this.pingTimeout);
-			this.pingTimeout = setTimeout(() => this.socket.destroy(), pingInterval * 4);
+			if(this.socket) {
+				// Queue a ping if the socket is available
+				this.pingTimeout = setTimeout(() => this.socket && this.socket.destroy(), pingInterval * 4);
+			}
 		});
+	}
+
+	hasSocket() {
+		return this.socket != null;
 	}
 
 	/**
@@ -64,7 +71,7 @@ module.exports = class Peer {
 		this.version = 0;
 
 		// Setup error and disconnected events
-		eos(s, this.handleDisconnect.bind(this));
+		this.clearEos = eos(s, this.handleDisconnect.bind(this));
 
 		// Setup the decoder for incoming messages
 		const decoder = msgpack.createDecodeStream();
@@ -94,6 +101,8 @@ module.exports = class Peer {
 
 		clearInterval(this.pingSender);
 		clearTimeout(this.pingTimeout);
+
+		this.clearEos();
 
 		this.socket = null;
 		this.connected = false;

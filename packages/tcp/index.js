@@ -109,10 +109,10 @@ class TCPPeer extends Peer {
 
 		if(socket) {
 			// Setup the server socket to remove itself if it disconnects
-			eos(socket, () => this.serverSocket = null);
+			eos(socket, () => this._serverSocket = null);
 		}
 
-		if(! this.socket && socket) {
+		if(! this.hasSocket() && socket) {
 			// Use this connection if there is no other connection active
 			this.setSocket(socket);
 			this.negotiate();
