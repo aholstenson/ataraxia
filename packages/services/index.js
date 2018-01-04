@@ -104,6 +104,9 @@ module.exports = class Services {
 	 */
 	register(id, instance) {
 		// TODO: How should duplicate services be handled?
+		if(typeof id !== 'string') {
+			throw new Error('Id is required to register service');
+		}
 
 		const service = new LocalService(this, id, instance);
 		this.services.set(id, service);
@@ -243,7 +246,10 @@ module.exports = class Services {
 		for(const id of servicesNoLongerAvailable) {
 			const service = this.services.get(id);
 
-			this._handleServiceUnavailable0(service);
+			if(service) {
+				// Protect against non-existent services
+				this._handleServiceUnavailable0(service);
+			}
 		}
 
 		// Update the version we have seen
@@ -284,6 +290,18 @@ module.exports = class Services {
 	 * Create or update a remote service based on its definition.
 	 */
 	_handleServiceAvailable0(node, data) {
+		if(! data) {
+			// Check that we have some data
+			debug('Received empty service via', node);
+			return;
+		}
+
+		if(! data.id) {
+			// Check that we have an identifier
+			debug('Received a service without an id via', node);
+			return;
+		}
+
 		let service = this.services.get(data.id);
 		if(! service) {
 			// This is a new service, create it and start tracking it
@@ -303,8 +321,6 @@ module.exports = class Services {
 	}
 
 	_handleServiceUnavailable(node, data) {
-		debug('Service', data.id, 'is no longer available via', node);
-
 		// Handle the incoming version information
 		this._updateNodeVersion(node, data);
 
