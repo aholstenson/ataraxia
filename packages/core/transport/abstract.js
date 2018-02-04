@@ -54,14 +54,14 @@ module.exports = class AbstractTransport {
 	 */
 	start(options) {
 		if(this.started) {
-			return false;
+			return Promise.resolve(false);
 		}
 
 		this.debug('Starting with id `' + options.id + '`');
 		this.started = true;
 		this.networkId = options.id;
 
-		return true;
+		return Promise.resolve(true);
 	}
 
 	/**
@@ -72,7 +72,7 @@ module.exports = class AbstractTransport {
 	 */
 	stop() {
 		if(! this.started) {
-			return false;
+			return Promise.resolve(false);
 		}
 
 		for(const peer of this.peers.values()) {
@@ -80,7 +80,7 @@ module.exports = class AbstractTransport {
 		}
 
 		this.started = false;
-		return true;
+		return Promise.resolve(true);
 	}
 
 	/**

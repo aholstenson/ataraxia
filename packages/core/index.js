@@ -132,11 +132,9 @@ module.exports = class Network {
 	* Join the network by starting a server and then looking for peers.
 	*/
 	start() {
-		if(this.active) return false;
+		if(this.active) return Promise.resolve(false);
 
 		debug('About to join network as ' + this.id);
-
-		this.active = true;
 
 		const options = {
 			id: this.id,
@@ -144,24 +142,26 @@ module.exports = class Network {
 			endpoint: this.endpoint
 		};
 
-		for(const transport of this.transports) {
-			transport.start(options);
-		}
-
-		return true;
+		return Promise.all(
+			this.transports.map(t => t.start(options))
+		).then(() => {
+			this.active = true;
+			return true;
+		});
 	}
 
 	/**
 	* Leave the currently joined network.
 	*/
 	stop() {
-		if(! this.active) return false;
+		if(! this.active) return Promise.resolve(false);
 
-		this.transports.forEach(t => t.stop());
-
-		this.active = false;
-
-		return true;
+		return Promise.all(
+			this.transports.map(t => t.stop())
+		).then(() => {
+			this.active = false;
+			return true;
+		});
 	}
 
 	/**

@@ -5,7 +5,6 @@ const LocalTransport = require('.');
 
 const net = new Network({ name: 'ataraxia-example' });
 net.addTransport(new LocalTransport());
-net.start();
 
 net.on('node:available', node => {
 	console.log('A new node is available:', node);
@@ -15,3 +14,7 @@ net.on('node:available', node => {
 net.on('message', msg => {
 	console.log('A message was received', msg.type, 'with data', msg.data, 'from', msg.returnPath.id);
 });
+
+net.start()
+	.then(() => console.log('Network has started'))
+	.catch(err => console.error(err));

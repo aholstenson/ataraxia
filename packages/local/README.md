@@ -18,7 +18,10 @@ const LocalTransport = require('ataraxia-local');
 
 const net = new Network({ name: 'name-of-your-app-or-network' });
 net.addTransport(new LocalTransport());
-net.start();
+
+net.start()
+  .then(...)
+  .catch(...);
 ```
 
 The event `leader` can be used to start a secondary network transport that
@@ -41,5 +44,8 @@ local.on('leader', () => {
   net.addTransport(new TCPTransport());
 });
 net.addTransport(local);
-net.start();
+
+net.start()
+  .then(...)
+  .catch(...);
 ```

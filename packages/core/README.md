@@ -26,7 +26,6 @@ const TCPTransport = require('ataraxia-tcp');
 
 const net = new Network({ name: 'name-of-your-app-or-network' });
 net.addTransport(new TCPTransport());
-net.start();
 
 net.on('node:available', node => {
   console.log('A new node is available:', node.id);
@@ -36,6 +35,10 @@ net.on('node:available', node => {
 net.on('message', msg => {
   console.log('A message was received', msg.type, 'with data', msg.data, 'from', msg.returnPath.id);
 });
+
+net.start()
+  .then(...)
+  .catch(...);
 ```
 
 ## Example with machine-local transport and TCP transport
@@ -61,7 +64,10 @@ local.on('leader', () => {
   net.addTransport(new TCPTransport());
 });
 net.addTransport(local);
-net.start();
+
+net.start()
+  .then(...)
+  .catch(...);
 ```
 
 ## API

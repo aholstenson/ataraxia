@@ -23,6 +23,11 @@ const services = new Services(net);
 services.on('available', service => console.log(service.id, 'is now available'));
 services.on('unavailable', service => console.log(service.id, 'is no longer available'));
 
+// Start the network
+net.start()
+  .then(() => console.log('Network is started'))
+  .catch(err => console.log('Error while starting:', err));
+
 // Register services
 const handle = services.register('service-id', {
   hello() {
@@ -35,11 +40,13 @@ handle.emitEvent('hello', { data: 'goes-here' });
 
 // Interact with services
 const service = services.get('service-id');
-service.hello()
-  .then(result => console.log('service said', result))
-  .catch(handleErrorCorrectlyHere);
+if(service) {
+  service.hello()
+    .then(result => console.log('service said', result))
+    .catch(handleErrorCorrectlyHere);
 
-service.on('hello', data => console.log('got', data));
+  service.on('hello', data => console.log('got', data));
+}
 ```
 
 ## Creating services

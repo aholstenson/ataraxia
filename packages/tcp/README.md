@@ -44,7 +44,9 @@ const tcp = new TCPTransport({
 net.addTransport(tcp);
 
 // Start the network
-net.start();
+net.start()
+  .then(...)
+  .catch(...);
 ```
 
 Another instance can then connect to that specific port:
@@ -68,7 +70,9 @@ tcp.addManualPeer({
 net.addTransport(tcp);
 
 // Start the network
-net.start();
+net.start()
+  .then(...)
+  .catch(...);
 ```
 
 Ataraixa will attempt to connect to peer and if it can't be connected to will
