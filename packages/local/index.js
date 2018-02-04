@@ -4,7 +4,7 @@ const os = require('os');
 const path = require('path');
 
 const leader = require('unix-socket-leader');
-const { AbstractTransport, Peer } = require('ataraxia/transport');
+const { AbstractTransport, Peer, addPeer, events } = require('ataraxia/transport');
 
 const eos = require('end-of-stream');
 
@@ -15,6 +15,8 @@ const eos = require('end-of-stream');
 module.exports = class MachineLocal extends AbstractTransport {
 	constructor() {
 		super('local');
+
+		this.leader = false;
 	}
 
 	start(options) {
@@ -31,14 +33,14 @@ module.exports = class MachineLocal extends AbstractTransport {
 				// Emit an event when this node becomes the leader
 				this.debug('This node is now the leader of the machine local network');
 				this.leader = true;
-				this.events.emit('leader');
+				this[events].emit('leader');
 			});
 
 			const handlePeer = sock => {
 				const peer = new LocalPeer(this);
 				peer.setSocket(sock);
 				peer.negotiate();
-				this.addPeer(peer);
+				this[addPeer](peer);
 			};
 
 			this.net.on('connection', handlePeer);

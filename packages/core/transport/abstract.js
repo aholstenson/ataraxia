@@ -3,14 +3,18 @@
 const debug = require('debug');
 const { EventEmitter } = require('events');
 
+const events = Symbol('events');
+const peers = Symbol('peers');
+const addPeer = Symbol('addPeer');
+
 /**
  * Abstract base for implementing transports. Implements common behavior to
  * help with tracking of peers.
  */
 module.exports = class AbstractTransport {
 	constructor(name) {
-		this.events = new EventEmitter(this);
-		this.peers = new Map();
+		this[events] = new EventEmitter(this);
+		this[peers] = new Map();
 
 		this.started = false;
 		this.debug = debug('ataraxia:' + name);
@@ -24,7 +28,7 @@ module.exports = class AbstractTransport {
 	 * @param {function} handler
 	 */
 	on(event, handler) {
-		this.events.on(event, handler);
+		this[events].on(event, handler);
 	}
 
 	/**
@@ -34,7 +38,7 @@ module.exports = class AbstractTransport {
 	 * @param {function} handler
 	 */
 	off(event, handler) {
-		this.events.removeListener(event, handler);
+		this[events].removeListener(event, handler);
 	}
 
 	/**
@@ -84,7 +88,7 @@ module.exports = class AbstractTransport {
 	 *
 	 * @param {Peer} peer
 	 */
-	addPeer(peer) {
+	[addPeer](peer) {
 		peer.on('connected', () => {
 			if(peer.id === this.networkId) {
 				// This peer points to ourself, ignore it
@@ -93,7 +97,7 @@ module.exports = class AbstractTransport {
 				return;
 			}
 
-			if(this.peers.has(peer.id)) {
+			if(this[peers].has(peer.id)) {
 				/*
 				 * This peer is already available via this transport. Two
 				 * options:
@@ -102,25 +106,29 @@ module.exports = class AbstractTransport {
 				 * 2) Disconnect this peer
 				 */
 				if(peer.merge) {
-					this.peers.get(peer.id).merge(peer);
+					this[peers].get(peer.id).merge(peer);
 				} else {
 					peer.disconnect();
 				}
 			} else {
 				// New peer, connect to it
-				this.peers.set(peer.id, peer);
+				this[peers].set(peer.id, peer);
 
-				this.events.emit('connected', peer);
+				this[events].emit('connected', peer);
 			}
 		});
 
 		peer.on('disconnected', () => {
-			const stored = this.peers.get(peer.id);
+			const stored = this[peers].get(peer.id);
 			if(stored === peer) {
-				this.peers.delete(peer.id);
+				this[peers].delete(peer.id);
 
-				this.events.emit('disconnected', peer);
+				this[events].emit('disconnected', peer);
 			}
 		});
 	}
 };
+
+// Export symbols for use in transport implementations
+module.exports.addPeer = addPeer;
+module.exports.events = events;

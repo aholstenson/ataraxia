@@ -1,12 +1,14 @@
 'use strict';
 
-const { AbstractTransport, Peer } = require('ataraxia/transport');
+const { AbstractTransport, Peer, addPeer } = require('ataraxia/transport');
 
 const mdns = require('tinkerhub-mdns');
 const net = require('net');
 const eos = require('end-of-stream');
 
-const connectToManual = Symbol('connectToManual');
+const setupPeer = Symbol('setupPeer');
+const foundPeers = Symbol('foundPeers');
+const stoppables = Symbol('stoppables');
 
 /**
  * TCP based transport.
@@ -38,7 +40,7 @@ module.exports = class TCP extends AbstractTransport {
 			}
 		}
 
-		this.stoppables = [];
+		this[stoppables] = [];
 		this.manualPeers = [];
 	}
 
@@ -46,7 +48,7 @@ module.exports = class TCP extends AbstractTransport {
 		// Call super.start() and return if already started
 		if(! super.start(options)) return false;
 
-		this.foundPeers = new Map();
+		this[foundPeers] = new Map();
 
 		if(! options.endpoint) {
 			this.server = net.createServer();
@@ -59,7 +61,7 @@ module.exports = class TCP extends AbstractTransport {
 			this.server.on('connection', socket => {
 				const peer = new TCPPeer(this);
 				peer.serverSocket = socket;
-				this.addPeer(peer);
+				this[addPeer](peer);
 			});
 
 			const listenCallback = () => {
@@ -72,7 +74,7 @@ module.exports = class TCP extends AbstractTransport {
 						name: this.networkId,
 						type: options.name,
 						port: this.port
-					}).then(handle => this.stoppables.push(handle))
+					}).then(handle => this[stoppables].push(handle))
 					.catch(err => this.debug('Could not expose service via mDNS;', err));
 				}
 			};
@@ -82,6 +84,11 @@ module.exports = class TCP extends AbstractTransport {
 			} else {
 				this.server.listen(listenCallback);
 			}
+
+			// Stop the server when stopping transport
+			this[stoppables].push({
+				stop: () => this.server.close()
+			});
 		}
 
 		if(this.options.discovery) {
@@ -89,7 +96,7 @@ module.exports = class TCP extends AbstractTransport {
 			const browser = mdns.browser({
 				type: options.name
 			}, this.options.peerCacheTime);
-			this.stoppables.push(browser);
+			this[stoppables].push(browser);
 
 			// When a new peer is available, connect to it
 			browser.on('available', service => {
@@ -97,25 +104,23 @@ module.exports = class TCP extends AbstractTransport {
 				if(service.name === this.networkId) return;
 
 				// Check if we have started connections to this peer
-				if(this.foundPeers.has(service.name)) return;
+				if(this[foundPeers].has(service.name)) return;
 
-				const peer = new TCPPeer(this, service.name);
-				this.addPeer(peer);
-				peer.setReachableVia(service.addresses, service.port);
-				peer.tryConnect();
+				// Setup the peer to attempt to connect to
+				const peer = this[setupPeer](service);
 
 				// Track the peer
-				this.foundPeers.set(service.name, peer);
+				this[foundPeers].set(service.name, peer);
 			});
 
 			// If a peer is no longer available, stop connecting to it
 			browser.on('unavailable', service => {
-				const peer = this.foundPeers.get(service.name);
+				const peer = this[foundPeers].get(service.name);
 				if(! peer) return;
 
 				peer.disconnect();
 
-				this.foundPeers.delete(service.name);
+				this[foundPeers].delete(service.name);
 			});
 
 			browser.start();
@@ -123,7 +128,7 @@ module.exports = class TCP extends AbstractTransport {
 
 		// Request connection to all manual peers added
 		for(const manualPeer of this.manualPeers) {
-			this[connectToManual](manualPeer);
+			this[setupPeer](manualPeer);
 		}
 
 		return true;
@@ -149,15 +154,18 @@ module.exports = class TCP extends AbstractTransport {
 		this.manualPeers.push(data);
 
 		if(this.started) {
-			this[connectToManual](data);
+			this[setupPeer](data);
 		}
 	}
 
-	[connectToManual](data) {
+	[setupPeer](data) {
 		const peer = new TCPPeer(this);
-		this.addPeer(peer);
+		this[addPeer](peer);
+
 		peer.setReachableVia(data.addresses, data.port);
 		peer.tryConnect();
+
+		return peer;
 	}
 }
 
