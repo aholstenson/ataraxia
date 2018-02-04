@@ -7,7 +7,11 @@ function reachabilityComparator(a, b) {
 }
 
 /**
- * Discovered Node via routing information
+ * Node in the network topology. Nodes are disovered using broadcasts from
+ * peers.
+ *
+ * Reachability to different peers is tracked in the `reachability` array
+ * which is sorted so the shortest path is available as the first element.
  */
 module.exports = class Node {
 	constructor(network, id) {
@@ -17,12 +21,18 @@ module.exports = class Node {
 		this.reachability = [];
 	}
 
+	/**
+	 * Forward a message from the given source to this node.
+	 */
 	forward(source, message) {
 		if(! this.peer) return;
 
 		this.peer.send([ source, this.id, message ]);
 	}
 
+	/**
+	 * Send a message to this node.
+	 */
 	send(type, data) {
 		if(! this.peer) return;
 
@@ -30,22 +40,32 @@ module.exports = class Node {
 	}
 
 	/**
-	* Get the number of nodes
+	* Get the number of hops that are required to reach this node from the
+	* local node.
 	*/
 	get distance() {
-		if(this.reachability.length === 0) return 20000;
+		if(this.reachability.length === 0) return -1;
 
 		return this.reachability[0].path.length;
 	}
 
+	/**
+	 * Get the path used to reach this node.
+	 */
 	get path() {
 		return this.reachability.length > 0 ? this.reachability[0].path : [];
 	}
 
+	/**
+	 * Get if this node is currently reachable.
+	 */
 	get reachable() {
 		return this.reachability.length > 0;
 	}
 
+	/**
+	 * Indicate that this node can be reached via the given peer.
+	 */
 	addReachability(peer, path) {
 		const routedViaHostNode = path.indexOf(this.id) >= 0 || path.indexOf(this.network.id) >= 0;
 
@@ -77,11 +97,13 @@ module.exports = class Node {
 		}
 
 		// Sort and update how this node is reached
-		this.reachability.sort(reachabilityComparator);
 		this.updateReachability();
 		return true;
 	}
 
+	/**
+	 * Indicate that this node can no longer be reached via the given peer.
+	 */
 	removeReachability(peer) {
 		const idx = this.reachability.findIndex(d => d.peer.id == peer.id);
 		if(idx < 0) return false;
@@ -89,12 +111,16 @@ module.exports = class Node {
 		this.reachability.splice(idx, 1);
 
 		// Sort and update how this node is reached
-		this.reachability.sort(reachabilityComparator);
 		this.updateReachability();
 		return true;
 	}
 
+	/**
+	 * Recalculate and get how this node is reachable.
+	 */
 	updateReachability() {
+		this.reachability.sort(reachabilityComparator);
+
 		if(this.reachable) {
 			this.peer = this.reachability[0].peer;
 			this.direct = this.reachability[0].path.length === 0;

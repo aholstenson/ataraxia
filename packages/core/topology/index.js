@@ -9,6 +9,10 @@ const Node = require('./routing-node');
  * Information about the topology of the network.
  */
 module.exports = class Topology {
+
+	/**
+	 * Create a new topology for the given network.
+	 */
 	constructor(network, options) {
 		this.network = network;
 		this.endpoint = options.endpoint;
@@ -19,10 +23,17 @@ module.exports = class Topology {
 		this.peers = new Map();
 	}
 
+	/**
+	 * Listen to events about nodes.
+	 */
 	on(event, handler) {
 		this.events.on(event, handler);
 	}
 
+	/**
+	 * Get a specific node, optionally creating it if it is unknown.
+	 *
+	 */
 	get(id, create=true) {
 		let node = this.nodes.get(id);
 		if(! node && create) {
@@ -33,10 +44,20 @@ module.exports = class Topology {
 		return node;
 	}
 
+	/**
+	 * Get an iterable containing all the nodes that are known.
+	 */
 	get nodelist() {
 		return this.nodes.values();
 	}
 
+	/**
+	 * Add information about reachability of the given node through a peer.
+	 *
+	 * @param {Node} node
+	 * @param {Peer} peer
+	 * @param {Object} data
+	 */
 	addReachability(node, peer, data) {
 		const wasReachable = node.reachable;
 
@@ -51,6 +72,12 @@ module.exports = class Topology {
 		}
 	}
 
+	/**
+	 * Remove reachability of the given node through a peer.
+	 *
+	 * @param {Node} node
+	 * @param {Peer} peer
+	 */
 	removeReachability(node, peer) {
 		const wasReachable = node.reachable;
 
@@ -67,6 +94,10 @@ module.exports = class Topology {
 		}
 	}
 
+	/**
+	 * Add a peer to this topology. Will start listening for node information,
+	 * messages and disconnects. This also starts the discovery process.
+	 */
 	addPeer(peer) {
 		// Create or update the node
 		this.peers.set(peer.id, peer);
@@ -120,12 +151,21 @@ module.exports = class Topology {
 		}
 	}
 
+	/**
+	 * Handle that a peer has disconnected. Will update all nodes to indicate
+	 * that they can not be reached through the peer anymore.
+	 */
 	handleDisconnect(peer) {
 		for(const node of this.nodes.values()) {
 			this.removeReachability(node, peer);
 		}
 	}
 
+	/**
+	 * Handle an incoming message from the peer. This takes care of unwrapping
+	 * routing information and emitting a message with a reference to the
+	 * source node (as return path).
+	 */
 	handleMessage(peer, msg) {
 		const source = msg[0];
 		const target = msg[1];
