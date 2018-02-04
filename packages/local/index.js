@@ -3,7 +3,7 @@
 const os = require('os');
 const path = require('path');
 
-const leader = require('unix-socket-leader');
+const { LowLevelNetwork } = require('local-machine-network');
 const { AbstractTransport, Peer, addPeer, events } = require('ataraxia/transport');
 
 const eos = require('end-of-stream');
@@ -25,54 +25,33 @@ module.exports = class MachineLocal extends AbstractTransport {
 
 		const id = path.join(os.tmpdir(), options.name + '');
 
-		const connect = () => {
-			this.leader = false;
-
-			this.net = leader(id);
-			this.net.on('leader', () => {
-				// Emit an event when this node becomes the leader
-				this.debug('This node is now the leader of the machine local network');
-				this.leader = true;
-				this[events].emit('leader');
-			});
-
-			const handlePeer = sock => {
-				const peer = new LocalPeer(this);
-				peer.setSocket(sock);
-				peer.negotiate();
-				this[addPeer](peer);
-			};
-
-			this.net.on('connection', handlePeer);
-			this.net.on('client', sock => {
-				if(this.leader) {
-					eos(sock, err => {
-						if(err) {
-							this.debug('Closed with error;', err);
-						}
-					});
-				} else {
-					handlePeer(sock);
+		this.net = new LowLevelNetwork({
+			path: id
+		});
+		this.net.on('leader', serverSocket => {
+			// Emit an event when this node becomes the leader
+			eos(serverSocket, err => {
+				if(err) {
+					this.debug('Closed with error;', err);
 				}
 			});
-			this.net.on('error', err => {
-				this.debug('Trouble connecting to machine local network;', err);
 
-				try {
-					this.net.close();
-				} catch(ex) {
-					// Do nothing
-				}
+			this.debug('This node is now the leader of the machine local network');
+			this[events].emit('leader');
+		});
 
-				if(this.started) {
-					const delay = Math.floor(50 * Math.random() + 100);
-					this.debug('Retrying connection in ' + delay + 'ms');
-					setTimeout(connect, delay);
-				}
-			});
+		const handlePeer = sock => {
+			const peer = new LocalPeer(this);
+			peer.setSocket(sock);
+			peer.negotiate();
+			this[addPeer](peer);
 		};
 
-		connect();
+		this.net.on('connection', handlePeer);
+		this.net.on('connected', handlePeer);
+
+		this.net.connect()
+			.catch(this.debug);
 
 		return true;
 	}
