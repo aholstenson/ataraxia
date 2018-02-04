@@ -36,9 +36,9 @@ module.exports = class Node extends EventEmitter {
 	}
 
 	/**
-	 * Get if this node is currently reachable.
+	 * Get if this node is currently available.
 	 */
-	get reachable() {
+	get available() {
 		return this[wrapped].reachable;
 	}
 

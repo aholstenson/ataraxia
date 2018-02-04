@@ -63,3 +63,25 @@ local.on('leader', () => {
 net.addTransport(local);
 net.start();
 ```
+
+## API
+
+### Network
+
+* `new Network(options)` - create a new network using the given options. Options may be:
+  * `name` - *Required.* The name of the network, should be short and describe the app or library.
+  * `endpoint` - Request that the local node is an endpoint that should not perform routing.
+* `start()` - start the network and its transports
+* `stop()` - stop the network and its transports
+* `addTransport(transport)` - add a transport that should be used
+* `on('node:available', node => ...)` - a node has been found and messages can now be sent and received to/from it
+* `on('node:unavailable', node => ...)` - a node is no longer available
+* `on('message', ({ returnPath, type, data }) => ...)` - a message has been received from a node
+
+### Node
+
+* `id` - get the id of the node
+* `available` - get if the node is reachable
+* `on('unavailable', () => ...)` - node is no longer available
+* `send(type, data)` - send a message of the given type with the specified data to the node
+* `on('message', ({ returnPath, type, data }) => ...)` - a message has been received from this node
