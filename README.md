@@ -10,6 +10,8 @@ Ataraxia is split into several projects:
 * [ataraxia](packages/core) is the main library that provides the messaging functionality
 * [ataraxia-local](packages/local) provides a machine-local transport
 * [ataraxia-tcp](packages/tcp) provides a TCP-based transport with local network discovery
+* [ataraxia-ws-client](packages/ws-client) provides a websocket client
+* [ataraxia-ws-server](packages/ws-server) provides a websocket server
 * [ataraxia-services](packages/services) provides easy-to-use services with RPC and events
 
 ## Example with TCP transport
