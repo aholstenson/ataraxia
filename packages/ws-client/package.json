@@ -1,0 +1,13 @@
+{
+  "name": "ataraxia-ws-client",
+  "version": "0.5.2",
+  "description": "WebSocket client for Ataraxia P2P messaging",
+  "main": "index.js",
+  "license": "MIT",
+  "repository": "https://github.com/aholstenson/ataraxia/tree/master/packages/ws-client",
+  "dependencies": {
+    "ataraxia": "^0.5.2",
+    "debug": "^3.1.0",
+    "msgpack-lite": "^0.1.26"
+  }
+}
