@@ -10,8 +10,31 @@ const eos = require('end-of-stream');
  * TCP based transport.
  */
 module.exports = class TCP extends AbstractTransport {
-	constructor() {
+	constructor(options={}) {
 		super('tcp');
+
+		this.options = Object.assign({
+			discovery: true,
+			peerCacheTime: 1800
+		}, options);
+
+		if(typeof this.options.peerCacheTime !== 'number' || this.options.peerCacheTime <= 0) {
+			throw new Error('peerCacheTime must be a positive number');
+		}
+
+		if(typeof this.options.discovery !== 'boolean') {
+			throw new Error('discovery must be a boolean');
+		}
+
+		if(typeof this.options.port !== 'undefined') {
+			if(typeof this.options.port !== 'number') {
+				throw new Error('port must be a number');
+			}
+
+			if(this.options.port <= 0 || this.options.port >= 65536) {
+				throw new Error('port must be a valid port number (1-65535)');
+			}
+		}
 
 		this.stoppables = [];
 	}
@@ -36,51 +59,64 @@ module.exports = class TCP extends AbstractTransport {
 				this.addPeer(peer);
 			});
 
-			this.server.listen(() => {
+			const listenCallback = () => {
 				this.port = this.server.address().port;
-				mdns.expose({
-					name: this.networkId,
-					type: options.name,
-					port: this.port
-				}).then(handle => this.stoppables.push(handle))
-				.catch(err => this.debug('Could not expose service via mDNS;', err));
-			});
+				this.debug('Server started at port', this.port);
+
+				if(this.options.discovery) {
+					// Start mDNS, but only
+					mdns.expose({
+						name: this.networkId,
+						type: options.name,
+						port: this.port
+					}).then(handle => this.stoppables.push(handle))
+					.catch(err => this.debug('Could not expose service via mDNS;', err));
+				}
+			};
+
+			if(typeof this.options.port === 'number') {
+				this.server.listen(this.options.port, listenCallback);
+			} else {
+				this.server.listen(listenCallback);
+			}
 		}
 
-		// Start discovering which peers we have
-		const browser = mdns.browser({
-			type: options.name
-		}, 600);
-		this.stoppables.push(browser);
+		if(this.options.discovery) {
+			// Start discovering which peers we have if discovery is enabled
+			const browser = mdns.browser({
+				type: options.name
+			}, this.options.peerCacheTime);
+			this.stoppables.push(browser);
 
-		// When a new peer is available, connect to it
-		browser.on('available', service => {
-			// Protect against connecting to ourselves
-			if(service.name === this.networkId) return;
+			// When a new peer is available, connect to it
+			browser.on('available', service => {
+				// Protect against connecting to ourselves
+				if(service.name === this.networkId) return;
 
-			// Check if we have started connections to this peer
-			if(this.foundPeers.has(service.name)) return;
+				// Check if we have started connections to this peer
+				if(this.foundPeers.has(service.name)) return;
 
-			const peer = new TCPPeer(this, service.name);
-			this.addPeer(peer);
-			peer.setReachableVia(service.addresses, service.port);
-			peer.tryConnect();
+				const peer = new TCPPeer(this, service.name);
+				this.addPeer(peer);
+				peer.setReachableVia(service.addresses, service.port);
+				peer.tryConnect();
 
-			// Track the peer
-			this.foundPeers.set(service.name, peer);
-		});
+				// Track the peer
+				this.foundPeers.set(service.name, peer);
+			});
 
-		// If a peer is no longer available, stop connecting to it
-		browser.on('unavailable', service => {
-			const peer = this.foundPeers.get(service.name);
-			if(! peer) return;
+			// If a peer is no longer available, stop connecting to it
+			browser.on('unavailable', service => {
+				const peer = this.foundPeers.get(service.name);
+				if(! peer) return;
 
-			peer.disconnect();
+				peer.disconnect();
 
-			this.foundPeers.delete(service.name);
-		});
+				this.foundPeers.delete(service.name);
+			});
 
-		browser.start();
+			browser.start();
+		}
 
 		return true;
 	}
