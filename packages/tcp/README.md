@@ -22,7 +22,11 @@ const TCPTransport = require('ataraxia-tcp');
 
 const net = new Network({ name: 'name-of-your-app-or-network' });
 net.addTransport(new TCPTransport());
-net.start();
+
+// Start the network
+net.start()
+  .then(...)
+  .catch(...);
 ```
 
 ## Well-known ports and manual peers

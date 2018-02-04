@@ -7,7 +7,7 @@ const WebSocketPeer = require('ataraxia-ws-client/abstract-peer');
 module.exports = class WebSocketServer extends AbstractTransport {
 
 	constructor(options) {
-		super();
+		super('ws-server');
 
 		this.options = Object.assign({}, options);
 	}
@@ -23,6 +23,10 @@ module.exports = class WebSocketServer extends AbstractTransport {
 					this.ws.on('connection', socket => {
 						this[addPeer](new WebSocketPeer(this, socket));
 					});
+
+					this.ws.on('error', err => {
+						this.debug('Ignoring error:', err);
+					})
 
 					if(this.options.server) {
 						resolve(true);
