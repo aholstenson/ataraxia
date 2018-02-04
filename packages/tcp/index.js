@@ -6,6 +6,8 @@ const mdns = require('tinkerhub-mdns');
 const net = require('net');
 const eos = require('end-of-stream');
 
+const connectToManual = Symbol('connectToManual');
+
 /**
  * TCP based transport.
  */
@@ -37,6 +39,7 @@ module.exports = class TCP extends AbstractTransport {
 		}
 
 		this.stoppables = [];
+		this.manualPeers = [];
 	}
 
 	start(options) {
@@ -118,6 +121,11 @@ module.exports = class TCP extends AbstractTransport {
 			browser.start();
 		}
 
+		// Request connection to all manual peers added
+		for(const manualPeer of this.manualPeers) {
+			this[connectToManual](manualPeer);
+		}
+
 		return true;
 	}
 
@@ -127,6 +135,29 @@ module.exports = class TCP extends AbstractTransport {
 		}
 
 		return super.stop();
+	}
+
+	addManualPeer(options) {
+		if(! options) throw new Error('Address and port for peer must be specified');
+		if(typeof options.address !== 'string') throw new Error('Address must be a string');
+		if(typeof options.port !== 'number') throw new Error('Port must be a number');
+
+		const data = {
+			addresses: [ options.address ],
+			port: options.port
+		};
+		this.manualPeers.push(data);
+
+		if(this.started) {
+			this[connectToManual](data);
+		}
+	}
+
+	[connectToManual](data) {
+		const peer = new TCPPeer(this);
+		this.addPeer(peer);
+		peer.setReachableVia(data.addresses, data.port);
+		peer.tryConnect();
 	}
 }
 
