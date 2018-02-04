@@ -13,7 +13,30 @@ const events = Symbol('events');
 
 const nodesSymbol = Symbol('nodes');
 
+/**
+ * Network of nodes. The network is the main class in Ataraxia and uses one or
+ * more transports to connect to peers and discover nodes in the network.
+ *
+ * Networks are required to have a name which represents a short name that
+ * describes the network. Transports can use this name to automatically find
+ * peers with the same network name.
+ */
 module.exports = class Network {
+
+	/**
+	 * Create a new network. A network must be provided a `name` which is a
+	 * short string used that transports may use to discover peers. Such a
+	 * short name is usually something like `app-name` or `known-network-name`.
+	 *
+	 * These options are available:
+	 *
+	 * * `name` - the name of the network
+	 * * `endpoint` - boolean indicating if this instance is an endpoint and
+	 *    wants to avoid routing.
+	 *
+	 * @param {object} options
+	 *   The options of the network.
+	 */
 	constructor(options={}) {
 		if(! options.name) throw new Error('name of network is required');
 
@@ -34,6 +57,7 @@ module.exports = class Network {
 			const node = new Node(n);
 			nodes.set(n.id, node);
 			this[events].emit('node:available', node);
+			node.emit('available');
 		});
 
 		topology.on('unavailable', n => {
@@ -42,26 +66,53 @@ module.exports = class Network {
 
 			nodes.delete(n.id);
 			this[events].emit('node:unavailable', node);
+			node.emit('unavailable');
 		});
 
 		topology.on('message', msg => {
 			const node = nodes.get(msg.returnPath.id);
-			this[events].emit('message', {
+
+			const event = {
 				returnPath: node,
 				type: msg.type,
 				data: msg.data
-			});
+			};
+
+			this[events].emit('message', event);
+			node.emit('message', event);
 		});
 	}
 
+	/**
+	 * Listen to events from this network.
+	 *
+	 * Supported events:
+	 *
+	 * * `node:available` - a node is now available
+	 * * `node:unavailable` - a node is no longer available
+	 * * `message` - a message has been received
+	 *
+	 * @param {string} event
+	 * @param {function} listener
+	 */
 	on(event, listener) {
 		this[events].on(event, listener);
 	}
 
+	/**
+	 * Remove a previously registered event listener.
+	 *
+	 * @param {string} event
+	 * @param {function} listener
+	 */
 	off(event, listener) {
 		this[events].removeListener(event, listener);
 	}
 
+	/**
+	 * Add a transport to this network. If the network is started the transport
+	 * will also be started.
+	 */
 	addTransport(transport) {
 		this.transports.push(transport);
 
@@ -81,6 +132,8 @@ module.exports = class Network {
 	* Join the network by starting a server and then looking for peers.
 	*/
 	start() {
+		if(this.active) return false;
+
 		debug('About to join network as ' + this.id);
 
 		this.active = true;
@@ -94,21 +147,32 @@ module.exports = class Network {
 		for(const transport of this.transports) {
 			transport.start(options);
 		}
+
+		return true;
 	}
 
 	/**
 	* Leave the currently joined network.
 	*/
 	stop() {
+		if(! this.active) return false;
+
 		this.transports.forEach(t => t.stop());
 
 		this.active = false;
+
+		return true;
 	}
 
 	/**
-	* Broadcast a message some nodes.
+	* Broadcast a message to all nodes.
+	*
+	* @param {string} type
+	*   the type of message to send
+	* @param {*} payload
+	*   the payload of the message
 	*/
-	broadcast(type, payload, options=null) {
+	broadcast(type, payload) {
 		// Send to all connected nodes
 		for(const node of this[nodesSymbol].values()) {
 			node.send(type, payload);
