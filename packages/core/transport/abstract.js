@@ -67,7 +67,7 @@ module.exports = class AbstractTransport {
 	 *   Boolean indicating if the transport was stopped.
 	 */
 	stop() {
-		if(this.started) {
+		if(! this.started) {
 			return false;
 		}
 

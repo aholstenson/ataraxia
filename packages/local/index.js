@@ -18,7 +18,8 @@ module.exports = class MachineLocal extends AbstractTransport {
 	}
 
 	start(options) {
-		super.start(options);
+		// Call super.start() and return if already started
+		if(! super.start(options)) return false;
 
 		const id = path.join(os.tmpdir(), options.name + '');
 
@@ -70,12 +71,16 @@ module.exports = class MachineLocal extends AbstractTransport {
 		};
 
 		connect();
+
+		return true;
 	}
 
 	stop() {
-		this.net.close();
+		if(this.started) {
+			this.net.close();
+		}
 
-		super.stop();
+		return super.stop();
 	}
 };
 

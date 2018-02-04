@@ -17,7 +17,8 @@ module.exports = class TCP extends AbstractTransport {
 	}
 
 	start(options) {
-		super.start(options);
+		// Call super.start() and return if already started
+		if(! super.start(options)) return false;
 
 		this.foundPeers = new Map();
 
@@ -80,12 +81,16 @@ module.exports = class TCP extends AbstractTransport {
 		});
 
 		browser.start();
+
+		return true;
 	}
 
 	stop() {
-		this.stoppables.forEach(item => item.stop());
+		if(this.started) {
+			this.stoppables.forEach(item => item.stop());
+		}
 
-		super.stop();
+		return super.stop();
 	}
 }
 
