@@ -1,5 +1,8 @@
 # ataraxia-ws-client
 
+[![npm version](https://badge.fury.io/js/ataraxia-ws-client.svg)](https://badge.fury.io/js/ataraxia-ws-client)
+[![Dependencies](https://david-dm.org/aholstenson/ataraxia-ws-client.svg)](https://david-dm.org/aholstenson/ataraxia-ws-client)
+
 Client that connects to a [Ataraxia network](https://github.com/aholstenson/ataraxia)
 using a websocket. This module makes it possible for NodeJS-instances (using
 `ws`) and browsers (using Webpack, Browserify, JSPM or a similar packaging tool)

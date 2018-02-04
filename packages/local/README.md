@@ -1,5 +1,8 @@
 # ataraxia-local
 
+[![npm version](https://badge.fury.io/js/ataraxia-local.svg)](https://badge.fury.io/js/ataraxia-local)
+[![Dependencies](https://david-dm.org/aholstenson/ataraxia-local.svg)](https://david-dm.org/aholstenson/ataraxia-local)
+
 Machine-local transport for [Ataraxia](https://github.com/aholstenson/ataraxia).
 This transport connects together instances on the same machine via a Unix
 socket.

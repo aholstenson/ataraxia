@@ -1,5 +1,8 @@
 # ataraxia-tcp
 
+[![npm version](https://badge.fury.io/js/ataraxia-tcp.svg)](https://badge.fury.io/js/ataraxia-tcp)
+[![Dependencies](https://david-dm.org/aholstenson/ataraxia-tcp.svg)](https://david-dm.org/aholstenson/ataraxia-tcp)
+
 TCP transport for [Ataraxia](https://github.com/aholstenson/ataraxia). This
 transport discovers and automatically connects to other instances on the same
 local network. Other peers are found using mDNS and DNS-SD that match the name

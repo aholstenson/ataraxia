@@ -1,5 +1,8 @@
 # ataraxia-services
 
+[![npm version](https://badge.fury.io/js/ataraxia-services.svg)](https://badge.fury.io/js/ataraxia-services)
+[![Dependencies](https://david-dm.org/aholstenson/ataraxia-services.svg)](https://david-dm.org/aholstenson/ataraxia-services)
+
 Services with RPC and events for [Ataraxia](https://github.com/aholstenson/ataraxia).
 
 This project provides a service layer on top of a Ataraxia network and allows
