@@ -1,6 +1,6 @@
 'use strict';
 
-const { AbstractTransport, Peer, addPeer } = require('ataraxia/transport');
+const { AbstractTransport, StreamingPeer, addPeer } = require('ataraxia/transport');
 
 const mdns = require('tinkerhub-mdns');
 const net = require('net');
@@ -176,7 +176,7 @@ module.exports = class TCP extends AbstractTransport {
 	}
 }
 
-class TCPPeer extends Peer {
+class TCPPeer extends StreamingPeer {
 	constructor(transport) {
 		super(transport);
 	}

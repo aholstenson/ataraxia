@@ -4,7 +4,7 @@ const os = require('os');
 const path = require('path');
 
 const { LowLevelNetwork } = require('local-machine-network');
-const { AbstractTransport, Peer, addPeer, events } = require('ataraxia/transport');
+const { AbstractTransport, StreamingPeer, addPeer, events } = require('ataraxia/transport');
 
 const eos = require('end-of-stream');
 
@@ -68,7 +68,7 @@ module.exports = class MachineLocal extends AbstractTransport {
 };
 
 
-class LocalPeer extends Peer {
+class LocalPeer extends StreamingPeer {
 	disconnect() {
 		// Disconnect does nothing for local transport
 		this.handleDisconnect();

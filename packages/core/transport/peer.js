@@ -2,8 +2,6 @@
 
 const debug = require('debug')
 const { EventEmitter } = require('events');
-const eos = require('end-of-stream');
-const msgpack = require('msgpack-lite');
 
 const CURRENT_VERSION = 2;
 const pingInterval = 5000;
@@ -56,7 +54,7 @@ module.exports = class Peer {
 			if(this.version >= 2) {
 				// V2+ of protocol - setup a ping every 5 seconds
 				this.pingSender = setInterval(() => this.write('ping'), pingInterval);
-				this.pingTimeout = setTimeout(() => this.socket && this.socket.destroy(), pingInterval * 4);
+				this.pingTimeout = setTimeout(() => this.requestDisconnect(), pingInterval * 4);
 
 				this.write('ping');
 			} else {
@@ -76,47 +74,9 @@ module.exports = class Peer {
 			clearTimeout(this.pingTimeout);
 			if(this.socket) {
 				// Queue a ping if the socket is available
-				this.pingTimeout = setTimeout(() => this.socket && this.socket.destroy(), pingInterval * 4);
+				this.pingTimeout = setTimeout(() => this.requestDisconnect(), pingInterval * 4);
 			}
 		});
-	}
-
-	/**
-	 * Get if a socket is available.
-	 */
-	hasSocket() {
-		return this.socket != null;
-	}
-
-	/**
-	 * Set the socket being used for this peer.
-	 *
-	 * @param {Socket} s
-	 */
-	setSocket(s) {
-		this.socket = s;
-
-		// Reset version
-		this.version = 0;
-
-		// Setup error and disconnected events
-		this.clearEos = eos(s, this.handleDisconnect.bind(this));
-
-		// Setup the decoder for incoming messages
-		const decoder = msgpack.createDecodeStream();
-		const pipe = s.pipe(decoder);
-
-		decoder.on('data', data => {
-			const type = data[0];
-			const payload = data[1];
-
-			this.debug('Incoming', type, 'with payload', payload);
-			this.events.emit(type, payload);
-		});
-
-		// Catch errors on pipe and decoder
-		decoder.on('error', err => this.debug('Error from decoder', err));
-		pipe.on('error', err => this.debug('Error from pipe', err));
 	}
 
 	/**
@@ -137,9 +97,6 @@ module.exports = class Peer {
 		clearInterval(this.pingSender);
 		clearTimeout(this.pingTimeout);
 
-		this.clearEos();
-
-		this.socket = null;
 		this.connected = false;
 		this.events.emit('disconnected');
 	}
@@ -159,7 +116,10 @@ module.exports = class Peer {
 		if(this.helloTimeout) {
 			clearTimeout(this.helloTimeout);
 		}
-		this.helloTimeout = setTimeout(() => this.socket.destroy(), 5000);
+		this.helloTimeout = setTimeout(
+			() => this.requestDisconnect(new Error('Time out during negotiation')),
+			5000
+		);
 	}
 
 	/**
@@ -174,13 +134,9 @@ module.exports = class Peer {
 	 */
 	disconnect() {
 		this.debug('Requesting disconnect from peer');
+	}
 
-		if(this.socket) {
-			this.write('bye');
-			this.socket.destroy();
-		} else {
-			this.handleDisconnect();
-		}
+	requestDisconnect(err) {
 	}
 
 	/**
@@ -192,18 +148,12 @@ module.exports = class Peer {
 
 	/**
 	 * Write data to the peer, used internally to send data associated with a
-	 * specific type. Use `send` unless extending the Peer class.
+	 * specific type.
 	 *
 	 * @param {string} type
 	 * @param {*} payload
 	 */
 	write(type, payload) {
-		this.debug('Sending', type, 'with data', payload);
-		const data = msgpack.encode([ String(type), payload ]);
-		try {
-			this.socket.write(data);
-		} catch(err) {
-			this.debug('Could not write;', err);
-		}
+		throw new Error('write(type, payload) must be implemented');
 	}
 };
