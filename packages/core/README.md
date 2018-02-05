@@ -1,7 +1,7 @@
 # ataraxia
 
 [![npm version](https://badge.fury.io/js/ataraxia.svg)](https://badge.fury.io/js/ataraxia)
-[![Dependencies](https://david-dm.org/aholstenson/ataraxia.svg)](https://david-dm.org/aholstenson/ataraxia)
+[![Dependencies](https://david-dm.org/aholstenson/ataraxia/status.svg?path=packages/core)](https://david-dm.org/aholstenson/ataraxia?path=packages/core)
 
 Mesh networking with peer-to-peer messaging for NodeJS. Ataraxia connects
 different NodeJS instances together and allows messages to be passed between

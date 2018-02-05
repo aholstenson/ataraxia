@@ -1,7 +1,7 @@
 # ataraxia-tcp
 
 [![npm version](https://badge.fury.io/js/ataraxia-tcp.svg)](https://badge.fury.io/js/ataraxia-tcp)
-[![Dependencies](https://david-dm.org/aholstenson/ataraxia-tcp.svg)](https://david-dm.org/aholstenson/ataraxia-tcp)
+[![Dependencies](https://david-dm.org/aholstenson/ataraxia/status.svg?path=packages/tcp)](https://david-dm.org/aholstenson/ataraxia?path=packages/tcp)
 
 TCP transport for [Ataraxia](https://github.com/aholstenson/ataraxia). This
 transport discovers and automatically connects to other instances on the same
