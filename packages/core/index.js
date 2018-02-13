@@ -119,7 +119,7 @@ module.exports = class Network {
 		// Whenever a peer is connected send it to the topology
 		transport.on('connected', peer => this[topologySymbol].addPeer(peer));
 
-		if(this.active) {
+		if(this.started) {
 			transport.start({
 				id: this.id,
 				name: this.name,
@@ -132,7 +132,7 @@ module.exports = class Network {
 	* Join the network by starting a server and then looking for peers.
 	*/
 	start() {
-		if(this.active) return Promise.resolve(false);
+		if(this.started) return Promise.resolve(false);
 
 		debug('About to join network as ' + this.id);
 
@@ -142,12 +142,15 @@ module.exports = class Network {
 			endpoint: this.endpoint
 		};
 
+		this.started = true;
 		return Promise.all(
 			this.transports.map(t => t.start(options))
 		).then(() => {
-			this.active = true;
 			return true;
-		});
+		}).catch(err => {
+			this.started = false;
+			throw err;
+		})
 	}
 
 	/**
@@ -159,7 +162,7 @@ module.exports = class Network {
 		return Promise.all(
 			this.transports.map(t => t.stop())
 		).then(() => {
-			this.active = false;
+			this.started = false;
 			return true;
 		});
 	}
