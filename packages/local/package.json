@@ -12,6 +12,6 @@
     "local-machine-network": "^0.1.0"
   },
   "devDependencies": {
-    "trace": "^3.0.0"
+    "trace": "^3.1.0"
   }
 }

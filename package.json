@@ -3,8 +3,8 @@
 		"test": "eslint ."
 	},
 	"devDependencies": {
-		"eslint": "^4.11.0",
-		"eslint-plugin-node": "^5.2.1",
-		"lerna": "^2.5.1"
+		"eslint": "^5.0.0",
+		"eslint-plugin-node": "^6.0.1",
+		"lerna": "^2.11.0"
 	}
 }
