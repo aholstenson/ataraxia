@@ -7,7 +7,7 @@
   "repository": "https://github.com/aholstenson/ataraxia/tree/master/packages/local",
   "dependencies": {
     "ataraxia": "^0.6.1",
-    "debug": "^3.1.0",
+    "debug": "^4.1.0",
     "end-of-stream": "^1.4.1",
     "local-machine-network": "^0.2.0"
   },

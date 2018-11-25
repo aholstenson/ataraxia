@@ -7,7 +7,7 @@
   "repository": "https://github.com/aholstenson/ataraxia/tree/master/packages/ws-client",
   "dependencies": {
     "ataraxia": "^0.6.1",
-    "debug": "^3.1.0",
+    "debug": "^4.1.0",
     "msgpack-lite": "^0.1.26"
   }
 }
