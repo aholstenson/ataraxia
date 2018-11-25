@@ -9,7 +9,7 @@
     "ataraxia": "^0.6.1",
     "debug": "^3.1.0",
     "end-of-stream": "^1.4.1",
-    "local-machine-network": "^0.1.0"
+    "local-machine-network": "^0.2.0"
   },
   "devDependencies": {
     "trace": "^3.1.0"
