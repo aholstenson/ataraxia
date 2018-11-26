@@ -12,6 +12,7 @@
     "messaging"
   ],
   "dependencies": {
+    "adaptive-accrual-failure-detector": "^0.1.1",
     "debug": "^4.1.0",
     "deep-equal": "^1.0.1",
     "end-of-stream": "^1.4.1",

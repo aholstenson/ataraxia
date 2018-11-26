@@ -2,9 +2,11 @@
 
 const debug = require('debug')
 const { EventEmitter } = require('events');
+const FailureDetector = require('adaptive-accrual-failure-detector');
 
 const CURRENT_VERSION = 2;
 const pingInterval = 5000;
+const pingCheckInterval = 1000;
 
 /**
  * Peer as found by a transport. Peers represent a connection between the
@@ -36,6 +38,8 @@ module.exports = class Peer {
 		this.events = new EventEmitter();
 		this.connected = false;
 
+		this.failureDetector = new FailureDetector();
+
 		// Reply to hello messages with our metadata
 		this.events.on('hello', msg => {
 			// Set the identifier and the version of the protocol to use
@@ -54,7 +58,7 @@ module.exports = class Peer {
 			if(this.version >= 2) {
 				// V2+ of protocol - setup a ping every 5 seconds
 				this.pingSender = setInterval(() => this.write('ping'), pingInterval);
-				this.pingTimeout = setTimeout(() => this.requestDisconnect(), pingInterval * 4);
+				this.pingChecker = setInterval(() => this.checkFailure(), pingCheckInterval);
 
 				this.write('ping');
 			} else {
@@ -71,11 +75,7 @@ module.exports = class Peer {
 				this.events.emit('connected');
 			}
 
-			clearTimeout(this.pingTimeout);
-			if(this.socket) {
-				// Queue a ping if the socket is available
-				this.pingTimeout = setTimeout(() => this.requestDisconnect(), pingInterval * 4);
-			}
+			this.failureDetector.registerHeartbeat();
 		});
 	}
 
@@ -95,7 +95,7 @@ module.exports = class Peer {
 		clearTimeout(this.helloTimeout);
 
 		clearInterval(this.pingSender);
-		clearTimeout(this.pingTimeout);
+		clearInterval(this.pingChecker);
 
 		this.connected = false;
 		this.events.emit('disconnected');
@@ -120,6 +120,16 @@ module.exports = class Peer {
 			() => this.requestDisconnect(new Error('Time out during negotiation')),
 			5000
 		);
+	}
+
+	/**
+	 * Check if this peer can be considered failed and request us to be
+	 * disconnected from it.
+	 */
+	checkFailure() {
+		if(this.failureDetector.checkFailure()) {
+			this.requestDisconnect();
+		}
 	}
 
 	/**
