@@ -35,7 +35,12 @@ module.exports = class StreamingPeer extends Peer {
 		this.version = 0;
 
 		// Setup error and disconnected events
-		this.clearEos = eos(s, this.handleDisconnect.bind(this));
+		eos(s, err => {
+			if(s === this.socket) {
+				// Only trigger disconnect if this socket is active
+				this.handleDisconnect(err)
+			}
+		});
 
 		// Setup the decoder for incoming messages
 		const decoder = msgpack.createDecodeStream();
@@ -59,8 +64,6 @@ module.exports = class StreamingPeer extends Peer {
 	 * destroy the
 	 */
 	handleDisconnect(err) {
-		this.clearEos();
-
 		this.socket = null;
 
 		super.handleDisconnect();
