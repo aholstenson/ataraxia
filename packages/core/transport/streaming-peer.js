@@ -96,6 +96,11 @@ module.exports = class StreamingPeer extends Peer {
 	 * @param {*} payload
 	 */
 	write(type, payload) {
+		if(! this.socket) {
+			this.debug('No socket but tried to send', type, 'with data', payload);
+			return;
+		}
+
 		this.debug('Sending', type, 'with data', payload);
 		const data = msgpack.encode([ String(type), payload ]);
 		try {
