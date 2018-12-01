@@ -37,6 +37,7 @@ module.exports = class Services {
 		this.nodes.set(node.id, nodeData);
 
 		// Request a list of services
+		debug('Requesting initial list of services from', node);
 		node.send('service:list', { lastVersion: 0 });
 
 		// Schedule listing around every minute
