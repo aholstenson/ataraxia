@@ -29,6 +29,11 @@ module.exports = class StreamingPeer extends Peer {
 	 * @param {Socket} s
 	 */
 	setSocket(s) {
+		if(this.socket) {
+			// Request that the previous socket is destroyed
+			this.socket.destroy();
+		}
+
 		this.socket = s;
 
 		// Reset version
