@@ -249,7 +249,7 @@ module.exports = class Services {
 
 			if(service) {
 				// Protect against non-existent services
-				this._handleServiceUnavailable0(service);
+				this._handleServiceUnavailable0(node, service);
 			}
 		}
 
