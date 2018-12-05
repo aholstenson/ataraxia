@@ -1,12 +1,12 @@
 {
   "name": "ataraxia-tcp",
-  "version": "0.7.1",
+  "version": "0.7.2",
   "description": "TCP transport for Ataraxia P2P messaging",
   "main": "index.js",
   "license": "MIT",
   "repository": "https://github.com/aholstenson/ataraxia/tree/master/packages/tcp",
   "dependencies": {
-    "ataraxia": "^0.7.1",
+    "ataraxia": "^0.7.2",
     "debug": "^4.1.0",
     "end-of-stream": "^1.4.1",
     "tinkerhub-mdns": "^0.3.2"

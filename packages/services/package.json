@@ -1,12 +1,12 @@
 {
   "name": "ataraxia-services",
-  "version": "0.7.1",
+  "version": "0.7.2",
   "description": "Services with RPC and events over Ataraxia mesh network",
   "main": "index.js",
   "license": "MIT",
   "repository": "https://github.com/aholstenson/ataraxia/tree/master/packages/services",
   "dependencies": {
-    "ataraxia": "^0.7.1",
+    "ataraxia": "^0.7.2",
     "debug": "^4.1.0",
     "deep-equal": "^1.0.1",
     "eventemitter2": "^5.0.1"
