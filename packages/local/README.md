@@ -16,29 +16,42 @@ npm install --save ataraxia-local
 To use only the machine-local transport:
 
 ```javascript
-const Network = require('ataraxia');
-const LocalTransport = require('ataraxia-local');
+import { Network, AnonymousAuth } from 'ataraxia';
+import { MachineLocalTransport } from 'ataraxia-local';
 
-const net = new Network({ name: 'name-of-your-app-or-network' });
-net.addTransport(new LocalTransport());
+// Setup a network with anonymous authentication
+const net = new Network({
+  name: 'name-of-your-app-or-network',
+  authentication: [
+    new AnonymousAuth()
+  ]
+});
+
+net.addTransport(new MachineLocalTransport());
 
 net.start()
   .then(...)
   .catch(...);
 ```
 
-The event `leader` can be used to start a secondary network transport that
-will handle connections to other machines.
+`onLeader` can be used to start a secondary network transport that
+will handle connections to other machines:
 
 ```javascript
-const Network = require('ataraxia');
-const LocalTransport = require('ataraxia-local');
-const TCPTransport = require('ataraxia-tcp');
+import { Network, AnonymousAuth } from 'ataraxia';
+import { TCPTransport, TCPPeerMDNSDiscovery } from 'ataraxia-tcp';
+import { MachineLocalTransport } from 'ataraxia-local';
 
-const net = new Network({ name: 'name-of-your-app-or-network' });
+// Setup a network with anonymous authentication
+const net = new Network({
+  name: 'name-of-your-app-or-network',
+  authentication: [
+    new AnonymousAuth()
+  ]
+});
 
-const local = new LocalTransport();
-local.on('leader', () => {
+const local = new MachineLocalTransport();
+local.onLeader(() => {
   /*
    * The leader event is emitted when this instance becomes the leader
    * of the machine-local network. This instance will now handle

@@ -2,7 +2,6 @@
   "name": "ataraxia",
   "version": "0.7.2",
   "description": "P2P messaging over mesh networks",
-  "main": "index.js",
   "license": "MIT",
   "repository": "https://github.com/aholstenson/ataraxia/tree/master/packages/core",
   "keywords": [
@@ -11,11 +10,33 @@
     "mesh networking",
     "messaging"
   ],
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "types": "./dist/types/index.d.ts",
+  "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "ci": "npm run coverage && npm run lint",
+    "coverage": "jest --coverage",
+    "lint": "tslint  --project tsconfig.json -t codeFrame 'src/**/*.ts' 'test/**/*.ts'",
+    "build": "tsc --module commonjs --target es5 --outDir dist/cjs && tsc --module es6 --target es6 --outDir dist/esm",
+    "prebuild": "rimraf dist",
+    "prepublishOnly": "npm run build"
+  },
   "dependencies": {
-    "adaptive-accrual-failure-detector": "^0.1.1",
-    "debug": "^4.1.0",
-    "deep-equal": "^1.0.1",
-    "end-of-stream": "^1.4.1",
+    "@stablelib/cbor": "^0.10.7",
+    "@tyriar/fibonacci-heap": "^2.0.9",
+    "adaptive-accrual-failure-detector": "^0.2.0",
+    "atvik": "0.3.1",
+    "debug": "^4.1.1",
     "msgpack-lite": "^0.1.26"
+  },
+  "devDependencies": {
+    "@types/node": "^13.1.0",
+    "@types/jest": "^24.0.24",
+    "@types/debug": "^4.1.5",
+    "jest": "^24.9.0",
+    "ts-jest": "^24.2.0",
+    "typescript": "^3.7.4"
   }
 }

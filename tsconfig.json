@@ -1,0 +1,11 @@
+{
+    "files": [],
+    "references": [
+        { "path": "packages/core" },
+		{ "path": "packages/local" },
+		{ "path": "packages/services" },
+		{ "path": "packages/tcp" },
+		{ "path": "packages/ws-client" },
+		{ "path": "packages/ws-server" }
+    ]
+}

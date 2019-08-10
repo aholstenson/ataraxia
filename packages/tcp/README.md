@@ -4,9 +4,9 @@
 [![Dependencies](https://david-dm.org/aholstenson/ataraxia/status.svg?path=packages/tcp)](https://david-dm.org/aholstenson/ataraxia?path=packages/tcp)
 
 TCP transport for [Ataraxia](https://github.com/aholstenson/ataraxia). This
-transport discovers and automatically connects to other instances on the same
-local network. Other peers are found using mDNS and DNS-SD that match the name
-of the Ataraxia network.
+transport can discover and automatically connect to other peers using a
+discovery. A discovery is available based on mDNS and DNS-SD that automatically
+connects to other instances on the same local network.
 
 ## Installation
 
@@ -20,11 +20,21 @@ Create a TCP transport that will bind to a random free port and announce
 its availability on the local network:
 
 ```javascript
-const Network = require('ataraxia');
-const TCPTransport = require('ataraxia-tcp');
+import { Network, AnonymousAuth } from 'ataraxia';
+import { TCPTransport, TCPPeerMDNSDiscovery } from 'ataraxia-tcp';
 
-const net = new Network({ name: 'name-of-your-app-or-network' });
-net.addTransport(new TCPTransport());
+// Setup a network with anonymous authentication
+const net = new Network({
+  name: 'name-of-your-app-or-network',
+  authentication: [
+    new AnonymousAuth()
+  ]
+});
+
+// Setup a TCP transport that will discover other peers on the same network using mDNS
+net.addTransport(new TCPTransport({
+  discovery: new TCPPeerMDNSDiscovery()
+}));
 
 // Start the network
 net.start()
@@ -39,14 +49,20 @@ your local network. In that case its possible to define a port that the TCP
 transport will listen to:
 
 ```javascript
-const Network = require('ataraxia');
-const TCPTransport = require('ataraxia-tcp');
+import { Network, AnonymousAuth } from 'ataraxia';
+import { TCPTransport, TCPPeerMDNSDiscovery } from 'ataraxia-tcp';
 
-const net = new Network({ name: 'name-of-your-app-or-network' });
+// Setup a network with anonymous authentication
+const net = new Network({
+  name: 'name-of-your-app-or-network',
+  authentication: [
+    new AnonymousAuth()
+  ]
+});
 
 const tcp = new TCPTransport({
-  port: 30000, // A well known port - define your own or even better use a config file,
-  discover: false // If you want to disable local network discovery
+  // A well known port - define your own or even better use a config file,
+  port: 30000
 })
 net.addTransport(tcp);
 
@@ -59,14 +75,18 @@ net.start()
 Another instance can then connect to that specific port:
 
 ```javascript
-const Network = require('ataraxia');
-const TCPTransport = require('ataraxia-tcp');
+import { Network, AnonymousAuth } from 'ataraxia';
+import { TCPTransport, TCPPeerMDNSDiscovery } from 'ataraxia-tcp';
 
-const net = new Network({ name: 'name-of-your-app-or-network' });
+// Setup a network with anonymous authentication
+const net = new Network({
+  name: 'name-of-your-app-or-network',
+  authentication: [
+    new AnonymousAuth()
+  ]
+});
 
-const tcp = new TCPTransport({
-  discover: false // If you want to disable local network discovery
-})
+const tcp = new TCPTransport():
 
 // Add a manual addressing to the peer
 tcp.addManualPeer({
@@ -82,5 +102,5 @@ net.start()
   .catch(...);
 ```
 
-Ataraixa will attempt to connect to peer and if it can't be connected to will
-attempt to reconnect once every 60 seconds.
+Ataraxia will attempt to connect to the manually added peers and will attempt
+to keep the connection available.

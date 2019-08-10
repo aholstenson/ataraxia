@@ -1,0 +1,16 @@
+{
+	"extends": "../../tsconfig.settings.json",
+	"compilerOptions": {
+		"baseUrl": ".",
+		"rootDir": "./src",
+		"outDir": "dist/cjs",
+		"declarationDir": "dist/types",
+
+		"types" : [
+			"@types/node"
+		]
+	},
+	"include": [
+		"src"
+	]
+}
