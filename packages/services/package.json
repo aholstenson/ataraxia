@@ -1,6 +1,6 @@
 {
   "name": "ataraxia-services",
-  "version": "0.7.2",
+  "version": "0.7.3",
   "description": "Services with RPC and events over Ataraxia mesh network",
   "main": "index.js",
   "license": "MIT",
