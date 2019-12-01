@@ -27,12 +27,14 @@ module.exports = class LocalService extends Service {
 
 	get definition() {
 		const metadata = {};
-		for(const key of Object.getOwnPropertyNames(this.instance.metadata)) {
-			let value = this.instance.metadata[key];
-			if(value instanceof Set) {
-				value = Array.from(value);
+		if(this.instance.metadata) {
+			for(const key of Object.getOwnPropertyNames(this.instance.metadata)) {
+				let value = this.instance.metadata[key];
+				if(value instanceof Set) {
+					value = Array.from(value);
+				}
+				metadata[key] = value;
 			}
-			metadata[key] = value;
 		}
 		return {
 			id: this.id,
