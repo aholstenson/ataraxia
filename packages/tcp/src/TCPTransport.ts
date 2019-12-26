@@ -1,4 +1,5 @@
-import { createServer, Server } from 'net';
+import { createServer, Server } from 'tls';
+import selfsigned from 'selfsigned';
 
 import { ServicePublisher, ServiceDiscovery, MultiAddressService, HostAndPort } from 'tinkerhub-discovery';
 
@@ -63,14 +64,18 @@ export class TCPTransport extends AbstractTransport {
 		if(! started) return false;
 
 		if(! options.endpoint) {
-			this.server = createServer();
+			const cert = generateSelfSignedCertificate();
+			this.server = createServer({
+				key: cert.private,
+				cert: cert.cert
+			});
 
 			// TODO: Better error handling
 			this.server.on('error', err => {
 				this.debug('Caught an error', err);
 			});
 
-			this.server.on('connection', socket => {
+			this.server.on('secureConnection', socket => {
 				const peer = new TCPPeer(this.network);
 				peer.serverSocket = socket;
 
@@ -203,4 +208,8 @@ export class TCPTransport extends AbstractTransport {
 
 		return peer;
 	}
+}
+
+function generateSelfSignedCertificate() {
+	return selfsigned.generate([], { days: 365 * 5 });
 }

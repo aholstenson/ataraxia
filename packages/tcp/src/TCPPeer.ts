@@ -1,11 +1,11 @@
-import { Socket, connect } from 'net';
+import { TLSSocket, connect } from 'tls';
 import { HostAndPort } from 'tinkerhub-discovery';
 
 import { WithNetwork } from 'ataraxia';
 import { StreamingPeer, MergeablePeer } from 'ataraxia/transport';
 
 export class TCPPeer extends StreamingPeer implements MergeablePeer {
-	private _serverSocket?: Socket;
+	private _serverSocket?: TLSSocket;
 	public addresses: HostAndPort[];
 
 	private addressAttempt: number;
@@ -28,7 +28,7 @@ export class TCPPeer extends StreamingPeer implements MergeablePeer {
 		}
 	}
 
-	set serverSocket(socket: Socket | undefined) {
+	set serverSocket(socket: TLSSocket | undefined) {
 		if(! socket) {
 			throw new Error('Tried setting an undefined server socket');
 		}
@@ -93,7 +93,9 @@ export class TCPPeer extends StreamingPeer implements MergeablePeer {
 
 		const client = connect({
 			host: address.host,
-			port: address.port
+			port: address.port,
+
+			rejectUnauthorized: false
 		});
 		client.setKeepAlive(true);
 		client.on('connect', () => {
