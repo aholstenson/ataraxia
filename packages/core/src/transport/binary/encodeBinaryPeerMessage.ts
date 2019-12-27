@@ -135,11 +135,13 @@ export function encodeBinaryPeerMessage<T extends PeerMessageType>(
 			encoder.encodeInteger(TAG_DATA_ACK);
 			encoder.encodeInteger(dataAckMessage.id);
 			break;
-		case PeerMessageType.DataAck:
+		case PeerMessageType.DataReject:
 			const dataRejectMessage = data as DataRejectMessage;
 			encoder.encodeInteger(TAG_DATA_REJECT);
 			encoder.encodeInteger(dataRejectMessage.id);
 			break;
+		default:
+			throw new Error('Unknown peer message of type: ' + (PeerMessageType[type] || type));
 	}
 
 	return encoder.finish().buffer;
