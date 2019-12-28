@@ -129,6 +129,8 @@ export class TCPTransport extends AbstractTransport {
 					// Check if we have started connections to this peer
 					if(this.foundPeers.has(service.id)) return;
 
+					this.debug('Peer with id', service.id, 'now available, attempting connect');
+
 					// Setup the peer to attempt to connect to
 					const peer = this.setupPeer(service.addresses);
 
@@ -140,6 +142,7 @@ export class TCPTransport extends AbstractTransport {
 					const peer = this.foundPeers.get(service.id);
 					if(! peer) return;
 
+					this.debug('Peer with id', service.id, 'no longer available, disconnecting');
 					peer.disconnect();
 
 					this.foundPeers.delete(service.id);
