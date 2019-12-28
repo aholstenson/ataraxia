@@ -9,3 +9,5 @@ export * from './MessageType';
 export * from './MessageUnion';
 
 export * from './WithNetwork';
+
+export * from './Exchange';
