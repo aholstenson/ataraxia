@@ -1,10 +1,13 @@
 import { Subscribable } from 'atvik';
-import { Message } from './Message';
+
+import { MessageData } from './MessageData';
+import { MessageType } from './MessageType';
+import { MessageUnion } from './MessageUnion';
 
 /**
  * Node as seen by a network.
  */
-export interface Node {
+export interface Node<MessageTypes extends object = any> {
 	/**
 	 * The identifier of this node.
 	 */
@@ -19,7 +22,7 @@ export interface Node {
 	/**
 	 * Event emitted when a message is received by this node.
 	 */
-	readonly onMessage: Subscribable<this, [ Message ]>;
+	readonly onMessage: Subscribable<this, [ MessageUnion<MessageTypes> ]>;
 
 	/**
 	 * Send a message to this node. This will return a promise that will
@@ -28,5 +31,5 @@ export interface Node {
 	 * @param type
 	 * @param payload
 	 */
-	send(type: string, payload: any): Promise<void>;
+	send<T extends MessageType<MessageTypes>>(type: T, payload: MessageData<MessageTypes, T>): Promise<void>;
 }

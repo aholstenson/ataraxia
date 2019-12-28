@@ -9,8 +9,11 @@ import { Topology } from './topology';
 import { Node } from './Node';
 import { NetworkNode } from './NetworkNode';
 
-import { Message } from './Message';
 import { Authentication, AuthProvider } from './auth';
+
+import { MessageUnion } from './MessageUnion';
+import { MessageType } from './MessageType';
+import { MessageData } from './MessageData';
 
 export interface NetworkOptions {
 	/**
@@ -40,7 +43,7 @@ export interface NetworkOptions {
  * describes the network. Transports can use this name to automatically find
  * peers with the same network name.
  */
-export class Network {
+export class Network<MessageTypes extends object = any> {
 	/**
 	 * Debugger for log messages.
 	 */
@@ -86,9 +89,9 @@ export class Network {
 	 */
 	private readonly authentication: Authentication;
 
-	private readonly nodeAvailableEvent: Event<this, [ Node ]>;
-	private readonly nodeUnavailableEvent: Event<this, [ Node ]>;
-	private readonly messageEvent: Event<this, [ Message ]>;
+	private readonly nodeAvailableEvent: Event<this, [ Node<MessageTypes> ]>;
+	private readonly nodeUnavailableEvent: Event<this, [ Node<MessageTypes> ]>;
+	private readonly messageEvent: Event<this, [ MessageUnion<MessageTypes> ]>;
 
 	/**
 	 * Create a new network. A network must be provided a `name` which is a
@@ -148,7 +151,7 @@ export class Network {
 			const node = new NetworkNode(this.topology, n.id);
 			this.nodes.set(node.id, node);
 
-			this.nodeAvailableEvent.emit(node);
+			this.nodeAvailableEvent.emit(node as any);
 		});
 
 		this.topology.onUnavailable(n => {
@@ -159,7 +162,7 @@ export class Network {
 			this.nodes.delete(encodedId);
 
 			node.emitUnavailable();
-			this.nodeUnavailableEvent.emit(node);
+			this.nodeUnavailableEvent.emit(node as any);
 		});
 
 		this.topology.onData((id, type, data) => {
@@ -168,7 +171,7 @@ export class Network {
 			if(! node) return;
 
 			const msg = node.emitMessage(type, data);
-			this.messageEvent.emit(msg);
+			this.messageEvent.emit(msg as any);
 		});
 	}
 
@@ -258,7 +261,7 @@ export class Network {
 	 * @param payload
 	 *   the payload of the message
 	 */
-	public async broadcast(type: string, payload: any): Promise<void> {
+	public async broadcast<T extends MessageType<MessageTypes>>(type: T, payload: MessageData<MessageTypes, T>): Promise<void> {
 		const promises = [];
 
 		// Send to all connected nodes
