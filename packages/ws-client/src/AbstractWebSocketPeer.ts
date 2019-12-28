@@ -26,8 +26,19 @@ export abstract class AbstractWebSocketPeer extends AbstractPeer {
 		socket.binaryType = 'arraybuffer';
 
 		socket.addEventListener('message', event => {
-			const [ type, payload ] = decodeBinaryPeerMessage(event.data);
-			this.receiveData(type, payload);
+			if(! (event.data instanceof ArrayBuffer)) {
+				// We only work with ArrayBuffer
+				return;
+			}
+
+			const decoded = decodeBinaryPeerMessage(event.data);
+			if(decoded) {
+				this.receiveData(decoded[0], decoded[1]);
+			}
+		});
+
+		socket.addEventListener('error', () => {
+			this.handleDisconnect(new Error('Disconnecting due to error'));
 		});
 
 		socket.addEventListener('close', () => {

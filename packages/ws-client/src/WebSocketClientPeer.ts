@@ -43,13 +43,10 @@ export class WebSocketClientPeer extends AbstractWebSocketPeer {
 		ws.addEventListener('open', () => {
 			this.debug('Connected');
 
-			this.setSocket(ws);
-
 			this.negotiateAsClient();
 		});
 
-		ws.addEventListener('close', () => this.handleDisconnect());
-		ws.addEventListener('error', () => this.handleDisconnect());
+		this.setSocket(ws);
 	}
 
 	public disconnect() {
