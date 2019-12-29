@@ -27,7 +27,7 @@
     "@stablelib/cbor": "^0.10.7",
     "@tyriar/fibonacci-heap": "^2.0.9",
     "adaptive-accrual-failure-detector": "^0.2.0",
-    "atvik": "0.3.1",
+    "atvik": "1.0.0",
     "debug": "^4.1.1",
     "msgpack-lite": "^0.1.26"
   },
