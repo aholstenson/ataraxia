@@ -6,10 +6,6 @@
 		"rootDir": "./src",
 		"outDir": "dist/cjs",
 		"declarationDir": "dist/types",
-
-		"typeRoots": [
-			"node_modules/@types"
-		]
 	},
 	"include": [
 		"src"
