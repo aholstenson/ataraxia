@@ -13,4 +13,4 @@ import { Message } from './Message';
  */
 export type MessageUnion<MessageTypes extends object> = {
 	[P in keyof MessageTypes]: P extends string ? Message<MessageTypes, P> : never
-}[keyof MessageTypes & string];
+}[keyof MessageTypes];

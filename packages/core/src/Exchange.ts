@@ -1,9 +1,10 @@
-import { Event, SubscriptionHandle } from 'atvik';
+import { Event, SubscriptionHandle, Subscribable } from 'atvik';
 import debug from 'debug';
 
 import { Network } from './Network';
 import { Node } from './Node';
 
+import { Message } from './Message';
 import { MessageUnion } from './MessageUnion';
 import { MessageType } from './MessageType';
 import { MessageData } from './MessageData';
@@ -77,6 +78,11 @@ export class Exchange<MessageTypes extends object = any> {
 	private readonly nodeUnavailableEvent: Event<this, [ Node<MessageTypes> ]>;
 
 	/**
+	 * Event emitted whenever a message is received for this exchange.
+	 */
+	private readonly messageEvent: Event<this, [ MessageUnion<MessageTypes> ]>;
+
+	/**
 	 * Subscriptions for listeners.
 	 */
 	private subscriptions: ReadonlyArray<SubscriptionHandle>;
@@ -91,6 +97,7 @@ export class Exchange<MessageTypes extends object = any> {
 
 		this.nodeAvailableEvent = new Event(this);
 		this.nodeUnavailableEvent = new Event(this);
+		this.messageEvent = new Event(this);
 
 		this.subscriptions = [];
 	}
@@ -101,6 +108,10 @@ export class Exchange<MessageTypes extends object = any> {
 
 	get onNodeUnavailable() {
 		return this.nodeUnavailableEvent.subscribable;
+	}
+
+	get onMessage() {
+		return this.messageEvent.subscribable;
 	}
 
 	/**
@@ -185,7 +196,7 @@ export class Exchange<MessageTypes extends object = any> {
 		}
 	}
 
-	private handleMessage(message: MessageUnion<ExchangeMessages>) {
+	private handleMessage(message: Message) {
 		const source = message.source;
 		switch(message.type) {
 			case 'exchange:join':
@@ -201,6 +212,11 @@ export class Exchange<MessageTypes extends object = any> {
 				break;
 			case 'exchange:leave':
 				this.handleNodeUnavailable(source);
+				break;
+			default:
+				if(message.type.startsWith(this.id + ':')) {
+					this.messageEvent.emit(message as any);
+				}
 				break;
 		}
 	}
