@@ -16,78 +16,49 @@ npm install ataraxia-services
 ```
 
 ```javascript
-const Services = require('ataraxia-services');
+import { Services } from 'ataraxia-services';
 
 const net = ... // setup network with at least one transport
 
 const services = new Services(net);
 
-// Listen for services
-services.on('available', service => console.log(service.id, 'is now available'));
-services.on('unavailable', service => console.log(service.id, 'is no longer available'));
+services.onAvailable(service => console.log(service.id, 'is now available'));
+services.onUnavailable(service => console.log(service.id, 'is no longer available'));
 
 // Start the network
-net.start()
-  .then(() => console.log('Network is started'))
-  .catch(err => console.log('Error while starting:', err));
+await net.start();
 
-// Register services
-const handle = services.register('service-id', {
+// Start the services on top of the network
+await services.start();
+
+// Register a service as a plain object
+const handle = services.register({
+  id: 'service-id',
+  
   hello() {
     return 'Hello world';
   }
 });
 
-// Emit events
-handle.emitEvent('hello', { data: 'goes-here' });
+// Classes can be registered and created
+services.register(class Test {
+  constructor(handle) {
+    this.handle = handle;
+
+    this.id = 'service-id';
+  }
+
+  hello() {
+    return 'Hello World';
+  }
+})
 
 // Interact with services
 const service = services.get('service-id');
 if(service) {
-  service.hello()
-    .then(result => console.log('service said', result))
-    .catch(handleErrorCorrectlyHere);
+  console.log('Service found', service);
 
-  service.on('hello', data => console.log('got', data));
-}
-```
-
-## Creating services
-
-Services are simple objects:
-
-```javascript
-services.register('service-id', {
-  hello(what='world') {
-    return 'Hello ' + what;
-  },
-
-  property: 1234
-});
-```
-
-The only special part of services is that the `metadata` property is
-automatically distributed througout the network.
-
-```javascript
-services.register('service-with-metadata', {
-  metadata: {
-    type: 'cookie-factory'
-  },
-  
-  cookiesMade: 0,
-
-  makeCookie() {
-    return ++this.cookiesMade;
-  }
-});
-```
-
-The metadata can be access on any node:
-
-```javascript
-const service = services.get('service-with-metadata');
-if(service) {
-  console.log(service.metadata.type);
+  // Call functions on the service
+  const reply = await service.hello();
 }
 ```

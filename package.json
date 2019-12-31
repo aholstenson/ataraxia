@@ -4,8 +4,9 @@
    "build": "lerna run build"
  },
  "devDependencies": {
-  "lerna": "^3.19.0",
+  "@types/jest": "24.0.25",
+  "lerna": "^3.20.1",
   "tslint": "^5.20.1",
-  "typescript": "^3.7.3"
+  "typescript": "^3.7.4"
  }
 }

@@ -101,38 +101,27 @@ Services are supported via `ataraxia-services`, where objects can be registered
 and functions on them called remotely:
 
 ```javascript
-const Services = require('ataraxia-services');
+import { Services } from 'ataraxia-services';
 
 const net = ... // setup network with at least one transport
 
 const services = new Services(net);
 
-// Listen for services
-services.on('available', service => console.log(service.id, 'is now available'));
-services.on('unavailable', service => console.log(service.id, 'is no longer available'));
+services.onAvailable(service => console.log(service.id, 'is now available'));
+services.onUnavailable(service => console.log(service.id, 'is no longer available'));
 
 // Start the network
-net.start()
-  .then(() => console.log('Network is started'))
-  .catch(err => console.log('Error while starting:', err));
+await net.start();
 
-// Register services
-const handle = services.register('service-id', {
+// Start the services on top of the network
+await services.start();
+
+// Register a service as a plain object
+const handle = services.register({
+  id: 'service-id',
+  
   hello() {
     return 'Hello world';
   }
 });
-
-// Emit events
-handle.emitEvent('hello', { data: 'goes-here' });
-
-// Interact with services
-const service = services.get('service-id');
-if(service) {
-  service.hello()
-    .then(result => console.log('service said', result))
-    .catch(handleErrorCorrectlyHere);
-
-  service.on('hello', data => console.log('got', data));
-}
 ```
