@@ -148,7 +148,7 @@ export class Network<MessageTypes extends object = any> {
 		}, options);
 
 		this.topology.onAvailable(n => {
-			const node = new NetworkNode(this.topology, n.id);
+			const node = new NetworkNode(debugNamespace, this.topology, n.id);
 			this.nodes.set(node.id, node);
 
 			this.nodeAvailableEvent.emit(node as any);

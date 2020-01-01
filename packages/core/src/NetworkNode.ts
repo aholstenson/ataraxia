@@ -1,3 +1,4 @@
+import { debug } from 'debug';
 import { inspect } from 'util';
 import { Event } from 'atvik';
 import { Encoder, Decoder } from '@stablelib/cbor';
@@ -13,6 +14,8 @@ import { encodeId } from './id';
  * simple consistent API suitable for public use.
  */
 export class NetworkNode implements Node {
+	protected readonly debug: debug.Debugger;
+
 	private readonly topology: Topology;
 	private readonly networkId: ArrayBuffer;
 
@@ -26,10 +29,15 @@ export class NetworkNode implements Node {
 	 *
 	 * @param {TopologyNode} other
 	 */
-	constructor(topology: Topology, id: ArrayBuffer) {
+	constructor(
+		debugNamespace: string,
+		topology: Topology,
+		id: ArrayBuffer
+	) {
 		this.topology = topology;
 		this.networkId = id;
 		this.id = encodeId(id);
+		this.debug = debug(debugNamespace + ':node:' + this.id);
 
 		this.unavailableEvent = new Event(this);
 		this.messageEvent = new Event(this);
@@ -51,6 +59,7 @@ export class NetworkNode implements Node {
 		encoder.encode(payload);
 		const data = encoder.finish();
 
+		this.debug('Sending message type=', type, 'data=', payload);
 		return this.topology.sendData(this.networkId, type, data.buffer);
 	}
 
@@ -62,6 +71,7 @@ export class NetworkNode implements Node {
 			type: type,
 			data: payload
 		};
+		this.debug('Received message type=', type, 'data=', payload);
 		this.messageEvent.emit(message);
 		return message;
 	}
