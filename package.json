@@ -1,5 +1,8 @@
 {
- "scripts": {},
+ "scripts": {
+   "test": "lerna run test",
+   "build": "lerna run build"
+ },
  "devDependencies": {
   "lerna": "^3.19.0",
   "tslint": "^5.20.1",
