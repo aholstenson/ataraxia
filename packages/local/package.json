@@ -7,7 +7,6 @@
   "main": "./dist/cjs/index.js",
   "types": "./dist/types/index.d.ts",
   "scripts": {
-    "test": "jest",
     "ci": "npm run coverage && npm run lint",
     "coverage": "jest --coverage",
     "lint": "tslint  --project tsconfig.json -t codeFrame 'src/**/*.ts' 'test/**/*.ts'",

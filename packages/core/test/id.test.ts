@@ -1,4 +1,4 @@
-import { generateId, encodeId } from '../src/id/id';
+import { generateId, encodeId } from '../src/id';
 
 describe('Identifiers', function() {
 	it('Can generate random id', function() {

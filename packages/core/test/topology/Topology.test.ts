@@ -1,18 +1,4 @@
-import { peersBetween } from '../TestPeer';
-
-import { generateId } from '../../src/id';
-import { Topology, TopologyOptions } from '../../src/topology';
 import { TopologyTester } from './TopologyTester';
-
-function newTopology(id: ArrayBuffer, options: TopologyOptions) {
-	return new Topology({
-		networkId: id
-	} as any, options);
-}
-
-function delay(milliseconds: number) {
-	return new Promise((resolve) => setTimeout(resolve, milliseconds));
-}
 
 describe('Topology', () => {
 
