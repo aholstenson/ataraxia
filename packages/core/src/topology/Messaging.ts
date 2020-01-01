@@ -66,7 +66,16 @@ export class Messaging {
 	}
 
 	private queueTimeout(id: number): any {
-		return setTimeout(() => this.releaseId(id), MAX_DELAY);
+		return setTimeout(() => {
+			const message = this.pending.get(id);
+			if(! message) return;
+
+			if(message.reject) {
+				message.reject(new Error('Timed out'));
+			}
+
+			this.releaseId(id);
+		}, MAX_DELAY);
 	}
 
 	public async send(target: ArrayBuffer, type: string, data: ArrayBuffer): Promise<void> {
@@ -182,13 +191,17 @@ export class Messaging {
 
 	public handleAck(ack: DataAckMessage) {
 		const message = this.pending.get(ack.id);
-		if(! message) return;
+		if(! message) {
+			this.debug('Received unknown ACK', ack.id);
+			return;
+		}
 
 		// Release the message and its identifier
 		this.releaseId(ack.id);
 
 		if(message.resolve) {
 			// Resolve the pending message
+			this.debug('Received ACK for', ack.id);
 			message.resolve();
 		} else if(message.previous) {
 			// This is a routed message, resolve the peer and forward the ack
@@ -214,13 +227,17 @@ export class Messaging {
 
 	public handleReject(reject: DataRejectMessage) {
 		const message = this.pending.get(reject.id);
-		if(! message) return;
+		if(! message) {
+			this.debug('Received unknown REJECT', reject.id);
+			return;
+		}
 
 		// Release the message and its identifier
 		this.releaseId(reject.id);
 
 		if(message.reject) {
 			// Reject the pending promise
+			this.debug('Received REJECT for', reject.id);
 			message.reject(new Error('Could not forward message'));
 		} else if(message.previous) {
 			// This is a routed message, resolve the peer and forward the reject
