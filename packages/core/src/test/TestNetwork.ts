@@ -1,12 +1,15 @@
-import { Topology } from '../../src/topology';
-import { decodeId, encodeId } from '../../src/id';
-import { peersBetween, TestPeer } from '../../src/test';
+import { Network } from '../Network';
+import { AnonymousAuth } from '../auth';
 
+import { peersBetween, TestPeer } from './TestPeer';
+import { TestTransport } from './TestTransport';
 
 interface NodeInfo {
 	id: ArrayBuffer;
 
-	topology: Topology;
+	network: Network;
+
+	transport: TestTransport;
 }
 
 enum ConnectionType {
@@ -23,16 +26,16 @@ interface ConnectionInfo {
 
 	aPeer: TestPeer;
 
-	aTopology: Topology;
+	aTransport: TestTransport;
 
 	bId: string;
 
 	bPeer: TestPeer;
 
-	bTopology: Topology;
+	bTransport: TestTransport;
 }
 
-export class TopologyTester {
+export class TestNetwork {
 	private nodeInfo: Map<string, NodeInfo>;
 	private connectionInfo: Map<string, ConnectionInfo>;
 
@@ -49,14 +52,18 @@ export class TopologyTester {
 	private getNode(id: string) {
 		let info = this.nodeInfo.get(id);
 		if(! info) {
-			const generatedId = decodeId(id);
-			info = {
-				id: generatedId,
+			const transport = new TestTransport();
+			const network = new Network({
+				name: 'tests',
+				authentication: [ new AnonymousAuth() ]
+			});
+			network.addTransport(transport);
+			network.start();
 
-				topology: new Topology({
-					networkId: generatedId,
-					debugNamespace: 'test:' + id
-				} as any, {})
+			info = {
+				id: network.networkIdBinary,
+				network: network,
+				transport: transport
 			};
 
 			this.nodeInfo.set(id, info);
@@ -84,14 +91,14 @@ export class TopologyTester {
 				type: ConnectionType.Both,
 				aId: a,
 				aPeer: aPeer,
-				aTopology: aInfo.topology,
+				aTransport: aInfo.transport,
 				bId: b,
 				bPeer: bPeer,
-				bTopology: bInfo.topology
+				bTransport: bInfo.transport
 			};
 
-			info.aTopology.addPeer(info.aPeer);
-			info.bTopology.addPeer(info.bPeer);
+			info.aTransport.addPeer(info.aPeer);
+			info.bTransport.addPeer(info.bPeer);
 
 			this.connectionInfo.set(key, info);
 		}
@@ -110,18 +117,18 @@ export class TopologyTester {
 					// No connection at all, connect both peers
 					info.aPeer.connect();
 					info.bPeer.connect();
-					info.aTopology.addPeer(info.aPeer);
-					info.bTopology.addPeer(info.bPeer);
+					info.aTransport.addPeer(info.aPeer);
+					info.bTransport.addPeer(info.bPeer);
 					break;
 				case ConnectionType.Forward:
 					// A is connected to B, but B is not connected to A
 					info.bPeer.connect();
-					info.bTopology.addPeer(info.bPeer);
+					info.bTransport.addPeer(info.bPeer);
 					break;
 				case ConnectionType.Backward:
 					// B is connected to A, but A is not connected to B
 					info.aPeer.connect();
-					info.aTopology.addPeer(info.aPeer);
+					info.aTransport.addPeer(info.aPeer);
 					break;
 			}
 		} else if(type === ConnectionType.None) {
@@ -141,12 +148,12 @@ export class TopologyTester {
 						break;
 					case ConnectionType.None:
 						info.aPeer.connect();
-						info.aTopology.addPeer(info.aPeer);
+						info.aTransport.addPeer(info.aPeer);
 						break;
 					case ConnectionType.Backward:
 						info.bPeer.disconnect();
 						info.aPeer.connect();
-						info.aTopology.addPeer(info.aPeer);
+						info.aTransport.addPeer(info.aPeer);
 						break;
 				}
 			} else {
@@ -156,12 +163,12 @@ export class TopologyTester {
 						break;
 					case ConnectionType.None:
 						info.bPeer.connect();
-						info.bTopology.addPeer(info.bPeer);
+						info.bTransport.addPeer(info.bPeer);
 						break;
 					case ConnectionType.Forward:
 						info.aPeer.disconnect();
 						info.bPeer.connect();
-						info.aTopology.addPeer(info.aPeer);
+						info.aTransport.addPeer(info.aPeer);
 						break;
 				}
 			}
@@ -190,39 +197,13 @@ export class TopologyTester {
 	}
 
 	/**
-	 * Get the nodes that the specified node can reach, indirectly or directly.
+	 * Get the network associated with the specified node.
 	 *
 	 * @param id
 	 */
-	public nodes(id: string): ReadonlyArray<string> {
+	public network(id: string): Network {
 		const info = this.getNode(id);
-
-		info.topology.refreshRouting();
-
-		const result: string[] = [];
-		for(const node of info.topology.nodelist) {
-			if(node.peer) {
-				result.push(encodeId(node.id));
-			}
-		}
-
-		result.sort();
-
-		return result;
-	}
-
-	/**
-	 * Get the path between two nodes, excluding the start and end node.
-	 *
-	 * @param a
-	 * @param b
-	 */
-	public path(a: string, b: string): ReadonlyArray<string> {
-		const info = this.getNode(a);
-		info.topology.refreshRouting();
-
-		const node = info.topology.getOrCreate(decodeId(b));
-		return node.toPath().map(n => encodeId(n.id));
+		return info.network;
 	}
 
 	public async shutdown(): Promise<void> {

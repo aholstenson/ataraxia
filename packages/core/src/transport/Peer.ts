@@ -33,6 +33,11 @@ export interface Peer {
 	readonly onData: Subscribable<this, [ PeerMessageType, any ]>;
 
 	/**
+	 * If this peer is fully connected.
+	 */
+	readonly connected: boolean;
+
+	/**
 	 * Get the latency of this peer.
 	 */
 	readonly latency: number;

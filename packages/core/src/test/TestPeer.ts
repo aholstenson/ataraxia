@@ -1,6 +1,7 @@
-import { AbstractPeer } from '../src/transport/abstract-peer';
-import { PeerMessageType, PeerMessage } from '../src/transport/messages';
-import { Peer } from '../src/transport/peer';
+import { PeerMessageType, PeerMessage } from '../transport/messages';
+
+import { AbstractPeer } from '../transport/AbstractPeer';
+import { Peer } from '../transport/Peer';
 
 export interface TestPeer extends Peer {
 	connect(): void;
@@ -48,22 +49,24 @@ class MirroredPeer extends AbstractPeer implements TestPeer {
 	}
 
 	public send<T extends PeerMessageType>(type: T, payload: PeerMessage<T>): Promise<void> {
-		if(this.disconnected) {
+		if(! this.connected) {
 			return Promise.reject(new Error('Currently disconnected'));
 		}
 
 		return new Promise((resolve, reject) => {
-			if(! this.other) {
-				reject(new Error('Mirror of peer is not set'));
-				return;
-			}
+			setImmediate(() => {
+				if(! this.other) {
+					reject(new Error('Mirror of peer is not set'));
+					return;
+				}
 
-			try {
-				this.other.receiveData(type, payload);
-				resolve();
-			} catch(err) {
-				reject(err);
-			}
+				try {
+					this.other.receiveData(type, payload);
+					resolve();
+				} catch(err) {
+					reject(err);
+				}
+			});
 		});
 	}
 }

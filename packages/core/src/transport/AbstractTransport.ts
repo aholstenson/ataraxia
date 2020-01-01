@@ -127,7 +127,7 @@ export class AbstractTransport
 	 * @param {Peer} peer
 	 */
 	protected addPeer(peer: Peer) {
-		peer.onConnect(() => {
+		const onConnect = () => {
 			const existingPeer = this.peers.get(peer.id);
 			if(existingPeer) {
 				/*
@@ -165,7 +165,9 @@ export class AbstractTransport
 
 				this.peerConnectEvent.emit(peer);
 			}
-		});
+		};
+
+		peer.onConnect(onConnect);
 
 		peer.onDisconnect(() => {
 			const stored = this.peers.get(peer.id);
@@ -175,5 +177,10 @@ export class AbstractTransport
 				this.peerDisconnectEvent.emit(peer);
 			}
 		});
+
+		if(peer.connected) {
+			// If adding an already connected peer run connect routine
+			onConnect();
+		}
 	}
 }

@@ -100,6 +100,10 @@ export abstract class AbstractPeer implements Peer {
 		return this.dataEvent.subscribable;
 	}
 
+	get connected() {
+		return this.state === State.Active;
+	}
+
 	/**
 	 * Manually disconnect this peer.
 	 */
