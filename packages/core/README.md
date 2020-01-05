@@ -13,7 +13,7 @@ to create a partially connected mesh network.
 * Instances can send and receive messages from other instances
 * Partially connected mesh network, messages will be routed to their target
 * Authentication support, anonymous and shared secret authentication available in core
-* RPC support via [ataraxia-services](https://github.com/aholstenson/ataraxia/tree/master/packages/services)
+* RPC support with remote method invocation and events via [ataraxia-services](https://github.com/aholstenson/ataraxia/tree/master/packages/services)
 * Support for different transports
   * [ataraxia-local](https://github.com/aholstenson/ataraxia/tree/master/packages/local) provides a machine-local transport
   * [ataraxia-tcp](https://github.com/aholstenson/ataraxia/tree/master/packages/tcp) provides a TCP-based transport with  customizable discovery of peers
@@ -48,9 +48,7 @@ net.onMessage(msg => {
 });
 
 // Start the network
-net.start()
-  .then(...)
-  .catch(...);
+await net.start();
 ```
 
 ## Example with machine-local transport and TCP transport
@@ -83,9 +81,7 @@ local.onLeader(() => {
 });
 net.addTransport(local);
 
-net.start()
-  .then(...)
-  .catch(...);
+await net.start();
 ```
 
 ## API
@@ -100,12 +96,17 @@ net.start()
 * `addTransport(transport)` - add a transport that should be used
 * `onNodeAvailable(node => ...)` - a node has been found and messages can now be sent and received to/from it
 * `onNodeUnavailable(node => ...)` - a node is no longer available
-* `onMessage(({ source, type, data }) => ...)` - a message has been received from a node
+* `onMessage((message: Message) => ...)` - a message has been received from a node
 
 ### Node
 
 * `id` - get the id of the node
-* `available` - get if the node is reachable
-* `on('unavailable', () => ...)` - node is no longer available
+* `onUnavailable(() => ...)` - node is no longer available
 * `send(type, data)` - send a message of the given type with the specified data to the node
-* `on('message', ({ returnPath, type, data }) => ...)` - a message has been received from this node
+* `onMessage((message: Message) => ...)` - a message has been received from this node
+
+### Message
+
+* `source: Node` - the node that sent the message 
+* `type: string` - the type of the message
+* `data: any` - the data of the message
