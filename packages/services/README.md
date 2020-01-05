@@ -62,3 +62,48 @@ if(service) {
   const reply = await service.hello();
 }
 ```
+
+## Events
+
+`ataraxia-services` supports emitting and listening to events. The support for
+events is designed to be used via [Atvik](https://github.com/aholstenson/atvik).
+
+```javascript
+import { Event } from 'atvik';
+
+class TestService {
+  constructor(handle) {
+    this.id = 'test';
+
+    this.helloEvent = new Event(this);
+  }
+
+  get onHello() {
+    // This onX method makes the event available on the service
+    return this.helloEvent.subscribable;
+  }
+
+  sayHello(message) {
+    // Emit an event
+    this.helloEvent.emit(message);
+
+    // Return a result
+    return 'Hello ' + message + '!';
+  }
+}
+
+// Register the service
+services.register(TestService);
+
+// Get the service either on the same node or another node
+const service = services.get('test');
+
+// Listen to the event
+const handle = await service.onHello(message => console.log('Service emitted hello event:', message));
+
+// Call the method to emit the event
+await service.sayHello('World');
+
+// Unsubscribe from event
+await handle.unsubscribe();
+```
