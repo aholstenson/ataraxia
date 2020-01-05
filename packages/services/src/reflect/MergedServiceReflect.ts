@@ -1,11 +1,13 @@
-import { ServiceReflect } from './ServiceReflect';
-import { ServiceMethod } from './ServiceMethod';
+import { Listener } from 'atvik';
 
-export class MergedServiceReflect implements ServiceReflect {
+import { ServiceReflect } from './ServiceReflect';
+
+export class MergedServiceReflect extends ServiceReflect {
 	public readonly id: string;
 	private readonly reflects: ServiceReflect[];
 
 	constructor(id: string) {
+		super(id, new Map(), new Map());
 		this.id = id;
 
 		this.reflects = [];
@@ -26,22 +28,44 @@ export class MergedServiceReflect implements ServiceReflect {
 		return this.apply(method, args);
 	}
 
-	public hasMethod(method: string): boolean {
-		// TODO: Implement
+	public async subscribe(event: string, listener: Listener<void, any[]>): Promise<void> {
+		const promises: Promise<void>[] = [];
+
+		for(const reflect of this.reflects) {
+			if(reflect.hasEvent(event)) {
+				promises.push(reflect.subscribe(event, listener));
+			}
+		}
+
+		await Promise.all(promises);
+	}
+
+	public async unsubscribe(event: string, listener: Listener<void, any[]>): Promise<boolean> {
+		const promises: Promise<boolean>[] = [];
+
+		for(const reflect of this.reflects) {
+			if(reflect.hasEvent(event)) {
+				promises.push(reflect.unsubscribe(event, listener));
+			}
+		}
+
+		/*
+		 * Wait for the promises and return true if it was removed from any
+		 * of the reflects.
+		 */
+		for(const r of await Promise.all(promises)) {
+			if(r) {
+				return true;
+			}
+		}
+
 		return false;
-	}
-
-	public getMethod(method: string): ServiceMethod | null {
-		// TODO: Implement
-		return null;
-	}
-
-	public get methods(): ServiceMethod[] {
-		return [];
 	}
 
 	public addReflect(reflect: ServiceReflect) {
 		this.reflects.push(reflect);
+
+		this.mergeMetadata();
 	}
 
 	public removeReflect(reflect: ServiceReflect) {
@@ -49,9 +73,26 @@ export class MergedServiceReflect implements ServiceReflect {
 		if(idx >= 0) {
 			this.reflects.splice(idx, 1);
 		}
+
+		this.mergeMetadata();
 	}
 
 	public hasReflects() {
 		return this.reflects.length > 0;
+	}
+
+	private mergeMetadata() {
+		this._methods.clear();
+		this._events.clear();
+
+		for(const reflect of this.reflects) {
+			for(const method of reflect.methods) {
+				this._methods.set(method.name, method);
+			}
+
+			for(const event of reflect.events) {
+				this._events.set(event.name, event);
+			}
+		}
 	}
 }

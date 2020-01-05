@@ -1,7 +1,7 @@
 /**
  * Information about an parameter that can be passed to a method when called.
  */
-export interface ServiceMethodParameter {
+export interface ServiceParameter {
 	/**
 	 * The name of the parameter if available.
 	 */

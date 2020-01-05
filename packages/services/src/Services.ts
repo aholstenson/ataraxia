@@ -1,5 +1,5 @@
 import debug from 'debug';
-import { Event } from 'atvik';
+import { Event, SubscriptionHandle } from 'atvik';
 import { Network, Exchange, Node, MessageUnion } from 'ataraxia';
 
 import {
@@ -19,10 +19,12 @@ import { LocalService } from './LocalService';
 import { ServiceImpl } from './ServiceImpl';
 
 import { ServiceReflect } from './reflect';
-import { createLocalServiceReflect } from './reflect/createLocalServiceReflect';
-import { createRemoteServiceReflect } from './reflect/createRemoteServiceReflect';
-
 import { RequestReplyHelper } from './RequestReplyHelper';
+import { RemoteServiceReflect, RemoteServiceHelper } from './reflect/remote';
+import { LocalServiceReflect } from './reflect/local';
+import { ServiceEventSubscribeMessage } from './messages/ServiceEventSubscribeMessage';
+import { ServiceEventUnsubscribeMessage } from './messages/ServiceEventUnsubscribeMessage';
+import { ServiceEventEmitMessage } from './messages/ServiceEventEmitMessage';
 
 export type LocalServiceDef = LocalService
 	| ((handle: ServiceHandle) => LocalService)
@@ -49,7 +51,7 @@ export class Services {
 	/**
 	 * Information about services that have been registered locally.
 	 */
-	private readonly localServices: Map<string, ServiceReflect>;
+	private readonly localServices: Map<string, LocalServiceData>;
 
 	/**
 	 * Services, both local and remote.
@@ -142,11 +144,15 @@ export class Services {
 		}
 
 		// Create the reflect used to call methods of the local service
-		const reflect = createLocalServiceReflect(service);
+		const reflect = new LocalServiceReflect(service);
 		handle.unregisterService = () => this.unregister(reflect);
 
 		// Register the service
-		this.localServices.set(id, reflect);
+		this.localServices.set(id, {
+			reflect: reflect,
+
+			nodeSubscriptionHandles: new Map()
+		});
 		this.version++;
 
 		// Broadcast that the service is now available
@@ -276,9 +282,20 @@ export class Services {
 
 		this.nodes.delete(node.id);
 
-		// TODO: Remove all services associated with the node
+		// Remove all services associated with the node
 		for(const reflect of state.services.values()) {
 			this.unregisterServiceReflect(reflect);
+		}
+
+		// Remove all event subscriptions on local services
+		for(const service of this.localServices.values()) {
+			const events = service.nodeSubscriptionHandles.get(node.id);
+			if(events) {
+				for(const handle of events.values()) {
+					handle.unsubscribe();
+				}
+				service.nodeSubscriptionHandles.delete(node.id);
+			}
 		}
 	}
 
@@ -302,6 +319,15 @@ export class Services {
 			case 'service:unavailable':
 				this.handleServiceUnavailable(msg.source, msg.data);
 				break;
+			case 'service:event-subscribe':
+				this.handleServiceEventSubscribe(msg.source, msg.data);
+				break;
+			case 'service:event-unsubscribe':
+				this.handleServiceEventUnsubscribe(msg.source, msg.data);
+				break;
+			case 'service:event-emit':
+				this.handleServiceEventEmit(msg.source, msg.data);
+				break;
 		}
 	}
 
@@ -311,7 +337,7 @@ export class Services {
 
 		const services: ServiceDef[] = [];
 		for(const service of this.localServices.values()) {
-			services.push(toServiceDef(service));
+			services.push(toServiceDef(service.reflect));
 		}
 
 		node.send('service:list-reply', {
@@ -335,9 +361,9 @@ export class Services {
 			removedServices.delete(def.id);
 
 			const id = def.id;
-			const reflect = createRemoteServiceReflect(
+			const reflect = new RemoteServiceReflect(
 				def,
-				(method, args) => this.performCall(node, id, method, args)
+				this.createRemoteServiceHelper(node, id)
 			);
 
 			if(existing) {
@@ -371,9 +397,9 @@ export class Services {
 		const id = message.def.id;
 		const existing = data.services.get(id);
 
-		const reflect = createRemoteServiceReflect(
+		const reflect = new RemoteServiceReflect(
 			message.def,
-			(method, args) => this.performCall(node, id, method, args)
+			this.createRemoteServiceHelper(node, id)
 		);
 
 		if(existing) {
@@ -416,24 +442,6 @@ export class Services {
 		}
 	}
 
-	protected performCall(
-		node: Node<ServiceMessages>,
-		service: string,
-		method: string,
-		args: any[]
-	): Promise<any> {
-		const [ id, promise ] = this.calls.prepareRequest();
-
-		return node.send('service:invoke-request', {
-			id: id,
-			service: service,
-			method: method,
-			arguments: args
-		})
-			.catch(err => this.calls.registerError(id, err))
-			.then(() => promise);
-	}
-
 	protected handleServiceInvokeRequest(node: Node<ServiceMessages>, message: ServiceInvokeRequest) {
 		const service = this.localServices.get(message.service);
 		if(! service) {
@@ -446,7 +454,7 @@ export class Services {
 			return;
 		}
 
-		service.apply(message.method, message.arguments)
+		service.reflect.apply(message.method, message.arguments)
 			.catch(err => {
 				return node.send('service:invoke-reply', {
 					id: message.id,
@@ -471,6 +479,99 @@ export class Services {
 			this.calls.registerReply(message.id, message.result);
 		}
 	}
+
+	protected handleServiceEventSubscribe(node: Node<ServiceMessages>, message: ServiceEventSubscribeMessage) {
+		const service = this.localServices.get(message.service);
+		if(! service) return;
+
+		let events = service.nodeSubscriptionHandles.get(node.id);
+		if(events && events.has(message.event)) {
+			// Already subscribed, do nothing
+			return;
+		}
+
+		if(! events) {
+			events = new Map();
+			service.nodeSubscriptionHandles.set(node.id, events);
+		}
+
+		const event = message.event;
+		const handle = service.reflect.subscribe(message.event, (...args) => {
+			node.send('service:event-emit', {
+				service: service.reflect.id,
+				event: event,
+				arguments: args
+			})
+				.catch(err => this.debug('Unable to send event', event, 'with arguments', args, ':', err));
+		});
+
+		events.set(event, handle as any);
+	}
+
+	protected handleServiceEventUnsubscribe(node: Node<ServiceMessages>, message: ServiceEventUnsubscribeMessage) {
+		const service = this.localServices.get(message.service);
+		if(! service) return;
+
+		const events = service.nodeSubscriptionHandles.get(node.id);
+		if(! events) return;
+
+		const handle = events.get(message.event);
+		if(handle) {
+			handle.unsubscribe();
+			events.delete(node.id);
+
+			if(events.size === 0) {
+				// No more events, delete from the main map
+				service.nodeSubscriptionHandles.delete(node.id);
+			}
+		}
+	}
+
+	protected handleServiceEventEmit(node: Node<ServiceMessages>, message: ServiceEventEmitMessage) {
+		const data = this.nodes.get(node.id);
+		if(! data) return;
+
+		const reflect = data.services.get(message.service);
+		if(! reflect) return;
+
+		reflect.emitEvent(message.event, message.arguments);
+	}
+
+	private createRemoteServiceHelper(node: Node<ServiceMessages>, service: string): RemoteServiceHelper {
+		const self = this;
+		return {
+			async call(method, args) {
+				const [ id, promise ] = self.calls.prepareRequest();
+
+				try {
+					await node.send('service:invoke-request', {
+						id: id,
+						service: service,
+						method: method,
+						arguments: args
+					});
+				} catch(err) {
+					self.calls.registerError(id, err);
+				}
+
+				return promise;
+			},
+
+			async requestSubscribe(event) {
+				await node.send('service:event-subscribe', {
+					service: service,
+					event: event
+				});
+			},
+
+			async requestUnsubscribe(event) {
+				await node.send('service:event-unsubscribe', {
+					service: service,
+					event: event
+				});
+			}
+		};
+	}
 }
 
 /**
@@ -485,6 +586,14 @@ function toServiceDef(reflect: ServiceReflect): ServiceDef {
 		methods: reflect.methods.map(m => ({
 			name: m.name,
 			parameters: m.parameters.map(p => ({
+				name: p.name,
+				typeId: p.typeId,
+				rest: p.rest
+			}))
+		})),
+		events: reflect.events.map(e => ({
+			name: e.name,
+			parameters: e.parameters.map(p => ({
 				name: p.name,
 				typeId: p.typeId,
 				rest: p.rest
@@ -507,7 +616,21 @@ interface ServiceNodeData {
 	/**
 	 * Services for this node.
 	 */
-	readonly services: Map<string, ServiceReflect>;
+	readonly services: Map<string, RemoteServiceReflect>;
+}
+
+interface LocalServiceData {
+	/**
+	 * The reflect used to invoke methods and to listen to events on this
+	 * service.
+	 */
+	readonly reflect: ServiceReflect;
+
+	/**
+	 * Mapping between node identifiers and subscription handles. First level
+	 * is the node and the second level is the event name.
+	 */
+	readonly nodeSubscriptionHandles: Map<string, Map<string, SubscriptionHandle>>;
 }
 
 class ServiceHandleImpl implements ServiceHandle {
