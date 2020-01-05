@@ -1,6 +1,6 @@
 import debug from 'debug';
 import { Event, SubscriptionHandle } from 'atvik';
-import { Network, Exchange, Node, MessageUnion } from 'ataraxia';
+import { Network, Exchange, Node, MessageUnion, RequestReplyHelper } from 'ataraxia';
 
 import {
 	ServiceMessages,
@@ -19,7 +19,6 @@ import { LocalService } from './LocalService';
 import { ServiceImpl } from './ServiceImpl';
 
 import { ServiceReflect } from './reflect';
-import { RequestReplyHelper } from './RequestReplyHelper';
 import { RemoteServiceReflect, RemoteServiceHelper } from './reflect/remote';
 import { LocalServiceReflect } from './reflect/local';
 import { ServiceEventSubscribeMessage } from './messages/ServiceEventSubscribeMessage';

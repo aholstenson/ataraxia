@@ -11,3 +11,4 @@ export * from './MessageUnion';
 export * from './WithNetwork';
 
 export * from './Exchange';
+export * from './RequestReplyHelper';
