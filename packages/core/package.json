@@ -29,7 +29,8 @@
     "adaptive-accrual-failure-detector": "^0.2.0",
     "atvik": "1.0.0",
     "debug": "^4.1.1",
-    "msgpack-lite": "^0.1.26"
+    "fast-sha256": "^1.1.1",
+    "fastestsmallesttextencoderdecoder": "^1.0.14"
   },
   "devDependencies": {
     "@types/node": "^13.1.0",
