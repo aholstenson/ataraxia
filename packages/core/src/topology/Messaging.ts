@@ -70,17 +70,18 @@ export class Messaging {
 			const message = this.pending.get(id);
 			if(! message) return;
 
+			this.releaseId(id);
+			this.debug('TIME OUT for', id);
+
 			if(message.reject) {
 				message.reject(new Error('Timed out'));
 			}
-
-			this.releaseId(id);
 		}, MAX_DELAY);
 	}
 
-	public async send(target: ArrayBuffer, type: string, data: ArrayBuffer): Promise<void> {
+	public send(target: ArrayBuffer, type: string, data: ArrayBuffer): Promise<void> {
 		const peer = this.routing.findPeerForTarget(target);
-		if(! peer) throw new Error('Node not reachable');
+		if(! peer) return Promise.reject(new Error('Node not reachable'));
 
 		const messageId = this.nextId();
 
@@ -103,20 +104,20 @@ export class Messaging {
 			this.debug('Sending message', messageId, 'to', encodeId(target));
 		}
 
-		try {
-			await peer.send(PeerMessageType.Data, message);
-		} catch(ex) {
-			this.releaseId(messageId);
-			this.debug('Unable to send message to peer', ex);
-			throw ex;
-		}
-
-		return new Promise((resolve, reject) => {
+		return new Promise<void>((resolve, reject) => {
+			// Keep a record about the message being sent
 			this.pending.set(messageId, {
 				resolve: resolve,
 				reject: reject,
 				timeout: this.queueTimeout(messageId)
 			});
+
+			// Send the message to the peer
+			peer.send(PeerMessageType.Data, message)
+				.catch(ex => {
+					this.releaseId(messageId);
+					this.debug('Unable to send message', messageId, 'to', ex);
+				});
 		});
 	}
 
