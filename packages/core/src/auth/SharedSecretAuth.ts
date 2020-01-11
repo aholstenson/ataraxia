@@ -5,6 +5,7 @@ import { TextEncoder } from 'fastestsmallesttextencoderdecoder';
 import { AuthProvider } from './AuthProvider';
 import { AuthClientFlow } from './AuthClientFlow';
 import { AuthServerFlow, AuthServerReplyType } from './AuthServerFlow';
+import { AuthContext } from './AuthContext';
 
 export interface SharedSecretAuthOptions {
 	secret: ArrayBuffer | string;
@@ -28,7 +29,7 @@ export class SharedSecretAuth implements AuthProvider {
 		}
 	}
 
-	public createClientFlow(): AuthClientFlow {
+	public createClientFlow(context: AuthContext): AuthClientFlow {
 		const secret = this.secret;
 		const challenge = randomBytes(32);
 		return {
@@ -59,13 +60,13 @@ export class SharedSecretAuth implements AuthProvider {
 				const serverResponse: Uint8Array = decoder.decode();
 
 				// Calculate what the expected response is and compare them
-				const calculatedResponse = calculateResponse(secret, challenge);
+				const calculatedResponse = calculateResponse(secret, challenge, context.remotePublicSecurity);
 				if(! isEqual(serverResponse, calculatedResponse)) {
 					throw new Error('Server did not correctly verify its identity, check that the same secret is in use');
 				}
 
 				// Calculate our response to the servers challenge
-				const response = calculateResponse(secret, serverChallenge);
+				const response = calculateResponse(secret, serverChallenge, context.localPublicSecurity);
 				const encoder = new Encoder();
 				encoder.encodeBytes(response);
 				return encoder.finish().buffer;
@@ -77,7 +78,7 @@ export class SharedSecretAuth implements AuthProvider {
 		};
 	}
 
-	public createServerFlow(): AuthServerFlow {
+	public createServerFlow(context: AuthContext): AuthServerFlow {
 		const secret = this.secret;
 		const challenge = randomBytes(32);
 		return {
@@ -104,7 +105,7 @@ export class SharedSecretAuth implements AuthProvider {
 				encoder.encodeBytes(challenge);
 
 				// Challenge reply
-				const response = calculateResponse(secret, clientChallenge);
+				const response = calculateResponse(secret, clientChallenge, context.remotePublicSecurity);
 				encoder.encodeBytes(response);
 
 				// Return the initial message
@@ -123,7 +124,7 @@ export class SharedSecretAuth implements AuthProvider {
 				const clientResponse: Uint8Array = decoder.decode();
 
 				// Calculate what the expected response is and compare them
-				const calculatedResponse = calculateResponse(secret, challenge);
+				const calculatedResponse = calculateResponse(secret, challenge, context.localPublicSecurity);
 				if(! isEqual(clientResponse, calculatedResponse)) {
 					return {
 						type: AuthServerReplyType.Reject
@@ -159,8 +160,21 @@ function isEqual(o1: Uint8Array, o2: Uint8Array): boolean {
 	return result;
 }
 
-function calculateResponse(key: ArrayBuffer, challenge: Uint8Array) {
-	return hmac(new Uint8Array(key), challenge);
+function calculateResponse(
+	key: ArrayBuffer,
+	challenge: Uint8Array,
+	security: ArrayBuffer | undefined
+) {
+	let combinedChallenge;
+	if(security) {
+		combinedChallenge = new Uint8Array(challenge.length + security.byteLength);
+		combinedChallenge.set(challenge);
+		combinedChallenge.set(new Uint8Array(security), challenge.length);
+	} else {
+		combinedChallenge = challenge;
+	}
+
+	return hmac(new Uint8Array(key), combinedChallenge);
 }
 
 declare const window: any;
