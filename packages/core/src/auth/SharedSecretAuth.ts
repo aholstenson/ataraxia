@@ -31,7 +31,7 @@ export class SharedSecretAuth implements AuthProvider {
 
 	public createClientFlow(context: AuthContext): AuthClientFlow {
 		const secret = this.secret;
-		const challenge = randomBytes(32);
+		const challenge = randomBytes(16);
 		return {
 			async initialMessage() {
 				const encoder = new Encoder();
@@ -80,7 +80,7 @@ export class SharedSecretAuth implements AuthProvider {
 
 	public createServerFlow(context: AuthContext): AuthServerFlow {
 		const secret = this.secret;
-		const challenge = randomBytes(32);
+		const challenge = randomBytes(16);
 		return {
 			async receiveInitial(data: ArrayBuffer) {
 				const decoder = new Decoder(new Uint8Array(data), {
