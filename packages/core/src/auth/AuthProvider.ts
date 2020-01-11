@@ -1,3 +1,4 @@
+import { AuthContext } from './AuthContext';
 import { AuthClientFlow } from './AuthClientFlow';
 import { AuthServerFlow } from './AuthServerFlow';
 
@@ -15,10 +16,10 @@ export interface AuthProvider {
 	/**
 	 * Create a client flow for the current network.
 	 */
-	createClientFlow?(): AuthClientFlow;
+	createClientFlow?(context: AuthContext): AuthClientFlow;
 
 	/**
 	 * Create a server flow for the current network.
 	 */
-	createServerFlow?(): AuthServerFlow;
+	createServerFlow?(context: AuthContext): AuthServerFlow;
 }

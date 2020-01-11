@@ -105,6 +105,22 @@ export abstract class AbstractPeer implements Peer {
 	}
 
 	/**
+	 * Get a buffer representing a publicly known security challenge for the
+	 * local side of the peer.
+	 */
+	protected localPublicSecurity(): ArrayBuffer | undefined {
+		return undefined;
+	}
+
+	/**
+	 * Get a buffer representing a publicly known security challenge for the
+	 * remote side of the peer.
+	 */
+	protected remotePublicSecurity(): ArrayBuffer | undefined {
+		return undefined;
+	}
+
+	/**
 	 * Manually disconnect this peer.
 	 */
 	public disconnect() {
@@ -371,7 +387,10 @@ export abstract class AbstractPeer implements Peer {
 		const provider = this.pickNextAuthProvider();
 
 		if(provider && provider.createClientFlow) {
-			this.authClientFlow = provider.createClientFlow();
+			this.authClientFlow = provider.createClientFlow({
+				localPublicSecurity: this.localPublicSecurity(),
+				remotePublicSecurity: this.remotePublicSecurity()
+			});
 
 			// Get the initial message and send the request to the server
 			this.authClientFlow.initialMessage()
@@ -445,7 +464,10 @@ export abstract class AbstractPeer implements Peer {
 			return;
 		}
 
-		this.authServerFlow = provider.createServerFlow();
+		this.authServerFlow = provider.createServerFlow({
+			localPublicSecurity: this.localPublicSecurity(),
+			remotePublicSecurity: this.remotePublicSecurity()
+		});
 		this.authServerFlow.receiveInitial(message.data)
 			.then(reply => this.handleSendingAuthReply(reply))
 			.catch(err => this.abort('Error while handling initial auth', err));

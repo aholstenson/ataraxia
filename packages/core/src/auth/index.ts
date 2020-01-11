@@ -1,3 +1,4 @@
+export * from './AuthContext';
 export * from './AuthClientFlow';
 export * from './AuthServerFlow';
 export * from './AuthProvider';
