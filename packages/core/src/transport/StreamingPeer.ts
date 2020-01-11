@@ -8,7 +8,7 @@ import { encodePeerPacket, PeerPacketDecodingStream } from './binary';
  * Peer that connects via a binary streaming protocol.
  */
 export class StreamingPeer extends AbstractPeer {
-	private socket?: Socket;
+	protected socket?: Socket;
 	protected disconnected: boolean = false;
 
 	/**

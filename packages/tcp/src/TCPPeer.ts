@@ -1,4 +1,4 @@
-import { TLSSocket, connect } from 'tls';
+import { TLSSocket, connect, PeerCertificate } from 'tls';
 import { HostAndPort } from 'tinkerhub-discovery';
 
 import { WithNetwork } from 'ataraxia';
@@ -13,8 +13,17 @@ export class TCPPeer extends StreamingPeer implements MergeablePeer {
 	private attempt: number;
 	private connectTimeout: any;
 
-	constructor(network: WithNetwork) {
+	private privateKey?: Buffer;
+	private certificate?: Buffer;
+
+	constructor(
+		network: WithNetwork,
+		cert: null | { private: Buffer, cert: Buffer }
+	) {
 		super(network);
+
+		this.privateKey = cert ? cert.private : undefined;
+		this.certificate = cert ? cert.cert : undefined;
 
 		this.addresses = [];
 		this.addressAttempt = 0;
@@ -55,6 +64,29 @@ export class TCPPeer extends StreamingPeer implements MergeablePeer {
 		this.attempt = 0;
 	}
 
+	protected localPublicSecurity(): ArrayBuffer | undefined {
+		if(this._serverSocket) {
+			return this.toSecurityBuffer(this._serverSocket.getCertificate());
+		} else if(this.socket) {
+			return this.toSecurityBuffer((this.socket as TLSSocket).getPeerCertificate());
+		}
+	}
+
+	protected remotePublicSecurity(): ArrayBuffer | undefined {
+		if(this._serverSocket) {
+			return this.toSecurityBuffer(this._serverSocket.getPeerCertificate());
+		} else if(this.socket) {
+			return this.toSecurityBuffer((this.socket as TLSSocket).getCertificate());
+		}
+	}
+
+	protected toSecurityBuffer(p: object | PeerCertificate | null): ArrayBuffer | undefined {
+		if(! p) return undefined;
+
+		const c = p as any;
+		return c.raw && c.raw.buffer;
+	}
+
 	protected handleDisconnect(err: Error) {
 		// Remove the server socket if it exists
 		this._serverSocket = undefined;
@@ -92,6 +124,9 @@ export class TCPPeer extends StreamingPeer implements MergeablePeer {
 		this.attempt++;
 
 		const client = connect({
+			key: this.privateKey,
+			cert: this.certificate,
+
 			host: address.host,
 			port: address.port,
 

@@ -63,11 +63,14 @@ export class TCPTransport extends AbstractTransport {
 
 		if(! started) return false;
 
+		const cert = generateSelfSignedCertificate();
 		if(! options.endpoint) {
-			const cert = generateSelfSignedCertificate();
 			this.server = createServer({
 				key: cert.private,
-				cert: cert.cert
+				cert: cert.cert,
+
+				requestCert: true,
+				rejectUnauthorized: false
 			});
 
 			// TODO: Better error handling
@@ -76,7 +79,7 @@ export class TCPTransport extends AbstractTransport {
 			});
 
 			this.server.on('secureConnection', socket => {
-				const peer = new TCPPeer(this.network);
+				const peer = new TCPPeer(this.network, null);
 				peer.serverSocket = socket;
 
 				this.addPeer(peer);
@@ -132,7 +135,7 @@ export class TCPTransport extends AbstractTransport {
 					this.debug('Peer with id', service.id, 'now available, attempting connect');
 
 					// Setup the peer to attempt to connect to
-					const peer = this.setupPeer(service.addresses);
+					const peer = this.setupPeer(service.addresses, cert);
 
 					// Track the peer
 					this.foundPeers.set(service.id, peer);
@@ -152,7 +155,7 @@ export class TCPTransport extends AbstractTransport {
 
 		// Request connection to all manual peers added
 		for(const manualPeer of this.manualPeers) {
-			this.setupPeer([ manualPeer ]);
+			this.setupPeer([ manualPeer ], cert);
 		}
 
 		return true;
@@ -198,12 +201,12 @@ export class TCPTransport extends AbstractTransport {
 		this.manualPeers.push(hostAndPort);
 
 		if(this.started) {
-			this.setupPeer([ hostAndPort ]);
+			this.setupPeer([ hostAndPort ], null);
 		}
 	}
 
-	private setupPeer(addresses: HostAndPort[]) {
-		const peer = new TCPPeer(this.network);
+	private setupPeer(addresses: HostAndPort[], cert: null | { private: Buffer, cert: Buffer }) {
+		const peer = new TCPPeer(this.network, cert);
 		this.addPeer(peer);
 
 		peer.setReachableVia(addresses);
@@ -213,6 +216,6 @@ export class TCPTransport extends AbstractTransport {
 	}
 }
 
-function generateSelfSignedCertificate() {
+function generateSelfSignedCertificate(): { private: Buffer, cert: Buffer } {
 	return selfsigned.generate([], { days: 365 * 5 });
 }
