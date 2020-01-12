@@ -4,7 +4,7 @@ import { tmpdir } from 'os';
 import { Event, Subscribable } from 'atvik';
 import { LowLevelNetwork } from 'local-machine-network';
 
-import { AbstractTransport, StreamingPeer, TransportOptions } from 'ataraxia/transport';
+import { AbstractTransport, StreamingPeer, TransportOptions, DisconnectReason } from 'ataraxia/transport';
 import { Socket } from 'net';
 
 /**
@@ -99,6 +99,6 @@ export class MachineLocalTransport extends AbstractTransport {
 class LocalPeer extends StreamingPeer {
 	public disconnect() {
 		// Disconnect does nothing for local transport
-		this.handleDisconnect();
+		this.handleDisconnect(DisconnectReason.Manual);
 	}
 }

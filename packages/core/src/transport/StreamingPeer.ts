@@ -3,6 +3,7 @@ import { Socket } from 'net';
 import { PeerMessageType } from './messages/PeerMessageType';
 import { PeerMessage } from './messages/PeerMessage';
 import { encodePeerPacket, PeerPacketDecodingStream } from './binary';
+import { DisconnectReason } from './DisconnectReason';
 
 /**
  * Peer that connects via a binary streaming protocol.
@@ -38,7 +39,7 @@ export class StreamingPeer extends AbstractPeer {
 		s.on('error', err => {
 			if(s === this.socket) {
 				// Only trigger disconnect if this socket is active
-				this.handleDisconnect(err);
+				this.requestDisconnect(DisconnectReason.Error, err);
 			}
 		});
 
@@ -46,7 +47,8 @@ export class StreamingPeer extends AbstractPeer {
 			if(hadError) return;
 
 			if(s === this.socket) {
-				this.handleDisconnect();
+				// Register that the socket has closed, assuming a generic error
+				this.handleDisconnect(DisconnectReason.Error);
 			}
 		});
 
@@ -70,23 +72,30 @@ export class StreamingPeer extends AbstractPeer {
 	 * Handle disconnect event. In addition to the inherited behavior this will
 	 * destroy the socket.
 	 */
-	protected handleDisconnect(err?: Error) {
-		if(this.socket) {
-			this.socket.destroy();
-		}
-
+	protected handleDisconnect(reason: DisconnectReason, err?: Error) {
 		this.socket = undefined;
 
-		super.handleDisconnect(err);
+		super.handleDisconnect(reason, err);
 	}
 
-	protected requestDisconnect(err?: Error) {
-		if(this.socket) {
-			if(err) {
-				this.socket.emit('error', err);
-			} else {
-				this.socket.destroy();
-			}
+	protected requestDisconnect(reason: DisconnectReason, err?: Error) {
+		if(! this.socket) {
+			return;
+		}
+
+		if(reason === DisconnectReason.Error || reason === DisconnectReason.PingTimeout) {
+			const socket = this.socket;
+
+			// Handle the disconnect
+			this.handleDisconnect(reason, err);
+
+			// If a raw error has ocurred destroy the socket
+			socket.destroy();
+		} else {
+			// For other reasons request that the socket closes
+			this.socket.end(() => {
+				this.handleDisconnect(reason, err);
+			});
 		}
 	}
 
@@ -99,9 +108,8 @@ export class StreamingPeer extends AbstractPeer {
 		this.disconnected = true;
 
 		if(this.socket) {
-			const socket = this.socket;
 			this.write(PeerMessageType.Bye)
-				.then(() => socket.destroy())
+				.then(() => this.requestDisconnect(DisconnectReason.Manual))
 				.catch(() => { /* do nothing */ });
 		}
 	}

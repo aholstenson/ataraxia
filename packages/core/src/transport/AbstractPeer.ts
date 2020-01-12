@@ -10,6 +10,7 @@ import { WithNetwork } from '../WithNetwork';
 import { Peer } from './Peer';
 
 import { AuthProvider, AuthClientFlow, AuthServerFlow, AuthServerReplyType, AuthServerReply } from '../auth';
+import { DisconnectReason } from './DisconnectReason';
 
 /**
  * The interval at which pings are sent.
@@ -130,9 +131,10 @@ export abstract class AbstractPeer implements Peer {
 	/**
 	 * Request that this peer disconnects.
 	 *
+	 * @param reason
 	 * @param err
 	 */
-	protected abstract requestDisconnect(err?: Error): void;
+	protected abstract requestDisconnect(reason: DisconnectReason, err?: Error): void;
 
 	/**
 	 * Handle disconnect event. This implementation will log info about the
@@ -140,12 +142,8 @@ export abstract class AbstractPeer implements Peer {
 	 *
 	 * Transports may override this to provide reconnection behavior.
 	 */
-	protected handleDisconnect(err?: Error) {
-		if(typeof err !== 'undefined') {
-			this.debug('Disconnected via an error:', err);
-		} else {
-			this.debug('Disconnected gracefully');
-		}
+	protected handleDisconnect(reason: DisconnectReason, err?: Error) {
+		this.debug('Disconnected', 'reason=', DisconnectReason[reason], 'error=', err);
 
 		clearTimeout(this.helloTimeout);
 
@@ -171,11 +169,19 @@ export abstract class AbstractPeer implements Peer {
 		);
 	}
 
-	protected abort(message: string, error?: Error) {
+	/**
+	 * Abort a connection.
+	 *
+	 * @param message
+	 * @param error
+	 * @param reason
+	 */
+	protected abort(message: string, error?: Error, reason?: DisconnectReason) {
 		clearTimeout(this.helloTimeout);
 
-		this.debug(message, error);
-		this.requestDisconnect(error);
+		reason = reason ?? DisconnectReason.NegotiationFailed;
+		this.debug(message, 'reason=', DisconnectReason[reason], 'error=', error);
+		this.requestDisconnect(reason, error);
 	}
 
 	/**
@@ -220,7 +226,7 @@ export abstract class AbstractPeer implements Peer {
 		this.debug('Incoming', PeerMessageType[type], 'with payload', payload);
 		switch(type) {
 			case PeerMessageType.Bye:
-				this.disconnect();
+				this.requestDisconnect(DisconnectReason.Manual);
 				break;
 			case PeerMessageType.Ping:
 				this.receivePing();
@@ -588,7 +594,7 @@ export abstract class AbstractPeer implements Peer {
 	 */
 	private checkFailure() {
 		if(this.failureDetector.checkFailure()) {
-			this.requestDisconnect(new Error('Timeout due to no ping'));
+			this.requestDisconnect(DisconnectReason.PingTimeout, new Error('Timeout due to no ping'));
 		}
 	}
 

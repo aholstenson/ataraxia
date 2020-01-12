@@ -4,7 +4,8 @@ import {
 	PeerMessageType,
 	PeerMessage,
 	encodeBinaryPeerMessage,
-	decodeBinaryPeerMessage
+	decodeBinaryPeerMessage,
+	DisconnectReason
 } from 'ataraxia/transport';
 
 import { WebSocket } from './WebSocket';
@@ -38,32 +39,45 @@ export abstract class AbstractWebSocketPeer extends AbstractPeer {
 		});
 
 		socket.addEventListener('error', () => {
-			this.handleDisconnect(new Error('Disconnecting due to error'));
+			if(socket === this.socket) {
+				this.handleDisconnect(DisconnectReason.Error, new Error('Disconnecting due to error'));
+			}
 		});
 
 		socket.addEventListener('close', () => {
-			this.handleDisconnect();
+			if(this.socket) {
+				// Unknown disconnect reason
+				this.handleDisconnect(DisconnectReason.Error);
+			}
 		});
 	}
 
-	public requestDisconnect() {
-		if(this.socket) {
-			this.socket.close();
+	protected requestDisconnect(reason: DisconnectReason, err?: Error) {
+		if(! this.socket) {
+			return;
 		}
+
+		const socket = this.socket;
+		this.handleDisconnect(reason, err);
+		socket.close();
 	}
 
 	public disconnect() {
 		super.disconnect();
 
-		if(this.socket) {
-			this.socket.close();
+		if(! this.socket) {
+			return;
 		}
+
+		const socket = this.socket;
+		this.handleDisconnect(DisconnectReason.Manual);
+		socket.close();
 	}
 
-	protected handleDisconnect(err?: Error) {
+	protected handleDisconnect(reason: DisconnectReason, err?: Error) {
 		this.socket = undefined;
 
-		super.handleDisconnect(err);
+		super.handleDisconnect(reason, err);
 	}
 
 	public async send<T extends PeerMessageType>(type: T, payload: PeerMessage<T>): Promise<void> {

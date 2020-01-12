@@ -2,6 +2,7 @@ import { PeerMessageType, PeerMessage } from '../transport/messages';
 
 import { AbstractPeer } from '../transport/AbstractPeer';
 import { Peer } from '../transport/Peer';
+import { DisconnectReason } from '../transport/DisconnectReason';
 
 export interface TestPeer extends Peer {
 	connect(): void;
@@ -37,7 +38,7 @@ class MirroredPeer extends AbstractPeer implements TestPeer {
 
 		this.disconnected = true;
 
-		this.handleDisconnect();
+		this.handleDisconnect(DisconnectReason.Manual);
 	}
 
 	public receiveData(type: PeerMessageType, payload: any) {

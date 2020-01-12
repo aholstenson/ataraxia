@@ -1,4 +1,4 @@
-import { AbstractPeer, PeerMessageType, PeerMessage } from '../../src/transport';
+import { AbstractPeer, PeerMessageType, PeerMessage, DisconnectReason } from '../../src/transport';
 import { generateId } from '../../src/id';
 import { Authentication, AnonymousAuth, AuthProvider } from '../../src/auth';
 
@@ -12,8 +12,8 @@ describe('Transport: AbstractPeer', function() {
 		server.other = client;
 
 		client.onConnect(() => {
-			client.requestDisconnect();
-			server.requestDisconnect();
+			client.requestDisconnect(DisconnectReason.Manual);
+			server.requestDisconnect(DisconnectReason.Manual);
 
 			done();
 		});
@@ -37,8 +37,8 @@ function testNetwork(providers: AuthProvider[] = [ new AnonymousAuth() ]) {
 class TestPeer extends AbstractPeer {
 	public other?: TestPeer;
 
-	public requestDisconnect() {
-		this.handleDisconnect();
+	public requestDisconnect(reason: DisconnectReason) {
+		this.handleDisconnect(reason);
 	}
 
 	public negotiateAsServer() {

@@ -1,4 +1,6 @@
 import { WithNetwork } from 'ataraxia';
+import { DisconnectReason } from 'ataraxia/transport';
+
 import { AbstractWebSocketPeer } from './AbstractWebSocketPeer';
 
 import { WebSocketFactory } from './WebSocketFactory';
@@ -20,11 +22,11 @@ export class WebSocketClientPeer extends AbstractWebSocketPeer {
 		this.url = url;
 	}
 
-	protected handleDisconnect(err?: Error) {
+	protected handleDisconnect(reason: DisconnectReason, err?: Error) {
 		// If we are already waiting for a connection ignore this call
 		if(this.connectTimeout) return;
 
-		super.handleDisconnect(err);
+		super.handleDisconnect(reason, err);
 
 		// TODO: Smarter back-off algorithm
 		const retryTime = 30000;

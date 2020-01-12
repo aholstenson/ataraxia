@@ -2,7 +2,7 @@ import { TLSSocket, connect, PeerCertificate } from 'tls';
 import { HostAndPort } from 'tinkerhub-discovery';
 
 import { WithNetwork } from 'ataraxia';
-import { StreamingPeer, MergeablePeer } from 'ataraxia/transport';
+import { StreamingPeer, MergeablePeer, DisconnectReason } from 'ataraxia/transport';
 
 export class TCPPeer extends StreamingPeer implements MergeablePeer {
 	private _serverSocket?: TLSSocket;
@@ -87,12 +87,12 @@ export class TCPPeer extends StreamingPeer implements MergeablePeer {
 		return c.raw && c.raw.buffer;
 	}
 
-	protected handleDisconnect(err: Error) {
+	protected handleDisconnect(reason: DisconnectReason, err?: Error) {
 		// Remove the server socket if it exists
 		this._serverSocket = undefined;
 
 		// Make sure that parent peer is disconnected
-		super.handleDisconnect(err);
+		super.handleDisconnect(reason, err);
 
 		// Only continue with reconnect if not disconnected and we have addresses to try
 		if(this.disconnected || this.addresses.length === 0) return;
