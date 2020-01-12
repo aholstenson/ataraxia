@@ -1,4 +1,30 @@
 /**
+ * Type of reply to send to the server.
+ */
+export enum AuthClientReplyType {
+	/**
+	 * Authentication has been rejected.
+	 */
+	Reject,
+
+	/**
+	 * Additional data to pass to the server.
+	 */
+	Data
+}
+
+/**
+ * Reply to send to the server.
+ */
+export type AuthClientReply = {
+	type: AuthClientReplyType.Reject;
+} | {
+	type: AuthClientReplyType.Data,
+
+	data: ArrayBuffer;
+};
+
+/**
  * Authentication flow as seen from the client. This flow has an initial
  * message that is sent to the server being connected to. It will then receive
  * additional data from the server until the server replies either accepts or
@@ -17,7 +43,7 @@ export interface AuthClientFlow {
 	 *
 	 * @param data
 	 */
-	receiveData(data: ArrayBuffer): Promise<ArrayBuffer>;
+	receiveData(data: ArrayBuffer): Promise<AuthClientReply>;
 
 	/**
 	 * Destroy this flow, releasing any resources it has.

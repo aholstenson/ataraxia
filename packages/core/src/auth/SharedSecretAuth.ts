@@ -3,7 +3,7 @@ import { hmac } from 'fast-sha256';
 import { TextEncoder } from 'fastestsmallesttextencoderdecoder';
 
 import { AuthProvider } from './AuthProvider';
-import { AuthClientFlow } from './AuthClientFlow';
+import { AuthClientFlow, AuthClientReplyType } from './AuthClientFlow';
 import { AuthServerFlow, AuthServerReplyType } from './AuthServerFlow';
 import { AuthContext } from './AuthContext';
 
@@ -62,14 +62,19 @@ export class SharedSecretAuth implements AuthProvider {
 				// Calculate what the expected response is and compare them
 				const calculatedResponse = calculateResponse(secret, challenge, context.remotePublicSecurity);
 				if(! isEqual(serverResponse, calculatedResponse)) {
-					throw new Error('Server did not correctly verify its identity, check that the same secret is in use');
+					return {
+						type: AuthClientReplyType.Reject
+					};
 				}
 
 				// Calculate our response to the servers challenge
 				const response = calculateResponse(secret, serverChallenge, context.localPublicSecurity);
 				const encoder = new Encoder();
 				encoder.encodeBytes(response);
-				return encoder.finish().buffer;
+				return {
+					type: AuthClientReplyType.Data,
+					data: encoder.finish().buffer
+				};
 			},
 
 			destroy() {

@@ -21,11 +21,15 @@ export enum AuthServerReplyType {
 /**
  * Reply to send to the client.
  */
-export interface AuthServerReply {
-	type: AuthServerReplyType;
+export type AuthServerReply = {
+	type: AuthServerReplyType.Ok;
+} | {
+	type: AuthServerReplyType.Reject;
+} | {
+	type: AuthServerReplyType.Data,
 
-	data?: ArrayBuffer;
-}
+	data: ArrayBuffer;
+};
 
 /**
  * Server-side authentication flow. This flow will receive data from the client

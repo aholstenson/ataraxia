@@ -9,7 +9,7 @@ import { PeerMessageType, PeerMessage, HelloMessage, SelectMessage, AuthMessage,
 import { WithNetwork } from '../WithNetwork';
 import { Peer } from './Peer';
 
-import { AuthProvider, AuthClientFlow, AuthServerFlow, AuthServerReplyType, AuthServerReply } from '../auth';
+import { AuthProvider, AuthClientFlow, AuthServerFlow, AuthServerReplyType, AuthServerReply, AuthClientReplyType, AuthClientReply } from '../auth';
 import { DisconnectReason } from './DisconnectReason';
 
 /**
@@ -393,28 +393,36 @@ export abstract class AbstractPeer implements Peer {
 		const provider = this.pickNextAuthProvider();
 
 		if(provider && provider.createClientFlow) {
-			this.authClientFlow = provider.createClientFlow({
+			const authClientFlow = this.authClientFlow = provider.createClientFlow({
 				localPublicSecurity: this.localPublicSecurity(),
 				remotePublicSecurity: this.remotePublicSecurity()
 			});
 
 			// Get the initial message and send the request to the server
-			this.authClientFlow.initialMessage()
-				.then(msg => {
-					return this.send(PeerMessageType.Auth, {
+			(async () => {
+				let msg;
+				try {
+					msg = await authClientFlow.initialMessage();
+				} catch(err) {
+					this.abort('Initial auth message failed', err);
+					return;
+				}
+
+				try {
+					await this.send(PeerMessageType.Auth, {
 						method: provider.id,
 						data: msg
 					});
-				})
-				.catch(err => {
+				} catch(err) {
 					this.abort('Could not get or send initial auth message', err);
-				});
-		} else {
-			this.abort('No suitable authentication provider found');
-			return;
-		}
+				}
+			})();
 
-		this.queueNegotiationTimeout();
+			// Queue a negotiation timeout
+			this.queueNegotiationTimeout();
+		} else {
+			this.abort('Could not authenticate with any activate provider', undefined, DisconnectReason.AuthReject);
+		}
 	}
 
 	/**
@@ -438,20 +446,35 @@ export abstract class AbstractPeer implements Peer {
 	 * Client flow: AUTHDATA has been received from the server.
 	 */
 	private receiveServerAuthData(message: AuthDataMessage) {
-		if(! this.authClientFlow) {
-			this.abort('No client flow available and server sent AUTHDATA');
-			return;
-		}
+		(async () => {
+			if(! this.authClientFlow) {
+				this.abort('No client flow available and server sent AUTHDATA');
+				return;
+			}
 
-		this.authClientFlow.receiveData(message.data)
-			.then(msg => {
-				return this.send(PeerMessageType.AuthData, {
-					data: msg
-				});
-			})
-			.catch(err => {
-				this.abort('Could not get or send initial auth message', err);
-			});
+			let reply: AuthClientReply;
+			try {
+				reply = await this.authClientFlow.receiveData(message.data);
+			} catch(err) {
+				this.abort('Error while handling auth data', err);
+				return;
+			}
+
+			if(reply.type === AuthClientReplyType.Data) {
+				try {
+					await this.send(PeerMessageType.AuthData, {
+						data: reply.data
+					});
+				} catch(err) {
+					this.abort('Error while sending auth reply', err);
+				}
+			} else if(reply.type === AuthClientReplyType.Reject) {
+				// Retry the next authentication method
+				this.sendInitialAuth();
+			}
+		})();
+
+		this.queueNegotiationTimeout();
 	}
 
 	/**
@@ -460,23 +483,44 @@ export abstract class AbstractPeer implements Peer {
 	 * @param message
 	 */
 	private receiveAuth(message: AuthMessage) {
-		const provider = this.parent.authentication.getProvider(message.method);
-		if(! provider || ! provider.createServerFlow) {
-			// This provider does not exist, reject the authentication attempt
-			this.send(PeerMessageType.Reject, undefined)
-				.catch(err => this.abort('Could not send REJECT', err));
+		(async () => {
+			if(this.authServerFlow) {
+				try {
+					await this.authServerFlow.destroy();
+				} catch(err) {
+					this.debug('Error while releasing server auth flow', err);
+				}
+			}
 
-			this.queueNegotiationTimeout();
-			return;
-		}
+			const provider = this.parent.authentication.getProvider(message.method);
+			if(! provider || ! provider.createServerFlow) {
+				// This provider does not exist, reject the authentication attempt
+				this.send(PeerMessageType.Reject, undefined)
+					.catch(err => this.abort('Could not send REJECT', err));
 
-		this.authServerFlow = provider.createServerFlow({
-			localPublicSecurity: this.localPublicSecurity(),
-			remotePublicSecurity: this.remotePublicSecurity()
-		});
-		this.authServerFlow.receiveInitial(message.data)
-			.then(reply => this.handleSendingAuthReply(reply))
-			.catch(err => this.abort('Error while handling initial auth', err));
+				this.queueNegotiationTimeout();
+				return;
+			}
+
+			const authServerFlow = this.authServerFlow = provider.createServerFlow({
+				localPublicSecurity: this.localPublicSecurity(),
+				remotePublicSecurity: this.remotePublicSecurity()
+			});
+
+			let reply;
+			try {
+				reply = await authServerFlow.receiveInitial(message.data);
+			} catch(err) {
+				this.abort('Error while handling initial auth', err);
+				return;
+			}
+
+			try {
+				await this.handleSendingAuthReply(reply);
+			} catch(err) {
+				this.abort('Error while sending auth reply', err);
+			}
+		})();
 
 		this.queueNegotiationTimeout();
 	}
@@ -515,14 +559,26 @@ export abstract class AbstractPeer implements Peer {
 	 * @param message
 	 */
 	private receiveClientAuthData(message: AuthDataMessage) {
-		if(! this.authServerFlow) {
-			this.abort('No server flow active and client sent AUTHDATA');
-			return;
-		}
+		(async () => {
+			if(! this.authServerFlow) {
+				this.abort('No server flow active and client sent AUTHDATA');
+				return;
+			}
 
-		this.authServerFlow.receiveData(message.data)
-			.then(reply => this.handleSendingAuthReply(reply))
-			.catch(err => this.abort('Error while handling initial auth', err));
+			let reply;
+			try {
+				reply = await this.authServerFlow.receiveData(message.data);
+			} catch(err) {
+				this.abort('Error while handling auth data', err);
+				return;
+			}
+
+			try {
+				await this.handleSendingAuthReply(reply);
+			} catch(err) {
+				this.abort('Error while sending auth reply', err);
+			}
+		})();
 
 		this.queueNegotiationTimeout();
 	}
