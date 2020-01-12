@@ -588,6 +588,9 @@ export abstract class AbstractPeer implements Peer {
 		clearTimeout(this.helloTimeout);
 		this.helloTimeout = undefined;
 
+		// Notify the peer that it has been connected
+		this.didConnect();
+
 		// Switch to active state
 		this.state = State.Active;
 
@@ -607,6 +610,10 @@ export abstract class AbstractPeer implements Peer {
 
 		// Emit the connect event
 		this.connectEvent.emit();
+	}
+
+	// tslint:disable-next-line: no-empty
+	protected didConnect(): void {
 	}
 
 	/**

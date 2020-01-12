@@ -1,16 +1,16 @@
 import { TLSSocket, connect, PeerCertificate } from 'tls';
 import { HostAndPort } from 'tinkerhub-discovery';
 
-import { WithNetwork } from 'ataraxia';
+import { WithNetwork, BackOff } from 'ataraxia';
 import { StreamingPeer, MergeablePeer, DisconnectReason } from 'ataraxia/transport';
 
 export class TCPPeer extends StreamingPeer implements MergeablePeer {
 	private _serverSocket?: TLSSocket;
 	public addresses: HostAndPort[];
 
+	private readonly backOff: BackOff;
+
 	private addressAttempt: number;
-	private maxAttempts: number;
-	private attempt: number;
 	private connectTimeout: any;
 
 	private privateKey?: Buffer;
@@ -25,10 +25,13 @@ export class TCPPeer extends StreamingPeer implements MergeablePeer {
 		this.privateKey = cert ? cert.private : undefined;
 		this.certificate = cert ? cert.cert : undefined;
 
+		this.backOff = new BackOff({
+			delay: 100,
+			maxDelay: 30000
+		});
+
 		this.addresses = [];
 		this.addressAttempt = 0;
-		this.maxAttempts = 0;
-		this.attempt = 0;
 	}
 
 	public merge(peer: this) {
@@ -59,9 +62,6 @@ export class TCPPeer extends StreamingPeer implements MergeablePeer {
 	public setReachableVia(addresses: HostAndPort[]) {
 		this.addresses = addresses;
 		this.addressAttempt = 0;
-
-		this.maxAttempts = addresses.length * 10;
-		this.attempt = 0;
 	}
 
 	protected localPublicSecurity(): ArrayBuffer | undefined {
@@ -102,13 +102,10 @@ export class TCPPeer extends StreamingPeer implements MergeablePeer {
 			this.debug('Attempting to connect to next address');
 			this.tryConnect();
 		} else {
-			if(this.attempt >= this.maxAttempts) {
-				this.debug('Reached the connection attempt limit');
-			} else {
-				this.debug('No more addresses to try, trying in 60 seconds');
-				this.addressAttempt = 0;
-				this.connectTimeout = setTimeout(() => this.tryConnect(), 60000);
-			}
+			const delay = this.backOff.nextDelay();
+			this.debug('No more addresses to try, trying in', delay, 'ms');
+			this.addressAttempt = 0;
+			this.connectTimeout = setTimeout(() => this.tryConnect(), delay);
 		}
 	}
 
@@ -121,8 +118,6 @@ export class TCPPeer extends StreamingPeer implements MergeablePeer {
 		const address = this.addresses[this.addressAttempt];
 		this.debug('Attempting connect to ' + address.host + ':' + address.port);
 
-		this.attempt++;
-
 		const client = connect({
 			key: this.privateKey,
 			cert: this.certificate,
@@ -134,13 +129,16 @@ export class TCPPeer extends StreamingPeer implements MergeablePeer {
 		});
 		client.setKeepAlive(true);
 		client.on('connect', () => {
-			this.attempt = 0;
-			this.addressAttempt--;
 			this.debug('Connected via ' + address.host + ':' + address.port);
 
 			this.negotiateAsClient();
 		});
 		this.setSocket(client);
+	}
+
+	protected didConnect() {
+		this.addressAttempt--;
+		this.backOff.reset();
 	}
 
 	public disconnect() {

@@ -12,3 +12,5 @@ export * from './WithNetwork';
 
 export * from './Exchange';
 export * from './RequestReplyHelper';
+
+export * from './BackOff';
