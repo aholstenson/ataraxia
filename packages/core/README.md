@@ -17,7 +17,7 @@ to create a partially connected mesh network.
 * Instances can send and receive messages from other instances
 * Partially connected mesh network, messages will be routed to their target
 * Authentication support, anonymous and shared secret authentication available in core
-* RPC support with remote method invocation and events via [ataraxia-services](https://github.com/aholstenson/ataraxia/tree/master/packages/services)
+* RPC support via [ataraxia-services](https://github.com/aholstenson/ataraxia/tree/master/packages/services) that lets you call methods and receive events from services registered anywhere in the network
 * Support for different transports
   * [ataraxia-local](https://github.com/aholstenson/ataraxia/tree/master/packages/local) provides a machine-local transport
   * [ataraxia-tcp](https://github.com/aholstenson/ataraxia/tree/master/packages/tcp) provides a TCP-based transport with  customizable discovery of peers
@@ -81,7 +81,9 @@ local.onLeader(() => {
    * of the machine-local network. This instance will now handle
    * connections to other machines in the network.
    */
-  net.addTransport(new TCPTransport());
+  net.addTransport(new TCPTransport({
+    discovery: new TCPPeerMDNSDiscovery()
+  }));
 });
 net.addTransport(local);
 
