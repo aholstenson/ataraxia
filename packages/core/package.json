@@ -29,7 +29,7 @@
     "adaptive-accrual-failure-detector": "^0.2.0",
     "atvik": "1.0.0",
     "debug": "^4.1.1",
-    "fast-sha256": "^1.1.1",
+    "fast-sha256": "^1.2.0",
     "fastestsmallesttextencoderdecoder": "^1.0.14"
   },
   "devDependencies": {
