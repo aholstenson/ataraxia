@@ -153,8 +153,7 @@ counter. This counter represents the current version and is used to synchronize
 the peers.
 
 Peers should also measure the latency to their neighbors and include this
-information. The recommended way to measure latency is to use the time between
-the last 5 `PING` messages and their `PONG` reply. 
+information, see *Latency updates* for details.
 
 When a peer's neighbors or its information about nodes and their neighbors
 change it must send a `NODE_SUMMARY` message to its neighbors. This message
@@ -164,9 +163,6 @@ latency:
 ```
 P1: NODE_SUMMARY Version [ NodeId NodeRoutingVersion ]
 ```
-
-Broadcasting of `NODE_SUMMARY` due to latency changes should be done at the
-maximum every 30 seconds to reduce traffic on the network.
 
 When a `NODE_SUMMARY` message is seen by a peer it should request information
 about those nodes it has not yet seen, or those where its version is less
@@ -179,6 +175,26 @@ P1: NODE_DETAILS [ NodeId NodeRoutingVersion [ NodeId NodeLatency ] ]
 
 Note: Peers must also be able to reply to a `NODE_REQUEST` for their own
 routing.
+
+### Latency updates
+
+Latency between peers can change and need to be propagated through the network
+to allow nodes to change their preferred routing. This is done by gossiping,
+where a node randomly broadcasts known latencies to one of its peers every
+now and then.
+
+Latency to neighbors is recommended to be measured using the time between
+the last 5 `PING` messages and their `PONG` reply. The initial latency is
+currently the time between a `HELLO` and `SELECT` from the server side and
+between the `SELECT` and `OK` for a client.
+
+Every 30 seconds or so a node should select a random peer and send latency
+updates to it. These latency updates are done via a `NODE_DETAILS` message
+that includes information about all nodes:
+
+```
+P: NODE_DETAILS [ NodeId NodeRoutingVersion [ NodeId NodeLatency ] ]
+```
 
 ### Message types
 
