@@ -212,6 +212,10 @@ export class TestNetwork {
 			info.bPeer.disconnect();
 		}
 
+		for(const node of this.nodeInfo.values()) {
+			await node.network.stop();
+		}
+
 		await this.consolidate();
 	}
 }
