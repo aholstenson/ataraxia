@@ -79,4 +79,35 @@ describe('Topology', () => {
 			await tester.shutdown();
 		}
 	});
+
+	it('Mesh - 5 peers', async () => {
+		const tester = new TopologyTester()
+			.bidirectional('a', 'b')
+			.bidirectional('a', 'c')
+			.bidirectional('b', 'd')
+			.bidirectional('b', 'e');
+
+		try {
+			await tester.consolidate();
+
+			expect(tester.path('a', 'b')).toEqual([ 'a' ]);
+			expect(tester.path('a', 'c')).toEqual([ 'a' ]);
+			expect(tester.path('a', 'd')).toEqual([ 'a', 'b' ]);
+			expect(tester.path('a', 'e')).toEqual([ 'a', 'b' ]);
+
+			expect(tester.path('b', 'a')).toEqual([ 'b' ]);
+			expect(tester.path('b', 'c')).toEqual([ 'b', 'a' ]);
+			expect(tester.path('b', 'd')).toEqual([ 'b' ]);
+			expect(tester.path('b', 'e')).toEqual([ 'b' ]);
+
+			expect(tester.path('c', 'a')).toEqual([ 'c' ]);
+			expect(tester.path('c', 'b')).toEqual([ 'c', 'a' ]);
+			expect(tester.path('c', 'd')).toEqual([ 'c', 'a', 'b' ]);
+
+			expect(tester.path('d', 'a')).toEqual([ 'd', 'b' ]);
+			expect(tester.path('d', 'b')).toEqual([ 'd' ]);
+		} finally {
+			await tester.shutdown();
+		}
+	});
 });

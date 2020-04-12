@@ -231,7 +231,13 @@ export class Topology {
 	 * our version is too low.
 	 */
 	private handleNodeSummaryMessage(peer: Peer, message: NodeSummaryMessage) {
-		this.debug('Incoming NodeSummary', message);
+		if(this.debug.enabled) {
+			this.debug(
+				'Incoming NodeSummary from', encodeId(peer.id),
+				'version=', message.ownVersion,
+				', nodes=', message.nodes.map(n => encodeId(n.id) + ' ' + n.version)
+			);
+		}
 
 		const idsToRequest: ArrayBuffer[] = [];
 		const found = new IdSet();
@@ -309,9 +315,6 @@ export class Topology {
 			this.debug('End NodeDetails');
 		}
 
-		const oldNodes = peerInfo.nodes;
-		peerInfo.nodes = new IdSet();
-
 		let didChangeRouting = false;
 		for(const routing of message.nodes) {
 			const node = this.getOrCreate(routing.id);
@@ -319,20 +322,7 @@ export class Topology {
 			// Protect against updating our own routing information
 			if(node === this.self) continue;
 
-			oldNodes.delete(routing.id);
-			peerInfo.nodes.add(routing.id);
-
 			if(node.updateRouting(peer, routing)) {
-				didChangeRouting = true;
-			}
-		}
-
-		// Remove routing from nodes no longer seen by the peer
-		for(const old of oldNodes.values()) {
-			const node = this.nodes.get(old);
-			if(! node) continue;
-
-			if(node.removeRouting(peer)) {
 				didChangeRouting = true;
 			}
 		}
