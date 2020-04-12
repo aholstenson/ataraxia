@@ -37,11 +37,16 @@ describe('Services: Remote Calls', () => {
 				const s = await helloService.hello('world');
 				expect(s).toBe('Hello world!');
 			} finally {
+				await aServices.stop();
+				await bServices.stop();
+
 				await testNetwork.shutdown();
 			}
 			return;
 		}
 
+		await aServices.stop();
+		await bServices.stop();
 		await testNetwork.shutdown();
 		throw new Error('Service not found');
 	});
