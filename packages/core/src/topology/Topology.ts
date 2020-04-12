@@ -82,7 +82,7 @@ export class Topology {
 	/**
 	 * Timeout handle if a broadcast is currently queued.
 	 */
-	private broadcastTimeout: any;
+	private broadcastTimeout: Promise<void> | null;
 
 	/**
 	 * Create a new topology for the given network.
@@ -90,6 +90,7 @@ export class Topology {
 	constructor(parent: WithNetwork, options: TopologyOptions) {
 		this.parent = parent;
 		this.endpoint = options.endpoint || false;
+		this.broadcastTimeout =  null;
 
 		this.nodes = new IdMap();
 		this.peers = new IdMap();
@@ -402,7 +403,7 @@ export class Topology {
 		// A broadcast is scheduled
 		if(this.broadcastTimeout || this.peers.size() === 0) return;
 
-		this.broadcastTimeout = setTimeout(() => {
+		this.broadcastTimeout = new Promise((resolve) => setTimeout(() => {
 			this.routing.refresh();
 
 			if(this.debug.enabled) {
@@ -441,10 +442,27 @@ export class Topology {
 			}
 
 			this.broadcastTimeout = null;
-		}, 100);
+
+			resolve();
+		}, 100));
 	}
 
 	public refreshRouting() {
 		this.routing.refresh();
+	}
+
+	/**
+	 * Get if any actions are pending for this topology. Used during testing
+	 * to figure out if its safe to check the results.
+	 */
+	public get pendingActions(): boolean {
+		return this.broadcastTimeout !== null;
+	}
+
+	/**
+	 * Get a promise that will resolve when all pending actions have been done.
+	 */
+	public async consolidate() {
+		await this.broadcastTimeout;
 	}
 }

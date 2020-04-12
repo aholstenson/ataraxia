@@ -173,8 +173,23 @@ export class TopologyTester {
 		return this;
 	}
 
-	public consolidate(): Promise<void> {
-		return new Promise(resolve => setTimeout(resolve, 200));
+	public async consolidate(): Promise<void> {
+		let didActions = true;
+		while(didActions) {
+			didActions = false;
+
+			for(const nodeInfo of this.nodeInfo.values()) {
+				if(nodeInfo.topology.pendingActions) {
+					await nodeInfo.topology.consolidate();
+
+					didActions = true;
+				}
+			}
+
+			if(didActions) {
+				await new Promise((resolve) => setTimeout(resolve, 10));
+			}
+		}
 	}
 
 	public bidirectional(a: string, b: string): this {
