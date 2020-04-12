@@ -233,11 +233,20 @@ export class Network<MessageTypes extends object = any> {
 		};
 
 		this.active = true;
+
+		// Start the topology
+		await this.topology.start();
+
+		// Start all the transports
 		try {
 			await Promise.all(this.transports.map(t => t.start(options)));
 			return true;
 		} catch (err) {
+			// Stop the topology if an error occurs
+			await this.topology.stop();
+
 			this.active = false;
+
 			throw err;
 		}
 	}
@@ -248,6 +257,10 @@ export class Network<MessageTypes extends object = any> {
 	public async stop(): Promise<boolean> {
 		if(! this.active) return false;
 
+		// Stop the topology
+		await this.topology.stop();
+
+		// Stop all the transports
 		await Promise.all(this.transports.map(t => t.stop()));
 		this.active = false;
 		return true;

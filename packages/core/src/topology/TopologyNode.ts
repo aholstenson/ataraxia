@@ -80,9 +80,6 @@ export class TopologyNode {
 		// Track that this node is reachable via this peer
 		this.reachableVia.add(peer.id);
 
-		// Check if we have already managed this version
-		if(details.version <= this.version) return false;
-
 		// Empty the array and collect the new edges
 		this.clearOutgoingEdges();
 
@@ -90,9 +87,13 @@ export class TopologyNode {
 			this.addOutgoingEdge(routing.latency, this.parent.getOrCreate(routing.id));
 		}
 
-		this.version = details.version;
-
-		return true;
+		// Check if we have already managed this version
+		if(details.version > this.version) {
+			this.version = details.version;
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	public removeRouting(peer: Peer): boolean {
@@ -127,7 +128,15 @@ export class TopologyNode {
 		this.clearOutgoingEdges();
 
 		for(const peer of peers) {
-			// TODO: Peers need to have latency
+			this.addOutgoingEdge(peer.latency, this.parent.getOrCreate(peer.id));
+		}
+	}
+
+	public updateSelfLatencies(peers: Peer[]) {
+		// Empty the array and collect the new edges
+		this.clearOutgoingEdges();
+
+		for(const peer of peers) {
 			this.addOutgoingEdge(peer.latency, this.parent.getOrCreate(peer.id));
 		}
 	}

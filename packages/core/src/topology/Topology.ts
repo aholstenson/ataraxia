@@ -1,7 +1,7 @@
 import debug from 'debug';
 import { Event, SubscriptionHandle } from 'atvik';
 
-import { IdMap, IdSet, encodeId } from '../id';
+import { IdMap, IdSet, encodeId, sameId } from '../id';
 
 import { TopologyNode } from './TopologyNode';
 import {
@@ -79,6 +79,8 @@ export class Topology {
 	private readonly routing: Routing;
 	private readonly messaging: Messaging;
 
+	private latencyGossipHandle: any;
+
 	/**
 	 * Timeout handle if a broadcast is currently queued.
 	 */
@@ -121,6 +123,23 @@ export class Topology {
 			this.routing,
 			this.dataEvent
 		);
+	}
+
+	/**
+	 * Start this topology.
+	 */
+	public async start(): Promise<void> {
+		this.latencyGossipHandle = setTimeout(() => {
+			this.latencyGossipHandle = setInterval(() => this.gossipLatencies(), 30000);
+		}, 2 + Math.random() * 100);
+	}
+
+	/**
+	 * Stop this topology.
+	 */
+	public async stop(): Promise<void> {
+		clearTimeout(this.latencyGossipHandle);
+		clearInterval(this.latencyGossipHandle);
 	}
 
 	get onAvailable() {
@@ -222,7 +241,7 @@ export class Topology {
 		this.self.updateSelf(Array.from(this.peers.values()).map(info => info.peer));
 
 		// Queue a broadcast of routing information
-		this.queueBroadcast();
+		this.updateRouting(true);
 	}
 
 	/**
@@ -271,7 +290,7 @@ export class Topology {
 		}
 
 		if(didChangeRouting) {
-			this.queueBroadcast();
+			this.updateRouting(true);
 		}
 
 		this.debug('Requesting additional info for', idsToRequest.map(encodeId));
@@ -327,10 +346,8 @@ export class Topology {
 			}
 		}
 
-		if(didChangeRouting) {
-			// Broadcast routing if changed
-			this.queueBroadcast();
-		}
+		// Broadcast routing if changed
+		this.updateRouting(didChangeRouting);
 	}
 
 	/**
@@ -366,7 +383,7 @@ export class Topology {
 		this.self.updateSelf(Array.from(this.peers.values()).map(i => i.peer));
 
 		// Broadcast routing as a disconnect changes our version
-		this.queueBroadcast();
+		this.updateRouting(true);
 	}
 
 	/**
@@ -380,17 +397,58 @@ export class Topology {
 	}
 
 	/**
+	 * Pick a random peer and send information about current latencies to it.
+	 */
+	private gossipLatencies() {
+		if(this.peers.size() === 0) return;
+
+		// Update the latencies from our own peers
+		const peers = Array.from(this.peers.values()).map(info => info.peer);
+		this.self.updateSelfLatencies(peers);
+
+		// Pick a peer to send information to
+		const peer = peers[Math.floor(Math.random() * peers.length)];
+
+		// Build latency information for all nodes
+		const routingDetails: NodeRoutingDetails[] = [];
+		for(const node of this.nodes.values()) {
+			if(node === this.self || sameId(node.id, peer.id)) continue;
+
+			routingDetails.push(node.toRoutingDetails());
+		}
+
+		// Only send message if there is anything to send
+		if(routingDetails.length === 0) {
+			this.debug('Skipped gossiping about latencies');
+			return;
+		}
+
+		if(this.debug.enabled) {
+			this.debug('Gossiping about latencies to', encodeId(peer.id));
+		}
+
+		// Send the message
+		peer.send(PeerMessageType.NodeDetails, {
+			nodes: routingDetails
+		})
+			.catch(err => this.debug('Caught error while sending node latencies', err));
+	}
+
+	/**
 	 * Queue that we should broadcast information about our nodes to our
 	 * peers.
 	 */
-	private queueBroadcast() {
-		// Mark the routing a dirty
+	private updateRouting(broadcast: boolean) {
+		// Mark the routing as dirty
 		this.routing.markDirty();
+
+		// No need to do anything if broadcasting isn't requested
+		if(! broadcast) return;
 
 		// Endpoints do not perform routing, never broadcast routing info
 		if(this.endpoint) return;
 
-		// A broadcast is scheduled
+		// Check if there is a pending broadcast
 		if(this.broadcastTimeout || this.peers.size() === 0) return;
 
 		this.broadcastTimeout = new Promise((resolve) => setTimeout(() => {
