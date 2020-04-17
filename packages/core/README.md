@@ -4,7 +4,7 @@
 [![Dependencies](https://david-dm.org/aholstenson/ataraxia/status.svg?path=packages/core)](https://david-dm.org/aholstenson/ataraxia?path=packages/core)
 
 <p align="center">
-  <img width="460" src="../../docs/mesh-example.png">
+  <img width="460" src="https://raw.githubusercontent.com/aholstenson/ataraxia/master/docs/mesh-example.png">
 </p>
 
 Mesh networking with peer-to-peer messaging for NodeJS and the browser.
