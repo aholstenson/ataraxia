@@ -122,22 +122,19 @@ export class Exchange<MessageTypes extends object = any> {
 	 * @param payload
 	 *   the payload of the message
 	 */
-	public async broadcast<T extends MessageType<MessageTypes>>(type: T, payload: MessageData<MessageTypes, T>): Promise<void> {
-		const promises = [];
+	public broadcast<T extends MessageType<MessageTypes>>(type: T, payload: MessageData<MessageTypes, T>): Promise<void> {
+		const promises: Promise<void>[] = [];
 
 		// Send to all nodes that have joined the exchange
 		for(const node of this.nodes.values()) {
 			promises.push(node.send(type, payload));
 		}
 
-		// Await the result of the broadcast
-		for(const promise of promises) {
-			try {
-				await promise;
-			} catch(ex) {
+		return Promise.all(promises)
+			.then(() => undefined)
+			.catch(ex => {
 				this.debug('Could not broadcast to all nodes', ex);
-			}
-		}
+			});
 	}
 
 	/**
