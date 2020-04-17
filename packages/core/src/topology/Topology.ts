@@ -32,11 +32,6 @@ interface PeerDetails {
 	 * available.
 	 */
 	subscriptions: SubscriptionHandle[];
-
-	/**
-	 * The nodes this peer currently sees.
-	 */
-	nodes: IdSet;
 }
 
 /**
@@ -230,8 +225,6 @@ export class Topology {
 					this.handleDisconnect(peer);
 				})
 			],
-
-			nodes: new IdSet()
 		};
 
 		// Create or update the node
@@ -376,10 +369,7 @@ export class Topology {
 		const peerNode = this.getOrCreate(peer.id);
 		peerNode.direct = false;
 
-		for(const id of info.nodes.values()) {
-			const node = this.nodes.get(id);
-			if(! node) continue;
-
+		for(const node of this.nodes.values()) {
 			node.removeRouting(peer);
 		}
 
