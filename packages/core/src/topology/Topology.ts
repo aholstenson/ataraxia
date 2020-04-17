@@ -194,6 +194,10 @@ export class Topology {
 			return;
 		}
 
+		if(this.debug.enabled) {
+			this.debug('Peer', encodeId(peer.id), 'has connected');
+		}
+
 		const peerInfo = {
 			peer: peer,
 
@@ -461,7 +465,7 @@ export class Topology {
 
 				this.debug('Nodes:');
 				for(const node of this.nodes.values()) {
-					this.debug(' ', encodeId(node.id), 'version=', node.version, 'outgoing=', node.outgoingDebug, 'via', node.reachableDebug);
+					this.debug(' ', encodeId(node.id), 'version=', node.version, 'outgoing=', node.outgoingDebug, 'reachableVia=', node.reachableDebug);
 				}
 
 				this.debug('End broadcasting details');

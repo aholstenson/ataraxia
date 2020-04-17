@@ -164,11 +164,11 @@ export class TopologyNode {
 	}
 
 	get outgoingDebug() {
-		return this.outgoing.map(e => encodeId(e.target.id)).join(', ');
+		return this.outgoing.map(e => encodeId(e.target.id));
 	}
 
 	get reachableDebug() {
-		return Array.from(this.reachableVia.values()).map(e => encodeId(e)).join(', ');
+		return Array.from(this.reachableVia.values()).map(e => encodeId(e));
 	}
 
 	public toPath(): ReadonlyArray<TopologyNode> {
