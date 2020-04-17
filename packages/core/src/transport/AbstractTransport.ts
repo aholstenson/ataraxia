@@ -129,7 +129,10 @@ export class AbstractTransport
 	protected addPeer(peer: Peer) {
 		const onConnect = () => {
 			const existingPeer = this.peers.get(peer.id);
+			this.debug('Peer with id', encodeId(peer.id), 'was added');
 			if(existingPeer) {
+				this.debug('  Connection to peer already exists, resolving what peer to keep');
+
 				/*
 				 * This peer is already available via this transport. Compare
 				 * the identifiers and disconnect ourselves if our id is
@@ -138,7 +141,7 @@ export class AbstractTransport
 				 */
 				const compared = compareId(this.network.networkId, peer.id);
 				if(compared < 0) {
-					this.debug('Peer with id', encodeId(peer.id), 'exists and is larger than our id, disconnecting existing peer');
+					this.debug('  Our id is smaller, resolve by disconnecting existing peer');
 					existingPeer.disconnect();
 
 					if(isMergeablePeer(peer)) {
@@ -149,10 +152,12 @@ export class AbstractTransport
 					existingPeer.onDisconnect.once()
 						.then(() => {
 							this.peers.set(peer.id, peer);
+
+							this.debug('Peer with id', encodeId(peer.id), 'is now available');
 							this.peerConnectEvent.emit(peer);
 						});
 				} else {
-					this.debug('Peer with id', encodeId(peer.id), 'exists and is smaller than our id, disconnecting new peer');
+					this.debug('  Our id is larger, resolve by disconnecting new peer');
 					peer.disconnect();
 
 					if(isMergeablePeer(existingPeer)) {
@@ -163,6 +168,7 @@ export class AbstractTransport
 				// New peer, connect to it
 				this.peers.set(peer.id, peer);
 
+				this.debug('Peer with id', encodeId(peer.id), 'is now available');
 				this.peerConnectEvent.emit(peer);
 			}
 		};
@@ -174,6 +180,7 @@ export class AbstractTransport
 			if(stored === peer) {
 				this.peers.delete(peer.id);
 
+				this.debug('Peer with id', encodeId(peer.id), 'is no longer available');
 				this.peerDisconnectEvent.emit(peer);
 			}
 		});
