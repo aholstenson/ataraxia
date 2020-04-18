@@ -181,12 +181,15 @@ export class Messaging {
 			});
 
 			if(this.debug.enabled) {
-				this.debug('Forwarding message, sending ACK', lastPathEntry.id, 'to', encodeId(peer.id));
+				this.debug('Forwarding message, sending ACK', lastPathEntry.id, 'via', messageId, 'to', encodeId(peer.id));
 			}
 
 			// Forward the message to the target peer
 			targetPeer.send(PeerMessageType.Data, message)
-				.catch(err => this.debug('Caught error while sending DataReject to peer', err));
+				.catch(err => {
+					this.releaseId(messageId);
+					this.debug('Caught error while forwarding DATA to peer', err)
+				});
 		}
 	}
 
