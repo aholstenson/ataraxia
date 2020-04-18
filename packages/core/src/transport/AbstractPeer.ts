@@ -231,6 +231,9 @@ export abstract class AbstractPeer implements Peer {
 			case PeerMessageType.Ping:
 				this.receivePing();
 				break;
+			case PeerMessageType.Pong:
+				this.receivePong();
+				break;
 			case PeerMessageType.Hello:
 				if(this.state === State.WaitingForHello) {
 					this.receiveHello(payload as HelloMessage);
@@ -643,12 +646,17 @@ export abstract class AbstractPeer implements Peer {
 	 * Receive a ping and send a pong response.
 	 */
 	private receivePing() {
-		this.registerLatencyReply();
-
 		this.failureDetector.registerHeartbeat();
 
 		this.send(PeerMessageType.Pong, undefined)
 			.catch(err => this.debug('Caught error while sending pong', err));
+	}
+
+	/**
+	 * Receive a pong from a sent ping.
+	 */
+	private receivePong() {
+		this.registerLatencyReply();
 	}
 
 	/**
