@@ -20,6 +20,10 @@ const pingInterval = 30000;
  * The interval at which pings are checked.
  */
 const pingCheckInterval = 5000;
+/**
+ * The maximum time before a ping must have been received.
+ */
+const pingMaxTime = pingInterval * 3;
 
 const enum State {
 	Initial,
@@ -62,6 +66,7 @@ export abstract class AbstractPeer implements Peer {
 	private helloTimeout: any;
 	private pingSender: any;
 	private pingChecker: any;
+	private lastPing: number;
 
 	private authProviders?: AuthProvider[];
 	private authClientFlow?: AuthClientFlow;
@@ -87,6 +92,8 @@ export abstract class AbstractPeer implements Peer {
 
 		this.lastLatencyTime = Date.now();
 		this.latencyValues = [];
+
+		this.lastPing = 0;
 	}
 
 	get onConnect() {
@@ -608,6 +615,9 @@ export abstract class AbstractPeer implements Peer {
 		}
 
 		// Setup ping sending
+		this.failureDetector.registerHeartbeat();
+		this.lastPing = Date.now();
+
 		this.pingChecker = setInterval(this.checkFailure.bind(this), pingCheckInterval);
 		this.pingSender = setInterval(this.sendPing.bind(this), pingInterval);
 
@@ -646,6 +656,7 @@ export abstract class AbstractPeer implements Peer {
 	 * Receive a ping and send a pong response.
 	 */
 	private receivePing() {
+		this.lastPing = Date.now();
 		this.failureDetector.registerHeartbeat();
 
 		this.send(PeerMessageType.Pong, undefined)
@@ -664,7 +675,7 @@ export abstract class AbstractPeer implements Peer {
 	 * disconnected from it.
 	 */
 	private checkFailure() {
-		if(this.failureDetector.checkFailure()) {
+		if(this.failureDetector.checkFailure() || this.lastPing + pingMaxTime < Date.now()) {
 			this.requestDisconnect(DisconnectReason.PingTimeout, new Error('Timeout due to no ping'));
 		}
 	}
