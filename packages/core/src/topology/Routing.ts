@@ -57,33 +57,30 @@ export class Routing {
 		this.dirty = false;
 
 		for(const node of Array.from(this.nodes.values())) {
-			const available = !! node.peer;
+			const available = !! node.peer || node === this.self;
 			if(available) {
 				if(! node.previousReachable) {
 					node.previousReachable = true;
 					this.availableEvent.emit(node);
 				}
 			} else {
-				if(node.previousReachable) {
-					node.previousReachable = false;
-					this.unavailableEvent.emit(node);
+				this.debug('Not available', encodeId(node.id));
+				node.previousReachable = false;
+				this.unavailableEvent.emit(node);
 
-					// TODO: Longer delay before removing node?
-					this.nodes.delete(node.id);
-				}
+				// TODO: Longer delay before removing node?
+				this.nodes.delete(node.id);
 			}
 		}
 
 	}
 
 	public findPeerForTarget(node: ArrayBuffer): Peer | null {
-		const n = this.nodes.get(node);
-		if(! n) return null;
-
 		// Perform a refresh if needed
 		this.refresh();
 
-		return n.peer || null;
+		const n = this.nodes.get(node);
+		return n?.peer ?? null;
 	}
 
 	/**
