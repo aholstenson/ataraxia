@@ -22,8 +22,8 @@ const net = ... // setup network with at least one transport
 
 const services = new Services(net);
 
-services.onAvailable(service => console.log(service.id, 'is now available'));
-services.onUnavailable(service => console.log(service.id, 'is no longer available'));
+services.onServiceAvailable(service => console.log(service.id, 'is now available'));
+services.onServiceUnavailable(service => console.log(service.id, 'is no longer available'));
 
 // Start the network
 await net.start();
