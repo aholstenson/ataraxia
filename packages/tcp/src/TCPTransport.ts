@@ -217,5 +217,5 @@ export class TCPTransport extends AbstractTransport {
 }
 
 function generateSelfSignedCertificate(): { private: Buffer, cert: Buffer } {
-	return selfsigned.generate([], { days: 365 * 5 });
+	return selfsigned.generate([], { keySize: 2048, days: 365 * 5 });
 }
