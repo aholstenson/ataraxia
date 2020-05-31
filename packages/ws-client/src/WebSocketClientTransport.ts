@@ -64,7 +64,7 @@ export class WebSocketClientTransport extends AbstractTransport {
 declare const WebSocket: any;
 
 function defaultWebSocketFactory(url: string) {
-	if(typeof WebSocket !== 'object') {
+	if(typeof WebSocket !== 'function') {
 		throw new Error('No default WebSocket implementation found');
 	}
 
