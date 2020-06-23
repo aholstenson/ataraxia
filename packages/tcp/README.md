@@ -90,7 +90,7 @@ const tcp = new TCPTransport():
 
 // Add a manual addressing to the peer
 tcp.addManualPeer({
-  address: 'address-to-server',
+  host: 'address-to-server',
   port: 30000
 });
 
