@@ -279,13 +279,13 @@ export class Network<MessageTypes extends object = any> {
 
 		// Send to all nodes that have joined the exchange
 		for(const node of this.nodes.values()) {
-			promises.push(node.send(type, payload));
+			promises.push(node.send(type, payload)
+				.catch(ex => {
+					this.debug('Could not broadcast to ' + node.id, ex);
+				}));
 		}
 
 		return Promise.all(promises)
-			.then(() => undefined)
-			.catch(ex => {
-				this.debug('Could not broadcast to all nodes', ex);
-			});
+			.then(() => undefined);
 	}
 }
