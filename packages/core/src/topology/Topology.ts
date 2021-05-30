@@ -69,7 +69,7 @@ export class Topology {
 
 	private readonly self: TopologyNode;
 	private readonly nodes: IdMap<TopologyNode>;
-	private readonly peers: IdMap<PeerDetails>;
+	private readonly peers: IdMap<PeerDetails[]>;
 
 	private readonly routing: Routing;
 	private readonly messaging: Messaging;
@@ -107,7 +107,7 @@ export class Topology {
 			this.nodes,
 			(id) => {
 				const d = this.peers.get(id);
-				return d ? d.peer : undefined;
+				return d ? d[0].peer : undefined; // TODO: Pick lowest latency
 			},
 			this.availableEvent,
 			this.unavailableEvent
@@ -175,18 +175,11 @@ export class Topology {
 	 * messages and disconnects. This also starts the discovery process.
 	 */
 	public addPeer(peer: Peer) {
-		const current = this.peers.get(peer.id);
-		if(current) {
-			/*
-			 * We already know about a peer with this identifier.
-			 *
-			 * 1) It is either the same peer again
-			 * 2) Or it's a new peer with the same id
-			 *
-			 * Both cases are currently ignored as the current peer is still
-			 * connected.
-			 */
-			return;
+		let peers = this.peers.get(peer.id);
+		if(! peers) {
+			peers = [];
+
+			this.peers.set(peer.id, peers);
 		}
 
 		if(this.debug.enabled) {
@@ -227,15 +220,14 @@ export class Topology {
 			],
 		};
 
-		// Create or update the node
-		this.peers.set(peer.id, peerInfo);
+		peers.push(peerInfo);
 
 		// Create or get the node and mark it as reachable
 		const node = this.getOrCreate(peer.id);
 		node.direct = true;
 
 		// Update our internal routing
-		this.self.updateSelf(Array.from(this.peers.values()).map(info => info.peer));
+		this.self.updateSelf(this.peerArray());
 
 		// Queue a broadcast of routing information
 		this.updateRouting(true);
@@ -352,29 +344,40 @@ export class Topology {
 	 * that they can not be reached through the peer anymore.
 	 */
 	private handleDisconnect(peer: Peer) {
-		const info = this.peers.get(peer.id);
-		if(! info) return;
+		const peers = this.peers.get(peer.id);
+		if(! peers) return;
 
 		if(this.debug.enabled) {
 			this.debug('Peer', encodeId(peer.id), 'has disconnected');
 		}
 
-		// Remove the peer and its subscriptions
-		this.peers.delete(peer.id);
-		for(const handle of info.subscriptions) {
+		const idx = peers.findIndex(peerInfo => peerInfo.peer === peer);
+		if(idx < 0) return;
+
+		const peerInfo = peers[idx];
+
+		for(const handle of peerInfo.subscriptions) {
 			handle.unsubscribe();
 		}
 
-		// Update the node and indicate that it's not directly connectable anymore
-		const peerNode = this.getOrCreate(peer.id);
-		peerNode.direct = false;
+		// Remove the peer from the array
+		peers.splice(idx, 1);
 
-		for(const node of this.nodes.values()) {
-			node.removeRouting(peer);
+		if(peers.length === 0) {
+			// No more peers with the id, remove direct routing to it
+			this.peers.delete(peer.id);
+
+			// Update the node and indicate that it's not directly connectable anymore
+			const peerNode = this.getOrCreate(peer.id);
+			peerNode.direct = false;
+
+			for(const node of this.nodes.values()) {
+				node.removeRouting(peer);
+			}
 		}
 
 		// Update our internal routing
-		this.self.updateSelf(Array.from(this.peers.values()).map(i => i.peer));
+		this.self.updateSelf(this.peerArray());
 
 		// Broadcast routing as a disconnect changes our version
 		this.updateRouting(true);
@@ -397,7 +400,7 @@ export class Topology {
 		if(this.peers.size() === 0) return;
 
 		// Update the latencies from our own peers
-		const peers = Array.from(this.peers.values()).map(info => info.peer);
+		const peers = this.peerArray();
 		this.self.updateSelfLatencies(peers);
 
 		// Pick a peer to send information to
@@ -451,7 +454,7 @@ export class Topology {
 			if(this.debug.enabled) {
 				this.debug('Broadcasting routing to all connected peers');
 				this.debug('Version:', this.self.version);
-				this.debug('Peers:', Array.from(this.peers.values()).map(info => encodeId(info.peer.id)).join(', '));
+				this.debug('Peers:', this.peerArray().map(peer => encodeId(peer.id)).join(', '));
 
 				this.debug('Nodes:');
 				for(const node of this.nodes.values()) {
@@ -478,15 +481,29 @@ export class Topology {
 				nodes: nodes
 			};
 
-			for(const peerInfo of this.peers.values()) {
-				peerInfo.peer.send(PeerMessageType.NodeSummary, message)
-					.catch(err => this.debug('Caught error while sending node summary', err));
+			for(const peers of this.peers.values()) {
+				for(const peerInfo of peers) {
+					peerInfo.peer.send(PeerMessageType.NodeSummary, message)
+						.catch(err => this.debug('Caught error while sending node summary', err));
+				}
 			}
 
 			this.broadcastTimeout = null;
 
 			resolve();
 		}, 100));
+	}
+
+	private peerArray(): Peer[] {
+		const result = [];
+
+		for(const peers of this.peers.values()) {
+			for(const peerInfo of peers) {
+				result.push(peerInfo.peer);
+			}
+		}
+
+		return result;
 	}
 
 	public refreshRouting() {

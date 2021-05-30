@@ -27,13 +27,13 @@ export class AbstractTransport
 	private _started: boolean;
 
 	private _network?: WithNetwork;
-	protected readonly peers: IdMap<Peer>;
+	protected readonly peers: Set<Peer>;
 
 	constructor(name: string) {
 		this.peerConnectEvent = new Event(this);
 		this.peerDisconnectEvent = new Event(this);
 
-		this.peers = new IdMap();
+		this.peers = new Set();
 
 		this._started = false;
 		this.transportName = name;
@@ -128,61 +128,20 @@ export class AbstractTransport
 	 */
 	protected addPeer(peer: Peer) {
 		const onConnect = () => {
-			const existingPeer = this.peers.get(peer.id);
-			this.debug('Peer with id', encodeId(peer.id), 'was added');
-			if(existingPeer) {
-				this.debug('  Connection to peer already exists, resolving what peer to keep');
+			// New peer, connect to it
+			this.peers.add(peer);
 
-				/*
-				 * This peer is already available via this transport. Compare
-				 * the identifiers and disconnect ourselves if our id is
-				 * smaller than the peers id.
-				 *
-				 */
-				const compared = compareId(this.network.networkId, peer.id);
-				if(compared < 0) {
-					this.debug('  Our id is smaller, resolve by disconnecting existing peer');
-					existingPeer.disconnect();
-
-					if(isMergeablePeer(peer)) {
-						peer.merge(existingPeer as any);
-					}
-
-					// Emit event for the new peer once the existing one has disconnected
-					existingPeer.onDisconnect.once()
-						.then(() => {
-							this.peers.set(peer.id, peer);
-
-							this.debug('Peer with id', encodeId(peer.id), 'is now available');
-							this.peerConnectEvent.emit(peer);
-						});
-				} else {
-					this.debug('  Our id is larger, resolve by disconnecting new peer');
-					peer.disconnect();
-
-					if(isMergeablePeer(existingPeer)) {
-						existingPeer.merge(peer as any);
-					}
-				}
-			} else {
-				// New peer, connect to it
-				this.peers.set(peer.id, peer);
-
-				this.debug('Peer with id', encodeId(peer.id), 'is now available');
-				this.peerConnectEvent.emit(peer);
-			}
+			this.debug('Peer with id', encodeId(peer.id), 'is now available');
+			this.peerConnectEvent.emit(peer);
 		};
 
 		peer.onConnect(onConnect);
 
 		peer.onDisconnect(() => {
-			const stored = this.peers.get(peer.id);
-			if(stored === peer) {
-				this.peers.delete(peer.id);
+			this.peers.delete(peer);
 
-				this.debug('Peer with id', encodeId(peer.id), 'is no longer available');
-				this.peerDisconnectEvent.emit(peer);
-			}
+			this.debug('Peer with id', encodeId(peer.id), 'is no longer available');
+			this.peerDisconnectEvent.emit(peer);
 		});
 
 		if(peer.connected) {
