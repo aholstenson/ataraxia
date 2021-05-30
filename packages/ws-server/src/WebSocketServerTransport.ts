@@ -53,7 +53,7 @@ export class WebSocketServerTransport extends AbstractTransport {
 		if(this.server) {
 			const server = this.server;
 			await new Promise(resolve =>
-				server.close(() => resolve())
+				server.close(() => resolve(undefined))
 			);
 
 			this.server = undefined;
