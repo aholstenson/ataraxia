@@ -16,6 +16,12 @@ export interface MachineLocalTransportOptions {
 	 * to creating a socket in the temporary directory of the system.
 	 */
 	path?: string;
+
+	/**
+	 * Optional function that will be run if this instance becomes the leader
+	 * of the local network.
+	 */
+	onLeader?: () => void;
 }
 
 /**
@@ -36,6 +42,10 @@ export class MachineLocalTransport extends AbstractTransport {
 		this.leaderEvent = new Event(this);
 
 		this.path = (options && options.path) || tmpdir();
+
+		if(options?.onLeader) {
+			this.leaderEvent.subscribe(options.onLeader);
+		}
 	}
 
 	get leader() {
