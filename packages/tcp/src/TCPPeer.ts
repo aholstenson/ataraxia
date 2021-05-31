@@ -1,11 +1,12 @@
-import { TLSSocket, connect, PeerCertificate } from 'tls';
+import { Socket, connect} from 'net';
 import { HostAndPort } from 'tinkerhub-discovery';
+import peer from 'noise-peer';
 
 import { WithNetwork, BackOff } from 'ataraxia';
 import { StreamingPeer, MergeablePeer, DisconnectReason } from 'ataraxia/transport';
 
 export class TCPPeer extends StreamingPeer implements MergeablePeer {
-	private _serverSocket?: TLSSocket;
+	private _serverSocket?: Socket;
 	public addresses: HostAndPort[];
 
 	private readonly backOff: BackOff;
@@ -13,17 +14,8 @@ export class TCPPeer extends StreamingPeer implements MergeablePeer {
 	private addressAttempt: number;
 	private connectTimeout: any;
 
-	private privateKey?: Buffer;
-	private certificate?: Buffer;
-
-	constructor(
-		network: WithNetwork,
-		cert: null | { private: Buffer, cert: Buffer }
-	) {
+	constructor(network: WithNetwork) {
 		super(network);
-
-		this.privateKey = cert ? cert.private : undefined;
-		this.certificate = cert ? cert.cert : undefined;
 
 		this.backOff = new BackOff({
 			delay: 100,
@@ -40,19 +32,22 @@ export class TCPPeer extends StreamingPeer implements MergeablePeer {
 		}
 	}
 
-	set serverSocket(socket: TLSSocket | undefined) {
+	set serverSocket(socket: Socket | undefined) {
 		if(! socket) {
 			throw new Error('Tried setting an undefined server socket');
 		}
 
 		this._serverSocket = socket;
 
+		this.debug('Client connected from', socket.remoteAddress);
+
 		// Setup the server socket to remove itself if it disconnects
 		socket.on('close', () => this._serverSocket = undefined);
 
 		// Use this connection if there is no other connection active
-		this.setSocket(socket);
-		this.negotiateAsServer();
+		const stream = peer(socket, false);
+		this.setStream(stream);
+		stream.on('connected', () => this.negotiateAsServer());
 	}
 
 	get serverSocket() {
@@ -62,29 +57,6 @@ export class TCPPeer extends StreamingPeer implements MergeablePeer {
 	public setReachableVia(addresses: HostAndPort[]) {
 		this.addresses = addresses;
 		this.addressAttempt = 0;
-	}
-
-	protected localPublicSecurity(): ArrayBuffer | undefined {
-		if(this._serverSocket) {
-			return this.toSecurityBuffer(this._serverSocket.getCertificate());
-		} else if(this.socket) {
-			return this.toSecurityBuffer((this.socket as TLSSocket).getPeerCertificate());
-		}
-	}
-
-	protected remotePublicSecurity(): ArrayBuffer | undefined {
-		if(this._serverSocket) {
-			return this.toSecurityBuffer(this._serverSocket.getPeerCertificate());
-		} else if(this.socket) {
-			return this.toSecurityBuffer((this.socket as TLSSocket).getCertificate());
-		}
-	}
-
-	protected toSecurityBuffer(p: object | PeerCertificate | null): ArrayBuffer | undefined {
-		if(! p) return undefined;
-
-		const c = p as any;
-		return c.raw && c.raw.buffer;
 	}
 
 	protected handleDisconnect(reason: DisconnectReason, err?: Error) {
@@ -119,21 +91,20 @@ export class TCPPeer extends StreamingPeer implements MergeablePeer {
 		this.debug('Attempting connect to ' + address.host + ':' + address.port);
 
 		const client = connect({
-			key: this.privateKey,
-			cert: this.certificate,
-
 			host: address.host,
-			port: address.port,
-
-			rejectUnauthorized: false
+			port: address.port
 		});
 		client.setKeepAlive(true);
 		client.on('connect', () => {
-			this.debug('Connected via ' + address.host + ':' + address.port);
-
-			this.negotiateAsClient();
+			this.debug('Negotiating connection via ' + address.host + ':' + address.port);
 		});
-		this.setSocket(client);
+
+		const stream = peer(client, true);
+		stream.on('connected', () => {
+			this.debug('Connected via ' + address.host + ':' + address.port);
+			this.negotiateAsClient()
+		});
+		this.setStream(stream);
 	}
 
 	protected didConnect() {

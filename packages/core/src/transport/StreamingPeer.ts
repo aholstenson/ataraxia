@@ -1,5 +1,6 @@
+import { Duplex } from 'stream';
+
 import { AbstractPeer } from './AbstractPeer';
-import { Socket } from 'net';
 import { PeerMessageType } from './messages/PeerMessageType';
 import { PeerMessage } from './messages/PeerMessage';
 import { encodePeerPacket, PeerPacketDecodingStream } from './binary';
@@ -9,44 +10,42 @@ import { DisconnectReason } from './DisconnectReason';
  * Peer that connects via a binary streaming protocol.
  */
 export class StreamingPeer extends AbstractPeer {
-	protected socket?: Socket;
+	protected stream?: Duplex;
 	protected disconnected: boolean = false;
 
 	/**
-	 * Get if a socket is available.
+	 * Get if a stream is available.
 	 */
-	public hasSocket() {
-		return this.socket !== undefined;
+	public hasStream() {
+		return this.stream !== undefined;
 	}
 
 	/**
-	 * Set the socket being used for this peer.
+	 * Set the stream being used for this peer.
 	 *
-	 * @param {Socket} s
+	 * @param stream
 	 */
-	public setSocket(s: Socket) {
-		if(this.socket) {
+	public setStream(stream: Duplex) {
+		if(this.stream) {
 			// Request that the previous socket is destroyed
-			this.socket.destroy();
+			this.stream.destroy();
 		}
 
-		this.socket = s;
+		this.stream = stream;
 
 		// Reset version
 		this.version = 0;
 
 		// Setup error and disconnected events
-		s.on('error', err => {
-			if(s === this.socket) {
+		stream.on('error', err => {
+			if(stream === this.stream) {
 				// Only trigger disconnect if this socket is active
 				this.requestDisconnect(DisconnectReason.Error, err);
 			}
 		});
 
-		s.on('close', hadError => {
-			if(hadError) return;
-
-			if(s === this.socket) {
+		stream.on('close', () => {
+			if(stream === this.stream) {
 				// Register that the socket has closed, assuming a generic error
 				this.handleDisconnect(DisconnectReason.Error);
 			}
@@ -54,7 +53,7 @@ export class StreamingPeer extends AbstractPeer {
 
 		// Setup the decoder for incoming messages
 		const decoder = new PeerPacketDecodingStream();
-		const pipe = s.pipe(decoder);
+		const pipe = stream.pipe(decoder);
 
 		decoder.on('data', (data: any) => {
 			const type = data[0];
@@ -73,18 +72,18 @@ export class StreamingPeer extends AbstractPeer {
 	 * destroy the socket.
 	 */
 	protected handleDisconnect(reason: DisconnectReason, err?: Error) {
-		this.socket = undefined;
+		this.stream = undefined;
 
 		super.handleDisconnect(reason, err);
 	}
 
 	protected requestDisconnect(reason: DisconnectReason, err?: Error) {
-		if(! this.socket) {
+		if(! this.stream) {
 			return;
 		}
 
 		if(reason === DisconnectReason.Error || reason === DisconnectReason.PingTimeout) {
-			const socket = this.socket;
+			const socket = this.stream;
 
 			// Handle the disconnect
 			this.handleDisconnect(reason, err);
@@ -93,7 +92,7 @@ export class StreamingPeer extends AbstractPeer {
 			socket.destroy();
 		} else {
 			// For other reasons request that the socket closes
-			this.socket.end(() => {
+			this.stream.end(() => {
 				this.handleDisconnect(reason, err);
 			});
 		}
@@ -107,7 +106,7 @@ export class StreamingPeer extends AbstractPeer {
 
 		this.disconnected = true;
 
-		if(this.socket) {
+		if(this.stream) {
 			this.write(PeerMessageType.Bye)
 				.then(() => this.requestDisconnect(DisconnectReason.Manual))
 				.catch(() => { /* do nothing */ });
@@ -131,14 +130,14 @@ export class StreamingPeer extends AbstractPeer {
 	 * @param {*} payload
 	 */
 	private write(type: PeerMessageType, payload?: any): Promise<void> {
-		if(! this.socket) {
+		if(! this.stream) {
 			this.debug('No socket but tried to send', type, 'with data', payload);
 			return Promise.reject(new Error('Could not send data, connection lost'));
 		}
 
 		this.debug('Sending', PeerMessageType[type], 'with data', payload);
 		const data = encodePeerPacket(type, payload);
-		const socket = this.socket;
+		const socket = this.stream;
 
 		return new Promise((resolve, reject) => socket.write(data, err => {
 			if(err) {

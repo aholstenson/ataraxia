@@ -1,5 +1,4 @@
-import { createServer, Server } from 'tls';
-import selfsigned from 'selfsigned';
+import { createServer, Server } from 'net';
 
 import { ServicePublisher, ServiceDiscovery, MultiAddressService, HostAndPort } from 'tinkerhub-discovery';
 
@@ -63,23 +62,16 @@ export class TCPTransport extends AbstractTransport {
 
 		if(! started) return false;
 
-		const cert = generateSelfSignedCertificate();
 		if(! options.endpoint) {
-			this.server = createServer({
-				key: cert.private,
-				cert: cert.cert,
-
-				requestCert: true,
-				rejectUnauthorized: false
-			});
+			this.server = createServer();
 
 			// TODO: Better error handling
 			this.server.on('error', err => {
 				this.debug('Caught an error', err);
 			});
 
-			this.server.on('secureConnection', socket => {
-				const peer = new TCPPeer(this.network, null);
+			this.server.on('connection', socket => {
+				const peer = new TCPPeer(this.network);
 				peer.serverSocket = socket;
 
 				this.addPeer(peer);
@@ -135,7 +127,7 @@ export class TCPTransport extends AbstractTransport {
 					this.debug('Peer with id', service.id, 'now available, attempting connect');
 
 					// Setup the peer to attempt to connect to
-					const peer = this.setupPeer(service.addresses, cert);
+					const peer = this.setupPeer(service.addresses);
 
 					// Track the peer
 					this.foundPeers.set(service.id, peer);
@@ -155,7 +147,7 @@ export class TCPTransport extends AbstractTransport {
 
 		// Request connection to all manual peers added
 		for(const manualPeer of this.manualPeers) {
-			this.setupPeer([ manualPeer ], cert);
+			this.setupPeer([ manualPeer ]);
 		}
 
 		return true;
@@ -176,7 +168,7 @@ export class TCPTransport extends AbstractTransport {
 		if(this.server) {
 			const server = this.server;
 			await new Promise(resolve =>
-				server.close(() => resolve())
+				server.close(() => resolve(undefined))
 			);
 
 			this.server = undefined;
@@ -201,12 +193,12 @@ export class TCPTransport extends AbstractTransport {
 		this.manualPeers.push(hostAndPort);
 
 		if(this.started) {
-			this.setupPeer([ hostAndPort ], null);
+			this.setupPeer([ hostAndPort ]);
 		}
 	}
 
-	private setupPeer(addresses: HostAndPort[], cert: null | { private: Buffer, cert: Buffer }) {
-		const peer = new TCPPeer(this.network, cert);
+	private setupPeer(addresses: HostAndPort[]) {
+		const peer = new TCPPeer(this.network);
 		this.addPeer(peer);
 
 		peer.setReachableVia(addresses);
@@ -214,8 +206,4 @@ export class TCPTransport extends AbstractTransport {
 
 		return peer;
 	}
-}
-
-function generateSelfSignedCertificate(): { private: Buffer, cert: Buffer } {
-	return selfsigned.generate([], { keySize: 2048, days: 365 * 5 });
 }

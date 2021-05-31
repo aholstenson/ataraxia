@@ -67,7 +67,7 @@ export class MachineLocalTransport extends AbstractTransport {
 
 		const handlePeer = (socket: Socket, server: boolean) => {
 			const peer = new LocalPeer(this.network);
-			peer.setSocket(socket);
+			peer.setStream(socket);
 			if(server) {
 				peer.negotiateAsServer();
 			} else {
