@@ -33,6 +33,11 @@ export interface NetworkOptions {
 	 * made available.
 	 */
 	authentication: AuthProvider[];
+
+	/**
+	 * Transports of the network.
+	 */
+	transports?: Transport[];
 }
 
 /**
@@ -127,7 +132,7 @@ export class Network<MessageTypes extends object = any> {
 		this.networkName = options.name;
 		this.endpoint = options.endpoint || false;
 
-		this.transports = [];
+		this.transports = options.transports ?? [];
 		this.active = false;
 
 		this.nodeAvailableEvent = new Event(this);
