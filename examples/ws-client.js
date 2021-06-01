@@ -14,16 +14,18 @@ const { WebSocketClientTransport } = require('../packages/ws-client');
 
 const net = new Network({
 	name: 'example',
-	authentication: [
-		new AnonymousAuth()
+
+	transports: [
+		// Add the WebSocket transport and connect to port 7000
+		new WebSocketClientTransport({
+			url: 'ws://127.0.0.1:7000',
+			webSocketFactory: url => new WebSocket(url),
+			authentication: [
+				new AnonymousAuth()
+			]
+		})
 	]
 });
-
-// Add the WebSocket transport and connect to port 7000
-net.addTransport(new WebSocketClientTransport({
-	url: 'ws://127.0.0.1:7000',
-	webSocketFactory: url => new WebSocket(url)
-}));
 
 // Log when new nodes are available and send them a hello with the counter
 net.onNodeAvailable(node => {

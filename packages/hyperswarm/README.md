@@ -22,21 +22,25 @@ topic:
 import { Network, AnonymousAuth } from 'ataraxia';
 import { HyperswarmTransport } from 'ataraxia-hyperswarm';
 
-// Setup a network with anonymous authentication
+// Setup a network over Hyperswarm
 const net = new Network({
   name: 'name-of-your-app-or-network',
-  authentication: [
-    new AnonymousAuth()
+
+  transports: [
+
+    new HyperswarmTransport({
+      // Topic used to find peers
+      topic: 'Unique Topic',
+
+      // Setup anonymous authentication
+      authentication: [
+        new AnonymousAuth()
+      ]
+    })
+
   ]
 });
 
-// Setup a Hyperswarm transport connecting to every other peer with the same topic
-net.addTransport(new HyperswarmTransport({
-  topic: 'Unique Topic'
-}));
-
 // Start the network
-net.start()
-  .then(...)
-  .catch(...);
+await net.start();
 ```

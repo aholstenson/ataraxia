@@ -1,5 +1,3 @@
-import { Authentication } from './auth';
-
 /**
  * Interface used for things that are tied to a network, such as transports.
  */
@@ -13,9 +11,4 @@ export interface WithNetwork {
 	 * The debug namespace.
 	 */
 	readonly debugNamespace: string;
-
-	/**
-	 * Authentication helper for this network.
-	 */
-	readonly authentication: Authentication;
 }

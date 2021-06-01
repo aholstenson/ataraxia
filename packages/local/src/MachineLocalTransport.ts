@@ -4,8 +4,11 @@ import { tmpdir } from 'os';
 import { Event, Subscribable } from 'atvik';
 import { LowLevelNetwork } from 'local-machine-network';
 
+import { AnonymousAuth } from 'ataraxia';
 import { AbstractTransport, StreamingPeer, TransportOptions, DisconnectReason } from 'ataraxia/transport';
 import { Socket } from 'net';
+
+const AUTH = [ new AnonymousAuth() ];
 
 /**
  * Options available for MachineLocalTransport.
@@ -76,7 +79,7 @@ export class MachineLocalTransport extends AbstractTransport {
 		});
 
 		const handlePeer = (socket: Socket, server: boolean) => {
-			const peer = new LocalPeer(this.network);
+			const peer = new LocalPeer(this.network, AUTH);
 			peer.setStream(socket);
 			if(server) {
 				peer.negotiateAsServer();

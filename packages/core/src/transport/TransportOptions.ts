@@ -24,9 +24,4 @@ export interface TransportOptions {
 	 * The namespace to use for debugging purposes.
 	 */
 	readonly debugNamespace: string;
-
-	/**
-	 * Authentication helper needed by to authenticate with other peers.
-	 */
-	readonly authentication: Authentication;
 }

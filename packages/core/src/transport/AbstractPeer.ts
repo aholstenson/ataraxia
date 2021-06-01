@@ -9,7 +9,7 @@ import { PeerMessageType, PeerMessage, HelloMessage, SelectMessage, AuthMessage,
 import { WithNetwork } from '../WithNetwork';
 import { Peer } from './Peer';
 
-import { AuthProvider, AuthClientFlow, AuthServerFlow, AuthServerReplyType, AuthServerReply, AuthClientReplyType, AuthClientReply } from '../auth';
+import { AuthProvider, AuthClientFlow, AuthServerFlow, AuthServerReplyType, AuthServerReply, AuthClientReplyType, AuthClientReply, Authentication } from '../auth';
 import { DisconnectReason } from './DisconnectReason';
 
 /**
@@ -68,7 +68,8 @@ export abstract class AbstractPeer implements Peer {
 	private pingChecker: any;
 	private lastPing: number;
 
-	private authProviders?: AuthProvider[];
+	private readonly authProviders: ReadonlyArray<AuthProvider>;
+	private remainingAuthProviders?: AuthProvider[];
 	private authClientFlow?: AuthClientFlow;
 	private authServerFlow?: AuthServerFlow;
 
@@ -77,9 +78,14 @@ export abstract class AbstractPeer implements Peer {
 	 *
 	 * @param {AbstractTransport} transport
 	 */
-	constructor(parent: WithNetwork) {
+	constructor(
+		parent: WithNetwork,
+		authProviders: ReadonlyArray<AuthProvider>
+	) {
 		this.parent = parent;
 		this.debug = debug(parent.debugNamespace + ':pending-peer');
+
+		this.authProviders = authProviders;
 
 		this.state = State.Initial;
 
@@ -375,7 +381,7 @@ export abstract class AbstractPeer implements Peer {
 		this.state = State.WaitingForAuthAck;
 
 		// Assign the initial providers and send our initial auth
-		this.authProviders = this.parent.authentication.providers;
+		this.remainingAuthProviders = this.authProviders.slice();
 		this.sendInitialAuth();
 	}
 
@@ -383,15 +389,15 @@ export abstract class AbstractPeer implements Peer {
 	 * Pick the next provider to use for authentication.
 	 */
 	private pickNextAuthProvider() {
-		if(! this.authProviders) {
+		if(! this.remainingAuthProviders) {
 			return null;
 		}
 
 		while(true) {
-			if(this.authProviders.length === 0) return null;
+			if(this.remainingAuthProviders.length === 0) return null;
 
-			const provider = this.authProviders[0];
-			this.authProviders.splice(0, 1);
+			const provider = this.remainingAuthProviders[0];
+			this.remainingAuthProviders.splice(0, 1);
 
 			if(provider.createClientFlow) {
 				return provider;
@@ -502,7 +508,14 @@ export abstract class AbstractPeer implements Peer {
 				}
 			}
 
-			const provider = this.parent.authentication.getProvider(message.method);
+			let provider: AuthProvider | undefined;
+			for(const p of this.authProviders) {
+				if(p.id === message.method) {
+					provider = p;
+					break;
+				}
+			}
+
 			if(! provider || ! provider.createServerFlow) {
 				// This provider does not exist, reject the authentication attempt
 				this.send(PeerMessageType.Reject, undefined)

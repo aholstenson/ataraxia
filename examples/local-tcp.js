@@ -13,21 +13,23 @@ const { MachineLocalTransport } = require('../packages/local');
 const { TCPTransport, TCPPeerMDNSDiscovery } = require('../packages/tcp');
 
 const net = new Network({
-	name: 'example',
-	authentication: [
-		new AnonymousAuth()
-	]
+	name: 'example'
 });
 
 // Add the machine-local transport with TCP support
-const localTransport = new MachineLocalTransport();
-localTransport.onLeader(() => {
-	console.log('This node is now the leader of the machine-local network, starting TCP transport');
-	net.addTransport(new TCPTransport({
-		discovery: new TCPPeerMDNSDiscovery()
-	}));
-});
-net.addTransport(localTransport);
+net.addTransport(new MachineLocalTransport({
+	onLeader: () => {
+		console.log('This node is now the leader of the machine-local network, starting TCP transport');
+
+		net.addTransport(new TCPTransport({
+			discovery: new TCPPeerMDNSDiscovery(),
+
+			authentication: [
+				new AnonymousAuth()
+			]
+		}));
+	}
+}));
 
 // Log when new nodes are available and send them a hello with the counter
 net.onNodeAvailable(node => {

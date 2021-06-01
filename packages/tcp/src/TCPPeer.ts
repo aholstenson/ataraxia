@@ -2,7 +2,7 @@ import { Socket, connect} from 'net';
 import { HostAndPort } from 'tinkerhub-discovery';
 import peer from 'noise-peer';
 
-import { WithNetwork, BackOff } from 'ataraxia';
+import { WithNetwork, BackOff, AuthProvider } from 'ataraxia';
 import { StreamingPeer, MergeablePeer, DisconnectReason } from 'ataraxia/transport';
 
 export class TCPPeer extends StreamingPeer implements MergeablePeer {
@@ -14,8 +14,11 @@ export class TCPPeer extends StreamingPeer implements MergeablePeer {
 	private addressAttempt: number;
 	private connectTimeout: any;
 
-	constructor(network: WithNetwork) {
-		super(network);
+	constructor(
+		network: WithNetwork,
+		authProviders: ReadonlyArray<AuthProvider>
+	) {
+		super(network, authProviders);
 
 		this.backOff = new BackOff({
 			delay: 100,

@@ -12,20 +12,27 @@ const { TCPTransport, TCPPeerMDNSDiscovery } = require('../packages/tcp');
 
 const net = new Network({
 	name: 'example',
-	authentication: [
-		new AnonymousAuth()
+
+	transports: [
+		// Add the WebSocket transport auto-starting a server on port 7000
+		new WebSocketServerTransport({
+			port: 7000,
+
+			authentication: [
+				new AnonymousAuth()
+			]
+		}),
+
+		// Add the TCP transport with mDNS discovery
+		new TCPTransport({
+			discovery: new TCPPeerMDNSDiscovery(),
+
+			authentication: [
+				new AnonymousAuth()
+			]
+		})
 	]
 });
-
-// Add the WebSocket transport auto-starting a server on port 7000
-net.addTransport(new WebSocketServerTransport({
-	port: 7000
-}));
-
-// Add the TCP transport with mDNS discovery
-net.addTransport(new TCPTransport({
-	discovery: new TCPPeerMDNSDiscovery()
-}));
 
 // Log when new nodes are available and send them a hello with the counter
 net.onNodeAvailable(node => {

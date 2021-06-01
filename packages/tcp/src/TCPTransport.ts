@@ -7,6 +7,7 @@ import { encodeId } from 'ataraxia/id';
 
 import { TCPPeerDiscovery } from './TCPPeerDiscovery';
 import { TCPPeer } from './TCPPeer';
+import { AuthProvider } from 'ataraxia';
 
 /**
  * Options that can be used for a TCP transport.
@@ -22,12 +23,19 @@ export interface TCPTransportOptions {
 	 * Discovery to use for finding related peers.
 	 */
 	discovery?: TCPPeerDiscovery;
+
+	/**
+	 * Authentication providers to use for this transport.
+	 */
+	authentication: ReadonlyArray<AuthProvider>;
 }
 
 /**
  * TCP based transport.
  */
 export class TCPTransport extends AbstractTransport {
+	private readonly authProviders: ReadonlyArray<AuthProvider>;
+
 	private _port: number;
 	private foundPeers: Map<string, TCPPeer>;
 
@@ -39,7 +47,7 @@ export class TCPTransport extends AbstractTransport {
 
 	private readonly manualPeers: HostAndPort[];
 
-	constructor(options: TCPTransportOptions={}) {
+	constructor(options: TCPTransportOptions) {
 		super('tcp');
 
 		if(typeof options.port !== 'undefined') {
@@ -47,6 +55,8 @@ export class TCPTransport extends AbstractTransport {
 				throw new Error('port must be a valid port number (1-65535)');
 			}
 		}
+
+		this.authProviders = options.authentication;
 
 		this._port = options.port || 0;
 
@@ -71,7 +81,7 @@ export class TCPTransport extends AbstractTransport {
 			});
 
 			this.server.on('connection', socket => {
-				const peer = new TCPPeer(this.network);
+				const peer = new TCPPeer(this.network, this.authProviders);
 				peer.serverSocket = socket;
 
 				this.addPeer(peer);
@@ -198,7 +208,7 @@ export class TCPTransport extends AbstractTransport {
 	}
 
 	private setupPeer(addresses: HostAndPort[]) {
-		const peer = new TCPPeer(this.network);
+		const peer = new TCPPeer(this.network, this.authProviders);
 		this.addPeer(peer);
 
 		peer.setReachableVia(addresses);

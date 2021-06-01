@@ -1,4 +1,4 @@
-import { WithNetwork } from 'ataraxia';
+import { AuthProvider, WithNetwork } from 'ataraxia';
 import { DisconnectReason } from 'ataraxia/transport';
 
 import { AbstractWebSocketPeer } from './AbstractWebSocketPeer';
@@ -13,10 +13,11 @@ export class WebSocketClientPeer extends AbstractWebSocketPeer {
 
 	constructor(
 		parent: WithNetwork,
+		authProviders: ReadonlyArray<AuthProvider>,
 		factory: WebSocketFactory,
 		url: string
 	) {
-		super(parent);
+		super(parent, authProviders);
 
 		this.factory = factory;
 		this.url = url;

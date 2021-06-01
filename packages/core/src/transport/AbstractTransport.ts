@@ -95,8 +95,7 @@ export class AbstractTransport
 
 		this._network = {
 			networkId: options.networkId,
-			debugNamespace: this.debug.namespace,
-			authentication: options.authentication
+			debugNamespace: this.debug.namespace
 		};
 
 		return true;

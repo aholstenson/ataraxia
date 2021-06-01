@@ -7,6 +7,8 @@ import { AuthServerFlow, AuthServerReplyType } from './AuthServerFlow';
  * any form of authentication.
  */
 export class AnonymousAuth implements AuthProvider {
+	public static readonly INSTANCE = new AnonymousAuth();
+
 	public readonly id = 'anonymous';
 
 	public createClientFlow(): AuthClientFlow {

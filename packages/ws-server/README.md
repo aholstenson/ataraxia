@@ -20,20 +20,22 @@ npm install ataraxia-ws-server
 import { Network, AnonymousAuth } from 'ataraxia';
 import { WebSocketServerTransport } from 'ataraxia-ws-server';
 
-// Setup a network with anonymous authentication
+// Setup a network with a WebSocket server
 const net = new Network({
   name: 'name-of-your-app-or-network',
-  authentication: [
-    new AnonymousAuth()
+
+  transport: [
+
+    new WebSocketServerTransport({
+      port: 7000,
+
+      authentication: [
+        new AnonymousAuth()
+      ]
+    })
+
   ]
 });
 
-// Add the websocket server - uses options available from ws
-net.addTransport(new WebSocketServerTransport({
-  port: 7000
-});
-
-net.start()
-  .then(...)
-  .catch(...);
+await net.start();
 ```

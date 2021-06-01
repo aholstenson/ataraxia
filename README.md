@@ -37,18 +37,24 @@ Ataraxia is split into several projects:
 import { Network, AnonymousAuth } from 'ataraxia';
 import { TCPTransport, TCPPeerMDNSDiscovery } from 'ataraxia-tcp';
 
-// Setup a network with anonymous authentication
+// Setup a network with a TCP transport
 const net = new Network({
   name: 'name-of-your-app-or-network',
-  authentication: [
-    new AnonymousAuth()
+  
+  transports: [
+
+    new TCPTransport({
+      // Discover peers using mDNS
+      discovery: new TCPPeerMDNSDiscovery(),
+
+      // Setup anonymous authentication
+      authentication: [
+        new AnonymousAuth()
+      ]
+    })
+  
   ]
 });
-
-// Setup a TCP transport that will discover other peers on the same network using mDNS
-net.addTransport(new TCPTransport({
-  discovery: new TCPPeerMDNSDiscovery()
-}));
 
 net.onNodeAvailable(node => {
   console.log('A new node is available:', node.id);
@@ -56,12 +62,11 @@ net.onNodeAvailable(node => {
 });
 
 net.onMessage(msg => {
-  console.log('A message was received', msg.type, 'with data', msg.payload, 'from', msg.source.id);
+  console.log('A message was received', msg.type, 'with data', msg.data, 'from', msg.source.id);
 });
 
-net.start()
-  .then(...)
-  .catch(...);
+// Start the network
+await net.start();
 ```
 
 ## Example with machine-local transport and TCP transport
@@ -75,30 +80,29 @@ import { Network, AnonymousAuth } from 'ataraxia';
 import { TCPTransport, TCPPeerMDNSDiscovery } from 'ataraxia-tcp';
 import { MachineLocalTransport } from 'ataraxia-local';
 
-// Setup a network with anonymous authentication
+// Setup a network
 const net = new Network({
-  name: 'name-of-your-app-or-network',
-  authentication: [
-    new AnonymousAuth()
-  ]
+  name: 'name-of-your-app-or-network'
 });
 
-const local = new MachineLocalTransport();
-local.onLeader(() => {
-  /*
-   * The leader event is emitted when this instance becomes the leader
-   * of the machine-local network. This instance will now handle
-   * connections to other machines in the network.
-   */
-  net.addTransport(new TCPTransport({
-    discovery: new TCPPeerMDNSDiscovery()
-  }));
-});
-net.addTransport(local);
+net.addTransport(new MachineLocalTransport([
+  onLeader: () => {
+    /*
+    * The leader event is emitted when this instance becomes the leader
+    * of the machine-local network. This instance will now handle
+    * connections to other machines in the network.
+    */
+    net.addTransport(new TCPTransport({
+      discovery: new TCPPeerMDNSDiscovery(),
 
-net.start()
-  .then(...)
-  .catch(...);
+      authentication: [
+        new AnonymousAuth()
+      ]
+    }));
+  }
+]);
+
+await net.start();
 ```
 
 ## Support for services

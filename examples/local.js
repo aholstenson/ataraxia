@@ -12,21 +12,15 @@ const { MachineLocalTransport } = require('../packages/local');
 
 const net = new Network({
 	name: 'example',
-	authentication: [
-		new AnonymousAuth()
+
+	transports: [
+		new MachineLocalTransport()
 	]
 });
-
-// Add the machine-local transport
-net.addTransport(new MachineLocalTransport());
-
-// A counter that is sent to other nodes
-let counter = 0;
 
 // Log when new nodes are available and send them a hello with the counter
 net.onNodeAvailable(node => {
 	console.log('Node', node, 'is now available');
-	node.send('hello', { counter: counter });
 });
 
 net.onNodeUnavailable(node => {
@@ -38,12 +32,12 @@ net.onMessage(msg => {
 	console.log('Message was received:', 'type=', msg.type, 'data=', msg.data, 'source=', msg.source);
 });
 
-// Increment and broadcast counter to all nodes every five seconds
-setInterval(() => {
-	net.broadcast('counter', { current: ++counter });
-}, 5000);
-
 // Start the network
 net.start()
-	.then(() => console.log('Network has started with id', net.networkId))
+	.then(() => {
+		console.log('Network has started with id', net.networkId);
+
+		// Start our helper
+		return require('./helpers/counter')(net);
+	})
 	.catch(err => console.error(err));

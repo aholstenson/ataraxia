@@ -5,8 +5,8 @@ import { Authentication, AnonymousAuth, AuthProvider } from '../../src/auth';
 describe('Transport: AbstractPeer', function() {
 
 	it('Server and client can negotiate', (done) => {
-		const server = new TestPeer(testNetwork());
-		const client = new TestPeer(testNetwork());
+		const server = new TestPeer(testNetwork(), [ AnonymousAuth.INSTANCE ]);
+		const client = new TestPeer(testNetwork(), [ AnonymousAuth.INSTANCE ]);
 
 		client.other = server;
 		server.other = client;

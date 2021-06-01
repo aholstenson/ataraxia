@@ -11,16 +11,18 @@
  const { HyperswarmTransport } = require('../packages/hyperswarm');
 
  const net = new Network({
-	 name: 'example',
-	 authentication: [
-		 new AnonymousAuth()
-	 ]
- });
+	name: 'example',
 
- // Add the TCP transport with mDNS discovery
- net.addTransport(new HyperswarmTransport({
-	 topic: 'ataraxia-example'
- }));
+	transports: [
+		new HyperswarmTransport({
+			topic: 'ataraxia-example',
+
+			authentication: [
+			   new AnonymousAuth()
+		   ]
+		})
+	]
+ });
 
  // Log when new nodes are available and send them a hello with the counter
  net.onNodeAvailable(node => {

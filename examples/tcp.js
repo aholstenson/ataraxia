@@ -12,15 +12,16 @@ const { TCPTransport, TCPPeerMDNSDiscovery } = require('../packages/tcp');
 
 const net = new Network({
 	name: 'example',
-	authentication: [
-		new AnonymousAuth()
+
+	transports: [
+		new TCPTransport({
+			discovery: new TCPPeerMDNSDiscovery(),
+			authentication: [
+				new AnonymousAuth()
+			]
+		})
 	]
 });
-
-// Add the TCP transport with mDNS discovery
-net.addTransport(new TCPTransport({
-	discovery: new TCPPeerMDNSDiscovery()
-}));
 
 // Log when new nodes are available and send them a hello with the counter
 net.onNodeAvailable(node => {

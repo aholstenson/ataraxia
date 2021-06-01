@@ -2,12 +2,20 @@ import WS from 'ws';
 
 import { AbstractWebSocketPeer } from 'ataraxia-ws-client';
 import { AbstractTransport, TransportOptions } from 'ataraxia/transport';
+import { AuthProvider } from 'ataraxia';
+
+export interface WebSocketServerTransportOptions extends WS.ServerOptions {
+	/**
+	 * Authentication providers to use for this transport.
+	 */
+	authentication: ReadonlyArray<AuthProvider>;
+}
 
 export class WebSocketServerTransport extends AbstractTransport {
-	private options: WS.ServerOptions;
+	private options: WebSocketServerTransportOptions;
 	public server?: WS.Server;
 
-	constructor(options: WS.ServerOptions) {
+	constructor(options: WebSocketServerTransportOptions) {
 		super('ws-server');
 
 		if(! options) {
@@ -25,7 +33,7 @@ export class WebSocketServerTransport extends AbstractTransport {
 		this.server = new WS.Server(this.options);
 
 		this.server.on('connection', socket => {
-			const peer = new WebsocketServerPeer(this.network);
+			const peer = new WebsocketServerPeer(this.network, this.options.authentication);
 			this.addPeer(peer);
 
 			peer.setSocket(socket);

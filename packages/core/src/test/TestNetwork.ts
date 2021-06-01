@@ -54,8 +54,7 @@ export class TestNetwork {
 		if(! info) {
 			const transport = new TestTransport();
 			const network = new Network({
-				name: 'tests',
-				authentication: [ new AnonymousAuth() ]
+				name: 'tests'
 			});
 			network.addTransport(transport);
 			network.start();

@@ -1,4 +1,4 @@
-import { WithNetwork } from 'ataraxia';
+import { AnonymousAuth, AuthProvider, WithNetwork } from 'ataraxia';
 import {
 	AbstractPeer,
 	PeerMessageType,
@@ -17,8 +17,8 @@ import { WebSocket } from './WebSocket';
 export abstract class AbstractWebSocketPeer extends AbstractPeer {
 	private socket?: WebSocket;
 
-	constructor(parent: WithNetwork, socket?: WebSocket) {
-		super(parent);
+	constructor(parent: WithNetwork, authProviders: ReadonlyArray<AuthProvider>) {
+		super(parent, authProviders);
 	}
 
 	public setSocket(socket: WebSocket) {

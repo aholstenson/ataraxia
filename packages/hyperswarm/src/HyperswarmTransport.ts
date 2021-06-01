@@ -1,7 +1,7 @@
 import hyperswarm, { Swarm } from 'hyperswarm';
 import peer from 'noise-peer';
 
-import { WithNetwork } from 'ataraxia';
+import { AuthProvider, WithNetwork } from 'ataraxia';
 import { AbstractTransport, StreamingPeer, TransportOptions } from 'ataraxia/transport';
 
 import { createHash } from 'crypto';
@@ -12,6 +12,11 @@ import { Duplex } from 'stream';
  */
 export interface HyperswarmTransportOptions {
 	topic: string;
+
+	/**
+	 * Authentication providers to use for this transport.
+	 */
+	authentication: ReadonlyArray<AuthProvider>;
 
 	lookup?: boolean;
 
@@ -51,7 +56,12 @@ export class HyperswarmTransport extends AbstractTransport {
 		swarm.on('connection', (socket, info) => {
 			this.debug('Connecting to a peer, client=', info.client);
 
-			this.addPeer(new HyperswarmPeer(this.network, socket, info.client));
+			this.addPeer(new HyperswarmPeer(
+				this.network,
+				this.options.authentication,
+				socket,
+				info.client
+			));
 		});
 
 		await new Promise(resolve => {
@@ -84,8 +94,13 @@ export class HyperswarmTransport extends AbstractTransport {
 }
 
 class HyperswarmPeer extends StreamingPeer {
-	constructor(network: WithNetwork, socket: Duplex, client: boolean) {
-		super(network);
+	constructor(
+		network: WithNetwork,
+		authProviders: ReadonlyArray<AuthProvider>,
+		socket: Duplex,
+		client: boolean
+	) {
+		super(network, authProviders);
 
 		const stream = peer(socket, client);
 		this.setStream(stream);

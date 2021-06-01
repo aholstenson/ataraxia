@@ -9,7 +9,7 @@ import { Topology } from './topology';
 import { Node } from './Node';
 import { NetworkNode } from './NetworkNode';
 
-import { Authentication, AuthProvider } from './auth';
+import { Authentication } from './auth';
 
 import { MessageUnion } from './MessageUnion';
 import { MessageType } from './MessageType';
@@ -27,12 +27,6 @@ export interface NetworkOptions {
 	 * and that a transport may opt to connect to fewer peers.
 	 */
 	endpoint?: boolean;
-
-	/**
-	 * Authentication providers to use. At least one providers needs to be
-	 * made available.
-	 */
-	authentication: AuthProvider[];
 
 	/**
 	 * Transports of the network.
@@ -89,11 +83,6 @@ export class Network<MessageTypes extends object = any> {
 	 */
 	private readonly nodes: Map<string, NetworkNode>;
 
-	/**
-	 * Authentication for this network.
-	 */
-	private readonly authentication: Authentication;
-
 	private readonly nodeAvailableEvent: Event<this, [ Node<MessageTypes> ]>;
 	private readonly nodeUnavailableEvent: Event<this, [ Node<MessageTypes> ]>;
 	private readonly messageEvent: Event<this, [ MessageUnion<MessageTypes> ]>;
@@ -121,10 +110,6 @@ export class Network<MessageTypes extends object = any> {
 			throw new Error('Name of network is required');
 		}
 
-		if(! Array.isArray(options.authentication) || options.authentication.length === 0) {
-			throw new Error('At least one authentication provider is required');
-		}
-
 		const debugNamespace = 'ataraxia:' + options.name;
 		this.debug = debug(debugNamespace);
 
@@ -132,7 +117,7 @@ export class Network<MessageTypes extends object = any> {
 		this.networkName = options.name;
 		this.endpoint = options.endpoint || false;
 
-		this.transports = options.transports ?? [];
+		this.transports = [];
 		this.active = false;
 
 		this.nodeAvailableEvent = new Event(this);
@@ -141,15 +126,10 @@ export class Network<MessageTypes extends object = any> {
 
 		this.nodes = new Map();
 
-		this.authentication = new Authentication({
-			providers: options.authentication
-		});
-
 		// Setup the topology of the network
 		this.topology = new Topology({
 			networkId: this.networkIdBinary,
-			debugNamespace: debugNamespace,
-			authentication: this.authentication
+			debugNamespace: debugNamespace
 		}, options);
 
 		this.topology.onAvailable(n => {
@@ -178,6 +158,9 @@ export class Network<MessageTypes extends object = any> {
 			const msg = node.emitMessage(type, data);
 			this.messageEvent.emit(msg as any);
 		});
+
+		// Add all the transports if given via options
+		options.transports?.forEach(t => this.addTransport(t));
 	}
 
 	get onNodeAvailable() {
@@ -215,8 +198,7 @@ export class Network<MessageTypes extends object = any> {
 				networkId: this.networkIdBinary,
 				networkName: this.networkName,
 				endpoint: this.endpoint,
-				debugNamespace: this.debug.namespace,
-				authentication: this.authentication
+				debugNamespace: this.debug.namespace
 			});
 		}
 	}
@@ -233,8 +215,7 @@ export class Network<MessageTypes extends object = any> {
 			networkId: this.networkIdBinary,
 			networkName: this.networkName,
 			endpoint: this.endpoint,
-			debugNamespace: this.debug.namespace,
-			authentication: this.authentication
+			debugNamespace: this.debug.namespace
 		};
 
 		this.active = true;

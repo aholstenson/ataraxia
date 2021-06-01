@@ -19,7 +19,7 @@ class MirroredPeer extends AbstractPeer implements TestPeer {
 	constructor() {
 		super({
 			debugNamespace: 'test',
-		} as any);
+		} as any, []);
 
 		this.disconnected = false;
 	}
