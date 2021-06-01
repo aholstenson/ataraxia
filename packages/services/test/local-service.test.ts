@@ -4,10 +4,7 @@ import { Services } from '../src/Services';
 
 // Fake network used by tests, not actually started
 const net = new Network({
-	name: 'test',
-	authentication: [
-		new AnonymousAuth()
-	]
+	name: 'test'
 });
 
 interface TestService {
