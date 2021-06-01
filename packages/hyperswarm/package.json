@@ -1,5 +1,5 @@
 {
-  "name": "ataraxia-hypersawrm",
+  "name": "ataraxia-hyperswarm",
   "version": "0.8.2",
   "description": "Hyperswarm transport for Ataraxia P2P messaging",
   "license": "MIT",
