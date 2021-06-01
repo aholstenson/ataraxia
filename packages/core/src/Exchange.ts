@@ -197,15 +197,30 @@ export class Exchange<MessageTypes extends object = any> {
 		const source = message.source;
 		switch(message.type) {
 			case 'exchange:join':
+				// Only handle requests to join this exchange
+				if(message.data.id !== this.id) return;
+
 				if(! this.nodes.has(source.id)) {
 					const node: Node<MessageTypes> = source as any;
 
 					this.nodes.set(source.id, node);
 					this.nodeAvailableEvent.emit(node);
-
-					source.send('exchange:join', { id: this.id })
-						.catch(err => this.debug('Failed to ask to join exchange', err));
 				}
+
+				// Send an acknowledgement of joining
+				source.send('exchange:join-ack', { id: this.id })
+					.catch(err => this.debug('Failed to ask to join exchange', err));
+
+				break;
+			case 'exchange:join-ack':
+				if(this.nodes.has(source.id)) break;
+
+				// Node acknowledged us joining but we're not tracking them
+				const node: Node<MessageTypes> = source as any;
+
+				this.nodes.set(source.id, node);
+				this.nodeAvailableEvent.emit(node);
+
 				break;
 			case 'exchange:leave':
 				this.handleNodeUnavailable(source);
