@@ -445,9 +445,8 @@ export abstract class AbstractPeer implements Peer {
 	 * Client flow: Server accepted our authentication.
 	 */
 	private receiveAuthOk() {
-		this.switchToActive();
-
 		this.send(PeerMessageType.Begin, undefined)
+			.then(() => this.switchToActive())
 			.catch(err => this.abort('Sending BEGIN failed', err));
 	}
 
