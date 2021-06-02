@@ -183,7 +183,7 @@ export class Network<MessageTypes extends object = any> {
 	 * Add a transport to this network. If the network is started the transport
 	 * will also be started.
 	 */
-	public addTransport(transport: Transport) {
+	public addTransport(transport: Transport): void {
 		if(this.transports.indexOf(transport) >= 0) {
 			return;
 		}
@@ -199,7 +199,10 @@ export class Network<MessageTypes extends object = any> {
 				networkName: this.networkName,
 				endpoint: this.endpoint,
 				debugNamespace: this.debug.namespace
-			});
+			})
+				.catch(ex => {
+					this.debug('Could not start transport', ex);
+				});
 		}
 	}
 
