@@ -13,9 +13,14 @@ import { MessageData } from './MessageData';
  * Messages used by an exchange.
  */
 interface ExchangeMessages {
-	'exchange:join': { id: string };
+	'exchange:join': { id: string, version: number };
 	'exchange:leave': { id: string };
 }
+
+/**
+ * Current version.
+ */
+const VERSION_CURRENT = 1;
 
 /**
  * Exchange that nodes can join or leave and easily broadcast to.
@@ -153,7 +158,8 @@ export class Exchange<MessageTypes extends object = any> {
 		];
 
 		return network.broadcast('exchange:join', {
-			id: this.id
+			id: this.id,
+			version: VERSION_CURRENT
 		});
 	}
 
@@ -180,7 +186,7 @@ export class Exchange<MessageTypes extends object = any> {
 	 * @param node
 	 */
 	private handleNodeAvailable(node: Node<ExchangeMessages>) {
-		node.send('exchange:join', { id: this.id })
+		node.send('exchange:join', { id: this.id, version: VERSION_CURRENT })
 			.catch(err => this.debug('Failed to ask to join exchange', err));
 	}
 
