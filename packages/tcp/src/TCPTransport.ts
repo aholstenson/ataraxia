@@ -187,7 +187,7 @@ export class TCPTransport extends AbstractTransport {
 		return true;
 	}
 
-	public addManualPeer(hostAndPort: HostAndPort) {
+	public addManualPeer(hostAndPort: { host: string, port: number }) {
 		if(! hostAndPort) {
 			throw new Error('Address and port for peer must be specified');
 		}
@@ -200,10 +200,11 @@ export class TCPTransport extends AbstractTransport {
 			throw new Error('port must be a number');
 		}
 
-		this.manualPeers.push(hostAndPort);
+		const instance = new HostAndPort(hostAndPort.host, hostAndPort.port);
+		this.manualPeers.push(instance);
 
 		if(this.started) {
-			this.setupPeer([ hostAndPort ]);
+			this.setupPeer([ instance ]);
 		}
 	}
 
