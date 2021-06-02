@@ -67,6 +67,13 @@ export class TCPTransport extends AbstractTransport {
 		this.manualPeers = [];
 	}
 
+	/**
+	 * Get the port number the transport was bound to.
+	 */
+	get port() {
+		return this._port;
+	}
+
 	public async start(options: TransportOptions) {
 		const started = await super.start(options);
 
