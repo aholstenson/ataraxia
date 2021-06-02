@@ -2,9 +2,36 @@ declare module 'hyperswarm' {
 
 	import { Duplex } from 'stream';
 
-	function hyperswarm(): Swarm;
+	function hyperswarm(options?: HyperswarmOptions): Swarm;
 
 	export default hyperswarm;
+
+	export interface HyperswarmOptions {
+		bootstrap?: ReadonlyArray<string>;
+
+		ephemeral?: boolean;
+
+		maxPeers?: number;
+
+		maxServerSockets?: number;
+
+		maxClientSocketS?: number;
+
+		validatePeer?: (peer: SwarmPeer) => boolean;
+
+		queue?: HyperswarmQueueOptions;
+	}
+
+	export interface HyperswarmQueueOptions {
+		requeue?: ReadonlyArray<number>;
+
+		forget?: {
+			unresponsive?: number,
+			banned?: number
+		};
+
+		multiplex?: boolean;
+	}
 
 	export interface SwarmJoinOptions {
 		lookup?: boolean;

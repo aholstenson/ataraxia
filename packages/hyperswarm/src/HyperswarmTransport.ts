@@ -17,10 +17,6 @@ export interface HyperswarmTransportOptions {
 	 * Authentication providers to use for this transport.
 	 */
 	authentication: ReadonlyArray<AuthProvider>;
-
-	lookup?: boolean;
-
-	announce?: boolean;
 }
 
 /**
@@ -43,7 +39,10 @@ export class HyperswarmTransport extends AbstractTransport {
 
 		if(! started) return false;
 
-		const swarm = this.swarm = hyperswarm();
+		const swarm = this.swarm = hyperswarm({
+			// Assume that endpoints are short-lived
+			ephemeral: options.endpoint ? true : undefined
+		});
 
 		const topic = this.topic = createHash('sha256')
 			.update(this.options.topic)
@@ -65,9 +64,18 @@ export class HyperswarmTransport extends AbstractTransport {
 		});
 
 		await new Promise(resolve => {
+			/*
+			 * Join the topic automatically setting announce and lookup.
+			 *
+			 * Endpoints join the topic without announcing they can be connected
+			 * to which makes them only find existing peers.
+			 *
+			 * If not an endpoint this will announce its availability and also
+			 * search for existing peers.
+			 */
 			swarm.join(topic, {
-				announce: this.options.announce ?? true,
-				lookup: this.options.lookup ?? true
+				announce: ! options.endpoint,
+				lookup: true
 			}, () => resolve(undefined));
 		});
 
