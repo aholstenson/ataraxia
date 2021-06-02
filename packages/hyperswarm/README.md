@@ -44,3 +44,16 @@ const net = new Network({
 // Start the network
 await net.start();
 ```
+
+## API
+
+* `new HyperswarmTransport(options)`
+
+  Create a new instance of this transport.
+
+  * `options`
+    * `topic: string`, topic used to discover peers. The transport will attempt
+      to connect to other peers using the same topic so making it unique to your
+      app or use case is important.
+    * `authentication: AuthProvider[]`, providers to use for authentication of
+      found peers.

@@ -39,3 +39,28 @@ const net = new Network({
 
 await net.start();
 ```
+
+## API
+
+* 
+  `new WebSocketServerTransport(options)` 
+  
+  Create a new transport using the given options.
+
+  * `options`
+    * `host?: string`, hostname where to bind the server.
+    * `port?: number`, port where to bind the server.
+    * `authentication:  AuthProvider[]`, array of authentication providers.
+    * `backlog?: number`, maximum length of the queue of pending connections.
+    * `server?: http.Server | https.Server`, pre-created Node.js HTTP/S server.
+    * `verifyClient?: function`, a function which can be used to validate incoming connections. See WS docs for details.
+    * `handleProtocols?: function`, a function which can be used to handle the WebSocket subprotocols. See WS docs for details.
+    * `noServer?: boolean`, enable no server mode.
+    * `clientTracking?: boolean`, specifies whether or not to track clients.
+    * `perMessageDeflate: boolean|object`, enable/disable permessage-deflate. See WS docs for details.
+    * `maxPayload: number`, the maximum allowed message size in bytes.
+
+
+  `WebSocketServerTransport` extends the options of [WebSocket.Server](https://github.com/websockets/ws/blob/master/doc/ws.md#new-websocketserveroptions-callback). Detailed description of many of these
+  options can be find in its documentation.
+

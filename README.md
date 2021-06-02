@@ -16,6 +16,7 @@ Ataraxia is split into several projects:
 * [ataraxia](packages/core) is the main library that provides the messaging functionality
 * [ataraxia-local](packages/local) provides a machine-local transport
 * [ataraxia-tcp](packages/tcp) provides a TCP-based transport with local network discovery
+* [ataraxia-hyperswarm](packages/hyperswarm) provides a Hyperswarm-based transport over the public Internet
 * [ataraxia-ws-client](packages/ws-client) provides a websocket client
 * [ataraxia-ws-server](packages/ws-server) provides a websocket server
 * [ataraxia-services](packages/services) provides easy-to-use services with RPC and events
@@ -28,8 +29,9 @@ Ataraxia is split into several projects:
 * RPC support via [ataraxia-services](https://github.com/aholstenson/ataraxia/tree/master/packages/services) that lets you call methods and receive events from services registered anywhere in the network
 * Support for different transports
   * [ataraxia-local](https://github.com/aholstenson/ataraxia/tree/master/packages/local) provides a machine-local transport
-  * [ataraxia-tcp](https://github.com/aholstenson/ataraxia/tree/master/packages/tcp) provides a TCP-based transport with customizable discovery of peers and TLS encryption
+  * [ataraxia-tcp](https://github.com/aholstenson/ataraxia/tree/master/packages/tcp) provides a TCP-based transport with customizable discovery of peers and encrypted connections
   * [ataraxia-ws-client](https://github.com/aholstenson/ataraxia/tree/master/packages/ws-client) and [ataraxia-ws-server](https://github.com/aholstenson/ataraxia/tree/master/packages/ws-server) for websockets
+  * [ataraxia-hyperswarm](https://github.com/aholstenson/ataraxia/tree/master/packages/hyperswarm) provides a transport that uses Hyperswarm to connect to peers over the public Internet
 
 ## Example with TCP transport
 

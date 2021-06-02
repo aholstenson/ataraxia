@@ -19,19 +19,16 @@ To use only the machine-local transport:
 import { Network, AnonymousAuth } from 'ataraxia';
 import { MachineLocalTransport } from 'ataraxia-local';
 
-// Setup a network with anonymous authentication
+// Setup a network
 const net = new Network({
   name: 'name-of-your-app-or-network',
-  authentication: [
-    new AnonymousAuth()
+
+  transports: [
+    new MachineLocalTransport()
   ]
 });
 
-net.addTransport(new MachineLocalTransport());
-
-net.start()
-  .then(...)
-  .catch(...);
+await net.start();
 ```
 
 `onLeader` can be used to start a secondary network transport that
@@ -42,26 +39,44 @@ import { Network, AnonymousAuth } from 'ataraxia';
 import { TCPTransport, TCPPeerMDNSDiscovery } from 'ataraxia-tcp';
 import { MachineLocalTransport } from 'ataraxia-local';
 
-// Setup a network with anonymous authentication
+// Setup a network
 const net = new Network({
   name: 'name-of-your-app-or-network',
-  authentication: [
-    new AnonymousAuth()
-  ]
 });
 
-const local = new MachineLocalTransport();
-local.onLeader(() => {
-  /*
-   * The leader event is emitted when this instance becomes the leader
-   * of the machine-local network. This instance will now handle
-   * connections to other machines in the network.
-   */
-  net.addTransport(new TCPTransport());
-});
-net.addTransport(local);
+net.addTransport(new MachineLocalTransport([
+  onLeader: () => {
+    /*
+    * The leader event is emitted when this instance becomes the leader
+    * of the machine-local network. This instance will now handle
+    * connections to other machines in the network.
+    */
+    net.addTransport(new TCPTransport({
+      discovery: new TCPPeerMDNSDiscovery(),
 
-net.start()
-  .then(...)
-  .catch(...);
+      authentication: [
+        new AnonymousAuth()
+      ]
+    }));
+  }
+]);
+
+await net.start();
 ```
+
+## API
+
+* `new MachineLocalTransport(options)`
+
+  Create a new instance of the transport.
+
+  * `options`
+    * `path?: string`, path of the local socket. If not specified the transport 
+      defaults to creating a socket in the temporary directory of the system 
+      using the name of the network.
+    * `onLeader?: () => void`, function that will be run if this instance 
+      becomes the leader of the local network.
+
+* `onLeader(callback: () => void)`
+
+  Event emitted if this transport becomes the leader of the local network.

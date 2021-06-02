@@ -20,8 +20,9 @@ to create a partially connected mesh network.
 * RPC support via [ataraxia-services](https://github.com/aholstenson/ataraxia/tree/master/packages/services) that lets you call methods and receive events from services registered anywhere in the network
 * Support for different transports
   * [ataraxia-local](https://github.com/aholstenson/ataraxia/tree/master/packages/local) provides a machine-local transport
-  * [ataraxia-tcp](https://github.com/aholstenson/ataraxia/tree/master/packages/tcp) provides a TCP-based transport with  customizable discovery of peers
+  * [ataraxia-tcp](https://github.com/aholstenson/ataraxia/tree/master/packages/tcp) provides a TCP-based transport with customizable discovery of peers and encrypted connections
   * [ataraxia-ws-client](https://github.com/aholstenson/ataraxia/tree/master/packages/ws-client) and [ataraxia-ws-server](https://github.com/aholstenson/ataraxia/tree/master/packages/ws-server) for websockets
+  * [ataraxia-hyperswarm](https://github.com/aholstenson/ataraxia/tree/master/packages/hyperswarm) provides a transport that uses Hyperswarm to connect to peers over the public Internet
 
 ## Example with TCP transport
 
@@ -100,27 +101,82 @@ await net.start();
 
 ## API
 
-### Network
+### `Network`
 
-* `new Network(options)` - create a new network using the given options. Options may be:
-  * `name` - *Required.* The name of the network, should be short and describe the app or library.
-  * `endpoint` - Request that the local node is an endpoint that should not perform routing.
-* `start()` - start the network and its transports
-* `stop()` - stop the network and its transports
-* `addTransport(transport)` - add a transport that should be used
-* `onNodeAvailable(node => ...)` - a node has been found and messages can now be sent and received to/from it
-* `onNodeUnavailable(node => ...)` - a node is no longer available
-* `onMessage((message: Message) => ...)` - a message has been received from a node
+* `new Network(options)`
+  
+  Create a new network using the given options.
 
-### Node
+  * `options`
+    * `name: string`, name of the network, should be short and describe the app or library.
+    * `transports?: Transport[]`, transports to start with
+    * `endpoint?: boolean`, request that the local node is an endpoint that should not perform routing.
+  
+* `networkId: string`
 
-* `id` - get the id of the node
-* `onUnavailable(() => ...)` - node is no longer available
-* `send(type, data)` - send a message of the given type with the specified data to the node
-* `onMessage((message: Message) => ...)` - a message has been received from this node
+  The automatically generated id of this node.
 
-### Message
+* `start(): Promise<Boolean>`
+  
+  Returns: `true` if network was started, `false` otherwise
 
-* `source: Node` - the node that sent the message 
-* `type: string` - the type of the message
-* `data: any` - the data of the message
+  Start the network and its transports. This will start up all transports and
+  perform initial connections to peers.
+
+* `stop(): Promise<Boolean>`
+
+  Returns: `true` if network was stopped, `false` otherwise
+  
+  Stop the network and its transports. This will attempt to gracefully disconnect
+  to the current peers and shut down the transports.
+
+* `addTransport(transport: Transport): void`
+  
+  Add a transport that should be used. Used in addition to providing transports
+  in the constructor to allow for dynamic configuration. If the network has
+  been started this will start the transport asynchronously.
+
+* `onNodeAvailable(callback: (node: Node) => void)`
+  
+  A node has been found and messages can now be sent and received to/from it.
+  
+* `onNodeUnavailable(callback: (node: Node) => void)`
+  
+  A node is no longer available.
+
+* `onMessage(callback: (message: Message) => void)`
+  
+  A message has been received from a node.
+
+### `Node`
+
+* `id: string`
+  
+  The id of the node.
+
+* `onUnavailable(callback: () => void)` 
+  
+  Event emitted when node is no longer available.
+
+* `onMessage(callback: (message: Message) => void)`
+ 
+  Event emitted when a message has been received from this node.
+
+* `send(type: string, data: any): Promise<void>`
+  
+  Send a message of the given type with the specified data to the node.
+
+
+### `Message`
+
+* `source: Node`
+  
+  The node that sent the message. Can be used to send an answer back.
+  
+* `type: string`
+  
+  The type of the message.
+
+* `data: any`
+  
+  The data of the message.

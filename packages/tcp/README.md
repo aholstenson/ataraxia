@@ -26,20 +26,22 @@ import { TCPTransport, TCPPeerMDNSDiscovery } from 'ataraxia-tcp';
 // Setup a network with anonymous authentication
 const net = new Network({
   name: 'name-of-your-app-or-network',
-  authentication: [
-    new AnonymousAuth()
+  
+  transports: [
+    new TCPTransport({
+      // Discover other peers on the same physical network
+      discovery: new TCPPeerMDNSDiscovery(),
+
+      // Use anonymous authentication
+      authentication: [
+        new AnonymousAuth()
+      ]
+    })
   ]
 });
 
-// Setup a TCP transport that will discover other peers on the same network using mDNS
-net.addTransport(new TCPTransport({
-  discovery: new TCPPeerMDNSDiscovery()
-}));
-
 // Start the network
-net.start()
-  .then(...)
-  .catch(...);
+await net.start();
 ```
 
 ## Well-known ports and manual peers
@@ -55,21 +57,22 @@ import { TCPTransport, TCPPeerMDNSDiscovery } from 'ataraxia-tcp';
 // Setup a network with anonymous authentication
 const net = new Network({
   name: 'name-of-your-app-or-network',
-  authentication: [
-    new AnonymousAuth()
+
+  transports: [
+    new TCPTransport({
+      // A well known port - define your own or even better use a config file,
+      port: 30000,
+
+      // Use anonymous authentication
+      authentication: [
+        new AnonymousAuth()
+      ]
+    })
   ]
 });
 
-const tcp = new TCPTransport({
-  // A well known port - define your own or even better use a config file,
-  port: 30000
-})
-net.addTransport(tcp);
-
 // Start the network
-net.start()
-  .then(...)
-  .catch(...);
+await net.start();
 ```
 
 Another instance can then connect to that specific port:
@@ -80,13 +83,14 @@ import { TCPTransport, TCPPeerMDNSDiscovery } from 'ataraxia-tcp';
 
 // Setup a network with anonymous authentication
 const net = new Network({
-  name: 'name-of-your-app-or-network',
+  name: 'name-of-your-app-or-network'
+});
+
+const tcp = new TCPTransport({
   authentication: [
     new AnonymousAuth()
   ]
-});
-
-const tcp = new TCPTransport():
+}):
 
 // Add a manual addressing to the peer
 tcp.addManualPeer({
@@ -97,10 +101,39 @@ tcp.addManualPeer({
 net.addTransport(tcp);
 
 // Start the network
-net.start()
-  .then(...)
-  .catch(...);
+await net.start();
 ```
 
 Ataraxia will attempt to connect to the manually added peers and will attempt
 to keep the connection available.
+
+## API
+
+### `TCPTransport`
+
+* `new TCPTransport(options)`
+
+  Create a new instance of this transport.
+
+  * `options`
+    * `port?: number`, port number that the server should bind to. Leave 
+      undefined for automatic assignment.
+    * `discovery?: TCPPeerDiscovery`, discovery instance used to discover and
+      announce availability to other peers.
+    * `authentication: AuthProvider[]`, array of authentication providers that
+      this transport will use.
+
+* `port: number`
+  
+  Port number bound to, will be `0` if no server was bound
+
+* `addManualPeer(hostAndPort: { host: string, port: number }): void`
+
+  Add a peer that should be manually connected to.
+
+### `TCPPeerMDNSDiscovery`
+
+* `new TCPPeerMDNSDiscovery()`
+
+  Create a discovery instance that will use mDNS and DNS-SD on the local
+  physical network.

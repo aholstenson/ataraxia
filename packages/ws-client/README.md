@@ -41,3 +41,17 @@ const net = new Network({
 
 await net.start();
 ```
+
+## API
+
+* `new WebSocketClientTransport(options)`
+
+  Create a new instance of this transport.
+
+  * `options`
+    * `url: string`, the URL to connect to, this will be where a `WebSocketServerTransport` 
+      is running. 
+    * `factory?: (url) => WebSocket`, factory used to create a `WebSocket` instance,
+      used to support running both in a browser and in Node via libraries such as `ws`.
+    * `authentication: AuthProvider[]`, array containing all of the authentication
+      methods supported. 
