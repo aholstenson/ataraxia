@@ -6,7 +6,8 @@ module.exports = async function(net) {
 
 	const exchange = net.createExchange('counter');
 	exchange.onNodeAvailable(node => {
-		node.send('hello', { counter: counter });
+		node.send('hello', { counter: counter })
+			.catch(e => console.log('Timed out sending hello'));
 	})
 
 	await exchange.join();
