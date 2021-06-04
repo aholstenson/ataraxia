@@ -1,5 +1,6 @@
 import { Listener } from 'atvik';
 
+import { ServiceEvent } from './ServiceEvent';
 import { ServiceMethod } from './ServiceMethod';
 
 /**
@@ -13,12 +14,12 @@ export abstract class ServiceReflect {
 	public readonly id: string;
 
 	protected _methods: Map<string, ServiceMethod>;
-	protected _events: Map<string, ServiceMethod>;
+	protected _events: Map<string, ServiceEvent>;
 
 	protected constructor(
 		id: string,
 		methods: Map<string, ServiceMethod>,
-		events: Map<string, ServiceMethod>,
+		events: Map<string, ServiceEvent>,
 	) {
 		this.id = id;
 		this._methods = methods;
