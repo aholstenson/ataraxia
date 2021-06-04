@@ -290,8 +290,8 @@ export class Services {
 		for(const service of this.localServices.values()) {
 			const events = service.nodeSubscriptionHandles.get(node.id);
 			if(events) {
-				for(const handle of events.values()) {
-					handle.unsubscribe();
+				for(const unsubscriber of events.values()) {
+					unsubscriber();
 				}
 				service.nodeSubscriptionHandles.delete(node.id);
 			}
@@ -495,16 +495,20 @@ export class Services {
 		}
 
 		const event = message.event;
-		const handle = service.reflect.subscribe(message.event, (...args) => {
+		const handler = (...args: any) => {
 			node.send('service:event-emit', {
 				service: service.reflect.id,
 				event: event,
 				arguments: args
 			})
 				.catch(err => this.debug('Unable to send event', event, 'with arguments', args, ':', err));
-		});
+		};
 
-		events.set(event, handle as any);
+		events.set(event, () => service.reflect.unsubscribe(event, handler)
+			.catch(err => this.debug('Could not unsubscribe', err)));
+
+		service.reflect.subscribe(event, handler)
+			.catch(err => this.debug('Could not subscribe', err));
 	}
 
 	protected handleServiceEventUnsubscribe(node: Node<ServiceMessages>, message: ServiceEventUnsubscribeMessage) {
@@ -514,9 +518,9 @@ export class Services {
 		const events = service.nodeSubscriptionHandles.get(node.id);
 		if(! events) return;
 
-		const handle = events.get(message.event);
-		if(handle) {
-			handle.unsubscribe();
+		const unsubscriber = events.get(message.event);
+		if(unsubscriber) {
+			unsubscriber();
 			events.delete(node.id);
 
 			if(events.size === 0) {
@@ -629,7 +633,7 @@ interface LocalServiceData {
 	 * Mapping between node identifiers and subscription handles. First level
 	 * is the node and the second level is the event name.
 	 */
-	readonly nodeSubscriptionHandles: Map<string, Map<string, SubscriptionHandle>>;
+	readonly nodeSubscriptionHandles: Map<string, Map<string, () => void>>;
 }
 
 class ServiceHandleImpl implements ServiceHandle {
