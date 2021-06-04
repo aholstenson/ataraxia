@@ -1,6 +1,6 @@
 {
   "name": "ataraxia-tcp",
-  "version": "0.8.2",
+  "version": "0.9.0",
   "description": "TCP transport for Ataraxia P2P messaging",
   "license": "MIT",
   "repository": "https://github.com/aholstenson/ataraxia/tree/master/packages/tcp",
@@ -15,7 +15,7 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "ataraxia": "^0.8.2",
+    "ataraxia": "^0.9.0",
     "debug": "^4.3.1",
     "noise-peer": "^2.1.1",
     "tinkerhub-discovery": "^0.6.0",
