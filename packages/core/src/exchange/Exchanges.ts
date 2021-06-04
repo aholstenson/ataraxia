@@ -152,7 +152,8 @@ export class Exchanges {
 			}
 		}
 
-		node.send('exchange:membership', { exchanges: memberOf });
+		node.send('exchange:membership', { exchanges: memberOf })
+			.catch(err => this.debug('Could not send membership reply to', node.id, err));
 	}
 
 	public createExchange<MessageTypes extends object = any>(id: string): Exchange<MessageTypes> {
