@@ -442,17 +442,14 @@ export class Topology {
 		// No need to do anything if broadcasting isn't requested
 		if(! broadcast) return;
 
-		// Endpoints do not perform routing, never broadcast routing info
-		if(this.endpoint) return;
-
 		// Check if there is a pending broadcast
-		if(this.broadcastTimeout || this.peers.size() === 0) return;
+		if(this.broadcastTimeout) return;
 
 		this.broadcastTimeout = new Promise((resolve) => setTimeout(() => {
 			this.routing.refresh();
 
 			if(this.debug.enabled) {
-				this.debug('Broadcasting routing to all connected peers');
+				this.debug('Routing info');
 				this.debug('Version:', this.self.version);
 				this.debug('Peers:', this.peerArray().map(peer => encodeId(peer.id)).join(', '));
 
@@ -462,6 +459,12 @@ export class Topology {
 				}
 
 				this.debug('End broadcasting details');
+			}
+
+			if(this.endpoint) {
+				// Endpoints don't actually broadcast, mark as done
+				this.broadcastTimeout = null;
+				return;
 			}
 
 			const nodes: NodeRoutingSummary[] = [];
