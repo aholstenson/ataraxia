@@ -4,7 +4,7 @@ module.exports = async function(net) {
 
 	let counter = 0;
 
-	const exchange = new Exchange(net, 'counter');
+	const exchange = net.createExchange('counter');
 	exchange.onNodeAvailable(node => {
 		node.send('hello', { counter: counter });
 	})

@@ -9,11 +9,12 @@ import { Topology } from './topology';
 import { Node } from './Node';
 import { NetworkNode } from './NetworkNode';
 
-import { Authentication } from './auth';
-
 import { MessageUnion } from './MessageUnion';
 import { MessageType } from './MessageType';
 import { MessageData } from './MessageData';
+
+import { Exchanges } from './exchange/Exchanges';
+import { Exchange } from './exchange/Exchange';
 
 export interface NetworkOptions {
 	/**
@@ -83,6 +84,11 @@ export class Network<MessageTypes extends object = any> {
 	 */
 	private readonly nodes: Map<string, NetworkNode>;
 
+	/**
+	 * Tracking for exchanges.
+	 */
+	private readonly exchanges: Exchanges;
+
 	private readonly nodeAvailableEvent: Event<this, [ Node<MessageTypes> ]>;
 	private readonly nodeUnavailableEvent: Event<this, [ Node<MessageTypes> ]>;
 	private readonly messageEvent: Event<this, [ MessageUnion<MessageTypes> ]>;
@@ -125,6 +131,8 @@ export class Network<MessageTypes extends object = any> {
 		this.messageEvent = new Event(this);
 
 		this.nodes = new Map();
+
+		this.exchanges = new Exchanges(this);
 
 		// Setup the topology of the network
 		this.topology = new Topology({
@@ -276,5 +284,19 @@ export class Network<MessageTypes extends object = any> {
 
 		return Promise.all(promises)
 			.then(() => undefined);
+	}
+
+	/**
+	 * Create an exchange with the given id. This will create a sub-group of the
+	 * network that nodes can join, leave and easily broadcast to.
+	 *
+	 * ```typescript
+	 * ```
+	 *
+	 * @param id
+	 *   exchange to join
+	 */
+	public createExchange<MessageTypes extends object = any>(id: string): Exchange<MessageTypes> {
+		return this.exchanges.createExchange(id);
 	}
 }

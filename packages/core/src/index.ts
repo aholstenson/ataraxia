@@ -10,7 +10,7 @@ export * from './MessageUnion';
 
 export * from './WithNetwork';
 
-export * from './Exchange';
+export * from './exchange/Exchange';
 export * from './RequestReplyHelper';
 
 export * from './BackOff';

@@ -69,7 +69,7 @@ export class Services {
 
 		this.version = 0;
 
-		this.exchange = new Exchange(network, 'service');
+		this.exchange = network.createExchange('service');
 		this.exchange.onMessage(this.handleMessage.bind(this));
 		this.exchange.onNodeAvailable(this.handleNodeAvailable.bind(this));
 		this.exchange.onNodeUnavailable(this.handleNodeUnavailable.bind(this));
