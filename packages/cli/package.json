@@ -1,0 +1,43 @@
+{
+  "name": "ataraxia-cli",
+  "version": "0.8.2",
+  "description": "Command-line client for inspecting Ataraxia networks",
+  "license": "MIT",
+  "repository": "https://github.com/aholstenson/ataraxia/tree/master/packages/cli",
+  "keywords": [
+    "p2p",
+    "mesh",
+    "mesh networking",
+    "messaging"
+  ],
+  "main": "./dist/cjs/index.js",
+  "bin": {
+    "ataraxia": "./dist/cjs/index.js"
+  },
+  "scripts": {
+    "lint": "tslint  --project tsconfig.json -t codeFrame 'src/**/*.ts' 'test/**/*.ts'",
+    "build": "tsc --module commonjs --target es5 --outDir dist/cjs",
+    "prebuild": "rimraf dist",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "ataraxia": "^0.8.2",
+    "ataraxia-hyperswarm": "^0.8.2",
+    "ataraxia-local": "^0.8.2",
+    "ataraxia-tcp": "^0.8.2",
+    "chalk": "^4.1.1",
+    "minimatch": "^3.0.4",
+    "prettyjson": "^1.2.1",
+    "yargs": "^17.0.1"
+  },
+  "devDependencies": {
+    "@types/debug": "^4.1.5",
+    "@types/jest": "^26.0.23",
+    "@types/node": "^15.12.0",
+    "@types/minimatch": "^3.0.4",
+    "@types/prettyjson": "^0.0.29",
+    "jest": "^27.0.3",
+    "ts-jest": "^27.0.1",
+    "typescript": "^4.3.2"
+  }
+}
