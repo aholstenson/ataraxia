@@ -1,11 +1,16 @@
 {
-    "files": [],
-    "references": [
-        { "path": "packages/core" },
-		{ "path": "packages/local" },
-		{ "path": "packages/services" },
-		{ "path": "packages/tcp" },
-		{ "path": "packages/ws-client" },
-		{ "path": "packages/ws-server" }
-    ]
+	"extends": "./tsconfig.settings.json",
+	"compilerOptions": {
+		"module": "commonjs",
+
+		"noEmit": true,
+
+		"baseUrl": ".",
+		"paths": {
+			"ataraxia": [ "./packages/core/src" ],
+			"ataraxia-*": [ "./packages/*/src" ]
+		},
+	},
+	"include": [ "packages/*/src" ],
+	"exclude": [ "**/node_modules/**", "**/dist/**" ]
 }

@@ -15,8 +15,8 @@
     "ataraxia": "./dist/cjs/index.js"
   },
   "scripts": {
-    "lint": "tslint  --project tsconfig.json -t codeFrame 'src/**/*.ts' 'test/**/*.ts'",
-    "build": "tsc --module commonjs --target es5 --outDir dist/cjs",
+    "lint": "tslint  --project tsconfig.build.json -t codeFrame 'src/**/*.ts' 'test/**/*.ts'",
+    "build": "tsc --project tsconfig.build.json --module commonjs --target es5 --outDir dist/cjs",
     "prebuild": "rimraf dist",
     "prepublishOnly": "npm run build"
   },
