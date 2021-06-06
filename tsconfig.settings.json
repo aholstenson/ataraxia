@@ -3,8 +3,8 @@
 		"composite": true,
 
 		"moduleResolution": "node",
-		"target": "es5",
-		"module":"commonjs",
+		"target": "ES2019",
+		"module": "CommonJS",
 
 		"lib": [ "ES2019" ],
 		"strict": true,
@@ -15,8 +15,7 @@
 
 		"allowSyntheticDefaultImports": true,
 		"esModuleInterop": true,
-		"downlevelIteration": true,
-		"experimentalDecorators": true,
-		"emitDecoratorMetadata": true,
+		"skipLibCheck": true,
+		"forceConsistentCasingInFileNames": true
 	}
 }

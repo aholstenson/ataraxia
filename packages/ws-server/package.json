@@ -5,14 +5,13 @@
   "license": "MIT",
   "repository": "https://github.com/aholstenson/ataraxia/tree/master/packages/ws-server",
   "main": "./dist/cjs/index.js",
-  "module": "./dist/esm/index.js",
   "types": "./dist/types/index.d.ts",
   "scripts": {
     "test:watch": "jest --watch",
     "ci": "npm run coverage && npm run lint",
     "coverage": "jest --coverage",
     "lint": "tslint  --project tsconfig.json -t codeFrame 'src/**/*.ts' 'test/**/*.ts'",
-    "build": "tsc --module commonjs --target es5 --outDir dist/cjs && tsc --module es6 --target es6 --outDir dist/esm",
+    "build": "tsc --module commonjs --outDir dist/cjs",
     "prebuild": "rimraf dist",
     "prepublishOnly": "npm run build"
   },

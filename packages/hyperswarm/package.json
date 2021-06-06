@@ -10,7 +10,7 @@
     "ci": "npm run coverage && npm run lint",
     "coverage": "jest --coverage",
     "lint": "tslint  --project tsconfig.json -t codeFrame 'src/**/*.ts' 'test/**/*.ts'",
-    "build": "tsc --module commonjs --target es5 --outDir dist/cjs",
+    "build": "tsc --module commonjs --outDir dist/cjs",
     "prebuild": "rimraf dist",
     "prepublishOnly": "npm run build"
   },
