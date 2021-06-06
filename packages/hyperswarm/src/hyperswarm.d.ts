@@ -26,8 +26,8 @@ declare module 'hyperswarm' {
 		requeue?: ReadonlyArray<number>;
 
 		forget?: {
-			unresponsive?: number,
-			banned?: number
+			unresponsive?: number;
+			banned?: number;
 		};
 
 		multiplex?: boolean;
@@ -52,8 +52,8 @@ declare module 'hyperswarm' {
 			port: number;
 			host: string;
 			id: Buffer;
-		},
-		topic: Buffer
+		};
+		topic: Buffer;
 	}
 
 	export interface Swarm {

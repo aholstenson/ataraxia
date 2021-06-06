@@ -1,5 +1,3 @@
-import { Authentication } from '../auth';
-
 /**
  * Options provided to a transport as it is started.
  */

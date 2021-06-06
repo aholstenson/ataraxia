@@ -1,9 +1,9 @@
-import { IdSet, encodeId } from '../id';
+import { INode } from '@tyriar/fibonacci-heap';
 
+import { IdSet, encodeId } from '../id';
 import { Peer, NodeRoutingDetails } from '../transport';
 
 import { Topology } from './Topology';
-import { INode } from '@tyriar/fibonacci-heap';
 
 /**
  * An edge between two nodes.
@@ -52,7 +52,7 @@ export class TopologyNode {
 	private reachableVia: IdSet;
 	public previousReachable: boolean;
 
-	constructor(parent: Topology, id: ArrayBuffer) {
+	public constructor(parent: Topology, id: ArrayBuffer) {
 		this.parent = parent;
 		this.id = id;
 
@@ -67,7 +67,7 @@ export class TopologyNode {
 		this.previousReachable = false;
 	}
 
-	get hasPeers() {
+	public get hasPeers() {
 		return this.reachableVia.size > 0;
 	}
 
@@ -163,11 +163,11 @@ export class TopologyNode {
 		target.incoming.push(edge);
 	}
 
-	get outgoingDebug() {
+	public get outgoingDebug() {
 		return this.outgoing.map(e => encodeId(e.target.id));
 	}
 
-	get reachableDebug() {
+	public get reachableDebug() {
 		return Array.from(this.reachableVia.values()).map(e => encodeId(e));
 	}
 

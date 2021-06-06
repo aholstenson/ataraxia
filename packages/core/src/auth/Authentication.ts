@@ -15,11 +15,11 @@ export class Authentication {
 	 *
 	 * @param options
 	 */
-	constructor(options: AuthenticationOptions) {
+	public constructor(options: AuthenticationOptions) {
 		this._providers = options.providers;
 	}
 
-	get providers() {
+	public get providers() {
 		return Array.from(this._providers);
 	}
 

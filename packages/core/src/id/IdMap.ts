@@ -3,7 +3,7 @@ import { encodeId } from './ids';
 export class IdMap<T> {
 	private data: Map<string, T>;
 
-	constructor() {
+	public constructor() {
 		this.data = new Map();
 	}
 

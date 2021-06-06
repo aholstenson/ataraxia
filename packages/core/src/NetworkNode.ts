@@ -1,13 +1,13 @@
-import { debug } from 'debug';
 import { inspect } from 'util';
-import { Event } from 'atvik';
+
 import { Encoder, Decoder } from '@stablelib/cbor';
+import { Event } from 'atvik';
+import { debug } from 'debug';
 
-import { Topology } from './topology';
-
-import { Node } from './Node';
-import { Message } from './Message';
 import { encodeId } from './id';
+import { Message } from './Message';
+import { Node } from './Node';
+import { Topology } from './topology';
 
 /**
  * Node in the network. Thin wrapper around a topology node to provide a
@@ -29,7 +29,7 @@ export class NetworkNode implements Node {
 	 *
 	 * @param {TopologyNode} other
 	 */
-	constructor(
+	public constructor(
 		debugNamespace: string,
 		topology: Topology,
 		id: ArrayBuffer
@@ -43,11 +43,11 @@ export class NetworkNode implements Node {
 		this.messageEvent = new Event(this);
 	}
 
-	get onUnavailable() {
+	public get onUnavailable() {
 		return this.unavailableEvent.subscribable;
 	}
 
-	get onMessage() {
+	public get onMessage() {
 		return this.messageEvent.subscribable;
 	}
 

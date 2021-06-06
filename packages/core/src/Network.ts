@@ -1,20 +1,16 @@
-import debug from 'debug';
 import { Event } from 'atvik';
+import debug from 'debug';
 
-import { generateId, encodeId } from './id';
-import { Transport } from './transport';
-
-import { Topology } from './topology';
-
-import { Node } from './Node';
-import { NetworkNode } from './NetworkNode';
-
-import { MessageUnion } from './MessageUnion';
-import { MessageType } from './MessageType';
-import { MessageData } from './MessageData';
-
-import { Exchanges } from './exchange/Exchanges';
 import { Exchange } from './exchange/Exchange';
+import { Exchanges } from './exchange/Exchanges';
+import { generateId, encodeId } from './id';
+import { MessageData } from './MessageData';
+import { MessageType } from './MessageType';
+import { MessageUnion } from './MessageUnion';
+import { NetworkNode } from './NetworkNode';
+import { Node } from './Node';
+import { Topology } from './topology';
+import { Transport } from './transport';
 
 export interface NetworkOptions {
 	/**
@@ -107,7 +103,7 @@ export class Network<MessageTypes extends object = any> {
 	 * @param {object} options
 	 *   The options of the network.
 	 */
-	constructor(options: NetworkOptions) {
+	public constructor(options: NetworkOptions) {
 		if(! options) {
 			throw new Error('Options must be provided');
 		}
@@ -171,19 +167,19 @@ export class Network<MessageTypes extends object = any> {
 		options.transports?.forEach(t => this.addTransport(t));
 	}
 
-	get onNodeAvailable() {
+	public get onNodeAvailable() {
 		return this.nodeAvailableEvent.subscribable;
 	}
 
-	get onNodeUnavailable() {
+	public get onNodeUnavailable() {
 		return this.nodeUnavailableEvent.subscribable;
 	}
 
-	get onMessage() {
+	public get onMessage() {
 		return this.messageEvent.subscribable;
 	}
 
-	get networkId() {
+	public get networkId() {
 		return encodeId(this.networkIdBinary);
 	}
 
@@ -238,7 +234,7 @@ export class Network<MessageTypes extends object = any> {
 		try {
 			await Promise.all(this.transports.map(t => t.start(options)));
 			return true;
-		} catch (err) {
+		} catch(err) {
 			// Stop the topology if an error occurs
 			await this.topology.stop();
 
@@ -296,7 +292,7 @@ export class Network<MessageTypes extends object = any> {
 	 * @param id
 	 *   exchange to join
 	 */
-	public createExchange<MessageTypes extends object = any>(id: string): Exchange<MessageTypes> {
+	public createExchange<MT extends object = any>(id: string): Exchange<MT> {
 		return this.exchanges.createExchange(id);
 	}
 }

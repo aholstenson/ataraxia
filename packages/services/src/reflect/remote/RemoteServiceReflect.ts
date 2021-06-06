@@ -7,12 +7,12 @@ import {
 	ServiceMethodParameterDef,
 	ServiceEventDef
 } from '../../messages';
-
-import { ServiceReflect } from '../ServiceReflect';
-import { RemoteServiceHelper } from './RemoteServiceHelper';
+import { ServiceEvent } from '../ServiceEvent';
 import { ServiceMethod } from '../ServiceMethod';
 import { ServiceParameter } from '../ServiceParameter';
-import { ServiceEvent } from '../ServiceEvent';
+import { ServiceReflect } from '../ServiceReflect';
+
+import { RemoteServiceHelper } from './RemoteServiceHelper';
 
 /**
  * Implementation of `ServiceReflect` for remote services.
@@ -21,7 +21,7 @@ export class RemoteServiceReflect extends ServiceReflect {
 	private readonly helper: RemoteServiceHelper;
 	private readonly eventRegistrations: Map<string, Listener<void, any[]>[]>;
 
-	constructor(
+	public constructor(
 		def: ServiceDef,
 		helper: RemoteServiceHelper
 	) {

@@ -31,7 +31,7 @@ export class BackOff {
 	private attempt: number;
 	private _nextDelay: number;
 
-	constructor(options: BackOffOptions) {
+	public constructor(options: BackOffOptions) {
 		this.attempt = 0;
 		this._nextDelay = 0;
 

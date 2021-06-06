@@ -16,7 +16,7 @@ const MAX_UINT32 = Math.pow(2, 32) - 1;
 export class PeerPacketDecodingStream extends Transform {
 	private buffer: Buffer = Buffer.alloc(0);
 
-	constructor() {
+	public constructor() {
 		super({
 			objectMode: true
 		});

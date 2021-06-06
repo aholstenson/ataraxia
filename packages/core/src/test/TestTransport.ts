@@ -5,7 +5,7 @@ import { AbstractTransport, Peer } from '../transport';
  * Peers usable with this transport can be created via `peersBetween`.
  */
 export class TestTransport extends AbstractTransport {
-	constructor() {
+	public constructor() {
 		super('test');
 	}
 

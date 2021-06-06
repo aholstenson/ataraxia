@@ -2,10 +2,10 @@ import { Encoder, Decoder } from '@stablelib/cbor';
 import { hmac } from 'fast-sha256';
 import { TextEncoder } from 'fastestsmallesttextencoderdecoder';
 
-import { AuthProvider } from './AuthProvider';
 import { AuthClientFlow, AuthClientReplyType } from './AuthClientFlow';
-import { AuthServerFlow, AuthServerReplyType } from './AuthServerFlow';
 import { AuthContext } from './AuthContext';
+import { AuthProvider } from './AuthProvider';
+import { AuthServerFlow, AuthServerReplyType } from './AuthServerFlow';
 
 export interface SharedSecretAuthOptions {
 	secret: ArrayBuffer | string;
@@ -20,7 +20,7 @@ export class SharedSecretAuth implements AuthProvider {
 
 	private readonly secret: ArrayBuffer;
 
-	constructor(options: SharedSecretAuthOptions) {
+	public constructor(options: SharedSecretAuthOptions) {
 		if(typeof options.secret === 'string') {
 			const encoder = new TextEncoder();
 			this.secret = encoder.encode(options.secret);
@@ -156,7 +156,7 @@ export class SharedSecretAuth implements AuthProvider {
 function isEqual(o1: Uint8Array, o2: Uint8Array): boolean {
 	let result = o1.byteLength === o2.byteLength;
 
-	for(let i=0, n=Math.max(o1.length, o2.length); i<n; i++) {
+	for(let i = 0, n = Math.max(o1.length, o2.length); i < n; i++) {
 		if(o1[i] !== o2[i] && result) {
 			result = false;
 		}
@@ -196,6 +196,7 @@ declare const window: any;
  */
 function randomBytes(n: number): Uint8Array {
 	if(typeof window === 'undefined') {
+		// eslint-disable-next-line @typescript-eslint/no-var-requires
 		return require('crypto').randomBytes(n);
 	} else {
 		const crypto = window.crypto;
@@ -203,7 +204,7 @@ function randomBytes(n: number): Uint8Array {
 		if(crypto && crypto.getRandomValues) {
 			crypto.getRandomValues(result);
 		} else {
-			for(let i=0; i<n; i++) {
+			for(let i = 0; i < n; i++) {
 				result[i] = Math.floor(Math.random() * 256);
 			}
 		}

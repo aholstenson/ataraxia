@@ -3,7 +3,7 @@
  */
 const ENCODING = '0123456789abcdefghijlkmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 const REVERSE_ENCODING: { [key: string]: number } = {};
-for(let i=0; i<ENCODING.length; i++) {
+for(let i = 0; i < ENCODING.length; i++) {
 	REVERSE_ENCODING[ENCODING.charAt(i)] = i;
 }
 
@@ -12,9 +12,7 @@ const SIZE = ENCODING.length;
 export function encodeId(id: ArrayBuffer): string {
 	const u8 = new Uint8Array(id);
 	const digits: number[] = [ 0 ];
-	//let j = 0;
-	for(let i=0; i<u8.length; i++) {
-
+	for(let i = 0; i < u8.length; i++) {
 		let j = 0;
 		let carry = u8[i];
 		while(j in digits || carry) {
@@ -27,7 +25,7 @@ export function encodeId(id: ArrayBuffer): string {
 	}
 
 	const encoded = [];
-	for(let j=digits.length-1;j>=0; j--) {
+	for(let j = digits.length - 1; j >= 0; j--) {
 		encoded.push(ENCODING[digits[j]]);
 	}
 	return encoded.join('');
@@ -121,7 +119,7 @@ export function sameId(o1: ArrayBuffer, o2: ArrayBuffer): boolean {
 
 	const u1 = new Uint8Array(o1);
 	const u2 = new Uint8Array(o2);
-	for(let i=0; i<u1.length; i++) {
+	for(let i = 0; i < u1.length; i++) {
 		if(u1[i] !== u2[i]) return false;
 	}
 
@@ -134,7 +132,7 @@ export function compareId(o1: ArrayBuffer, o2: ArrayBuffer): number {
 
 	const u1 = new Uint8Array(o1);
 	const u2 = new Uint8Array(o2);
-	for(let i=0; i<u1.length; i++) {
+	for(let i = 0; i < u1.length; i++) {
 		if(u1[i] < u2[i]) return -1;
 		if(u1[i] > u2[i]) return 1;
 	}

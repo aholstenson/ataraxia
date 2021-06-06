@@ -5,9 +5,9 @@ import { Network } from '../Network';
 import { Node } from '../Node';
 
 import { Exchange } from './Exchange';
-import { SharedExchange } from './SharedExchange';
-import { ExchangeMessages } from './ExchangeMessages';
 import { ExchangeImpl } from './ExchangeImpl';
+import { ExchangeMessages } from './ExchangeMessages';
+import { SharedExchange } from './SharedExchange';
 
 /**
  * Manager for all exchange instances that a node is a member of.
@@ -22,7 +22,7 @@ export class Exchanges {
 
 	private readonly exchanges: Map<string, SharedExchange>;
 
-	constructor(net: Network) {
+	public constructor(net: Network) {
 		this.net = net;
 
 		this.exchanges = new Map();
@@ -40,7 +40,7 @@ export class Exchanges {
 	 *
 	 * @param node
 	 */
-	 private handleNodeAvailable(node: Node<ExchangeMessages>) {
+	private handleNodeAvailable(node: Node<ExchangeMessages>) {
 		node.send('exchange:query', undefined)
 			.catch(err => this.debug('Failed to ask node about exchange membership', err));
 	}

@@ -1,8 +1,7 @@
-import { PeerMessageType, PeerMessage } from '../transport/messages';
-
 import { AbstractPeer } from '../transport/AbstractPeer';
-import { Peer } from '../transport/Peer';
 import { DisconnectReason } from '../transport/DisconnectReason';
+import { PeerMessageType, PeerMessage } from '../transport/messages';
+import { Peer } from '../transport/Peer';
 
 export interface TestPeer extends Peer {
 	connect(): void;
@@ -16,7 +15,7 @@ class MirroredPeer extends AbstractPeer implements TestPeer {
 	public other?: MirroredPeer;
 	private disconnected: boolean;
 
-	constructor() {
+	public constructor() {
 		super({
 			debugNamespace: 'test',
 		} as any, []);

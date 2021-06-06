@@ -1,5 +1,5 @@
-import { AuthProvider } from './AuthProvider';
 import { AuthClientFlow } from './AuthClientFlow';
+import { AuthProvider } from './AuthProvider';
 import { AuthServerFlow, AuthServerReplyType } from './AuthServerFlow';
 
 /**

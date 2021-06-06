@@ -1,14 +1,12 @@
-import { PeerMessageType } from './PeerMessageType';
-
-import { HelloMessage } from './HelloMessage';
-import { SelectMessage } from './SelectMessage';
-
-import { AuthMessage } from './AuthMessage';
 import { AuthDataMessage } from './AuthDataMessage';
+import { AuthMessage } from './AuthMessage';
+import { DataMessage, DataAckMessage, DataRejectMessage } from './DataMessage';
+import { HelloMessage } from './HelloMessage';
+import { NodeDetailsMessage } from './NodeDetailsMessage';
 import { NodeRequestMessage } from './NodeRequestMessage';
 import { NodeSummaryMessage } from './NodeSummaryMessage';
-import { NodeDetailsMessage } from './NodeDetailsMessage';
-import { DataMessage, DataAckMessage, DataRejectMessage } from './DataMessage';
+import { PeerMessageType } from './PeerMessageType';
+import { SelectMessage } from './SelectMessage';
 
 /**
  * Map between type enum and the actual message type.

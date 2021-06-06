@@ -114,7 +114,7 @@ function decodeId(decoder: Decoder): ArrayBuffer {
 function decodeArray<T>(decoder: Decoder, readItem: (decoder: Decoder) => T): T[] {
 	const items = decoder.decode();
 	const result = [];
-	for(let i=0; i<items; i++) {
+	for(let i = 0; i < items; i++) {
 		result.push(readItem(decoder));
 	}
 	return result;

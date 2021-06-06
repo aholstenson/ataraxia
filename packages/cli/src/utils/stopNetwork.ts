@@ -1,4 +1,5 @@
 import { Network } from 'ataraxia';
+
 import { logError } from '../log';
 
 export function stopNetwork(net: Network) {

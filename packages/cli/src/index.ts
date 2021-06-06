@@ -4,7 +4,7 @@ import yargs from 'yargs';
 
 const argv = yargs
 	.usage('Usage: $0 <command> [options]')
-    .commandDir('./commands')
+	.commandDir('./commands')
 	.demandCommand(1, 'Missing command, use --help for usage information')
 	.option('network', {
 		description: 'Name of the network to work with',
@@ -19,4 +19,4 @@ const argv = yargs
 		description: 'Add Hyperswarm transport with the given topic',
 		string: true
 	})
-    .argv;
+	.argv;

@@ -1,5 +1,6 @@
-import { ServiceMethod } from '../ServiceMethod';
 import { ServiceEvent } from '../ServiceEvent';
+import { ServiceMethod } from '../ServiceMethod';
+
 import { isSubscribable } from './isSubscribable';
 import { LocalServiceEvent } from './LocalServiceEvent';
 

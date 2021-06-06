@@ -2,12 +2,12 @@ import { createServer, Server } from 'net';
 
 import { ServicePublisher, ServiceDiscovery, MultiAddressService, HostAndPort } from 'tinkerhub-discovery';
 
-import { AbstractTransport, TransportOptions } from 'ataraxia/transport';
-import { encodeId } from 'ataraxia/id';
-
-import { TCPPeerDiscovery } from './TCPPeerDiscovery';
-import { TCPPeer } from './TCPPeer';
 import { AuthProvider } from 'ataraxia';
+import { encodeId } from 'ataraxia/id';
+import { AbstractTransport, TransportOptions } from 'ataraxia/transport';
+
+import { TCPPeer } from './TCPPeer';
+import { TCPPeerDiscovery } from './TCPPeerDiscovery';
 
 /**
  * Options that can be used for a TCP transport.
@@ -47,7 +47,7 @@ export class TCPTransport extends AbstractTransport {
 
 	private readonly manualPeers: HostAndPort[];
 
-	constructor(options: TCPTransportOptions) {
+	public constructor(options: TCPTransportOptions) {
 		super('tcp');
 
 		if(typeof options.port !== 'undefined') {
@@ -70,7 +70,7 @@ export class TCPTransport extends AbstractTransport {
 	/**
 	 * Get the port number the transport was bound to.
 	 */
-	get port() {
+	public get port() {
 		return this._port;
 	}
 
@@ -194,7 +194,7 @@ export class TCPTransport extends AbstractTransport {
 		return true;
 	}
 
-	public addManualPeer(hostAndPort: { host: string, port: number }) {
+	public addManualPeer(hostAndPort: { host: string; port: number }) {
 		if(! hostAndPort) {
 			throw new Error('Address and port for peer must be specified');
 		}

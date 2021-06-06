@@ -1,7 +1,6 @@
 import { Subscribable } from 'atvik';
 
 import { Peer } from './Peer';
-
 import { TransportOptions } from './TransportOptions';
 
 /**

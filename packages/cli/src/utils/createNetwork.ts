@@ -1,7 +1,7 @@
 import { Network } from 'ataraxia';
+import { HyperswarmTransport } from 'ataraxia-hyperswarm';
 import { MachineLocalTransport } from 'ataraxia-local';
 import { TCPTransport, TCPPeerMDNSDiscovery } from 'ataraxia-tcp';
-import { HyperswarmTransport } from 'ataraxia-hyperswarm';
 
 import { logInfo } from '../log';
 
@@ -29,13 +29,13 @@ export function createNetwork(args: any): Network {
 		net.addTransport(new HyperswarmTransport({
 			topic: args.hyperswarm,
 			authentication: auth
-		}))
+		}));
 	}
 
 	// Add a hook that stops the process when the network stops
 	process.on('SIGINT', () => {
 		logInfo('Shutting down network');
-		stopNetwork(net)
+		stopNetwork(net);
 	});
 
 	return net;

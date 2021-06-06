@@ -1,4 +1,5 @@
 import { Event } from 'atvik';
+
 import { TestNetwork } from 'ataraxia/test';
 
 import { Services } from '../src/Services';
@@ -9,7 +10,6 @@ interface TestService {
 }
 
 describe('Services: Remote Events', () => {
-
 	it('Can receive remote event', async () => {
 		const testNetwork = new TestNetwork();
 		testNetwork.bidirectional('a', 'b');
@@ -36,7 +36,7 @@ describe('Services: Remote Events', () => {
 		const helloService = bServices.get<TestService>('test');
 		if(helloService) {
 			try {
-				await helloService.onHello((msg) => {
+				await helloService.onHello(msg => {
 					receivedEvent = msg === 'world';
 				});
 

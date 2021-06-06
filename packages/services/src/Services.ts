@@ -1,7 +1,15 @@
+import { Event } from 'atvik';
 import debug from 'debug';
-import { Event, SubscriptionHandle } from 'atvik';
-import { Network, Exchange, Node, MessageUnion, RequestReplyHelper } from 'ataraxia';
 
+import {
+	Network,
+	Exchange,
+	Node,
+	MessageUnion,
+	RequestReplyHelper
+} from 'ataraxia';
+
+import { LocalService } from './LocalService';
 import {
 	ServiceMessages,
 	ServiceDef,
@@ -10,20 +18,17 @@ import {
 	ServiceInvokeRequest,
 	ServiceInvokeReply,
 	ServiceAvailableMessage,
-	ServiceUnavailableMessage
+	ServiceUnavailableMessage,
+	ServiceEventEmitMessage,
+	ServiceEventSubscribeMessage,
+	ServiceEventUnsubscribeMessage
 } from './messages';
-
+import { ServiceReflect } from './reflect';
+import { LocalServiceReflect } from './reflect/local';
+import { RemoteServiceReflect, RemoteServiceHelper } from './reflect/remote';
 import { Service } from './Service';
 import { ServiceHandle } from './ServiceHandle';
-import { LocalService } from './LocalService';
 import { ServiceImpl } from './ServiceImpl';
-
-import { ServiceReflect } from './reflect';
-import { RemoteServiceReflect, RemoteServiceHelper } from './reflect/remote';
-import { LocalServiceReflect } from './reflect/local';
-import { ServiceEventSubscribeMessage } from './messages/ServiceEventSubscribeMessage';
-import { ServiceEventUnsubscribeMessage } from './messages/ServiceEventUnsubscribeMessage';
-import { ServiceEventEmitMessage } from './messages/ServiceEventEmitMessage';
 
 export type LocalServiceDef = LocalService
 	| ((handle: ServiceHandle) => LocalService)
@@ -59,7 +64,7 @@ export class Services {
 
 	private readonly calls: RequestReplyHelper<any>;
 
-	constructor(network: Network) {
+	public constructor(network: Network) {
 		this.debug = debug('ataraxia:' + network.networkName + ':services');
 		this.nodes = new Map();
 
@@ -640,7 +645,7 @@ class ServiceHandleImpl implements ServiceHandle {
 	public id: string;
 	public unregisterService?: () => void;
 
-	constructor() {
+	public constructor() {
 		this.id = '';
 	}
 

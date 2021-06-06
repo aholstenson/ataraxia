@@ -1,12 +1,12 @@
-import { ServiceListRequestMessage } from './ServiceListRequestMessage';
-import { ServiceListReplyMessage } from './ServiceListReplyMessage';
-import { ServiceInvokeRequest } from './ServiceInvokeRequest';
-import { ServiceInvokeReply } from './ServiceInvokeReply';
 import { ServiceAvailableMessage } from './ServiceAvailableMessage';
-import { ServiceUnavailableMessage } from './ServiceUnavailableMessage';
+import { ServiceEventEmitMessage } from './ServiceEventEmitMessage';
 import { ServiceEventSubscribeMessage } from './ServiceEventSubscribeMessage';
 import { ServiceEventUnsubscribeMessage } from './ServiceEventUnsubscribeMessage';
-import { ServiceEventEmitMessage } from './ServiceEventEmitMessage';
+import { ServiceInvokeReply } from './ServiceInvokeReply';
+import { ServiceInvokeRequest } from './ServiceInvokeRequest';
+import { ServiceListReplyMessage } from './ServiceListReplyMessage';
+import { ServiceListRequestMessage } from './ServiceListRequestMessage';
+import { ServiceUnavailableMessage } from './ServiceUnavailableMessage';
 
 /**
  * Types of messages used by Services.

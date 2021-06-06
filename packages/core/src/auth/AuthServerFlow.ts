@@ -26,7 +26,7 @@ export type AuthServerReply = {
 } | {
 	type: AuthServerReplyType.Reject;
 } | {
-	type: AuthServerReplyType.Data,
+	type: AuthServerReplyType.Data;
 
 	data: ArrayBuffer;
 };

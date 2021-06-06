@@ -1,12 +1,17 @@
-import { join } from 'path';
+import { Socket } from 'net';
 import { tmpdir } from 'os';
+import { join } from 'path';
 
 import { Event, Subscribable } from 'atvik';
 import { LowLevelNetwork } from 'local-machine-network';
 
 import { AnonymousAuth } from 'ataraxia';
-import { AbstractTransport, StreamingPeer, TransportOptions, DisconnectReason } from 'ataraxia/transport';
-import { Socket } from 'net';
+import {
+	AbstractTransport,
+	StreamingPeer,
+	TransportOptions,
+	DisconnectReason
+} from 'ataraxia/transport';
 
 const AUTH = [ new AnonymousAuth() ];
 
@@ -38,7 +43,7 @@ export class MachineLocalTransport extends AbstractTransport {
 
 	private leaderEvent: Event<this>;
 
-	constructor(options?: MachineLocalTransportOptions) {
+	public constructor(options?: MachineLocalTransportOptions) {
 		super('local');
 
 		this._leader = false;
@@ -51,11 +56,11 @@ export class MachineLocalTransport extends AbstractTransport {
 		}
 	}
 
-	get leader() {
+	public get leader() {
 		return this._leader;
 	}
 
-	get onLeader(): Subscribable<this> {
+	public get onLeader(): Subscribable<this> {
 		return this.leaderEvent.subscribable;
 	}
 
@@ -73,7 +78,7 @@ export class MachineLocalTransport extends AbstractTransport {
 			this.debug('Caught error:', err);
 		});
 
-		this.net.onLeader(serverSocket => {
+		this.net.onLeader(() => {
 			this.debug('This node is now the leader of the machine-local network');
 			this.leaderEvent.emit();
 		});

@@ -1,7 +1,8 @@
-import { AbstractTransport, TransportOptions } from 'ataraxia/transport';
-import { WebSocketFactory } from './WebSocketFactory';
-import { WebSocketClientPeer } from './WebSocketClientPeer';
 import { AuthProvider } from 'ataraxia';
+import { AbstractTransport, TransportOptions } from 'ataraxia/transport';
+
+import { WebSocketClientPeer } from './WebSocketClientPeer';
+import { WebSocketFactory } from './WebSocketFactory';
 
 /**
  * Options that can be used with `WebSocketClientTransport`.
@@ -27,7 +28,7 @@ export class WebSocketClientTransport extends AbstractTransport {
 	private readonly options: WebSocketClientTransportOptions;
 	private peer?: WebSocketClientPeer;
 
-	constructor(options: WebSocketClientTransportOptions) {
+	public constructor(options: WebSocketClientTransportOptions) {
 		super('ws-client');
 
 		this.options = options;
@@ -75,5 +76,5 @@ function defaultWebSocketFactory(url: string) {
 		throw new Error('No default WebSocket implementation found');
 	}
 
-	return new (WebSocket as any)(url);
+	return new WebSocket(url);
 }

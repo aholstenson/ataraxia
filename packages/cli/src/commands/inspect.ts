@@ -10,7 +10,7 @@ export const aliases: string[] = [ 'i' ];
 export const desc: string = 'Inspect the nodes of a network';
 
 export const builder = (yargs: Argv) =>
-    yargs
+	yargs
 		.usage('Usage: $0 inspect')
 		.option('watch', {
 			boolean: true,
@@ -21,6 +21,7 @@ export const handler = async (args: any) => {
 	const net = createNetwork(args);
 
 	let timer: NodeJS.Timeout | undefined;
+
 	function requeueQuiet() {
 		if(timer) {
 			clearTimeout(timer);
@@ -60,4 +61,4 @@ export const handler = async (args: any) => {
 		logInfo('Exiting after 60 seconds, use --watch to keep listening');
 		stopNetwork(net);
 	}, 60_000);
-}
+};

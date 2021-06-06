@@ -1,9 +1,9 @@
+import { Listener } from 'atvik';
+
 import { ServiceReflect } from './reflect';
 import { MergedServiceReflect } from './reflect/MergedServiceReflect';
-
 import { serviceReflect } from './Service';
 import { Subscribable } from './Subscribable';
-import { Listener } from 'atvik';
 import { SubscriptionHandle } from './SubscriptionHandle';
 
 export class ServiceImpl {
@@ -12,7 +12,7 @@ export class ServiceImpl {
 
 	private readonly reflect: MergedServiceReflect;
 
-	constructor(id: string) {
+	public constructor(id: string) {
 		this.id = id;
 		this.reflect = new MergedServiceReflect(id);
 
@@ -102,7 +102,7 @@ function createSubscribable(
 
 	subscribe.subscribe = subscribe;
 	subscribe.unsubscribe = unsubscribe;
-	subscribe.once = () => new Promise<any[]>((resolve, reject) => {
+	subscribe.once = () => new Promise<any[]>(resolve => {
 		const listener = (...args: any[]) => {
 			unsubscribe(listener);
 

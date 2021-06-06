@@ -1,8 +1,8 @@
 import WS from 'ws';
 
+import { AuthProvider } from 'ataraxia';
 import { AbstractWebSocketPeer } from 'ataraxia-ws-client';
 import { AbstractTransport, TransportOptions } from 'ataraxia/transport';
-import { AuthProvider } from 'ataraxia';
 
 export interface WebSocketServerTransportOptions extends WS.ServerOptions {
 	/**
@@ -15,7 +15,7 @@ export class WebSocketServerTransport extends AbstractTransport {
 	private options: WebSocketServerTransportOptions;
 	public server?: WS.Server;
 
-	constructor(options: WebSocketServerTransportOptions) {
+	public constructor(options: WebSocketServerTransportOptions) {
 		super('ws-server');
 
 		if(! options) {

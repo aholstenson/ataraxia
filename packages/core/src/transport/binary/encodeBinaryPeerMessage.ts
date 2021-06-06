@@ -58,28 +58,36 @@ export function encodeBinaryPeerMessage<T extends PeerMessageType>(
 			encoder.encodeInteger(TAG_REJECT);
 			break;
 		case PeerMessageType.Hello:
+		{
 			const helloMessage = data as HelloMessage;
 			encoder.encodeInteger(TAG_HELLO);
 			encoder.encodeBytes(new Uint8Array(helloMessage.id));
 			encoder.encodeArray([ ...helloMessage.capabilities ]);
 			break;
+		}
 		case PeerMessageType.Select:
+		{
 			const selectMessage = data as HelloMessage;
 			encoder.encodeInteger(TAG_SELECT);
 			encoder.encodeBytes(new Uint8Array(selectMessage.id));
 			encoder.encodeArray([ ...selectMessage.capabilities ]);
 			break;
+		}
 		case PeerMessageType.Auth:
+		{
 			const authMessage = data as AuthMessage;
 			encoder.encodeInteger(TAG_AUTH);
 			encoder.encodeString(authMessage.method);
 			encoder.encodeBytes(new Uint8Array(authMessage.data));
 			break;
+		}
 		case PeerMessageType.AuthData:
+		{
 			const authDataMessage = data as AuthDataMessage;
 			encoder.encodeInteger(TAG_AUTH_DATA);
 			encoder.encodeBytes(new Uint8Array(authDataMessage.data));
 			break;
+		}
 		case PeerMessageType.Begin:
 			encoder.encodeInteger(TAG_BEGIN);
 			break;
@@ -87,6 +95,7 @@ export function encodeBinaryPeerMessage<T extends PeerMessageType>(
 			encoder.encodeInteger(TAG_BYE);
 			break;
 		case PeerMessageType.NodeSummary:
+		{
 			const nodeSummaryMessage = data as NodeSummaryMessage;
 			encoder.encodeInteger(TAG_NODE_SUMMARY);
 			encoder.encodeInteger(nodeSummaryMessage.ownVersion);
@@ -96,7 +105,9 @@ export function encodeBinaryPeerMessage<T extends PeerMessageType>(
 				encoder.encodeInteger(routingSummary.version);
 			}
 			break;
+		}
 		case PeerMessageType.NodeRequest:
+		{
 			const nodeRequestMessage = data as NodeRequestMessage;
 			encoder.encodeInteger(TAG_NODE_REQUEST);
 			encoder.encodeInteger(nodeRequestMessage.nodes.length);
@@ -104,7 +115,9 @@ export function encodeBinaryPeerMessage<T extends PeerMessageType>(
 				encoder.encodeBytes(new Uint8Array(node));
 			}
 			break;
+		}
 		case PeerMessageType.NodeDetails:
+		{
 			const nodeDetailsMessage = data as NodeDetailsMessage;
 			encoder.encodeInteger(TAG_NODE_DETAILS);
 			encoder.encodeInteger(nodeDetailsMessage.nodes.length);
@@ -118,7 +131,9 @@ export function encodeBinaryPeerMessage<T extends PeerMessageType>(
 				}
 			}
 			break;
+		}
 		case PeerMessageType.Data:
+		{
 			const dataMessage = data as DataMessage;
 			encoder.encodeInteger(TAG_DATA);
 			encoder.encodeBytes(new Uint8Array(dataMessage.target));
@@ -130,16 +145,21 @@ export function encodeBinaryPeerMessage<T extends PeerMessageType>(
 				encoder.encodeInteger(entry.id);
 			}
 			break;
+		}
 		case PeerMessageType.DataAck:
+		{
 			const dataAckMessage = data as DataAckMessage;
 			encoder.encodeInteger(TAG_DATA_ACK);
 			encoder.encodeInteger(dataAckMessage.id);
 			break;
+		}
 		case PeerMessageType.DataReject:
+		{
 			const dataRejectMessage = data as DataRejectMessage;
 			encoder.encodeInteger(TAG_DATA_REJECT);
 			encoder.encodeInteger(dataRejectMessage.id);
 			break;
+		}
 		default:
 			throw new Error('Unknown peer message of type: ' + (PeerMessageType[type] || type));
 	}

@@ -1,5 +1,5 @@
-import debug from 'debug';
 import { Event } from 'atvik';
+import debug from 'debug';
 
 import { sameId, encodeId } from '../id';
 import {
@@ -39,7 +39,7 @@ export class Messaging {
 
 	private idCounter: number;
 
-	constructor(
+	public constructor(
 		debugNamespace: string,
 		routing: Routing,
 		dataEvent: Event<any, [ ArrayBuffer, string, ArrayBuffer ]>
@@ -188,7 +188,7 @@ export class Messaging {
 			targetPeer.send(PeerMessageType.Data, message)
 				.catch(err => {
 					this.releaseId(messageId);
-					this.debug('Caught error while forwarding DATA to peer', err)
+					this.debug('Caught error while forwarding DATA to peer', err);
 				});
 		}
 	}

@@ -3,7 +3,7 @@ import { encodeId } from './ids';
 export class IdSet {
 	private data: Map<string, ArrayBuffer>;
 
-	constructor(values?: IterableIterator<ArrayBuffer>) {
+	public constructor(values?: IterableIterator<ArrayBuffer>) {
 		this.data = new Map();
 		if(values) {
 			for(const v of values) {
@@ -24,7 +24,7 @@ export class IdSet {
 		this.data.delete(encodeId(id));
 	}
 
-	get size() {
+	public get size() {
 		return this.data.size;
 	}
 

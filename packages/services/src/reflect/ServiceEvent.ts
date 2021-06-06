@@ -1,5 +1,3 @@
-import { Listener, SubscriptionHandle } from 'atvik';
-
 import { ServiceParameter } from './ServiceParameter';
 
 /**

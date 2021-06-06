@@ -1,4 +1,4 @@
-import { Network, AnonymousAuth } from 'ataraxia';
+import { Network } from 'ataraxia';
 
 import { Services } from '../src/Services';
 
@@ -12,7 +12,6 @@ interface TestService {
 }
 
 describe('Services: Local', () => {
-
 	it('Can register and call plain object', async () => {
 		const services = new Services(net);
 

@@ -6,7 +6,7 @@ export class MergedServiceReflect extends ServiceReflect {
 	public readonly id: string;
 	private readonly reflects: ServiceReflect[];
 
-	constructor(id: string) {
+	public constructor(id: string) {
 		super(id, new Map(), new Map());
 		this.id = id;
 

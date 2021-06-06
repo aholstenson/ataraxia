@@ -8,7 +8,7 @@ export function resolveAuth(args: any): AuthProvider[] {
 	if(args.sharedKey) {
 		result.push(new SharedSecretAuth({
 			secret: args.sharedKey
-		}))
+		}));
 	}
 
 	return result;

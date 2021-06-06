@@ -1,6 +1,6 @@
 import chalk from 'chalk';
-import { Argv } from 'yargs';
 import { Minimatch } from 'minimatch';
+import { Argv } from 'yargs';
 
 import { indent, log, logInfo } from '../log';
 import { createNetwork } from '../utils/createNetwork';
@@ -10,7 +10,7 @@ export const aliases: string[] = [ 'l' ];
 export const desc: string = 'Listen for messages on the network';
 
 export const builder = (yargs: Argv) =>
-    yargs
+	yargs
 		.usage('Usage: $0 listen [--filter message-type]')
 		.option('type', {
 			string: true,
@@ -39,4 +39,4 @@ export const handler = async (args: any) => {
 	if(args.exchange) {
 		await net.createExchange(args.exchange).join();
 	}
-}
+};

@@ -1,5 +1,4 @@
 import { Network } from '../Network';
-import { AnonymousAuth } from '../auth';
 
 import { peersBetween, TestPeer } from './TestPeer';
 import { TestTransport } from './TestTransport';
@@ -39,7 +38,7 @@ export class TestNetwork {
 	private nodeInfo: Map<string, NodeInfo>;
 	private connectionInfo: Map<string, ConnectionInfo>;
 
-	constructor() {
+	public constructor() {
 		this.nodeInfo = new Map();
 		this.connectionInfo = new Map();
 	}
@@ -206,7 +205,7 @@ export class TestNetwork {
 	}
 
 	public async shutdown(): Promise<void> {
-		for(const [ key, info ] of this.connectionInfo) {
+		for(const info of this.connectionInfo.values()) {
 			info.aPeer.disconnect();
 			info.bPeer.disconnect();
 		}

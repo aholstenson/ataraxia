@@ -1,7 +1,6 @@
-import { Topology } from '../../src/topology';
 import { decodeId, encodeId } from '../../src/id';
 import { peersBetween, TestPeer } from '../../src/test';
-
+import { Topology } from '../../src/topology';
 
 interface NodeInfo {
 	id: ArrayBuffer;
@@ -36,7 +35,7 @@ export class TopologyTester {
 	private nodeInfo: Map<string, NodeInfo>;
 	private connectionInfo: Map<string, ConnectionInfo>;
 
-	constructor() {
+	public constructor() {
 		this.nodeInfo = new Map();
 		this.connectionInfo = new Map();
 	}

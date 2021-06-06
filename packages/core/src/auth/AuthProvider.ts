@@ -1,5 +1,5 @@
-import { AuthContext } from './AuthContext';
 import { AuthClientFlow } from './AuthClientFlow';
+import { AuthContext } from './AuthContext';
 import { AuthServerFlow } from './AuthServerFlow';
 
 /**

@@ -1,6 +1,7 @@
-import { Socket, connect} from 'net';
-import { HostAndPort } from 'tinkerhub-discovery';
+import { Socket, connect } from 'net';
+
 import peer from 'noise-peer';
+import { HostAndPort } from 'tinkerhub-discovery';
 
 import { WithNetwork, BackOff, AuthProvider } from 'ataraxia';
 import { StreamingPeer, MergeablePeer, DisconnectReason } from 'ataraxia/transport';
@@ -14,7 +15,7 @@ export class TCPPeer extends StreamingPeer implements MergeablePeer {
 	private addressAttempt: number;
 	private connectTimeout: any;
 
-	constructor(
+	public constructor(
 		network: WithNetwork,
 		authProviders: ReadonlyArray<AuthProvider>
 	) {
@@ -35,7 +36,7 @@ export class TCPPeer extends StreamingPeer implements MergeablePeer {
 		}
 	}
 
-	set serverSocket(socket: Socket | undefined) {
+	public set serverSocket(socket: Socket | undefined) {
 		if(! socket) {
 			throw new Error('Tried setting an undefined server socket');
 		}
@@ -53,7 +54,7 @@ export class TCPPeer extends StreamingPeer implements MergeablePeer {
 		stream.on('connected', () => this.negotiateAsServer());
 	}
 
-	get serverSocket() {
+	public get serverSocket() {
 		return this._serverSocket;
 	}
 
@@ -105,7 +106,7 @@ export class TCPPeer extends StreamingPeer implements MergeablePeer {
 		const stream = peer(client, true);
 		stream.on('connected', () => {
 			this.debug('Connected via ' + address.host + ':' + address.port);
-			this.negotiateAsClient()
+			this.negotiateAsClient();
 		});
 		this.setStream(stream);
 	}

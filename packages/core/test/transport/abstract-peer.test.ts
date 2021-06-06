@@ -1,10 +1,9 @@
-import { AbstractPeer, PeerMessageType, PeerMessage, DisconnectReason } from '../../src/transport';
-import { generateId } from '../../src/id';
 import { Authentication, AnonymousAuth, AuthProvider } from '../../src/auth';
+import { generateId } from '../../src/id';
+import { AbstractPeer, PeerMessageType, PeerMessage, DisconnectReason } from '../../src/transport';
 
 describe('Transport: AbstractPeer', function() {
-
-	it('Server and client can negotiate', (done) => {
+	it('Server and client can negotiate', done => {
 		const server = new TestPeer(testNetwork(), [ AnonymousAuth.INSTANCE ]);
 		const client = new TestPeer(testNetwork(), [ AnonymousAuth.INSTANCE ]);
 
@@ -21,7 +20,6 @@ describe('Transport: AbstractPeer', function() {
 		client.negotiateAsClient();
 		server.negotiateAsServer();
 	});
-
 });
 
 function testNetwork(providers: AuthProvider[] = [ new AnonymousAuth() ]) {

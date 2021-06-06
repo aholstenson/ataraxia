@@ -56,7 +56,7 @@ export class RequestReplyHelper<Result> {
 	private readonly pending: Map<number, PendingMessage<Result>>;
 	private idCounter: number;
 
-	constructor(options: RequestReplyHelperOptions = {}) {
+	public constructor(options: RequestReplyHelperOptions = {}) {
 		this.defaultTimeout = options.timeout || 30000;
 
 		this.pending = new Map();

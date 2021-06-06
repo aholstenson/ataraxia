@@ -17,9 +17,9 @@ export function indent(spaces: number, ...args: any) {
 	const text = prettify(...args);
 	if(spaces <= 0) return text;
 
-	const indent = ' '.repeat(spaces);
+	const spacing = ' '.repeat(spaces);
 	return text.split('\n')
-		.map(line => line.length === 0 ? line : indent + line)
+		.map(line => line.length === 0 ? line : spacing + line)
 		.join('\n');
 }
 

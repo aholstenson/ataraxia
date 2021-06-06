@@ -1,7 +1,6 @@
-import debugFactory from 'debug';
-import { Event } from 'atvik';
-
 import { FibonacciHeap } from '@tyriar/fibonacci-heap';
+import { Event } from 'atvik';
+import debugFactory from 'debug';
 
 import { IdMap, encodeId } from '../id';
 import { Peer } from '../transport';
@@ -22,7 +21,7 @@ export class Routing {
 
 	private dirty: boolean;
 
-	constructor(
+	public constructor(
 		debugNamespace: string,
 		self: TopologyNode,
 		nodes: IdMap<TopologyNode>,
@@ -72,7 +71,6 @@ export class Routing {
 				this.nodes.delete(node.id);
 			}
 		}
-
 	}
 
 	public findPeerForTarget(node: ArrayBuffer): Peer | null {

@@ -1,9 +1,7 @@
-import debug from 'debug';
 import { Event, SubscriptionHandle } from 'atvik';
+import debug from 'debug';
 
 import { IdMap, IdSet, encodeId, sameId } from '../id';
-
-import { TopologyNode } from './TopologyNode';
 import {
 	Peer,
 	NodeRoutingSummary,
@@ -13,10 +11,11 @@ import {
 	NodeDetailsMessage,
 	NodeRoutingDetails
 } from '../transport';
-
 import { WithNetwork } from '../WithNetwork';
-import { Routing } from './Routing';
+
 import { Messaging } from './Messaging';
+import { Routing } from './Routing';
+import { TopologyNode } from './TopologyNode';
 
 /**
  * Internal details kept for a peer.
@@ -84,10 +83,10 @@ export class Topology {
 	/**
 	 * Create a new topology for the given network.
 	 */
-	constructor(parent: WithNetwork, options: TopologyOptions) {
+	public constructor(parent: WithNetwork, options: TopologyOptions) {
 		this.parent = parent;
 		this.endpoint = options.endpoint || false;
-		this.broadcastTimeout =  null;
+		this.broadcastTimeout = null;
 
 		this.nodes = new IdMap();
 		this.peers = new IdMap();
@@ -105,7 +104,7 @@ export class Topology {
 		this.routing = new Routing(this.debug.namespace,
 			this.self,
 			this.nodes,
-			(id) => {
+			id => {
 				const d = this.peers.get(id);
 				return d ? d[0].peer : undefined; // TODO: Pick lowest latency
 			},
@@ -126,7 +125,7 @@ export class Topology {
 	public async start(): Promise<void> {
 		this.latencyGossipHandle = setTimeout(() => {
 			this.latencyGossipHandle = setInterval(() => this.gossipLatencies(), 30000);
-		}, 2 + Math.random() * 100);
+		}, 2 + (Math.random() * 100));
 	}
 
 	/**
@@ -137,15 +136,15 @@ export class Topology {
 		clearInterval(this.latencyGossipHandle);
 	}
 
-	get onAvailable() {
+	public get onAvailable() {
 		return this.availableEvent.subscribable;
 	}
 
-	get onUnavailable() {
+	public get onUnavailable() {
 		return this.unavailableEvent.subscribable;
 	}
 
-	get onData() {
+	public get onData() {
 		return this.dataEvent.subscribable;
 	}
 
@@ -166,7 +165,7 @@ export class Topology {
 	/**
 	 * Get an iterable containing all the nodes that are known.
 	 */
-	get nodelist() {
+	public get nodelist() {
 		return this.nodes.values();
 	}
 
@@ -445,7 +444,7 @@ export class Topology {
 		// Check if there is a pending broadcast
 		if(this.broadcastTimeout) return;
 
-		this.broadcastTimeout = new Promise((resolve) => setTimeout(() => {
+		this.broadcastTimeout = new Promise(resolve => setTimeout(() => {
 			this.routing.refresh();
 
 			if(this.debug.enabled) {

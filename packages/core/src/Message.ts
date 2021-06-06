@@ -1,6 +1,6 @@
-import { Node } from './Node';
-import { MessageType } from './MessageType';
 import { MessageData } from './MessageData';
+import { MessageType } from './MessageType';
+import { Node } from './Node';
 
 /**
  * Message received over a network.

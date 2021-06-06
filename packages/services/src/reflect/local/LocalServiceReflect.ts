@@ -1,11 +1,10 @@
 import { Listener } from 'atvik';
 
 import { LocalService } from '../../LocalService';
-
 import { ServiceReflect } from '../ServiceReflect';
 
-import { LocalServiceEvent } from './LocalServiceEvent';
 import { createLocalServiceMetadata } from './createLocalServiceMetadata';
+import { LocalServiceEvent } from './LocalServiceEvent';
 
 /**
  * Implementation of `ServiceReflect` for local services. This implementation
@@ -15,7 +14,7 @@ import { createLocalServiceMetadata } from './createLocalServiceMetadata';
 export class LocalServiceReflect extends ServiceReflect {
 	private service: LocalService;
 
-	constructor(
+	public constructor(
 		service: LocalService
 	) {
 		const { methods, events } = createLocalServiceMetadata(service);

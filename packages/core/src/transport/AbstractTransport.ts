@@ -1,22 +1,18 @@
-import debug from 'debug';
 import { Event } from 'atvik';
+import debug from 'debug';
 
+import { encodeId } from '../id';
 import { WithNetwork } from '../WithNetwork';
 
-import { Transport } from './Transport';
-
 import { Peer } from './Peer';
+import { Transport } from './Transport';
 import { TransportOptions } from './TransportOptions';
-import { IdMap, compareId, encodeId } from '../id';
-import { isMergeablePeer } from './MergeablePeer';
 
 /**
  * Abstract base for implementing transports. Implements common behavior to
  * help with tracking of peers.
  */
-export class AbstractTransport
-	implements Transport
-{
+export class AbstractTransport implements Transport {
 	private readonly transportName: string;
 
 	private readonly peerConnectEvent: Event<this, [ Peer ]>;
@@ -29,7 +25,7 @@ export class AbstractTransport
 	private _network?: WithNetwork;
 	protected readonly peers: Set<Peer>;
 
-	constructor(name: string) {
+	public constructor(name: string) {
 		this.peerConnectEvent = new Event(this);
 		this.peerDisconnectEvent = new Event(this);
 
@@ -43,21 +39,21 @@ export class AbstractTransport
 	/**
 	 * Event for when a new peer is connected via this transport.
 	 */
-	get onPeerConnect() {
+	public get onPeerConnect() {
 		return this.peerConnectEvent.subscribable;
 	}
 
 	/**
 	 * Event for when a peer is disconnected.
 	 */
-	get onPeerDisconnect() {
+	public get onPeerDisconnect() {
 		return this.peerDisconnectEvent.subscribable;
 	}
 
 	/**
 	 * Get if transport is started.
 	 */
-	get started() {
+	public get started() {
 		return this._started;
 	}
 

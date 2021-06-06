@@ -1,7 +1,6 @@
 import { TopologyTester } from './TopologyTester';
 
 describe('Topology', () => {
-
 	it('Fully-connected - 2 peers', async () => {
 		const tester = new TopologyTester()
 			.bidirectional('a', 'b');
@@ -43,7 +42,6 @@ describe('Topology', () => {
 			.bidirectional('b', 'c');
 
 		try {
-
 			await tester.consolidate();
 
 			expect(tester.nodes('a')).toEqual([ 'b', 'c' ]);
@@ -86,7 +84,6 @@ describe('Topology', () => {
 			.bidirectional('c', 'd');
 
 		try {
-
 			await tester.consolidate();
 
 			expect(tester.nodes('a')).toEqual([ 'b', 'c', 'd' ]);

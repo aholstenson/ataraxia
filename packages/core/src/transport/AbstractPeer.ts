@@ -1,16 +1,29 @@
-import { debug } from 'debug';
 import { FailureDetector } from 'adaptive-accrual-failure-detector';
 import { Event } from 'atvik';
+import { debug } from 'debug';
 
+import {
+	AuthProvider,
+	AuthClientFlow,
+	AuthServerFlow,
+	AuthServerReplyType,
+	AuthServerReply,
+	AuthClientReplyType,
+	AuthClientReply
+} from '../auth';
 import { noId, encodeId } from '../id';
-
-import { PeerMessageType, PeerMessage, HelloMessage, SelectMessage, AuthMessage, AuthDataMessage } from './messages';
-
 import { WithNetwork } from '../WithNetwork';
-import { Peer } from './Peer';
 
-import { AuthProvider, AuthClientFlow, AuthServerFlow, AuthServerReplyType, AuthServerReply, AuthClientReplyType, AuthClientReply, Authentication } from '../auth';
 import { DisconnectReason } from './DisconnectReason';
+import {
+	PeerMessageType,
+	PeerMessage,
+	HelloMessage,
+	SelectMessage,
+	AuthMessage,
+	AuthDataMessage
+} from './messages';
+import { Peer } from './Peer';
 
 /**
  * The interval at which pings are sent.
@@ -45,7 +58,6 @@ const enum State {
  * protocol versions and requested features.
  */
 export abstract class AbstractPeer implements Peer {
-
 	protected readonly parent: WithNetwork;
 
 	protected debug: debug.Debugger;
@@ -78,7 +90,7 @@ export abstract class AbstractPeer implements Peer {
 	 *
 	 * @param {AbstractTransport} transport
 	 */
-	constructor(
+	public constructor(
 		parent: WithNetwork,
 		authProviders: ReadonlyArray<AuthProvider>
 	) {
@@ -102,19 +114,19 @@ export abstract class AbstractPeer implements Peer {
 		this.lastPing = 0;
 	}
 
-	get onConnect() {
+	public get onConnect() {
 		return this.connectEvent.subscribable;
 	}
 
-	get onDisconnect() {
+	public get onDisconnect() {
 		return this.disconnectEvent.subscribable;
 	}
 
-	get onData() {
+	public get onData() {
 		return this.dataEvent.subscribable;
 	}
 
-	get connected() {
+	public get connected() {
 		return this.state === State.Active;
 	}
 
@@ -189,10 +201,9 @@ export abstract class AbstractPeer implements Peer {
 	 * @param error
 	 * @param reason
 	 */
-	protected abort(message: string, error?: Error, reason?: DisconnectReason) {
+	protected abort(message: string, error?: Error, reason: DisconnectReason = DisconnectReason.NegotiationFailed) {
 		clearTimeout(this.helloTimeout);
 
-		reason = reason ?? DisconnectReason.NegotiationFailed;
 		this.debug(message, 'reason=', DisconnectReason[reason], 'error=', error);
 		this.requestDisconnect(reason, error);
 	}
@@ -393,6 +404,7 @@ export abstract class AbstractPeer implements Peer {
 			return null;
 		}
 
+		// eslint-disable-next-line no-constant-condition
 		while(true) {
 			if(this.remainingAuthProviders.length === 0) return null;
 
@@ -409,10 +421,12 @@ export abstract class AbstractPeer implements Peer {
 		const provider = this.pickNextAuthProvider();
 
 		if(provider && provider.createClientFlow) {
-			const authClientFlow = this.authClientFlow = provider.createClientFlow({
+			const authClientFlow = provider.createClientFlow({
 				localPublicSecurity: this.localPublicSecurity(),
 				remotePublicSecurity: this.remotePublicSecurity()
 			});
+
+			this.authClientFlow = authClientFlow;
 
 			// Get the initial message and send the request to the server
 			(async () => {
@@ -524,10 +538,12 @@ export abstract class AbstractPeer implements Peer {
 				return;
 			}
 
-			const authServerFlow = this.authServerFlow = provider.createServerFlow({
+			const authServerFlow = provider.createServerFlow({
 				localPublicSecurity: this.localPublicSecurity(),
 				remotePublicSecurity: this.remotePublicSecurity()
 			});
+
+			this.authServerFlow = authServerFlow;
 
 			let reply;
 			try {
@@ -714,7 +730,7 @@ export abstract class AbstractPeer implements Peer {
 	/**
 	 * Get the current latency.
 	 */
-	get latency() {
+	public get latency() {
 		if(this.latencyValues.length === 0) {
 			throw new Error('Latency unknown');
 		}

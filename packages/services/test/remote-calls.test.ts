@@ -7,7 +7,6 @@ interface TestService {
 }
 
 describe('Services: Remote Calls', () => {
-
 	it('Can call remote service', async () => {
 		const testNetwork = new TestNetwork();
 		testNetwork.bidirectional('a', 'b');

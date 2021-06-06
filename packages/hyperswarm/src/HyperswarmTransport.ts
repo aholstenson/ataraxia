@@ -1,11 +1,11 @@
+import { createHash } from 'crypto';
+import { Duplex } from 'stream';
+
 import hyperswarm, { Swarm } from 'hyperswarm';
 import peer from 'noise-peer';
 
 import { AuthProvider, WithNetwork } from 'ataraxia';
 import { AbstractTransport, StreamingPeer, TransportOptions } from 'ataraxia/transport';
-
-import { createHash } from 'crypto';
-import { Duplex } from 'stream';
 
 /**
  * Options that can be used for a Hyperswarm transport.
@@ -28,7 +28,7 @@ export class HyperswarmTransport extends AbstractTransport {
 	private topic?: Buffer;
 	private swarm?: Swarm;
 
-	constructor(options: HyperswarmTransportOptions) {
+	public constructor(options: HyperswarmTransportOptions) {
 		super('hyperswarm');
 
 		this.options = options;
@@ -39,20 +39,18 @@ export class HyperswarmTransport extends AbstractTransport {
 
 		if(! started) return false;
 
-		const swarm = this.swarm = hyperswarm({
+		this.swarm = hyperswarm({
 			// Assume that endpoints are short-lived
 			ephemeral: options.endpoint ? true : undefined
 		});
 
-		const topic = this.topic = createHash('sha256')
+		this.topic = createHash('sha256')
 			.update(this.options.topic)
 			.digest();
 
-		this.debug('Joining the topic', topic.toString('hex'));
+		this.debug('Joining the topic', this.topic.toString('hex'));
 
-		swarm.on('peer', peer => this.debug('Found a new peer ' + peer.host + ':' + peer.port));
-
-		swarm.on('connection', (socket, info) => {
+		this.swarm.on('connection', (socket, info) => {
 			this.debug('Connecting to a peer, client=', info.client);
 
 			this.addPeer(new HyperswarmPeer(
@@ -63,6 +61,8 @@ export class HyperswarmTransport extends AbstractTransport {
 			));
 		});
 
+		const swarm = this.swarm;
+		const topic = this.topic;
 		await new Promise(resolve => {
 			/*
 			 * Join the topic automatically setting announce and lookup.
@@ -102,7 +102,7 @@ export class HyperswarmTransport extends AbstractTransport {
 }
 
 class HyperswarmPeer extends StreamingPeer {
-	constructor(
+	public constructor(
 		network: WithNetwork,
 		authProviders: ReadonlyArray<AuthProvider>,
 		socket: Duplex,

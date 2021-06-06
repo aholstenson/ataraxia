@@ -1,13 +1,11 @@
 import debug from 'debug';
 
+import { Message } from '../Message';
 import { Network } from '../Network';
 import { Node } from '../Node';
 
-import { Message } from '../Message';
-
-import { Exchange } from './Exchange';
-import { ExchangeMessages } from './ExchangeMessages';
 import { ExchangeImpl } from './ExchangeImpl';
+import { ExchangeMessages } from './ExchangeMessages';
 
 /**
  * Shared information about an exchange.
@@ -44,7 +42,7 @@ export class SharedExchange {
 	 */
 	private readonly activeCallback: (active: boolean) => Promise<void>;
 
-	constructor(
+	public constructor(
 		net: Network<ExchangeMessages>,
 		id: string,
 		activeCallback: (active: boolean) => Promise<void>
@@ -165,7 +163,6 @@ export class SharedExchange {
 
 		if(this.instances.size === 0) {
 			await this.activeCallback(false);
-			//await this.net.broadcast('exchange:leave', { id: this.id });
 		}
 	}
 }

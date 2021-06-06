@@ -1,11 +1,10 @@
 import { Event } from 'atvik';
 
-import { Node } from '../Node';
-
 import { Message } from '../Message';
 import { MessageData } from '../MessageData';
 import { MessageType } from '../MessageType';
 import { MessageUnion } from '../MessageUnion';
+import { Node } from '../Node';
 
 import { Exchange } from './Exchange';
 import { SharedExchange } from './SharedExchange';

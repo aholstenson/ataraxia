@@ -19,7 +19,7 @@ export enum AuthClientReplyType {
 export type AuthClientReply = {
 	type: AuthClientReplyType.Reject;
 } | {
-	type: AuthClientReplyType.Data,
+	type: AuthClientReplyType.Data;
 
 	data: ArrayBuffer;
 };

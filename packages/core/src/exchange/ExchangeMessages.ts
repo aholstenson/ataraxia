@@ -6,8 +6,8 @@ import { ExchangeMembership } from './ExchangeList';
  * Types of messages used to keep track of members in exchanges.
  */
 export interface ExchangeMessages {
-	'exchange:join': ExchangeJoin,
-	'exchange:leave': ExchangeLeave,
-	'exchange:membership': ExchangeMembership,
-	'exchange:query': undefined
+	'exchange:join': ExchangeJoin;
+	'exchange:leave': ExchangeLeave;
+	'exchange:membership': ExchangeMembership;
+	'exchange:query': undefined;
 }
