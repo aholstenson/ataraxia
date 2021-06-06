@@ -11,7 +11,6 @@
     "test:watch": "jest --watch",
     "ci": "npm run coverage && npm run lint",
     "coverage": "jest --coverage",
-    "lint": "tslint  --project tsconfig.build.json -t codeFrame 'src/**/*.ts' 'test/**/*.ts'",
     "build": "tsc --project tsconfig.build.json --module commonjs --outDir dist/cjs && tsc --project tsconfig.build.json --module es6 --outDir dist/esm",
     "prebuild": "rimraf dist",
     "prepublishOnly": "npm run build"
