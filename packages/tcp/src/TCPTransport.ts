@@ -69,6 +69,9 @@ export class TCPTransport extends AbstractTransport {
 
 	/**
 	 * Get the port number the transport was bound to.
+	 *
+	 * @returns
+	 *   port number, or `0` if no server was started
 	 */
 	public get port() {
 		return this._port;

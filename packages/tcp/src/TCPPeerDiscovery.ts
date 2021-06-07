@@ -36,9 +36,18 @@ export interface TCPServerDetails {
 	port: number;
 }
 
+/**
+ * Discovery for addresses of TCP peers.
+ */
 export interface TCPPeerDiscovery {
 	/**
 	 * Create a discovery that will return peers to connect to.
+	 *
+	 * @param details -
+	 *   details to use when finding peers
+	 * @returns
+	 *   instance of `ServiceDiscovery` or `undefined` if no discovery was
+	 *   started
 	 */
 	newDiscovery?(details: TCPDiscoveryDetails): ServiceDiscovery<MultiAddressService> | undefined;
 
@@ -46,7 +55,11 @@ export interface TCPPeerDiscovery {
 	 * Optional function used to publish information about the TCP transport
 	 * so a discovery can see it.
 	 *
-	 * @param details
+	 * @param details -
+	 *   details to publish
+	 * @returns
+	 *   instance of `ServicePublisher` or `undefined` if service was not
+	 *   published
 	 */
 	publish?(details: TCPServerDetails): ServicePublisher | undefined;
 }

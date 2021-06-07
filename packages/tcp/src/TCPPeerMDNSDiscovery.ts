@@ -3,7 +3,8 @@ import { MDNSServiceDiscovery, MDNSServicePublisher } from 'tinkerhub-mdns';
 import { TCPPeerDiscovery, TCPDiscoveryDetails, TCPServerDetails } from './TCPPeerDiscovery';
 
 /**
- * Discovery of peers using mDNS and DNS-SD on the local network.
+ * Discovery of peers using mDNS and DNS-SD on the local network. Will announce
+ * using the name of the network.
  */
 export class TCPPeerMDNSDiscovery implements TCPPeerDiscovery {
 	public newDiscovery(options: TCPDiscoveryDetails) {

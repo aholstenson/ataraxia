@@ -6,6 +6,11 @@ import { HostAndPort } from 'tinkerhub-discovery';
 import { WithNetwork, BackOff, AuthProvider } from 'ataraxia';
 import { StreamingPeer, DisconnectReason } from 'ataraxia/transport';
 
+/**
+ * Peer for TCP transport, represents either a server or a client connection.
+ * Extends `StreamingPeer` and uses `noise-peer` to establish a secure
+ * connection.
+ */
 export class TCPPeer extends StreamingPeer {
 	private _serverSocket?: Socket;
 	public addresses: HostAndPort[];
@@ -30,6 +35,9 @@ export class TCPPeer extends StreamingPeer {
 		this.addressAttempt = 0;
 	}
 
+	/**
+	 * Set socket to use in server mode.
+	 */
 	public set serverSocket(socket: Socket | undefined) {
 		if(! socket) {
 			throw new Error('Tried setting an undefined server socket');
@@ -52,6 +60,12 @@ export class TCPPeer extends StreamingPeer {
 		return this._serverSocket;
 	}
 
+	/**
+	 * Set the addresses that this peer can be reached via.
+	 *
+	 * @param addresses -
+	 *   array of host and ports
+	 */
 	public setReachableVia(addresses: HostAndPort[]) {
 		this.addresses = addresses;
 		this.addressAttempt = 0;
@@ -79,6 +93,9 @@ export class TCPPeer extends StreamingPeer {
 		}
 	}
 
+	/**
+	 * Attempt to connect to a server, will try addresses in order.
+	 */
 	public tryConnect() {
 		clearTimeout(this.connectTimeout);
 
