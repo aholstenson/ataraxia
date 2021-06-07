@@ -1,6 +1,6 @@
 {
   "name": "ataraxia",
-  "version": "0.9.1",
+  "version": "0.10.0",
   "description": "P2P messaging over mesh networks",
   "license": "MIT",
   "repository": "https://github.com/aholstenson/ataraxia/tree/master/packages/core",
