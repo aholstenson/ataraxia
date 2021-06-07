@@ -46,6 +46,10 @@ export class NetworkNode implements Node {
 		return this.messageEvent.subscribable;
 	}
 
+	public get estimatedLatency() {
+		return this.topology.get(this.networkId)?.searchCost ?? Number.MAX_SAFE_INTEGER;
+	}
+
 	public send(type: string, payload: any) {
 		const encoder = new Encoder();
 		encoder.encode(payload);

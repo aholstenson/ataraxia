@@ -35,4 +35,9 @@ export interface Node<MessageTypes extends object = any> {
 	 *   data being sent
 	 */
 	send<T extends MessageType<MessageTypes>>(type: T, data: MessageData<MessageTypes, T>): Promise<void>;
+
+	/**
+	 * Advanced: Estimated latency to the node.
+	 */
+	readonly estimatedLatency: number;
 }
