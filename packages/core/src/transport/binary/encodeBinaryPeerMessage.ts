@@ -66,7 +66,10 @@ export function encodeBinaryPeerMessage<T extends PeerMessageType>(
 			const helloMessage = data as HelloMessage;
 			encoder.encodeInteger(TAG_HELLO);
 			encoder.encodeBytes(new Uint8Array(helloMessage.id));
-			encoder.encodeArray([ ...helloMessage.capabilities ]);
+			encoder.encodeInteger(helloMessage.capabilities.size);
+			for(const cap of helloMessage.capabilities) {
+				encoder.encodeString(cap);
+			}
 			break;
 		}
 		case PeerMessageType.Select:
@@ -74,7 +77,10 @@ export function encodeBinaryPeerMessage<T extends PeerMessageType>(
 			const selectMessage = data as HelloMessage;
 			encoder.encodeInteger(TAG_SELECT);
 			encoder.encodeBytes(new Uint8Array(selectMessage.id));
-			encoder.encodeArray([ ...selectMessage.capabilities ]);
+			encoder.encodeInteger(selectMessage.capabilities.size);
+			for(const cap of selectMessage.capabilities) {
+				encoder.encodeString(cap);
+			}
 			break;
 		}
 		case PeerMessageType.Auth:
