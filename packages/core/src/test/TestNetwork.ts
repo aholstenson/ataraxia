@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import { Network } from '../Network';
 
 import { peersBetween, TestPeer } from './TestPeer';
