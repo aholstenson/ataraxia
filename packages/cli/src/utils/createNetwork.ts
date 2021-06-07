@@ -22,16 +22,16 @@ export function createNetwork(args: any): Network {
 	const net = new Network({
 		name: args.network as string ?? 'ataraxia-cli',
 		endpoint: true,
-
-		transports: [
-			new MachineLocalTransport(),
-
-			new TCPTransport({
-				discovery: new TCPPeerMDNSDiscovery(),
-				authentication: auth
-			})
-		]
 	});
+
+	if(args.network) {
+		net.addTransport(new MachineLocalTransport());
+
+		net.addTransport(new TCPTransport({
+			discovery: new TCPPeerMDNSDiscovery(),
+			authentication: auth
+		}));
+	}
 
 	if(args.hyperswarm) {
 		net.addTransport(new HyperswarmTransport({
