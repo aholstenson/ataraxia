@@ -39,7 +39,7 @@ export const handler = async (args: any) => {
 		if(node.id === net.networkId) return;
 
 		requeueQuiet();
-		log(chalk.green(' Available '), node.id);
+		log(chalk.green(' Available '), node.id, chalk.dim(node.estimatedLatency + 'ms'));
 	});
 
 	net.onNodeUnavailable(node => {
