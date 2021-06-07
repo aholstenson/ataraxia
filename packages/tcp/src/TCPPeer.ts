@@ -4,9 +4,9 @@ import peer from 'noise-peer';
 import { HostAndPort } from 'tinkerhub-discovery';
 
 import { WithNetwork, BackOff, AuthProvider } from 'ataraxia';
-import { StreamingPeer, MergeablePeer, DisconnectReason } from 'ataraxia/transport';
+import { StreamingPeer, DisconnectReason } from 'ataraxia/transport';
 
-export class TCPPeer extends StreamingPeer implements MergeablePeer {
+export class TCPPeer extends StreamingPeer {
 	private _serverSocket?: Socket;
 	public addresses: HostAndPort[];
 
@@ -28,12 +28,6 @@ export class TCPPeer extends StreamingPeer implements MergeablePeer {
 
 		this.addresses = [];
 		this.addressAttempt = 0;
-	}
-
-	public merge(peer: this) {
-		if(! this.addresses && peer.addresses) {
-			this.addresses = peer.addresses;
-		}
 	}
 
 	public set serverSocket(socket: Socket | undefined) {

@@ -10,4 +10,3 @@ export * from './DisconnectReason';
 export * from './Peer';
 export * from './AbstractPeer';
 export * from './StreamingPeer';
-export * from './MergeablePeer';
