@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import { decodeId, encodeId } from '../../src/id';
 import { peersBetween, TestPeer } from '../../src/test';
 import { Topology } from '../../src/topology';
@@ -43,7 +44,9 @@ export class TopologyTester {
 	/**
 	 * Get node information, including its generated id and topology.
 	 *
-	 * @param id
+	 * @param id -
+	 * @returns
+	 *   information about node
 	 */
 	private getNode(id: string) {
 		let info = this.nodeInfo.get(id);
@@ -186,7 +189,7 @@ export class TopologyTester {
 			}
 
 			if(didActions) {
-				await new Promise((resolve) => setTimeout(resolve, 10));
+				await new Promise(resolve => setTimeout(resolve, 10));
 			}
 		}
 	}
@@ -206,7 +209,9 @@ export class TopologyTester {
 	/**
 	 * Get the nodes that the specified node can reach, indirectly or directly.
 	 *
-	 * @param id
+	 * @param id -
+	 * @returns
+	 *   nodes that can be reached
 	 */
 	public nodes(id: string): ReadonlyArray<string> {
 		const info = this.getNode(id);
@@ -228,8 +233,10 @@ export class TopologyTester {
 	/**
 	 * Get the path between two nodes, excluding the start and end node.
 	 *
-	 * @param a
-	 * @param b
+	 * @param a -
+	 * @param b -
+	 * @returns
+	 *   path from a to b
 	 */
 	public path(a: string, b: string): ReadonlyArray<string> {
 		const info = this.getNode(a);
@@ -240,7 +247,7 @@ export class TopologyTester {
 	}
 
 	public async shutdown(): Promise<void> {
-		for(const [ key, info ] of this.connectionInfo) {
+		for(const info of this.connectionInfo.values()) {
 			info.aPeer.disconnect();
 			info.bPeer.disconnect();
 		}
