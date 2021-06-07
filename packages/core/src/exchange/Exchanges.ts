@@ -91,7 +91,7 @@ export class Exchanges {
 	 *   id of exchange being joined
 	 */
 	private handleExchangeJoin(node: Node, id: string) {
-		let exchange = this.ensureSharedExchange(id);
+		const exchange = this.ensureSharedExchange(id);
 		exchange.handleNodeJoin(node);
 	}
 
@@ -104,7 +104,7 @@ export class Exchanges {
 	 *   exchange being left
 	 */
 	private handleExchangeLeave(node: Node, id: string) {
-		let exchange = this.exchanges.get(id);
+		const exchange = this.exchanges.get(id);
 		if(! exchange) return;
 
 		// Stop tracking the node as part of the exchange
