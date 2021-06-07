@@ -8,6 +8,14 @@ import { logInfo } from '../log';
 import { resolveAuth } from './resolveAuth';
 import { stopNetwork } from './stopNetwork';
 
+/**
+ * Create a network based on command line arguments.
+ *
+ * @param args -
+ *   parsed command line arguments
+ * @returns
+ *   network
+ */
 export function createNetwork(args: any): Network {
 	const auth = resolveAuth(args);
 

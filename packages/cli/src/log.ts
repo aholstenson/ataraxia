@@ -1,18 +1,46 @@
 import chalk from 'chalk';
 import prettyjson from 'prettyjson';
 
+/**
+ * Log an error message.
+ *
+ * @param args -
+ *   arguments to format
+ */
 export function logError(...args: any) {
 	process.stderr.write(prettify(chalk.bgRed.white(' ERROR '), ...args));
 }
 
+/**
+ * Log an info message.
+ *
+ * @param args -
+ *   arguments to format
+ */
 export function logInfo(...args: any) {
 	process.stdout.write(prettify(chalk.bgWhite.black(' INFO '), ...args));
 }
 
+/**
+ * Log a plain message.
+ *
+ * @param args -
+ *   arguments to format
+ */
 export function log(...args: any) {
 	process.stdout.write(prettify(...args));
 }
 
+/**
+ * Indent a log message with a certain amount of space.
+ *
+ * @param spaces -
+ *   spaces to indent with
+ * @param args -
+ *   arguments to format
+ * @returns
+ *   formatted and indented string
+ */
 export function indent(spaces: number, ...args: any) {
 	const text = prettify(...args);
 	if(spaces <= 0) return text;
@@ -23,6 +51,14 @@ export function indent(spaces: number, ...args: any) {
 		.join('\n');
 }
 
+/**
+ * Prettify a set of arguments for logging.
+ *
+ * @param args -
+ *   arguments to format
+ * @returns
+ *   formatted string
+ */
 function prettify(...args: any) {
 	let result = '';
 	for(const arg of args) {
