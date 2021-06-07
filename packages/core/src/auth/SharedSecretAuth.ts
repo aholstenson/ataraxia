@@ -7,7 +7,14 @@ import { AuthContext } from './AuthContext';
 import { AuthProvider } from './AuthProvider';
 import { AuthServerFlow, AuthServerReplyType } from './AuthServerFlow';
 
+/**
+ * Options for `SharedSecretAuth`. Used to provide the shared secret.
+ */
 export interface SharedSecretAuthOptions {
+	/**
+	 * Secret that is shared. If this secret is a string it will be encoded
+	 * into a byte representation.
+	 */
 	secret: ArrayBuffer | string;
 }
 
@@ -152,6 +159,13 @@ export class SharedSecretAuth implements AuthProvider {
  * Check if two buffers are equal. This will always loop through all bytes
  * and does not short circuit so that the timing of calls are as similar as
  * possible.
+ *
+ * @param o1 -
+ *   the first array
+ * @param o2 -
+ *   the second array
+ * @returns
+ *   if the arrays are equal
  */
 function isEqual(o1: Uint8Array, o2: Uint8Array): boolean {
 	let result = o1.byteLength === o2.byteLength;
@@ -165,6 +179,19 @@ function isEqual(o1: Uint8Array, o2: Uint8Array): boolean {
 	return result;
 }
 
+/**
+ * Calculate a response based on a given challenge.
+ *
+ * @param key -
+ *   the shared key
+ * @param challenge -
+ *   challenge sent by the other side
+ * @param security -
+ *   optional security information such a public key, can be provided by the
+ *   transport layer to protect against MiTM attacks.
+ * @returns
+ *   calculated response to send back
+ */
 function calculateResponse(
 	key: ArrayBuffer,
 	challenge: Uint8Array,
@@ -192,7 +219,10 @@ declare const window: any;
  * * `window.crypto.getRandomValues()` is used if available
  * * Fallback to `Math.random` if the above are not available
  *
- * @param n
+ * @param n -
+ *   the number of bytes to generate
+ * @returns
+ *   array filled with random bytes
  */
 function randomBytes(n: number): Uint8Array {
 	if(typeof window === 'undefined') {

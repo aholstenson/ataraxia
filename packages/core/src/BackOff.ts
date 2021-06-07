@@ -49,6 +49,9 @@ export class BackOff {
 
 	/**
 	 * Get the delay for the next attempt.
+	 *
+	 * @returns
+	 *   number of milliseconds to wait
 	 */
 	public nextDelay() {
 		const attempt = this.attempt++;
@@ -70,6 +73,9 @@ export class BackOff {
 	/**
 	 * Get the next delay as a promise. The promise will resolve when delay
 	 * is reached.
+	 *
+	 * @returns
+	 *   promise that resolves when the next delay is reached
 	 */
 	public asPromise(): Promise<void> {
 		const delay = this.nextDelay();

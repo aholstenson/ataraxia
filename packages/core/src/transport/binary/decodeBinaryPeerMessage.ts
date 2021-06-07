@@ -23,6 +23,14 @@ import {
 	TAG_BEGIN
 } from './tags';
 
+/**
+ * Decode a peer message from the given buffer.
+ *
+ * @param data -
+ *   buffer containing a previously encoded peer message
+ * @returns
+ *   array with type of peer message followed by the data of the message
+ */
 export function decodeBinaryPeerMessage(data: ArrayBuffer): [ PeerMessageType, any ] | null {
 	const decoder = new Decoder(new Uint8Array(data), {
 		ignoreExtraData: true
@@ -106,11 +114,27 @@ export function decodeBinaryPeerMessage(data: ArrayBuffer): [ PeerMessageType, a
 	}
 }
 
+/**
+ * Decode an identifier.
+ *
+ * @param decoder -
+ * @returns
+ *   identifier
+ */
 function decodeId(decoder: Decoder): ArrayBuffer {
 	const decoded = decoder.decode() as Uint8Array;
 	return decoded.buffer;
 }
 
+/**
+ * Decode an array.
+ *
+ * @param decoder -
+ * @param readItem -
+ *   callback used to read items
+ * @returns
+ *   array with items
+ */
 function decodeArray<T>(decoder: Decoder, readItem: (decoder: Decoder) => T): T[] {
 	const items = decoder.decode();
 	const result = [];
@@ -120,14 +144,35 @@ function decodeArray<T>(decoder: Decoder, readItem: (decoder: Decoder) => T): T[
 	return result;
 }
 
+/**
+ * Decode an integer.
+ *
+ * @param decoder -
+ * @returns
+ *   integer value
+ */
 function decodeInteger(decoder: Decoder): any {
 	return decoder.decode();
 }
 
+/**
+ * Decode a buffer.
+ *
+ * @param decoder -
+ * @returns
+ *   buffer
+ */
 function decodeBuffer(decoder: Decoder): any {
 	return decoder.decode().buffer;
 }
 
+/**
+ * Decode a string.
+ *
+ * @param decoder -
+ * @returns
+ *   string
+ */
 function decodeString(decoder: Decoder): any {
 	return decoder.decode();
 }

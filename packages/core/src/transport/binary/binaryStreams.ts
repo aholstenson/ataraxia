@@ -13,6 +13,10 @@ const MAX_UINT8 = 255;
 const MAX_UINT16 = Math.pow(2, 16) - 1;
 const MAX_UINT32 = Math.pow(2, 32) - 1;
 
+/**
+ * Stream that will decode packets as they are received. Packets use a header
+ * consisting of a packet length encoded as a CBOR number.
+ */
 export class PeerPacketDecodingStream extends Transform {
 	private buffer: Buffer = Buffer.alloc(0);
 
@@ -80,6 +84,16 @@ export class PeerPacketDecodingStream extends Transform {
 	}
 }
 
+/**
+ * Encode a full packet for a given message and data.
+ *
+ * @param type -
+ *   type of message
+ * @param data -
+ *   data of message
+ * @returns
+ *   buffer with packet
+ */
 export function encodePeerPacket<T extends PeerMessageType>(
 	type: T,
 	data: PeerMessage<T>

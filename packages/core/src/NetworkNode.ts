@@ -24,11 +24,6 @@ export class NetworkNode implements Node {
 	private readonly unavailableEvent: Event<this>;
 	private readonly messageEvent: Event<this, [ Message ]>;
 
-	/**
-	 * Create a new node.
-	 *
-	 * @param {TopologyNode} other
-	 */
 	public constructor(
 		debugNamespace: string,
 		topology: Topology,
@@ -51,9 +46,6 @@ export class NetworkNode implements Node {
 		return this.messageEvent.subscribable;
 	}
 
-	/**
-	 * Send a message to this node.
-	 */
 	public send(type: string, payload: any) {
 		const encoder = new Encoder();
 		encoder.encode(payload);

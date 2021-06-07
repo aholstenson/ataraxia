@@ -11,14 +11,35 @@ import { TopologyNode } from './TopologyNode';
  * Abstraction to help with finding the best route for a packet.
  */
 export class Routing {
+	/**
+	 * Debug instance used for logging.
+	 */
 	public readonly debug: debug.Debugger;
+	/**
+	 * Reference to the node representing this instance.
+	 */
 	public readonly self: TopologyNode;
+	/**
+	 * All the nodes seen.
+	 */
 	private readonly nodes: IdMap<TopologyNode>;
+	/**
+	 * Helper to resolve a peer via id.
+	 */
 	private readonly peers: (id: ArrayBuffer) => Peer | undefined;
 
+	/**
+	 * Event emitted when a node becomes available.
+	 */
 	private readonly availableEvent: Event<any, [ TopologyNode ]>;
+	/**
+	 * Event emitted when a node becomes unavailable.
+	 */
 	private readonly unavailableEvent: Event<any, [ TopologyNode ]>;
 
+	/**
+	 * Flag used to keep track if a routing refresh is needed.
+	 */
 	private dirty: boolean;
 
 	public constructor(
@@ -41,14 +62,29 @@ export class Routing {
 		this.dirty = true;
 	}
 
+	/**
+	 * Get a peer based on its identifier.
+	 *
+	 * @param id -
+	 *   id of peer
+	 * @returns
+	 *   `Peer` if available
+	 */
 	public getPeer(id: ArrayBuffer) {
 		return this.peers(id);
 	}
 
+	/**
+	 * Mark the routing as dirty to allow it to recalculate the paths.
+	 */
 	public markDirty() {
 		this.dirty = true;
 	}
 
+	/**
+	 * Refreshing the routing if it is dirty. This will calculate the best
+	 * way to reach all nodes and emit events for node availability.
+	 */
 	public refresh() {
 		if(! this.dirty) return;
 
@@ -73,6 +109,14 @@ export class Routing {
 		}
 	}
 
+	/**
+	 * Find the peer used to reach the given node.
+	 *
+	 * @param node -
+	 *   identifier of node
+	 * @returns
+	 *   `Peer` if a path is available
+	 */
 	public findPeerForTarget(node: ArrayBuffer): Peer | null {
 		// Perform a refresh if needed
 		this.refresh();
@@ -84,7 +128,6 @@ export class Routing {
 	/**
 	 * Perform a recalculation of the best paths to take to all nodes. This
 	 * runs Dijkstra's algorithm to calculate the shortest paths to all nodes.
-	 *
 	 */
 	private calculatePaths() {
 		const heap = new FibonacciHeap<number, TopologyNode>();

@@ -88,7 +88,10 @@ export abstract class AbstractPeer implements Peer {
 	/**
 	 * Create a new peer over the given transport.
 	 *
-	 * @param {AbstractTransport} transport
+	 * @param parent -
+	 *   the transport this belongs to
+	 * @param authProviders -
+	 *   `AuthProvider` instances to use to authenticate with the other side
 	 */
 	public constructor(
 		parent: WithNetwork,
@@ -133,6 +136,9 @@ export abstract class AbstractPeer implements Peer {
 	/**
 	 * Get a buffer representing a publicly known security challenge for the
 	 * local side of the peer.
+	 *
+	 * @returns
+	 *   buffer with challenge or undefined
 	 */
 	protected localPublicSecurity(): ArrayBuffer | undefined {
 		return undefined;
@@ -141,6 +147,9 @@ export abstract class AbstractPeer implements Peer {
 	/**
 	 * Get a buffer representing a publicly known security challenge for the
 	 * remote side of the peer.
+	 *
+	 * @returns
+	 *   buffer with challenge or undefined
 	 */
 	protected remotePublicSecurity(): ArrayBuffer | undefined {
 		return undefined;
@@ -156,8 +165,10 @@ export abstract class AbstractPeer implements Peer {
 	/**
 	 * Request that this peer disconnects.
 	 *
-	 * @param reason
-	 * @param err
+	 * @param reason -
+	 *   the reason why this disconnect is happening
+	 * @param err -
+	 *   optional error recorded
 	 */
 	protected abstract requestDisconnect(reason: DisconnectReason, err?: Error): void;
 
@@ -166,6 +177,11 @@ export abstract class AbstractPeer implements Peer {
 	 * disconnect and then mark the peer as disconnected.
 	 *
 	 * Transports may override this to provide reconnection behavior.
+	 *
+	 * @param reason -
+	 *   the reason why this disconnect happened
+	 * @param err -
+	 *   optional error recorded
 	 */
 	protected handleDisconnect(reason: DisconnectReason, err?: Error) {
 		this.debug('Disconnected', 'reason=', DisconnectReason[reason], 'error=', err);
@@ -197,9 +213,12 @@ export abstract class AbstractPeer implements Peer {
 	/**
 	 * Abort a connection.
 	 *
-	 * @param message
-	 * @param error
-	 * @param reason
+	 * @param message -
+	 *   message for logging purposes
+	 * @param error -
+	 *   optional error recording
+	 * @param reason -
+	 *   reason for disconnect
 	 */
 	protected abort(message: string, error?: Error, reason: DisconnectReason = DisconnectReason.NegotiationFailed) {
 		clearTimeout(this.helloTimeout);
@@ -244,7 +263,10 @@ export abstract class AbstractPeer implements Peer {
 	 * checking the state of the peer and routing messages to their correct
 	 * locations.
 	 *
-	 * @param data
+	 * @param type -
+	 *   type of message received
+	 * @param payload -
+	 *   data of message received
 	 */
 	protected receiveData(type: PeerMessageType, payload: any) {
 		this.debug('Incoming', PeerMessageType[type], 'with payload', payload);
@@ -324,7 +346,7 @@ export abstract class AbstractPeer implements Peer {
 	 * Client flow: HELLO received. A HELLO with information about the server
 	 * has been received. Process and send back a reply.
 	 *
-	 * @param message
+	 * @param message -
 	 */
 	private receiveHello(message: HelloMessage) {
 		// Set the identifier and the version of the protocol to use
@@ -359,7 +381,7 @@ export abstract class AbstractPeer implements Peer {
 	 * Server flow: SELECT received. The client as picked the capabilities it
 	 * wants and is ready to proceed.
 	 *
-	 * @param message
+	 * @param message -
 	 */
 	private receiveSelect(message: SelectMessage) {
 		// Update the id of this peer with the client one
@@ -398,6 +420,9 @@ export abstract class AbstractPeer implements Peer {
 
 	/**
 	 * Pick the next provider to use for authentication.
+	 *
+	 * @returns
+	 *   the next provider to try or `null`
 	 */
 	private pickNextAuthProvider() {
 		if(! this.remainingAuthProviders) {
@@ -473,6 +498,8 @@ export abstract class AbstractPeer implements Peer {
 
 	/**
 	 * Client flow: AUTHDATA has been received from the server.
+	 *
+	 * @param message -
 	 */
 	private receiveServerAuthData(message: AuthDataMessage) {
 		(async () => {
@@ -509,7 +536,7 @@ export abstract class AbstractPeer implements Peer {
 	/**
 	 * Server flow: AUTH has been received from client.
 	 *
-	 * @param message
+	 * @param message -
 	 */
 	private receiveAuth(message: AuthMessage) {
 		(async () => {
@@ -594,7 +621,7 @@ export abstract class AbstractPeer implements Peer {
 	/**
 	 * Server flow: AUTHDATA has been received from client.
 	 *
-	 * @param message
+	 * @param message -
 	 */
 	private receiveClientAuthData(message: AuthDataMessage) {
 		(async () => {
@@ -653,14 +680,18 @@ export abstract class AbstractPeer implements Peer {
 		this.connectEvent.emit();
 	}
 
-	// tslint:disable-next-line: no-empty
+	/**
+	 * Callback for when a peer has connected.
+	 */
+	// eslint-disable-next-line @typescript-eslint/no-empty-function
 	protected didConnect(): void {
 	}
 
 	/**
 	 * Force a connection without performing negotiation.
 	 *
-	 * @param id
+	 * @param id -
+	 *   identifier of the peer
 	 */
 	protected forceConnect(id: ArrayBuffer) {
 		this.id = id;
@@ -729,6 +760,9 @@ export abstract class AbstractPeer implements Peer {
 
 	/**
 	 * Get the current latency.
+	 *
+	 * @returns
+	 *   estimated latency to the peer in milliseconds
 	 */
 	public get latency() {
 		if(this.latencyValues.length === 0) {
@@ -745,6 +779,11 @@ export abstract class AbstractPeer implements Peer {
 
 	/**
 	 * Send data to this peer.
+	 *
+	 * @param type -
+	 *   type of message being sent
+	 * @param payload -
+	 *   data of message
 	 */
 	public abstract send<T extends PeerMessageType>(type: T, payload: PeerMessage<T>): Promise<void>;
 }

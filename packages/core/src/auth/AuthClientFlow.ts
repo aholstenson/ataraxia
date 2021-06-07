@@ -41,7 +41,8 @@ export interface AuthClientFlow {
 	 * that need to negotiate additional things. The reply will be sent to the
 	 * server.
 	 *
-	 * @param data
+	 * @param data -
+	 *   buffer with data
 	 */
 	receiveData(data: ArrayBuffer): Promise<AuthClientReply>;
 

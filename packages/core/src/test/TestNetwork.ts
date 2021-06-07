@@ -34,6 +34,10 @@ interface ConnectionInfo {
 	bTransport: TestTransport;
 }
 
+/**
+ * Network intended for test usage. Helps with creating a network and modifying
+ * connections to test code that uses the network.
+ */
 export class TestNetwork {
 	private nodeInfo: Map<string, NodeInfo>;
 	private connectionInfo: Map<string, ConnectionInfo>;
@@ -46,7 +50,9 @@ export class TestNetwork {
 	/**
 	 * Get node information, including its generated id and topology.
 	 *
-	 * @param id
+	 * @param id -
+	 * @returns
+	 *   info associated with the node
 	 */
 	private getNode(id: string) {
 		let info = this.nodeInfo.get(id);
@@ -104,6 +110,18 @@ export class TestNetwork {
 		return info;
 	}
 
+	/**
+	 * Modify how nodes A and B connect to each other.
+	 *
+	 * @param a -
+	 *   first node
+	 * @param b -
+	 *   second node
+	 * @param type -
+	 *   type of connection to have
+	 * @returns
+	 *   self
+	 */
 	public changeConnection(a: string, b: string, type: ConnectionType): this {
 		const info = this.getConnection(a, b);
 		if(info.type === type) return this;
@@ -178,18 +196,56 @@ export class TestNetwork {
 		return this;
 	}
 
+	/**
+	 * Consolidate the network. This will wait for changes to applied before
+	 * resolving.
+	 *
+	 * @returns
+	 *   promise that resolves when changes to the networks have been fully
+	 *   applied
+	 */
 	public consolidate(): Promise<void> {
 		return new Promise(resolve => setTimeout(resolve, 200));
 	}
 
+	/**
+	 * Create a bidirectional connection between two nodes.
+	 *
+	 * @param a -
+	 *   first node
+	 * @param b -
+	 *   second node
+	 * @returns
+	 *   self
+	 */
 	public bidirectional(a: string, b: string): this {
 		return this.changeConnection(a, b, ConnectionType.Both);
 	}
 
+	/**
+	 * Create a connection from node `a` to node `b` but not from `b` to `a`.
+	 *
+	 * @param a -
+	 *   first node
+	 * @param b -
+	 *   second node
+	 * @returns
+	 *   self
+	 */
 	public forward(a: string, b: string): this {
 		return this.changeConnection(a, b, ConnectionType.Forward);
 	}
 
+	/**
+	 * Disconnect the connection between two nodes.
+	 *
+	 * @param a -
+	 *   first node
+	 * @param b -
+	 *   second node
+	 * @returns
+	 *   self
+	 */
 	public disconnect(a: string, b: string): this {
 		return this.changeConnection(a, b, ConnectionType.None);
 	}
@@ -197,13 +253,19 @@ export class TestNetwork {
 	/**
 	 * Get the network associated with the specified node.
 	 *
-	 * @param id
+	 * @param id -
+	 *   identifier of node
+	 * @returns
+	 *   network instance
 	 */
 	public network(id: string): Network {
 		const info = this.getNode(id);
 		return info.network;
 	}
 
+	/**
+	 * Shutdown all the nodes and their networks.
+	 */
 	public async shutdown(): Promise<void> {
 		for(const info of this.connectionInfo.values()) {
 			info.aPeer.disconnect();

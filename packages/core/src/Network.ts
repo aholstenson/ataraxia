@@ -12,6 +12,9 @@ import { Node } from './Node';
 import { Topology } from './topology';
 import { Transport } from './transport';
 
+/**
+ * Options that can be provided for `Network`.
+ */
 export interface NetworkOptions {
 	/**
 	 * The name of the network.
@@ -26,7 +29,8 @@ export interface NetworkOptions {
 	endpoint?: boolean;
 
 	/**
-	 * Transports of the network.
+	 * Transports of the network. These transports will be automatically added
+	 * and started together with the network.
 	 */
 	transports?: Transport[];
 }
@@ -99,8 +103,9 @@ export class Network<MessageTypes extends object = any> {
 	 * * `name` - the name of the network
 	 * * `endpoint` - boolean indicating if this instance is an endpoint and
 	 *    wants to avoid routing.
+	 * * `transports` - array of transports that the network should start
 	 *
-	 * @param {object} options
+	 * @param options -
 	 *   The options of the network.
 	 */
 	public constructor(options: NetworkOptions) {
@@ -186,6 +191,9 @@ export class Network<MessageTypes extends object = any> {
 	/**
 	 * Add a transport to this network. If the network is started the transport
 	 * will also be started.
+	 *
+	 * @param transport -
+	 *   instance of transport to add
 	 */
 	public addTransport(transport: Transport): void {
 		if(this.transports.indexOf(transport) >= 0) {
@@ -212,6 +220,10 @@ export class Network<MessageTypes extends object = any> {
 
 	/**
 	 * Join the network by starting a server and then looking for peers.
+	 *
+	 * @returns
+	 *   promise that resolves when the network is started, the value will
+	 *   represent if the network was actually started or not.
 	 */
 	public async start(): Promise<boolean> {
 		if(this.active) return false;
@@ -246,6 +258,10 @@ export class Network<MessageTypes extends object = any> {
 
 	/**
 	 * Leave the currently joined network.
+	 *
+	 * @returns
+	 *   promise that resolves when the network is stopped, the value will
+	 *   represent if the network was actually stopper or not.
 	 */
 	public async stop(): Promise<boolean> {
 		if(! this.active) return false;
@@ -262,17 +278,20 @@ export class Network<MessageTypes extends object = any> {
 	/**
 	 * Broadcast a message to all nodes.
 	 *
-	 * @param type
+	 * @param type -
 	 *   the type of message to send
-	 * @param payload
-	 *   the payload of the message
+	 * @param data -
+	 *   the data of the message
+	 * @returns
+	 *   promise that resolves when the message has been broadcast to all known
+	 *   nodes
 	 */
-	public broadcast<T extends MessageType<MessageTypes>>(type: T, payload: MessageData<MessageTypes, T>): Promise<void> {
+	public broadcast<T extends MessageType<MessageTypes>>(type: T, data: MessageData<MessageTypes, T>): Promise<void> {
 		const promises: Promise<void>[] = [];
 
 		// Send to all nodes that have joined the exchange
 		for(const node of this.nodes.values()) {
-			promises.push(node.send(type, payload)
+			promises.push(node.send(type, data)
 				.catch(ex => {
 					this.debug('Could not broadcast to ' + node.id, ex);
 				}));
@@ -286,11 +305,10 @@ export class Network<MessageTypes extends object = any> {
 	 * Create an exchange with the given id. This will create a sub-group of the
 	 * network that nodes can join, leave and easily broadcast to.
 	 *
-	 * ```typescript
-	 * ```
-	 *
-	 * @param id
+	 * @param id -
 	 *   exchange to join
+	 * @returns
+	 *   instance of Exchange
 	 */
 	public createExchange<MT extends object = any>(id: string): Exchange<MT> {
 		return this.exchanges.createExchange(id);

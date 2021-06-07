@@ -36,8 +36,12 @@ import {
 /**
  * Encode a peer message into a binary format.
  *
- * @param type
- * @param data
+ * @param type -
+ *   type of peer message
+ * @param data -
+ *   data of message
+ * @returns
+ *  buffer with encoded message
  */
 export function encodeBinaryPeerMessage<T extends PeerMessageType>(
 	type: T,

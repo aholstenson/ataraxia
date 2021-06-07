@@ -44,7 +44,8 @@ export interface AuthServerFlow {
 	/**
 	 * Receive additional data from the client.
 	 *
-	 * @param data
+	 * @param data -
+	 *   buffer with data
 	 */
 	receiveData(data: ArrayBuffer): Promise<AuthServerReply>;
 

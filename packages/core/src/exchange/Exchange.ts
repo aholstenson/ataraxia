@@ -58,14 +58,14 @@ export interface Exchange<MessageTypes extends object = any> {
 	/**
 	 * Broadcast a message to all nodes that have joined this exchange.
 	 *
-	 * @param type
+	 * @param type -
 	 *   the type of message to send
-	 * @param payload
-	 *   the payload to send
+	 * @param data -
+	 *   the data to send
 	 */
 	broadcast<T extends MessageType<MessageTypes>>(
 		type: T,
-		payload: MessageData<MessageTypes, T>
+		data: MessageData<MessageTypes, T>
 	): Promise<void>;
 
 	/**

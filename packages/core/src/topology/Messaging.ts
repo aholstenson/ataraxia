@@ -79,6 +79,19 @@ export class Messaging {
 		}, MAX_DELAY);
 	}
 
+	/**
+	 * Send a message to a specific node.
+	 *
+	 * @param target -
+	 *   identifier of node
+	 * @param type -
+	 *   type of message
+	 * @param data -
+	 *   encoded data of message
+	 * @returns
+	 *   promise that resolves when the node has acknowledged the data, or
+	 *   rejects if unable to reach the node
+	 */
 	public send(target: ArrayBuffer, type: string, data: ArrayBuffer): Promise<void> {
 		const peer = this.routing.findPeerForTarget(target);
 		if(! peer) return Promise.reject(new Error('Node not reachable'));
@@ -121,6 +134,14 @@ export class Messaging {
 		});
 	}
 
+	/**
+	 * Handle incoming data from a peer.
+	 *
+	 * @param peer -
+	 *   peer sending the data
+	 * @param data -
+	 *   the data sent
+	 */
 	public handleData(peer: Peer, data: DataMessage) {
 		if(sameId(data.target, this.routing.self.id)) {
 			// This is the target
@@ -193,6 +214,12 @@ export class Messaging {
 		}
 	}
 
+	/**
+	 * Handle ACK received for a message.
+	 *
+	 * @param ack -
+	 *   details about message that has been acknowledged
+	 */
 	public handleAck(ack: DataAckMessage) {
 		const message = this.pending.get(ack.id);
 		if(! message) {
@@ -229,6 +256,12 @@ export class Messaging {
 		}
 	}
 
+	/**
+	 * Handle REJECT received for a message.
+	 *
+	 * @param reject -
+	 *   details about message that has been rejected
+	 */
 	public handleReject(reject: DataRejectMessage) {
 		const message = this.pending.get(reject.id);
 		if(! message) {
@@ -266,6 +299,16 @@ export class Messaging {
 	}
 }
 
+/**
+ * Helper for finding if a node is present in a path.
+ *
+ * @param path -
+ *   path to check
+ * @param id -
+ *   node to look for
+ * @returns
+ *   `true` if the path contains the node
+ */
 function containsNode(path: DataMessagePathEntry[], id: ArrayBuffer) {
 	for(const p of path) {
 		if(sameId(p.node, id)) return true;

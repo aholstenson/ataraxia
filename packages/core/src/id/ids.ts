@@ -9,6 +9,14 @@ for(let i = 0; i < ENCODING.length; i++) {
 
 const SIZE = ENCODING.length;
 
+/**
+ * Encode a binary identifier to a string.
+ *
+ * @param id -
+ *   identifier
+ * @returns
+ *   encoded string
+ */
 export function encodeId(id: ArrayBuffer): string {
 	const u8 = new Uint8Array(id);
 	const digits: number[] = [ 0 ];
@@ -31,6 +39,14 @@ export function encodeId(id: ArrayBuffer): string {
 	return encoded.join('');
 }
 
+/**
+ * Decode a string into a binary identifier.
+ *
+ * @param input -
+ *   string to decode
+ * @returns
+ *   decoded string
+ */
 export function decodeId(input: string): ArrayBuffer {
 	if(input.length === 0) {
 		return new ArrayBuffer(0);
@@ -104,6 +120,12 @@ export function generateId(): ArrayBuffer {
 }
 
 const NO_ID = new ArrayBuffer(0);
+/**
+ * Helper that returns a buffer representing no identifier.
+ *
+ * @returns
+ *   empty buffer
+ */
 export function noId(): ArrayBuffer {
 	return NO_ID;
 }
@@ -111,8 +133,12 @@ export function noId(): ArrayBuffer {
 /**
  * Check if two identifiers are the same.
  *
- * @param o1
- * @param o2
+ * @param o1 -
+ *   first buffer
+ * @param o2 -
+ *   second buffer
+ * @returns
+ *   `true` if buffers match
  */
 export function sameId(o1: ArrayBuffer, o2: ArrayBuffer): boolean {
 	if(o1.byteLength !== o2.byteLength) return false;

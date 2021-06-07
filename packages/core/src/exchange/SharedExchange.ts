@@ -62,6 +62,7 @@ export class SharedExchange {
 	 * Get if this exchange is currently joined by this node.
 	 *
 	 * @returns
+	 *   `true` if this exchange is currently joined
 	 */
 	public isJoined() {
 		return this.instances.size > 0;
@@ -70,8 +71,10 @@ export class SharedExchange {
 	/**
 	 * Check if a certain node is a member of this exchange.
 	 *
-	 * @param node
+	 * @param node -
+	 *   node to check of
 	 * @returns
+	 *   `true` if node is a member
 	 */
 	public isMember(node: Node) {
 		return this.nodes.has(node.id);
@@ -79,6 +82,9 @@ export class SharedExchange {
 
 	/**
 	 * Get if this exchange has any members, local or remote.
+	 *
+	 * @returns
+	 *   `true` if any members present
 	 */
 	public hasMembers() {
 		return this.nodes.size > 0 || this.instances.size > 0;
@@ -86,6 +92,9 @@ export class SharedExchange {
 
 	/**
 	 * Handle that a new node is joining this exchange.
+	 *
+	 * @param node -
+	 *   node that is joining
 	 */
 	public handleNodeJoin(node: Node) {
 		// Check that this is actually a new node
@@ -101,8 +110,8 @@ export class SharedExchange {
 	/**
 	 * Handle that a node may be leaving this exchange.
 	 *
-	 * @param node
-	 * @returns
+	 * @param node -
+	 *   node that is leaving
 	 */
 	public handleNodeLeave(node: Node) {
 		if(! this.nodes.has(node.id)) return;
@@ -114,6 +123,12 @@ export class SharedExchange {
 		}
 	}
 
+	/**
+	 * Handle an incoming message.
+	 *
+	 * @param message -
+	 *   message instance
+	 */
 	public handleMessage(message: Message) {
 		if(! this.nodes.has(message.source.id)) return;
 
@@ -125,10 +140,12 @@ export class SharedExchange {
 	/**
 	 * Broadcast a message to all nodes that have joined this exchange.
 	 *
-	 * @param type
+	 * @param type -
 	 *   the type of message to send
-	 * @param payload
+	 * @param payload -
 	 *   the payload of the message
+	 * @returns
+	 *   promise that resolves when nodes have all been broadcast to
 	 */
 	public broadcast(type: string, payload: any): Promise<void> {
 		const promises: Promise<void>[] = [];
@@ -145,6 +162,12 @@ export class SharedExchange {
 			.then(() => undefined);
 	}
 
+	/**
+	 * Join a local exchange instance.
+	 *
+	 * @param instance -
+	 *   instance that is joining
+	 */
 	public async join(instance: ExchangeImpl<any>): Promise<void> {
 		this.instances.add(instance);
 
@@ -157,6 +180,9 @@ export class SharedExchange {
 	/**
 	 * Leave this exchange, sending a message to all current nodes that we
 	 * are leaving.
+	 *
+	 * @param instance -
+	 *   instance that is leaving
 	 */
 	public async leave(instance: ExchangeImpl<any>): Promise<void> {
 		this.instances.delete(instance);

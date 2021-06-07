@@ -19,17 +19,17 @@ export interface Peer {
 	readonly id: ArrayBuffer;
 
 	/**
-	 * Event for when this peer connects.
+	 * Event emitted when this peer connects.
 	 */
 	readonly onConnect: Subscribable<this, []>;
 
 	/**
-	 * Event for when this peer disconnects.
+	 * Event emitted when this peer disconnects.
 	 */
 	readonly onDisconnect: Subscribable<this, []>;
 
 	/**
-	 * Event for when a message is received from the peer.
+	 * Event emitted when a message is received from the peer.
 	 */
 	readonly onData: Subscribable<this, [ PeerMessageType, any ]>;
 
@@ -46,7 +46,10 @@ export interface Peer {
 	/**
 	 * Send data to this peer.
 	 *
-	 * @param message
+	 * @param type -
+	 *   type of message being sent
+	 * @param data -
+	 *   data of message
 	 */
 	send<T extends PeerMessageType>(type: T, payload: PeerMessage<T>): Promise<void>;
 

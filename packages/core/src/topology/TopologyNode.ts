@@ -35,21 +35,49 @@ export interface TopologyEdge {
 export class TopologyNode {
 	private readonly parent: Topology;
 
+	/**
+	 * Identifier of the node.
+	 */
 	public readonly id: ArrayBuffer;
 
+	/**
+	 * Outgoing connections from this node.
+	 */
 	public readonly outgoing: TopologyEdge[];
+	/**
+	 * Incoming connections from this node.
+	 */
 	public readonly incoming: TopologyEdge[];
 
+	/**
+	 * Peer used to reach this node.
+	 */
 	public peer?: Peer;
 
+	/**
+	 * The cost for reaching this node.
+	 */
 	public searchCost: number;
 	public searchPrevious?: TopologyNode;
 	public searchNode?: INode<number, TopologyNode>;
 
+	/**
+	 * If this node is directly reachable. Directly reachable nodes are ones
+	 * where a peer will not perform routing for us.
+	 */
 	public direct: boolean;
 
+	/**
+	 * Version of routing for this node.
+	 */
 	public version: number;
+	/**
+	 * Information about all the peers this is reachable via.
+	 */
 	private reachableVia: IdSet;
+	/**
+	 * Flag used to help with events when routing is refreshed.
+	 */
 	public previousReachable: boolean;
 
 	public constructor(parent: Topology, id: ArrayBuffer) {
@@ -74,7 +102,12 @@ export class TopologyNode {
 	/**
 	 * Update the routing of this node from an incoming node details.
 	 *
-	 * @param details
+	 * @param peer -
+	 *   peer these details belong to
+	 * @param details -
+	 *   routing details
+	 * @returns
+	 *   `true` if details where changed
 	 */
 	public updateRouting(peer: Peer, details: NodeRoutingDetails): boolean {
 		// Track that this node is reachable via this peer
@@ -96,6 +129,15 @@ export class TopologyNode {
 		}
 	}
 
+	/**
+	 * Remove incoming routing from a peer, indicate that the given peer can no
+	 * longer reach this node.
+	 *
+	 * @param peer -
+	 *   peer
+	 * @returns
+	 *   `true` if routing was actually updated
+	 */
 	public removeRouting(peer: Peer): boolean {
 		if(! this.reachableVia.has(peer.id)) return false;
 
@@ -110,6 +152,12 @@ export class TopologyNode {
 		return true;
 	}
 
+	/**
+	 * Turns this node into a routing details object.
+	 *
+	 * @returns
+	 *   details object
+	 */
 	public toRoutingDetails(): NodeRoutingDetails {
 		return {
 			id: this.id,
@@ -121,6 +169,12 @@ export class TopologyNode {
 		};
 	}
 
+	/**
+	 * Update information about what peers we are connected to.
+	 *
+	 * @param peers -
+	 *   peers connected to
+	 */
 	public updateSelf(peers: Peer[]) {
 		this.version++;
 
@@ -132,6 +186,12 @@ export class TopologyNode {
 		}
 	}
 
+	/**
+	 * Update the latency we have to our peers.
+	 *
+	 * @param peers -
+	 *   peers connected to
+	 */
 	public updateSelfLatencies(peers: Peer[]) {
 		// Empty the array and collect the new edges
 		this.clearOutgoingEdges();
@@ -141,6 +201,9 @@ export class TopologyNode {
 		}
 	}
 
+	/**
+	 * Clear all of the outgoing edges.
+	 */
 	protected clearOutgoingEdges() {
 		for(const edge of this.outgoing) {
 			const idx = edge.target.incoming.findIndex(e => e.source === this);
@@ -152,6 +215,14 @@ export class TopologyNode {
 		this.outgoing.splice(0, this.outgoing.length);
 	}
 
+	/**
+	 * Add a new outgoing edge.
+	 *
+	 * @param cost -
+	 *   cost to reach the edge,
+	 * @param target -
+	 *   node at which the edge points
+	 */
 	protected addOutgoingEdge(cost: number, target: TopologyNode) {
 		const edge: TopologyEdge = {
 			source: this,
@@ -163,14 +234,32 @@ export class TopologyNode {
 		target.incoming.push(edge);
 	}
 
+	/**
+	 * Get debug information about nodes reachable from this node.
+	 *
+	 * @returns
+	 *   array with identifiers of reachable nodes
+	 */
 	public get outgoingDebug() {
 		return this.outgoing.map(e => encodeId(e.target.id));
 	}
 
+	/**
+	 * Get debug information about which nodes can reach this node.
+	 *
+	 * @returns
+	 *   array with identifies of nodes that can reach this node
+	 */
 	public get reachableDebug() {
 		return Array.from(this.reachableVia.values()).map(e => encodeId(e));
 	}
 
+	/**
+	 * Get the path used to reach this node from our own network.
+	 *
+	 * @returns
+	 *   array with path used to reach this node
+	 */
 	public toPath(): ReadonlyArray<TopologyNode> {
 		const result: TopologyNode[] = [];
 

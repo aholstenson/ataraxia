@@ -15,6 +15,9 @@ export class StreamingPeer extends AbstractPeer {
 
 	/**
 	 * Get if a stream is available.
+	 *
+	 * @returns
+	 *   if a stream is currently set for this peer
 	 */
 	public hasStream() {
 		return this.stream !== undefined;
@@ -23,7 +26,8 @@ export class StreamingPeer extends AbstractPeer {
 	/**
 	 * Set the stream being used for this peer.
 	 *
-	 * @param stream
+	 * @param stream -
+	 *   duplex stream to use
 	 */
 	public setStream(stream: Duplex) {
 		if(this.stream) {
@@ -70,6 +74,11 @@ export class StreamingPeer extends AbstractPeer {
 	/**
 	 * Handle disconnect event. In addition to the inherited behavior this will
 	 * destroy the socket.
+	 *
+	 * @param reason -
+	 *   the reason for this disconnect
+	 * @param err -
+	 *   optional error disconnect
 	 */
 	protected handleDisconnect(reason: DisconnectReason, err?: Error) {
 		this.stream = undefined;
@@ -116,8 +125,12 @@ export class StreamingPeer extends AbstractPeer {
 	/**
 	 * Send a message over this peer.
 	 *
-	 * @param type
-	 * @param message
+	 * @param type -
+	 *   type of message to send
+	 * @param message -
+	 *   data of message
+	 * @returns
+	 *   promise that resolves when the message has been written
 	 */
 	public send<T extends PeerMessageType>(type: T, message: PeerMessage<T>): Promise<void> {
 		return this.write(type, message);
@@ -126,8 +139,12 @@ export class StreamingPeer extends AbstractPeer {
 	/**
 	 * Write data to the peer via the current socket.
 	 *
-	 * @param {string} type
-	 * @param {*} payload
+	 * @param type -
+	 *   type of message
+	 * @param payload -
+	 *   payload being sent
+	 * @returns
+	 *   promise that resolves when the write completes
 	 */
 	private write(type: PeerMessageType, payload?: any): Promise<void> {
 		if(! this.stream) {

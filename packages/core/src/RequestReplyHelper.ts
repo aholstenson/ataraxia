@@ -66,7 +66,7 @@ export class RequestReplyHelper<Result> {
 	/**
 	 * Release an identifier.
 	 *
-	 * @param id
+	 * @param id -
 	 */
 	private releaseId(id: number) {
 		const pending = this.pending.get(id);
@@ -79,6 +79,10 @@ export class RequestReplyHelper<Result> {
 	/**
 	 * Prepare a request, will return the identifier to use and a promise that
 	 * will resolve when the reply is registered.
+	 *
+	 * @returns
+	 *   array with request id and promise. The promise will resolve or reject
+	 *   when a result or error is registered, or when it times out
 	 */
 	public prepareRequest(): [ number, Promise<Result> ] {
 		const messageId = this.idCounter++;
@@ -97,8 +101,10 @@ export class RequestReplyHelper<Result> {
 	 * Register that a reply has been received for the given identifier. This
 	 * will resolve the promise associated with the identifier.
 	 *
-	 * @param id
-	 * @param result
+	 * @param id -
+	 *   identifier as given previously by `prepareRequest`
+	 * @param result -
+	 *   the result to resolve with
 	 */
 	public registerReply(id: number, result: Result) {
 		const message = this.pending.get(id);
@@ -114,6 +120,11 @@ export class RequestReplyHelper<Result> {
 	/**
 	 * Register that an error occurred for the given identifier. This will
 	 * reject the promise associated with the identifier.
+	 *
+	 * @param id -
+	 *   identifier as given previously by `prepareRequest`
+	 * @param error -
+	 *   optional error to reject with
 	 */
 	public registerError(id: number, error?: Error) {
 		const message = this.pending.get(id);

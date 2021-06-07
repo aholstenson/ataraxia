@@ -82,6 +82,11 @@ export class Topology {
 
 	/**
 	 * Create a new topology for the given network.
+	 *
+	 * @param parent -
+	 *   network this topology is for
+	 * @param options -
+	 *   options to apply
 	 */
 	public constructor(parent: WithNetwork, options: TopologyOptions) {
 		this.parent = parent;
@@ -121,6 +126,9 @@ export class Topology {
 
 	/**
 	 * Start this topology.
+	 *
+	 * @returns
+	 *   promise that resolves when the topology has been started
 	 */
 	public async start(): Promise<void> {
 		this.latencyGossipHandle = setTimeout(() => {
@@ -130,27 +138,56 @@ export class Topology {
 
 	/**
 	 * Stop this topology.
+	 *
+	 * @returns
+	 *   promise that resolves when the topology has stopped
 	 */
 	public async stop(): Promise<void> {
 		clearTimeout(this.latencyGossipHandle);
 		clearInterval(this.latencyGossipHandle);
 	}
 
+	/**
+	 * Event emitted when a node becomes available.
+	 *
+	 * @returns
+	 *   `Subscribable` that can be used to add listeners
+	 */
 	public get onAvailable() {
 		return this.availableEvent.subscribable;
 	}
 
+	/**
+	 * Event emitted when a node becomes unavailable.
+	 *
+	 * @returns
+	 *   `Subscribable` that can be used to add listeners
+	 */
 	public get onUnavailable() {
 		return this.unavailableEvent.subscribable;
 	}
 
+	/**
+	 * Event emitted when data is received.
+	 *
+	 * @returns
+	 *   `Subscribable` that can be used to add listeners
+	 */
 	public get onData() {
 		return this.dataEvent.subscribable;
+	}
+
+	public get(id: ArrayBuffer): TopologyNode | undefined {
+		return this.nodes.get(id);
 	}
 
 	/**
 	 * Get a specific node, optionally creating it if it is unknown.
 	 *
+	 * @param id -
+	 *   identifier of node
+	 * @returns
+	 *   node instance
 	 */
 	public getOrCreate(id: ArrayBuffer): TopologyNode {
 		let node = this.nodes.get(id);
@@ -164,14 +201,21 @@ export class Topology {
 
 	/**
 	 * Get an iterable containing all the nodes that are known.
+	 *
+	 * @returns
+	 *   iterator with all nodes
 	 */
 	public get nodelist() {
 		return this.nodes.values();
 	}
 
 	/**
-	 * Add a peer to this topology. Will start listening for node information,
-	 * messages and disconnects. This also starts the discovery process.
+	 * Add a connected peer to this topology. Will start listening for node
+	 * information, messages and disconnects. This also starts the discovery
+	 * process for this node.
+	 *
+	 * @param peer -
+	 *   peer instance
 	 */
 	public addPeer(peer: Peer) {
 		let peers = this.peers.get(peer.id);
@@ -236,6 +280,11 @@ export class Topology {
 	 * Handle a summary message from another peer. This will look through
 	 * and compare our current node data and send requests for anything where
 	 * our version is too low.
+	 *
+	 * @param peer -
+	 *   peer this message is from
+	 * @param message -
+	 *   message with node summary
 	 */
 	private handleNodeSummaryMessage(peer: Peer, message: NodeSummaryMessage) {
 		if(this.debug.enabled) {
@@ -295,6 +344,15 @@ export class Topology {
 			.catch(err => this.debug('Caught error while sending node request', err));
 	}
 
+	/**
+	 * Handle a request for some node details. Will collect routing details
+	 * and send them back to the requesting peer.
+	 *
+	 * @param peer -
+	 *   the peer this request is from
+	 * @param message -
+	 *   details about the request
+	 */
 	private handleNodeRequestMessage(peer: Peer, message: NodeRequestMessage) {
 		const reply: NodeRoutingDetails[] = [];
 		for(const id of message.nodes) {
@@ -310,6 +368,15 @@ export class Topology {
 			.catch(err => this.debug('Caught error while sending node details', err));
 	}
 
+	/**
+	 * Handle incoming details about some nodes. This will update the local
+	 * routing and broadcast changes.
+	 *
+	 * @param peer -
+	 *   the peer sending the node details
+	 * @param message -
+	 *   details about the routing
+	 */
 	private handleNodeDetailsMessage(peer: Peer, message: NodeDetailsMessage) {
 		const peerInfo = this.peers.get(peer.id);
 		if(! peerInfo) return;
@@ -341,6 +408,9 @@ export class Topology {
 	/**
 	 * Handle that a peer has disconnected. Will update all nodes to indicate
 	 * that they can not be reached through the peer anymore.
+	 *
+	 * @param peer -
+	 *   the peer being disconnected
 	 */
 	private handleDisconnect(peer: Peer) {
 		const peers = this.peers.get(peer.id);
@@ -385,8 +455,15 @@ export class Topology {
 	/**
 	 * Send data to a given node.
 	 *
-	 * @param target
-	 * @param data
+	 * @param target -
+	 *   node to send data to
+	 * @param type -
+	 *   type of data being sent
+	 * @param data -
+	 *   buffer with data to send
+	 * @returns
+	 *   promise that resolves when the message has been acknowledges by the
+	 *   target node
 	 */
 	public sendData(target: ArrayBuffer, type: string, data: ArrayBuffer): Promise<void> {
 		return this.messaging.send(target, type, data);
@@ -433,6 +510,9 @@ export class Topology {
 	/**
 	 * Queue that we should broadcast information about our nodes to our
 	 * peers.
+	 *
+	 * @param broadcast -
+	 *   if the details should be broadcast
 	 */
 	private updateRouting(broadcast: boolean) {
 		// Mark the routing as dirty
@@ -515,6 +595,9 @@ export class Topology {
 	/**
 	 * Get if any actions are pending for this topology. Used during testing
 	 * to figure out if its safe to check the results.
+	 *
+	 * @returns
+	 *   `true` if there are actions pending
 	 */
 	public get pendingActions(): boolean {
 		return this.broadcastTimeout !== null;

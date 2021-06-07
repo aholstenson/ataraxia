@@ -38,7 +38,8 @@ export class Exchanges {
 	 * Handle a node becoming available. In this case ask the node to send
 	 * us all the exchanges it is a member of.
 	 *
-	 * @param node
+	 * @param node -
+	 *   node that is available
 	 */
 	private handleNodeAvailable(node: Node<ExchangeMessages>) {
 		node.send('exchange:query', undefined)
@@ -49,7 +50,8 @@ export class Exchanges {
 	 * Handle a node becoming unavailable. This will remove it from all
 	 * exchanges that are currently active.
 	 *
-	 * @param node
+	 * @param node -
+	 *   node that is no longer available
 	 */
 	private handleNodeUnavailable(node: Node) {
 		for(const exchange of this.exchanges.values()) {
@@ -83,8 +85,10 @@ export class Exchanges {
 	/**
 	 * Handle an incoming request to join an exchange.
 	 *
-	 * @param node
-	 * @param id
+	 * @param node -
+	 *   node message comes from
+	 * @param id -
+	 *   id of exchange being joined
 	 */
 	private handleExchangeJoin(node: Node, id: string) {
 		let exchange = this.ensureSharedExchange(id);
@@ -94,9 +98,10 @@ export class Exchanges {
 	/**
 	 * Handle an incoming request to leave an exchange.
 	 *
-	 * @param node
-	 * @param id
-	 * @returns
+	 * @param node -
+	 *   node message comes from
+	 * @param id -
+	 *   exchange being left
 	 */
 	private handleExchangeLeave(node: Node, id: string) {
 		let exchange = this.exchanges.get(id);
@@ -115,8 +120,10 @@ export class Exchanges {
 	 * Handle incoming information about all the exchanges a node is a member
 	 * of.
 	 *
-	 * @param node
-	 * @param exchanges
+	 * @param node -
+	 *   node message comes from
+	 * @param exchanges -
+	 *   exchanges that the node is a member of
 	 */
 	private handleExchangeMembership(node: Node, exchanges: string[]) {
 		const set = new Set(exchanges);

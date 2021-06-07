@@ -5,7 +5,8 @@ import { MessageType } from './MessageType';
 import { MessageUnion } from './MessageUnion';
 
 /**
- * Node as seen by a network.
+ * Node within the network. Nodes are individual instances that you can
+ * exchange messages with.
  */
 export interface Node<MessageTypes extends object = any> {
 	/**
@@ -28,8 +29,10 @@ export interface Node<MessageTypes extends object = any> {
 	 * Send a message to this node. This will return a promise that will
 	 * complete when the message has initially been sent.
 	 *
-	 * @param type
-	 * @param payload
+	 * @param type -
+	 *   the type of message being sent
+	 * @param data -
+	 *   data being sent
 	 */
-	send<T extends MessageType<MessageTypes>>(type: T, payload: MessageData<MessageTypes, T>): Promise<void>;
+	send<T extends MessageType<MessageTypes>>(type: T, data: MessageData<MessageTypes, T>): Promise<void>;
 }
