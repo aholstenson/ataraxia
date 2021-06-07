@@ -13,6 +13,7 @@ import { SelectMessage } from './SelectMessage';
  */
 interface MessageTypes {
 	[PeerMessageType.Ping]: undefined;
+	[PeerMessageType.Pong]: undefined;
 	[PeerMessageType.Ok]: undefined;
 	[PeerMessageType.Reject]: undefined;
 
