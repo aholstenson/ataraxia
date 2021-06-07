@@ -1,6 +1,7 @@
-import { Authentication, AnonymousAuth, AuthProvider } from '../../src/auth';
+import { AnonymousAuth } from '../../src/auth';
 import { generateId } from '../../src/id';
 import { AbstractPeer, PeerMessageType, PeerMessage, DisconnectReason } from '../../src/transport';
+import { WithNetwork } from '../../src/WithNetwork';
 
 describe('Transport: AbstractPeer', function() {
 	it('Server and client can negotiate', done => {
@@ -22,13 +23,16 @@ describe('Transport: AbstractPeer', function() {
 	});
 });
 
-function testNetwork(providers: AuthProvider[] = [ new AnonymousAuth() ]) {
+/**
+ * Generate a fake network instance.
+ *
+ * @returns -
+ *   fake network
+ */
+function testNetwork(): WithNetwork {
 	return {
 		networkId: generateId(),
-		debugNamespace: 'tests:abstract-peer',
-		authentication: new Authentication({
-			providers: providers
-		})
+		debugNamespace: 'tests:abstract-peer'
 	};
 }
 
