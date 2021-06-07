@@ -1,4 +1,4 @@
-import { AuthProvider, WithNetwork } from 'ataraxia';
+import { AuthProvider, BackOff, WithNetwork } from 'ataraxia';
 import { DisconnectReason } from 'ataraxia/transport';
 
 import { AbstractWebSocketPeer } from './AbstractWebSocketPeer';
@@ -7,6 +7,8 @@ import { WebSocketFactory } from './WebSocketFactory';
 export class WebSocketClientPeer extends AbstractWebSocketPeer {
 	private readonly factory: WebSocketFactory;
 	private readonly url: string;
+
+	private readonly backOff: BackOff;
 
 	private connectTimeout: any;
 
@@ -20,6 +22,11 @@ export class WebSocketClientPeer extends AbstractWebSocketPeer {
 
 		this.factory = factory;
 		this.url = url;
+
+		this.backOff = new BackOff({
+			delay: 100,
+			maxDelay: 30000
+		});
 	}
 
 	protected handleDisconnect(reason: DisconnectReason, err?: Error) {
@@ -28,10 +35,9 @@ export class WebSocketClientPeer extends AbstractWebSocketPeer {
 
 		super.handleDisconnect(reason, err);
 
-		// TODO: Smarter back-off algorithm
-		const retryTime = 30000;
-		this.debug('Reconnecting in', retryTime, 'ms');
-		this.connectTimeout = setTimeout(() => this.tryConnect(), retryTime);
+		const delay = this.backOff.nextDelay();
+		this.debug('Reconnecting in', delay, 'ms');
+		this.connectTimeout = setTimeout(() => this.tryConnect(), delay);
 	}
 
 	public tryConnect() {
@@ -45,6 +51,7 @@ export class WebSocketClientPeer extends AbstractWebSocketPeer {
 		ws.addEventListener('open', () => {
 			this.debug('Connected');
 
+			this.backOff.reset();
 			this.negotiateAsClient();
 		});
 
