@@ -30,6 +30,13 @@ import { Service } from './Service';
 import { ServiceHandle } from './ServiceHandle';
 import { ServiceImpl } from './ServiceImpl';
 
+/**
+ * Type definition for local services. Supports three cases:
+ *
+ * * Already constructed `LocalService`
+ * * Function that takes a `ServiceHandle` and returns `LocalService`
+ * * Constructor that takes a `ServiceHandle`
+ */
 export type LocalServiceDef = LocalService
 	| ((handle: ServiceHandle) => LocalService)
 	| (new (handle: ServiceHandle) => LocalService);
@@ -102,6 +109,9 @@ export class Services {
 
 	/**
 	 * Start the services allowing access to remote services.
+	 *
+	 * @returns
+	 *   promise that resolves when services have started
 	 */
 	public start(): Promise<void> {
 		return this.exchange.join();
@@ -109,6 +119,9 @@ export class Services {
 
 	/**
 	 * Stop the services no longer allowing access to remote services.
+	 *
+	 * @returns
+	 *   promise that resolves when services have stopped
 	 */
 	public stop(): Promise<void> {
 		return this.exchange.leave();
@@ -118,7 +131,10 @@ export class Services {
 	 * Register a new service that should be made available locally and
 	 * remotely to other nodes.
 	 *
-	 * @param serviceDef
+	 * @param serviceDef -
+	 *   definition of service
+	 * @returns
+	 *   handle that can be used to remove service
 	 */
 	public register(serviceDef: LocalServiceDef): ServiceHandle {
 		const handle = new ServiceHandleImpl();
@@ -183,10 +199,33 @@ export class Services {
 	}
 
 	/**
-	 * Get a service if it is available.
+	 * Get a service if it is available. Will return a proxy that can be used
+	 * to invoke methods on the service regardless if it is remote or local:
 	 *
-	 * @param id
+	 * ```javascript
+	 * const instance = services.get('example:test');
+	 * if(instance) {
+	 *   await instance.doStuff();
+	 * }
+	 * ```
+	 *
+	 * For TypeScript it is possible to scope it to a known interface:
+	 *
+	 * ```typescript
+	 * interface TestService {
+	 *   doStuff(): Promise<void>;
+	 * }
+	 *
+	 * const instance = services.get<TestService>('example:test');
+	 * if(instance) {
+	 *   await instance.doStuff();
+	 * }
+	 * ```
+	 *
+	 * @param id -
 	 *   the identifier of the service
+	 * @returns
+	 *   `Service` instance or `null` if service is unavailable
 	 */
 	public get<S extends object>(id: string): (Service & S) | null {
 		const service = this.services.get(id);
@@ -196,8 +235,8 @@ export class Services {
 	/**
 	 * Register a reflect for the given identifier.
 	 *
-	 * @param serviceId
-	 * @param reflect
+	 * @param reflect -
+	 *   reflect instance for the service
 	 */
 	protected registerServiceReflect(
 		reflect: ServiceReflect
@@ -222,8 +261,10 @@ export class Services {
 	/**
 	 * Update a `ServiceReflect` with a new one.
 	 *
-	 * @param serviceId
-	 * @param reflect
+	 * @param currentReflect -
+	 *   current reflect instance
+	 * @param newReflect -
+	 *   new reflect instance
 	 */
 	protected updateServiceReflect(
 		currentReflect: ServiceReflect,
@@ -241,10 +282,10 @@ export class Services {
 	}
 
 	/**
-	 * Update a `ServiceReflect` with a new one.
+	 * Unregister a `ServiceReflect`.
 	 *
-	 * @param serviceId
-	 * @param reflect
+	 * @param reflect -
+	 *   reflect instance
 	 */
 	protected unregisterServiceReflect(
 		reflect: ServiceReflect
@@ -262,10 +303,11 @@ export class Services {
 	}
 
 	/**
-	 * Handle a new node joining the exchange. Will request a list of services
-	 * from the joining node.
+	 * Handle a new node joining the service exchange. Will request a list of
+	 * services from the joining node.
 	 *
-	 * @param node
+	 * @param node -
+	 *   node that is now available
 	 */
 	protected handleNodeAvailable(node: Node<ServiceMessages>) {
 		const state: ServiceNodeData = {
@@ -280,6 +322,12 @@ export class Services {
 			.catch(err => this.debug('Unable to request listing of services', err));
 	}
 
+	/**
+	 * Handle a node leaving the service exchange.
+	 *
+	 * @param node -
+	 *   node that is now unavailable
+	 */
 	protected handleNodeUnavailable(node: Node<ServiceMessages>) {
 		const state = this.nodes.get(node.id);
 		if(! state) return;
@@ -303,6 +351,13 @@ export class Services {
 		}
 	}
 
+	/**
+	 * Handle an incoming message from nodes that are apart of the service
+	 * exchange.
+	 *
+	 * @param msg -
+	 *   incoming message
+	 */
 	protected handleMessage(msg: MessageUnion<ServiceMessages>) {
 		switch(msg.type) {
 			case 'service:list-request':
@@ -335,6 +390,14 @@ export class Services {
 		}
 	}
 
+	/**
+	 * Handle a request to list the services that we have available.
+	 *
+	 * @param node -
+	 *   the node requesting services
+	 * @param message -
+	 *   details about the request
+	 */
 	protected handleServiceListRequest(node: Node<ServiceMessages>, message: ServiceListRequestMessage) {
 		// The node has the latest version of our services
 		if(message.lastVersion === this.version) return;
@@ -351,6 +414,14 @@ export class Services {
 			.catch(err => this.debug('Could not send reply to', node, ', error was', err));
 	}
 
+	/**
+	 * Handle a reply to a previously sent service list request.
+	 *
+	 * @param node -
+	 *   node that is replying
+	 * @param message -
+	 *   message with service info
+	 */
 	protected handleServiceListReply(node: Node<ServiceMessages>, message: ServiceListReplyMessage) {
 		const data = this.nodes.get(node.id);
 		if(! data) return;
@@ -394,6 +465,14 @@ export class Services {
 		data.version = message.version;
 	}
 
+	/**
+	 * Handle an incoming broadcast that a new service is available.
+	 *
+	 * @param node -
+	 *   node that broadcast the message
+	 * @param message -
+	 *   message describing the service that is now available
+	 */
 	protected handleServiceAvailable(node: Node<ServiceMessages>, message: ServiceAvailableMessage) {
 		const data = this.nodes.get(node.id);
 		if(! data) return;
@@ -424,6 +503,14 @@ export class Services {
 		}
 	}
 
+	/**
+	 * Handle an incoming broadcast that a service is no longer available.
+	 *
+	 * @param node -
+	 *   node that broadcast the message
+	 * @param message -
+	 *   message with the service that is no longer available
+	 */
 	protected handleServiceUnavailable(node: Node<ServiceMessages>, message: ServiceUnavailableMessage) {
 		const data = this.nodes.get(node.id);
 		if(! data) return;
@@ -446,6 +533,15 @@ export class Services {
 		}
 	}
 
+	/**
+	 * Handle a request to invoke a method on a local service. Delegates most
+	 * of the work the local `ServiceReflect` instance.
+	 *
+	 * @param node -
+	 *   node that requested the invocation
+	 * @param message -
+	 *   message describing the invocation
+	 */
 	protected handleServiceInvokeRequest(node: Node<ServiceMessages>, message: ServiceInvokeRequest) {
 		const service = this.localServices.get(message.service);
 		if(! service) {
@@ -476,6 +572,13 @@ export class Services {
 			.catch(err => this.debug('Could not send reply', err));
 	}
 
+	/**
+	 * Handle an incoming reply to a previously sent request to invoke a
+	 * method.
+	 *
+	 * @param message -
+	 *   reply to invocation
+	 */
 	protected handleServiceInvokeReply(message: ServiceInvokeReply) {
 		if(typeof message.error === 'string') {
 			this.calls.registerError(message.id, new Error(message.error));
@@ -484,6 +587,14 @@ export class Services {
 		}
 	}
 
+	/**
+	 * Handle a request to subscribe to a certain event.
+	 *
+	 * @param node -
+	 *   node that wants to subscribe
+	 * @param message -
+	 *   message describing the event being subscribed to
+	 */
 	protected handleServiceEventSubscribe(node: Node<ServiceMessages>, message: ServiceEventSubscribeMessage) {
 		const service = this.localServices.get(message.service);
 		if(! service) return;
@@ -509,13 +620,23 @@ export class Services {
 				.catch(err => this.debug('Unable to send event', event, 'with arguments', args, ':', err));
 		};
 
+		// Register a function that can be used to unsubscribe
 		events.set(event, () => service.reflect.unsubscribe(event, handler)
 			.catch(err => this.debug('Could not unsubscribe', err)));
 
+		// Subscribe using the local reflect instance
 		service.reflect.subscribe(event, handler)
 			.catch(err => this.debug('Could not subscribe', err));
 	}
 
+	/**
+	 * Handle a request to unsubscribe from a certain event.
+	 *
+	 * @param node -
+	 *   node that wants to unsubscribe
+	 * @param message -
+	 *   message describing the event being unsubscribed from
+	 */
 	protected handleServiceEventUnsubscribe(node: Node<ServiceMessages>, message: ServiceEventUnsubscribeMessage) {
 		const service = this.localServices.get(message.service);
 		if(! service) return;
@@ -535,6 +656,14 @@ export class Services {
 		}
 	}
 
+	/**
+	 * Handle an incoming event emit.
+	 *
+	 * @param node -
+	 *   node that sent the event
+	 * @param message -
+	 *   message describing the event
+	 */
 	protected handleServiceEventEmit(node: Node<ServiceMessages>, message: ServiceEventEmitMessage) {
 		const data = this.nodes.get(node.id);
 		if(! data) return;
@@ -586,7 +715,10 @@ export class Services {
  * Convert from a reflect instance to a definition suitable to transmit over
  * the network.
  *
- * @param reflect
+ * @param reflect -
+ *   reflect to create definition for
+ * @returns
+ *   instance of `ServiceDef`
  */
 function toServiceDef(reflect: ServiceReflect): ServiceDef {
 	return {

@@ -29,20 +29,26 @@ export abstract class ServiceReflect {
 	/**
 	 * Call a method on this service passing the arguments as an array.
 	 *
-	 * @param method
+	 * @param method -
 	 *   the method to call
-	 * @param args
+	 * @param args -
 	 *   the arguments to pass to the method
+	 * @returns
+	 *   promise that resolves with the result of the call or rejects if an
+	 *   error occurs
 	 */
 	public abstract apply(method: string, args: ReadonlyArray<any[]>): Promise<any>;
 
 	/**
 	 * Call a method on this service passing.
 	 *
-	 * @param method
+	 * @param method -
 	 *   the method to call
-	 * @param args
+	 * @param args -
 	 *   the arguments to pass to the method
+	 * @returns
+	 *   promise that resolves with the result of the call or rejects if an
+	 *   error occurs
 	 */
 	public call(method: string, ...args: ReadonlyArray<any[]>): Promise<any> {
 		return this.apply(method, args);
@@ -51,68 +57,92 @@ export abstract class ServiceReflect {
 	/**
 	 * Get the definition for the given method.
 	 *
-	 * @param method
+	 * @param name -
 	 *   name of the method
+	 * @returns
+	 *   information about method if found, `null` otherwise
 	 */
-	public getMethod(name: string) {
+	public getMethod(name: string): ServiceMethod | null {
 		return this._methods.get(name) || null;
 	}
 
 	/**
 	 * Check if a certain method is available.
 	 *
-	 * @param method
+	 * @param name -
 	 *   method to check
+	 * @returns
+	 *   `true` if the method is available
 	 */
-	public hasMethod(name: string) {
+	public hasMethod(name: string): boolean {
 		return this._methods.has(name);
 	}
 
 	/**
 	 * Get methods available for this service.
+	 *
+	 * @returns
+	 *   array with methods
 	 */
-	public get methods() {
+	public get methods(): ServiceMethod[] {
 		return [ ...this._methods.values() ];
 	}
 
 	/**
 	 * Subscribe to an event.
 	 *
-	 * @param event
-	 * @param listener
+	 * @param event -
+	 *   name of event
+	 * @param listener -
+	 *   listener to subscribe
+	 * @returns
+	 *   promise that resolves when the listener is subscribed
 	 */
 	public abstract subscribe(event: string, listener: Listener<void, any[]>): Promise<void>;
 
 	/**
 	 * Unsubscribe from an event.
 	 *
-	 * @param event
-	 * @param listener
+	 * @param event -
+	 *   name of event
+	 * @param listener -
+	 *   listener to unsubscribe
+	 * @returns
+	 *   promise that resolves when the listener is unsubscribed
 	 */
 	public abstract unsubscribe(event: string, listener: Listener<void, any[]>): Promise<boolean>;
 
 	/**
-	 * Get if a specific event is available for this service.
+	 * Get information about an available event.
 	 *
-	 * @param event
+	 * @param name -
+	 *   name of the event
+	 * @returns
+	 *   event if available or `null` if event doesn't exist
 	 */
-	public getEvent(name: string) {
+	public getEvent(name: string): ServiceEvent | null {
 		return this._events.get(name) || null;
 	}
 
 	/**
 	 * Get the definition for a specific event.
 	 *
-	 * @param event
+	 * @param name -
+	 *   name of the event
+	 * @returns
+	 *   `true` if the event exists
 	 */
-	public hasEvent(name: string) {
+	public hasEvent(name: string): boolean {
 		return this._events.has(name);
 	}
 
 	/**
 	 * Get the events available for this service.
+	 *
+	 * @returns
+	 *   array with available events
 	 */
-	public get events() {
+	public get events(): ServiceEvent[] {
 		return [ ...this._events.values() ];
 	}
 }

@@ -2,6 +2,9 @@ import { Listener } from 'atvik';
 
 import { ServiceReflect } from './ServiceReflect';
 
+/**
+ * `ServiceReflect` that merges several other reflects together.
+ */
 export class MergedServiceReflect extends ServiceReflect {
 	public readonly id: string;
 	private readonly reflects: ServiceReflect[];

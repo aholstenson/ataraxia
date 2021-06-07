@@ -5,5 +5,8 @@ import { ServiceEvent } from '../ServiceEvent';
  * an event is extracted from.
  */
 export interface LocalServiceEvent extends ServiceEvent {
+	/**
+	 * Property name.
+	 */
 	property: string;
 }

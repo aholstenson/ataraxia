@@ -37,9 +37,12 @@ export class LocalServiceReflect extends ServiceReflect {
 	 * Get information about an event and the property at which the event
 	 * belongs on the object.
 	 *
-	 * @param event
+	 * @param event -
+	 *   event to find property for
+	 * @returns
+	 *   property name where event is found
 	 */
-	private getPropertyForEvent(event: string) {
+	private getPropertyForEvent(event: string): string | null {
 		const eventData = this.getEvent(event);
 		if(! eventData) return null;
 

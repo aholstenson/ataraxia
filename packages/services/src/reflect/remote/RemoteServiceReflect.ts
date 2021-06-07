@@ -79,6 +79,14 @@ export class RemoteServiceReflect extends ServiceReflect {
 	}
 }
 
+/**
+ * Turn a `ServiceDef` into a map of `ServiceMethod`.
+ *
+ * @param def -
+ *   definition to convert
+ * @returns
+ *   map of `ServiceMethod`
+ */
 function toServiceMethods(def: ServiceDef) {
 	const methods = new Map<string, ServiceMethod>();
 	for(const methodDef of def.methods) {
@@ -87,6 +95,14 @@ function toServiceMethods(def: ServiceDef) {
 	return methods;
 }
 
+/**
+ * Turn a `ServiceMethodDef` into a `ServiceMethod`.
+ *
+ * @param def -
+ *   definition to convert
+ * @returns
+ *   `ServiceMethod` instance
+ */
 function toServiceMethod(def: ServiceMethodDef): ServiceMethod {
 	return {
 		name: def.name,
@@ -94,6 +110,14 @@ function toServiceMethod(def: ServiceMethodDef): ServiceMethod {
 	};
 }
 
+/**
+ * Convert a `ServiceMethodParameterDef` into a `ServiceParameter`.
+ *
+ * @param def -
+ *   definition to convert
+ * @returns
+ *   `ServiceParameter` instance
+ */
 function toServiceParameter(def: ServiceMethodParameterDef): ServiceParameter {
 	return {
 		name: def.name,
@@ -102,6 +126,14 @@ function toServiceParameter(def: ServiceMethodParameterDef): ServiceParameter {
 	};
 }
 
+/**
+ * Turn a `ServiceDef` into a map of `ServiceEvent`.
+ *
+ * @param def  -
+ *   definition to convert
+ * @returns
+ *   map of `ServiceEvent`
+ */
 function toServiceEvents(def: ServiceDef) {
 	const events = new Map<string, ServiceEvent>();
 	for(const eventDef of def.events) {
@@ -110,6 +142,14 @@ function toServiceEvents(def: ServiceDef) {
 	return events;
 }
 
+/**
+ * Convert a `ServiceEventDef` into a `ServiceEvent`.
+ *
+ * @param def -
+ *   definition to convert
+ * @returns
+ *   `ServiceEvent` instance
+ */
 function toServiceEvent(def: ServiceEventDef): ServiceEvent {
 	return {
 		name: def.name,

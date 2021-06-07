@@ -67,9 +67,14 @@ export class ServiceImpl {
  * Create a `Subscribable` for an event that will delegate the subscription
  * to the `ServiceReflect` while also rewriting the .
  *
- * @param self
- * @param reflect
- * @param event
+ * @param self -
+ *   instance used as this for the emitted event
+ * @param reflect -
+ *   reflect used to control event subscription
+ * @param event -
+ *   name of event to create subscribable for
+ * @returns
+ *   `Subscribable` instance
  */
 function createSubscribable(
 	self: any,

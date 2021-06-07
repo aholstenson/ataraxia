@@ -8,7 +8,10 @@ import { LocalServiceEvent } from './LocalServiceEvent';
  * Create the metadata for the given object, this will inspect the object,
  * locating the methods and events for it.
  *
- * @param object
+ * @param object -
+ *   instance to create metadata for
+ * @returns
+ *   object with methods and events
  */
 export function createLocalServiceMetadata(object: any) {
 	const methods: Map<string, ServiceMethod> = new Map();
