@@ -125,17 +125,3 @@ export function sameId(o1: ArrayBuffer, o2: ArrayBuffer): boolean {
 
 	return true;
 }
-
-export function compareId(o1: ArrayBuffer, o2: ArrayBuffer): number {
-	if(o1.byteLength < o2.byteLength) return -1;
-	if(o1.byteLength > o2.byteLength) return 1;
-
-	const u1 = new Uint8Array(o1);
-	const u2 = new Uint8Array(o2);
-	for(let i = 0; i < u1.length; i++) {
-		if(u1[i] < u2[i]) return -1;
-		if(u1[i] > u2[i]) return 1;
-	}
-
-	return 0;
-}
