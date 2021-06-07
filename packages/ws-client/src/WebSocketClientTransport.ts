@@ -24,6 +24,43 @@ export interface WebSocketClientTransportOptions {
 	authentication: ReadonlyArray<AuthProvider>;
 }
 
+/**
+ * Transport that connects to the network over a web socket. This type of
+ * transport requires a URL to connect to and the authentication methods to
+ * use.
+ *
+ * For use outside browsers a function that creates a `WebSocket` instance
+ * may be provided.
+ *
+ * Example:
+ *
+ * ```javascript
+ * import { Network, AnonymousAuth } from 'ataraxia';
+ * import { WebSocketClientTransport } from 'ataraxia-ws-client';
+ *
+ * // Setup a network with a WebSocket client
+ * const net = new Network({
+ *   name: 'name-of-your-app-or-network',
+ *
+ *   transports: [
+ *
+ *     new WebSocketClientTransport({
+ *       // URL to the websocket on the server
+ *       url: 'ws://localhost:7000',
+ *       // If using outside a browser, define how a WebSocket is created
+ *       factory: url => new WebSocket(url),
+ *       // Use anonymous authentication
+ *       authentication: [
+ *         new AnonymousAuth()
+ *       ]
+ *     })
+ *
+ *   ]
+ * });
+ *
+ * await net.start();
+ * ```
+ */
 export class WebSocketClientTransport extends AbstractTransport {
 	private readonly options: WebSocketClientTransportOptions;
 	private peer?: WebSocketClientPeer;
@@ -71,6 +108,15 @@ export class WebSocketClientTransport extends AbstractTransport {
 
 declare const WebSocket: any;
 
+/**
+ * Default factory for creating a `WebSocket`. Will look for a global variable
+ * called `WebSocket` which works well in browsers.
+ *
+ * @param url -
+ *   URL to connect to
+ * @returns
+ *   instance of `WebSocket`
+ */
 function defaultWebSocketFactory(url: string) {
 	if(typeof WebSocket !== 'object') {
 		throw new Error('No default WebSocket implementation found');
