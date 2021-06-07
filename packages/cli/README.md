@@ -44,7 +44,7 @@ $ ataraxia --network nameOfNetwork listen --exchange counter
 ### Picking networks to join
 
 Option                     | Description
-===========================|====================================
+---------------------------|------------------
 `--network networkName`    | Join machine-local network and TCP network using mDNS discovery
 `--hyperswarm topic`       | Discover peers via the given Hyperswarm topic
 `--sharedKey key`          | Enable shared-key authentication
