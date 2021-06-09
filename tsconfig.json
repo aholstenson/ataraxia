@@ -12,5 +12,21 @@
 		},
 	},
 	"include": [ "packages/*/src" ],
-	"exclude": [ "**/node_modules/**", "**/dist/**" ]
+	"exclude": [ "**/node_modules/**", "**/dist/**" ],
+	"typedocOptions": {
+		"name": "Ataraxia",
+		"entryPoints": [
+			"packages/core/src/index.ts",
+			"packages/core/src/transport/index.ts",
+			"packages/core/src/id/index.ts",
+			"packages/local/src/index.ts",
+			"packages/tcp/src/index.ts",
+			"packages/hyperswarm/src/index.ts",
+			"packages/ws-client/src/index.ts",
+			"packages/ws-server/src/index.ts",
+			"packages/services/src/index.ts"
+		],
+		"out": "apidocs",
+		"excludePrivate": true
+	}
 }

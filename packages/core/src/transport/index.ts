@@ -1,3 +1,8 @@
+/* eslint-disable tsdoc/syntax,jsdoc/require-description */
+/**
+ * @module ataraxia/transport
+ */
+
 export * from './Transport';
 export * from './AbstractTransport';
 export * from './TransportOptions';

@@ -1,3 +1,8 @@
+/* eslint-disable tsdoc/syntax,jsdoc/require-description */
+/**
+ * @module ataraxia-services
+ */
+
 export * from './Services';
 export * from './Service';
 export * from './ServiceHandle';

@@ -1,3 +1,8 @@
+/* eslint-disable tsdoc/syntax,jsdoc/require-description */
+/**
+ * @module ataraxia
+ */
+
 export * from './auth';
 
 export * from './Network';
