@@ -19,7 +19,8 @@ jobs:
         run: |
           yarn install
           npx lerna bootstrap
-          npm run apidocs
+          yarn run build
+          yarn run apidocs
 
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@4.1.1
