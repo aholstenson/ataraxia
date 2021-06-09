@@ -51,7 +51,7 @@ export const handler = async (args: any) => {
 
 	logInfo('Joining', chalk.magenta(net.networkName), 'as', chalk.blue(net.networkId));
 
-	await net.start();
+	await net.join();
 
 	if(args.watch) return;
 

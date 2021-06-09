@@ -44,6 +44,6 @@ net.onNodeUnavailable(node => {
 });
 
 // Start the network
-net.start()
-	.then(() => console.log('Network has started with id', net.networkId))
+net.join()
+	.then(() => console.log('Network has been joined with id', net.networkId))
 	.catch(err => console.error(err));

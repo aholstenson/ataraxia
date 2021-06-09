@@ -34,8 +34,8 @@
  *   console.log('A new message was received');
  * });
  *
- * // Start the network
- * await net.start();
+ * // Join the network
+ * await net.join();
  * ```
  *
  * Authentication is provided via {@link AnonymousAuth} or

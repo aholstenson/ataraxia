@@ -9,7 +9,7 @@ import { logError } from '../log';
  *   network to stop
  */
 export function stopNetwork(net: Network) {
-	net.stop()
+	net.leave()
 		.then(() => process.exit(0))
 		.catch(err => {
 			logError('Could not stop network gracefully', err.message);

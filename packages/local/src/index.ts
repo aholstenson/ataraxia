@@ -15,7 +15,7 @@
  *   ]
  * });
  *
- * await net.start();
+ * await net.join();
  * ```
  *
  * @module ataraxia-local

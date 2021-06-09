@@ -20,7 +20,7 @@
  *   ]
  * });
  *
- * await net.start();
+ * await net.join();
  * ```
  *
  * @module ataraxia-ws-server

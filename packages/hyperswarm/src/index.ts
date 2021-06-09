@@ -23,8 +23,8 @@
  *   ]
  * });
  *
- * // Start the network
- * await net.start();
+ * // Join the network
+ * await net.join();
  * ```
  *
  * @module ataraxia-hyperswarm

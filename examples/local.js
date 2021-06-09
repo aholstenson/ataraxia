@@ -33,9 +33,9 @@ net.onMessage(msg => {
 });
 
 // Start the network
-net.start()
+net.join()
 	.then(() => {
-		console.log('Network has started with id', net.networkId);
+		console.log('Network has been joined with id', net.networkId);
 
 		// Start our helper
 		return require('./helpers/counter')(net);

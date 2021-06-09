@@ -42,6 +42,22 @@ export interface NetworkOptions {
  * Networks are required to have a name which represents a short name that
  * describes the network. Transports can use this name to automatically find
  * peers with the same network name.
+ *
+ * Networks can be joined and left as needed. The same app is encouraged to
+ * only join the network once and then share an instance of `Network` as
+ * needed.
+ *
+ * ```javascript
+ * const net = new Network({
+ *   name: 'name-of-network',
+ *
+ *   transports: [
+ *      new MachineLocalNetwork()
+ *   ]
+ * });
+ *
+ * await net.join();
+ * ```
  */
 export class Network<MessageTypes extends object = any> {
 	/**
@@ -226,7 +242,7 @@ export class Network<MessageTypes extends object = any> {
 	 *   promise that resolves when the network is started, the value will
 	 *   represent if the network was actually started or not.
 	 */
-	public async start(): Promise<boolean> {
+	public async join(): Promise<boolean> {
 		if(this.active) return false;
 
 		this.debug('About to join network as ' + this.networkId);
@@ -264,7 +280,7 @@ export class Network<MessageTypes extends object = any> {
 	 *   promise that resolves when the network is stopped, the value will
 	 *   represent if the network was actually stopper or not.
 	 */
-	public async stop(): Promise<boolean> {
+	public async leave(): Promise<boolean> {
 		if(! this.active) return false;
 
 		// Stop the topology

@@ -39,7 +39,7 @@ const net = new Network({
   ]
 });
 
-await net.start();
+await net.join();
 ```
 
 ## API

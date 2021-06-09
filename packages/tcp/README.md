@@ -40,8 +40,8 @@ const net = new Network({
   ]
 });
 
-// Start the network
-await net.start();
+// Join the network
+await net.join();
 ```
 
 ## Well-known ports and manual peers
@@ -71,8 +71,8 @@ const net = new Network({
   ]
 });
 
-// Start the network
-await net.start();
+// Join the network
+await net.join();
 ```
 
 Another instance can then connect to that specific port:
@@ -100,8 +100,8 @@ tcp.addManualPeer({
 
 net.addTransport(tcp);
 
-// Start the network
-await net.start();
+// Join the network
+await net.join();
 ```
 
 Ataraxia will attempt to connect to the manually added peers and will attempt

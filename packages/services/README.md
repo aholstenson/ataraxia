@@ -25,8 +25,8 @@ const services = new Services(net);
 services.onServiceAvailable(service => console.log(service.id, 'is now available'));
 services.onServiceUnavailable(service => console.log(service.id, 'is no longer available'));
 
-// Start the network
-await net.start();
+// Join the network
+await net.join();
 
 // Start the services on top of the network
 await services.start();

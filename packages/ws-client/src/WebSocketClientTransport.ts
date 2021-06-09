@@ -58,7 +58,7 @@ export interface WebSocketClientTransportOptions {
  *   ]
  * });
  *
- * await net.start();
+ * await net.join();
  * ```
  */
 export class WebSocketClientTransport extends AbstractTransport {

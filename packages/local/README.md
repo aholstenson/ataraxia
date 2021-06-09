@@ -28,7 +28,7 @@ const net = new Network({
   ]
 });
 
-await net.start();
+await net.join();
 ```
 
 `onLeader` can be used to start a secondary network transport that
@@ -61,7 +61,7 @@ net.addTransport(new MachineLocalTransport([
   }
 ]);
 
-await net.start();
+await net.join();
 ```
 
 ## API

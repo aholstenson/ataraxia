@@ -63,7 +63,7 @@ export class TestNetwork {
 				name: 'tests'
 			});
 			network.addTransport(transport);
-			network.start();
+			network.join();
 
 			info = {
 				id: network.networkIdBinary,
@@ -274,7 +274,7 @@ export class TestNetwork {
 		}
 
 		for(const node of this.nodeInfo.values()) {
-			await node.network.stop();
+			await node.network.leave();
 		}
 
 		await this.consolidate();

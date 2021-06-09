@@ -59,7 +59,7 @@ net.onMessage(msg => {
 });
 
 // Start the network
-await net.start();
+await net.join();
 ```
 
 ## Example with machine-local transport and TCP transport
@@ -96,7 +96,7 @@ net.addTransport(new MachineLocalTransport([
   }
 ]);
 
-await net.start();
+await net.join();
 ```
 
 ## API

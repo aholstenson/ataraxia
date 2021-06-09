@@ -68,8 +68,8 @@ net.onMessage(msg => {
   console.log('A message was received', msg.type, 'with data', msg.data, 'from', msg.source.id);
 });
 
-// Start the network
-await net.start();
+// Join the network
+await net.join();
 ```
 
 ## Example with machine-local transport and TCP transport
@@ -105,7 +105,7 @@ net.addTransport(new MachineLocalTransport([
   }
 ]);
 
-await net.start();
+await net.join();
 ```
 
 ## Support for services
@@ -123,8 +123,8 @@ const services = new Services(net);
 services.onAvailable(service => console.log(service.id, 'is now available'));
 services.onUnavailable(service => console.log(service.id, 'is no longer available'));
 
-// Start the network
-await net.start();
+// Join the network
+await net.join();
 
 // Start the services on top of the network
 await services.start();
