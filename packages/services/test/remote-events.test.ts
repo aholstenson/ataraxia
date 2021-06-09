@@ -20,8 +20,8 @@ describe('Services: Remote Events', () => {
 		const aServices = new Services(a);
 		const bServices = new Services(b);
 
-		await aServices.start();
-		await bServices.start();
+		await aServices.join();
+		await bServices.join();
 
 		const event = new Event<void, [ string ]>(undefined);
 		aServices.register({

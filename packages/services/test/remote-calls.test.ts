@@ -17,8 +17,8 @@ describe('Services: Remote Calls', () => {
 		const aServices = new Services(a);
 		const bServices = new Services(b);
 
-		await aServices.start();
-		await bServices.start();
+		await aServices.join();
+		await bServices.join();
 
 		aServices.register({
 			id: 'test',
@@ -36,16 +36,16 @@ describe('Services: Remote Calls', () => {
 				const s = await helloService.hello('world');
 				expect(s).toBe('Hello world!');
 			} finally {
-				await aServices.stop();
-				await bServices.stop();
+				await aServices.leave();
+				await bServices.leave();
 
 				await testNetwork.shutdown();
 			}
 			return;
 		}
 
-		await aServices.stop();
-		await bServices.stop();
+		await aServices.leave();
+		await bServices.leave();
 		await testNetwork.shutdown();
 		throw new Error('Service not found');
 	});
