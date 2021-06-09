@@ -81,11 +81,11 @@
 <span style="color: #001080">services</span><span style="color: #000000">.</span><span style="color: #795E26">onServiceAvailable</span><span style="color: #000000">(</span><span style="color: #001080">service</span><span style="color: #000000"> </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #001080">service</span><span style="color: #000000">.</span><span style="color: #001080">id</span><span style="color: #000000">, </span><span style="color: #A31515">&#039;is now available&#039;</span><span style="color: #000000">));</span>
 <span style="color: #001080">services</span><span style="color: #000000">.</span><span style="color: #795E26">onServiceUnavailable</span><span style="color: #000000">(</span><span style="color: #001080">service</span><span style="color: #000000"> </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #001080">service</span><span style="color: #000000">.</span><span style="color: #001080">id</span><span style="color: #000000">, </span><span style="color: #A31515">&#039;is no longer available&#039;</span><span style="color: #000000">));</span>
 
-<span style="color: #008000">// Start the network</span>
-<span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">net</span><span style="color: #000000">.</span><span style="color: #795E26">start</span><span style="color: #000000">();</span>
+<span style="color: #008000">// Join the network</span>
+<span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">net</span><span style="color: #000000">.</span><span style="color: #795E26">join</span><span style="color: #000000">();</span>
 
-<span style="color: #008000">// Start the services on top of the network</span>
-<span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">services</span><span style="color: #000000">.</span><span style="color: #795E26">start</span><span style="color: #000000">();</span>
+<span style="color: #008000">// Join the services layer on top of the network</span>
+<span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">services</span><span style="color: #000000">.</span><span style="color: #795E26">join</span><span style="color: #000000">();</span>
 
 <span style="color: #008000">// Register a service as a plain object</span>
 <span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">handle</span><span style="color: #000000"> = </span><span style="color: #001080">services</span><span style="color: #000000">.</span><span style="color: #795E26">register</span><span style="color: #000000">({</span>
@@ -215,7 +215,7 @@
 					<div class="tsd-signature tsd-kind-icon">Local<wbr>Service<wbr>Def<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">LocalService</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>handle<span class="tsd-signature-symbol">: </span><a href="../interfaces/ataraxia_services.servicehandle.html" class="tsd-signature-type" data-tsd-kind="Interface">ServiceHandle</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">LocalService</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">new </span><span class="tsd-signature-symbol">(</span>handle<span class="tsd-signature-symbol">: </span><a href="../interfaces/ataraxia_services.servicehandle.html" class="tsd-signature-type" data-tsd-kind="Interface">ServiceHandle</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">LocalService</span><span class="tsd-signature-symbol">)</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/4c70528/packages/services/src/Services.ts#L40">packages/services/src/Services.ts:40</a></li>
+							<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/068aa21/packages/services/src/Services.ts#L40">packages/services/src/Services.ts:40</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -238,7 +238,7 @@
 					<div class="tsd-signature tsd-kind-icon">service<wbr>Reflect<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">typeof </span><a href="ataraxia_services.html#servicereflect-1" class="tsd-signature-type" data-tsd-kind="Variable">serviceReflect</a><span class="tsd-signature-symbol"> = ...</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/4c70528/packages/services/src/Service.ts#L6">packages/services/src/Service.ts:6</a></li>
+							<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/068aa21/packages/services/src/Service.ts#L6">packages/services/src/Service.ts:6</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
