@@ -1,0 +1,999 @@
+<!doctype html>
+<html class="default no-js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>AbstractPeer | Ataraxia</title>
+	<meta name="description" content="Documentation for Ataraxia">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="../assets/css/main.css">
+	<script async src="../assets/js/search.js" id="search-script"></script>
+</head>
+<body>
+<header>
+	<div class="tsd-page-toolbar">
+		<div class="container">
+			<div class="table-wrap">
+				<div class="table-cell" id="tsd-search" data-index="../assets/js/search.json" data-base="..">
+					<div class="field">
+						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
+						<input id="tsd-search-field" type="text" />
+					</div>
+					<ul class="results">
+						<li class="state loading">Preparing search index...</li>
+						<li class="state failure">The search index is not available</li>
+					</ul>
+					<a href="../index.html" class="title">Ataraxia</a>
+				</div>
+				<div class="table-cell" id="tsd-widgets">
+					<div id="tsd-filter">
+						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
+						<div class="tsd-filter-group">
+							<div class="tsd-select" id="tsd-filter-visibility">
+								<span class="tsd-select-label">All</span>
+								<ul class="tsd-select-list">
+									<li data-value="public">Public</li>
+									<li data-value="protected">Public/Protected</li>
+									<li data-value="private" class="selected">All</li>
+								</ul>
+							</div>
+							<input type="checkbox" id="tsd-filter-inherited" checked />
+							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
+							<input type="checkbox" id="tsd-filter-externals" checked />
+							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
+						</div>
+					</div>
+					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tsd-page-title">
+		<div class="container">
+			<ul class="tsd-breadcrumb">
+				<li>
+					<a href="../modules.html">Ataraxia</a>
+				</li>
+				<li>
+					<a href="../modules/ataraxia_transport.html">ataraxia/transport</a>
+				</li>
+				<li>
+					<a href="ataraxia_transport.abstractpeer.html">AbstractPeer</a>
+				</li>
+			</ul>
+			<h1>Class AbstractPeer</h1>
+		</div>
+	</div>
+</header>
+<div class="container container-main">
+	<div class="row">
+		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>Abstract implementation of <code>Peer</code>. Used as the basis that negotiates
+						protocol versions and requested features.</p>
+					</div>
+				</div>
+			</section>
+			<section class="tsd-panel tsd-hierarchy">
+				<h3>Hierarchy</h3>
+				<ul class="tsd-hierarchy">
+					<li>
+						<span class="target">AbstractPeer</span>
+						<ul class="tsd-hierarchy">
+							<li>
+								<a href="ataraxia_transport.streamingpeer.html" class="tsd-signature-type" data-tsd-kind="Class">StreamingPeer</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel">
+				<h3>Implements</h3>
+				<ul class="tsd-hierarchy">
+					<li><a href="../interfaces/ataraxia_transport.peer.html" class="tsd-signature-type" data-tsd-kind="Interface">Peer</a></li>
+				</ul>
+			</section>
+			<section class="tsd-panel-group tsd-index-group">
+				<h2>Index</h2>
+				<section class="tsd-panel tsd-index-panel">
+					<div class="tsd-index-content">
+						<section class="tsd-index-section ">
+							<h3>Constructors</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="ataraxia_transport.abstractpeer.html#constructor" class="tsd-kind-icon">constructor</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
+							<h3>Properties</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="ataraxia_transport.abstractpeer.html#debug" class="tsd-kind-icon">debug</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="ataraxia_transport.abstractpeer.html#id" class="tsd-kind-icon">id</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="ataraxia_transport.abstractpeer.html#parent" class="tsd-kind-icon">parent</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="ataraxia_transport.abstractpeer.html#version" class="tsd-kind-icon">version</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
+							<h3>Accessors</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="ataraxia_transport.abstractpeer.html#connected" class="tsd-kind-icon">connected</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="ataraxia_transport.abstractpeer.html#latency" class="tsd-kind-icon">latency</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="ataraxia_transport.abstractpeer.html#onconnect" class="tsd-kind-icon">on<wbr>Connect</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="ataraxia_transport.abstractpeer.html#ondata" class="tsd-kind-icon">on<wbr>Data</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="ataraxia_transport.abstractpeer.html#ondisconnect" class="tsd-kind-icon">on<wbr>Disconnect</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
+							<h3>Methods</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><a href="ataraxia_transport.abstractpeer.html#abort" class="tsd-kind-icon">abort</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><a href="ataraxia_transport.abstractpeer.html#didconnect" class="tsd-kind-icon">did<wbr>Connect</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="ataraxia_transport.abstractpeer.html#disconnect" class="tsd-kind-icon">disconnect</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><a href="ataraxia_transport.abstractpeer.html#forceconnect" class="tsd-kind-icon">force<wbr>Connect</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><a href="ataraxia_transport.abstractpeer.html#handledisconnect" class="tsd-kind-icon">handle<wbr>Disconnect</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><a href="ataraxia_transport.abstractpeer.html#localpublicsecurity" class="tsd-kind-icon">local<wbr>Public<wbr>Security</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="ataraxia_transport.abstractpeer.html#negotiateasclient" class="tsd-kind-icon">negotiate<wbr>AsClient</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="ataraxia_transport.abstractpeer.html#negotiateasserver" class="tsd-kind-icon">negotiate<wbr>AsServer</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><a href="ataraxia_transport.abstractpeer.html#queuenegotiationtimeout" class="tsd-kind-icon">queue<wbr>Negotiation<wbr>Timeout</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><a href="ataraxia_transport.abstractpeer.html#receivedata" class="tsd-kind-icon">receive<wbr>Data</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><a href="ataraxia_transport.abstractpeer.html#remotepublicsecurity" class="tsd-kind-icon">remote<wbr>Public<wbr>Security</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><a href="ataraxia_transport.abstractpeer.html#requestdisconnect" class="tsd-kind-icon">request<wbr>Disconnect</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter"><a href="ataraxia_transport.abstractpeer.html#send" class="tsd-kind-icon">send</a></li>
+							</ul>
+						</section>
+					</div>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Constructors</h2>
+				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class">
+					<a name="constructor" class="tsd-anchor"></a>
+					<h3>constructor</h3>
+					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Abstract<wbr>Peer<span class="tsd-signature-symbol">(</span>parent<span class="tsd-signature-symbol">: </span><a href="../interfaces/ataraxia.withnetwork.html" class="tsd-signature-type" data-tsd-kind="Interface">WithNetwork</a>, authProviders<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">readonly </span><a href="../interfaces/ataraxia.authprovider.html" class="tsd-signature-type" data-tsd-kind="Interface">AuthProvider</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="ataraxia_transport.abstractpeer.html" class="tsd-signature-type" data-tsd-kind="Class">AbstractPeer</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/30083d5/packages/core/src/transport/AbstractPeer.ts#L86">packages/core/src/transport/AbstractPeer.ts:86</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Create a new peer over the given transport.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>parent: <a href="../interfaces/ataraxia.withnetwork.html" class="tsd-signature-type" data-tsd-kind="Interface">WithNetwork</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>-
+										the transport this belongs to</p>
+									</div>
+								</li>
+								<li>
+									<h5>authProviders: <span class="tsd-signature-symbol">readonly </span><a href="../interfaces/ataraxia.authprovider.html" class="tsd-signature-type" data-tsd-kind="Interface">AuthProvider</a><span class="tsd-signature-symbol">[]</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>-
+										<code>AuthProvider</code> instances to use to authenticate with the other side</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="ataraxia_transport.abstractpeer.html" class="tsd-signature-type" data-tsd-kind="Class">AbstractPeer</a></h4>
+						</li>
+					</ul>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Properties</h2>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-protected">
+					<a name="debug" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> debug</h3>
+					<div class="tsd-signature tsd-kind-icon">debug<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Debugger</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/30083d5/packages/core/src/transport/AbstractPeer.ts#L63">packages/core/src/transport/AbstractPeer.ts:63</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="id" class="tsd-anchor"></a>
+					<h3>id</h3>
+					<div class="tsd-signature tsd-kind-icon">id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">ArrayBuffer</span></div>
+					<aside class="tsd-sources">
+						<p>Implementation of <a href="../interfaces/ataraxia_transport.peer.html">Peer</a>.<a href="../interfaces/ataraxia_transport.peer.html#id">id</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/30083d5/packages/core/src/transport/AbstractPeer.ts#L66">packages/core/src/transport/AbstractPeer.ts:66</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The unique identifier of this peer.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-protected">
+					<a name="parent" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> parent</h3>
+					<div class="tsd-signature tsd-kind-icon">parent<span class="tsd-signature-symbol">:</span> <a href="../interfaces/ataraxia.withnetwork.html" class="tsd-signature-type" data-tsd-kind="Interface">WithNetwork</a></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/30083d5/packages/core/src/transport/AbstractPeer.ts#L61">packages/core/src/transport/AbstractPeer.ts:61</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-protected">
+					<a name="version" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> <span class="tsd-flag ts-flagOptional">Optional</span> version</h3>
+					<div class="tsd-signature tsd-kind-icon">version<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/30083d5/packages/core/src/transport/AbstractPeer.ts#L67">packages/core/src/transport/AbstractPeer.ts:67</a></li>
+						</ul>
+					</aside>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Accessors</h2>
+				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class">
+					<a name="connected" class="tsd-anchor"></a>
+					<h3>connected</h3>
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> connected<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/ataraxia_transport.peer.html">Peer</a>.<a href="../interfaces/ataraxia_transport.peer.html#connected">connected</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/30083d5/packages/core/src/transport/AbstractPeer.ts#L132">packages/core/src/transport/AbstractPeer.ts:132</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>If this peer is fully connected.</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class">
+					<a name="latency" class="tsd-anchor"></a>
+					<h3>latency</h3>
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> latency<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/ataraxia_transport.peer.html">Peer</a>.<a href="../interfaces/ataraxia_transport.peer.html#latency">latency</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/30083d5/packages/core/src/transport/AbstractPeer.ts#L767">packages/core/src/transport/AbstractPeer.ts:767</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Get the current latency.</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
+							<p>  estimated latency to the peer in milliseconds</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class">
+					<a name="onconnect" class="tsd-anchor"></a>
+					<h3>on<wbr>Connect</h3>
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> onConnect<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Subscribable</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">this</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/ataraxia_transport.peer.html">Peer</a>.<a href="../interfaces/ataraxia_transport.peer.html#onconnect">onConnect</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/30083d5/packages/core/src/transport/AbstractPeer.ts#L120">packages/core/src/transport/AbstractPeer.ts:120</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Event emitted when this peer connects.</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Subscribable</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">this</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class">
+					<a name="ondata" class="tsd-anchor"></a>
+					<h3>on<wbr>Data</h3>
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> onData<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Subscribable</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">this</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-symbol">[</span><a href="../enums/ataraxia_transport.peermessagetype.html" class="tsd-signature-type" data-tsd-kind="Enumeration">PeerMessageType</a><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/ataraxia_transport.peer.html">Peer</a>.<a href="../interfaces/ataraxia_transport.peer.html#ondata">onData</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/30083d5/packages/core/src/transport/AbstractPeer.ts#L128">packages/core/src/transport/AbstractPeer.ts:128</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Event emitted when a message is received from the peer.</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Subscribable</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">this</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-symbol">[</span><a href="../enums/ataraxia_transport.peermessagetype.html" class="tsd-signature-type" data-tsd-kind="Enumeration">PeerMessageType</a><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class">
+					<a name="ondisconnect" class="tsd-anchor"></a>
+					<h3>on<wbr>Disconnect</h3>
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> onDisconnect<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Subscribable</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">this</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/ataraxia_transport.peer.html">Peer</a>.<a href="../interfaces/ataraxia_transport.peer.html#ondisconnect">onDisconnect</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/30083d5/packages/core/src/transport/AbstractPeer.ts#L124">packages/core/src/transport/AbstractPeer.ts:124</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Event emitted when this peer disconnects.</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Subscribable</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">this</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Methods</h2>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+					<a name="abort" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> abort</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+						<li class="tsd-signature tsd-kind-icon">abort<span class="tsd-signature-symbol">(</span>message<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, error<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Error</span>, reason<span class="tsd-signature-symbol">?: </span><a href="../enums/ataraxia_transport.disconnectreason.html" class="tsd-signature-type" data-tsd-kind="Enumeration">DisconnectReason</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/30083d5/packages/core/src/transport/AbstractPeer.ts#L223">packages/core/src/transport/AbstractPeer.ts:223</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Abort a connection.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>message: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>-
+										message for logging purposes</p>
+									</div>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> error: <span class="tsd-signature-type">Error</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>-
+										optional error recording</p>
+									</div>
+								</li>
+								<li>
+									<h5>reason: <a href="../enums/ataraxia_transport.disconnectreason.html" class="tsd-signature-type" data-tsd-kind="Enumeration">DisconnectReason</a><span class="tsd-signature-symbol"> = ...</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>-
+										reason for disconnect</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+					<a name="didconnect" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> did<wbr>Connect</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+						<li class="tsd-signature tsd-kind-icon">did<wbr>Connect<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/30083d5/packages/core/src/transport/AbstractPeer.ts#L687">packages/core/src/transport/AbstractPeer.ts:687</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Callback for when a peer has connected.</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="disconnect" class="tsd-anchor"></a>
+					<h3>disconnect</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">disconnect<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/ataraxia_transport.peer.html">Peer</a>.<a href="../interfaces/ataraxia_transport.peer.html#disconnect">disconnect</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/30083d5/packages/core/src/transport/AbstractPeer.ts#L161">packages/core/src/transport/AbstractPeer.ts:161</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Manually disconnect this peer.</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+					<a name="forceconnect" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> force<wbr>Connect</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+						<li class="tsd-signature tsd-kind-icon">force<wbr>Connect<span class="tsd-signature-symbol">(</span>id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ArrayBuffer</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/30083d5/packages/core/src/transport/AbstractPeer.ts#L696">packages/core/src/transport/AbstractPeer.ts:696</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Force a connection without performing negotiation.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>id: <span class="tsd-signature-type">ArrayBuffer</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>-
+										identifier of the peer</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+					<a name="handledisconnect" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> handle<wbr>Disconnect</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+						<li class="tsd-signature tsd-kind-icon">handle<wbr>Disconnect<span class="tsd-signature-symbol">(</span>reason<span class="tsd-signature-symbol">: </span><a href="../enums/ataraxia_transport.disconnectreason.html" class="tsd-signature-type" data-tsd-kind="Enumeration">DisconnectReason</a>, err<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Error</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/30083d5/packages/core/src/transport/AbstractPeer.ts#L186">packages/core/src/transport/AbstractPeer.ts:186</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Handle disconnect event. This implementation will log info about the
+									disconnect and then mark the peer as disconnected.</p>
+								</div>
+								<p>Transports may override this to provide reconnection behavior.</p>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>reason: <a href="../enums/ataraxia_transport.disconnectreason.html" class="tsd-signature-type" data-tsd-kind="Enumeration">DisconnectReason</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>-
+										the reason why this disconnect happened</p>
+									</div>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> err: <span class="tsd-signature-type">Error</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>-
+										optional error recorded</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+					<a name="localpublicsecurity" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> local<wbr>Public<wbr>Security</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+						<li class="tsd-signature tsd-kind-icon">local<wbr>Public<wbr>Security<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">ArrayBuffer</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/30083d5/packages/core/src/transport/AbstractPeer.ts#L143">packages/core/src/transport/AbstractPeer.ts:143</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Get a buffer representing a publicly known security challenge for the
+									local side of the peer.</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">ArrayBuffer</span></h4>
+							<p>  buffer with challenge or undefined</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="negotiateasclient" class="tsd-anchor"></a>
+					<h3>negotiate<wbr>AsClient</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">negotiate<wbr>AsClient<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/30083d5/packages/core/src/transport/AbstractPeer.ts#L253">packages/core/src/transport/AbstractPeer.ts:253</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Initiate negotiation as the client. This will switch the peer into a
+									client mode and wait for the initial Hello from the server.</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="negotiateasserver" class="tsd-anchor"></a>
+					<h3>negotiate<wbr>AsServer</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">negotiate<wbr>AsServer<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/30083d5/packages/core/src/transport/AbstractPeer.ts#L234">packages/core/src/transport/AbstractPeer.ts:234</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Initiate negotiation as the server. This will send the initial Hello
+									to the client and this peer will start waiting for a reply.</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+					<a name="queuenegotiationtimeout" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> queue<wbr>Negotiation<wbr>Timeout</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+						<li class="tsd-signature tsd-kind-icon">queue<wbr>Negotiation<wbr>Timeout<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/30083d5/packages/core/src/transport/AbstractPeer.ts#L202">packages/core/src/transport/AbstractPeer.ts:202</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+					<a name="receivedata" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> receive<wbr>Data</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+						<li class="tsd-signature tsd-kind-icon">receive<wbr>Data<span class="tsd-signature-symbol">(</span>type<span class="tsd-signature-symbol">: </span><a href="../enums/ataraxia_transport.peermessagetype.html" class="tsd-signature-type" data-tsd-kind="Enumeration">PeerMessageType</a>, payload<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/30083d5/packages/core/src/transport/AbstractPeer.ts#L271">packages/core/src/transport/AbstractPeer.ts:271</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Receive a message from the peer. This will method is responsible for
+										checking the state of the peer and routing messages to their correct
+									locations.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>type: <a href="../enums/ataraxia_transport.peermessagetype.html" class="tsd-signature-type" data-tsd-kind="Enumeration">PeerMessageType</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>-
+										type of message received</p>
+									</div>
+								</li>
+								<li>
+									<h5>payload: <span class="tsd-signature-type">any</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>-
+										data of message received</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+					<a name="remotepublicsecurity" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> remote<wbr>Public<wbr>Security</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+						<li class="tsd-signature tsd-kind-icon">remote<wbr>Public<wbr>Security<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">ArrayBuffer</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/30083d5/packages/core/src/transport/AbstractPeer.ts#L154">packages/core/src/transport/AbstractPeer.ts:154</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Get a buffer representing a publicly known security challenge for the
+									remote side of the peer.</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">ArrayBuffer</span></h4>
+							<p>  buffer with challenge or undefined</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+					<a name="requestdisconnect" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> <span class="tsd-flag ts-flagAbstract">Abstract</span> request<wbr>Disconnect</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+						<li class="tsd-signature tsd-kind-icon">request<wbr>Disconnect<span class="tsd-signature-symbol">(</span>reason<span class="tsd-signature-symbol">: </span><a href="../enums/ataraxia_transport.disconnectreason.html" class="tsd-signature-type" data-tsd-kind="Enumeration">DisconnectReason</a>, err<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Error</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/30083d5/packages/core/src/transport/AbstractPeer.ts#L173">packages/core/src/transport/AbstractPeer.ts:173</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Request that this peer disconnects.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>reason: <a href="../enums/ataraxia_transport.disconnectreason.html" class="tsd-signature-type" data-tsd-kind="Enumeration">DisconnectReason</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>-
+										the reason why this disconnect is happening</p>
+									</div>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> err: <span class="tsd-signature-type">Error</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>-
+										optional error recorded</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
+					<a name="send" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagAbstract">Abstract</span> send</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
+						<li class="tsd-signature tsd-kind-icon">send&lt;T&gt;<span class="tsd-signature-symbol">(</span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span>, payload<span class="tsd-signature-symbol">: </span><a href="../modules/ataraxia_transport.html#peermessage" class="tsd-signature-type" data-tsd-kind="Type alias">PeerMessage</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/ataraxia_transport.peer.html">Peer</a>.<a href="../interfaces/ataraxia_transport.peer.html#send">send</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/30083d5/packages/core/src/transport/AbstractPeer.ts#L788">packages/core/src/transport/AbstractPeer.ts:788</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Send data to this peer.</p>
+								</div>
+							</div>
+							<h4 class="tsd-type-parameters-title">Type parameters</h4>
+							<ul class="tsd-type-parameters">
+								<li>
+									<h4>T<span class="tsd-signature-symbol">: </span><a href="../enums/ataraxia_transport.peermessagetype.html" class="tsd-signature-type" data-tsd-kind="Enumeration">PeerMessageType</a></h4>
+								</li>
+							</ul>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>type: <span class="tsd-signature-type">T</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>-
+										type of message being sent</p>
+									</div>
+								</li>
+								<li>
+									<h5>payload: <a href="../modules/ataraxia_transport.html#peermessage" class="tsd-signature-type" data-tsd-kind="Type alias">PeerMessage</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>-
+										data of message</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
+			</section>
+		</div>
+		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+			<nav class="tsd-navigation primary">
+				<ul>
+					<li class=" ">
+						<a href="../modules.html">Modules</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/ataraxia.html">ataraxia</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/ataraxia_hyperswarm.html">ataraxia-<wbr>hyperswarm</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/ataraxia_local.html">ataraxia-<wbr>local</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/ataraxia_services.html">ataraxia-<wbr>services</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/ataraxia_tcp.html">ataraxia-<wbr>tcp</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/ataraxia_ws_client.html">ataraxia-<wbr>ws-<wbr>client</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/ataraxia_ws_server.html">ataraxia-<wbr>ws-<wbr>server</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/ataraxia_id.html">ataraxia/id</a>
+					</li>
+					<li class="current tsd-kind-module">
+						<a href="../modules/ataraxia_transport.html">ataraxia/transport</a>
+					</li>
+				</ul>
+			</nav>
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul class="before-current">
+					<li class=" tsd-kind-enum tsd-parent-kind-module">
+						<a href="../enums/ataraxia_transport.disconnectreason.html" class="tsd-kind-icon">Disconnect<wbr>Reason</a>
+					</li>
+					<li class=" tsd-kind-enum tsd-parent-kind-module">
+						<a href="../enums/ataraxia_transport.peermessagetype.html" class="tsd-kind-icon">Peer<wbr>Message<wbr>Type</a>
+					</li>
+				</ul>
+				<ul class="current">
+					<li class="current tsd-kind-class tsd-parent-kind-module">
+						<a href="ataraxia_transport.abstractpeer.html" class="tsd-kind-icon">Abstract<wbr>Peer</a>
+						<ul>
+							<li class=" tsd-kind-constructor tsd-parent-kind-class">
+								<a href="ataraxia_transport.abstractpeer.html#constructor" class="tsd-kind-icon">constructor</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-protected">
+								<a href="ataraxia_transport.abstractpeer.html#debug" class="tsd-kind-icon">debug</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="ataraxia_transport.abstractpeer.html#id" class="tsd-kind-icon">id</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-protected">
+								<a href="ataraxia_transport.abstractpeer.html#parent" class="tsd-kind-icon">parent</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-protected">
+								<a href="ataraxia_transport.abstractpeer.html#version" class="tsd-kind-icon">version</a>
+							</li>
+							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
+								<a href="ataraxia_transport.abstractpeer.html#connected" class="tsd-kind-icon">connected</a>
+							</li>
+							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
+								<a href="ataraxia_transport.abstractpeer.html#latency" class="tsd-kind-icon">latency</a>
+							</li>
+							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
+								<a href="ataraxia_transport.abstractpeer.html#onconnect" class="tsd-kind-icon">on<wbr>Connect</a>
+							</li>
+							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
+								<a href="ataraxia_transport.abstractpeer.html#ondata" class="tsd-kind-icon">on<wbr>Data</a>
+							</li>
+							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
+								<a href="ataraxia_transport.abstractpeer.html#ondisconnect" class="tsd-kind-icon">on<wbr>Disconnect</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+								<a href="ataraxia_transport.abstractpeer.html#abort" class="tsd-kind-icon">abort</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+								<a href="ataraxia_transport.abstractpeer.html#didconnect" class="tsd-kind-icon">did<wbr>Connect</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="ataraxia_transport.abstractpeer.html#disconnect" class="tsd-kind-icon">disconnect</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+								<a href="ataraxia_transport.abstractpeer.html#forceconnect" class="tsd-kind-icon">force<wbr>Connect</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+								<a href="ataraxia_transport.abstractpeer.html#handledisconnect" class="tsd-kind-icon">handle<wbr>Disconnect</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+								<a href="ataraxia_transport.abstractpeer.html#localpublicsecurity" class="tsd-kind-icon">local<wbr>Public<wbr>Security</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="ataraxia_transport.abstractpeer.html#negotiateasclient" class="tsd-kind-icon">negotiate<wbr>AsClient</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="ataraxia_transport.abstractpeer.html#negotiateasserver" class="tsd-kind-icon">negotiate<wbr>AsServer</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+								<a href="ataraxia_transport.abstractpeer.html#queuenegotiationtimeout" class="tsd-kind-icon">queue<wbr>Negotiation<wbr>Timeout</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+								<a href="ataraxia_transport.abstractpeer.html#receivedata" class="tsd-kind-icon">receive<wbr>Data</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+								<a href="ataraxia_transport.abstractpeer.html#remotepublicsecurity" class="tsd-kind-icon">remote<wbr>Public<wbr>Security</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+								<a href="ataraxia_transport.abstractpeer.html#requestdisconnect" class="tsd-kind-icon">request<wbr>Disconnect</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
+								<a href="ataraxia_transport.abstractpeer.html#send" class="tsd-kind-icon">send</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+				<ul class="after-current">
+					<li class=" tsd-kind-class tsd-parent-kind-module">
+						<a href="ataraxia_transport.abstracttransport.html" class="tsd-kind-icon">Abstract<wbr>Transport</a>
+					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-module">
+						<a href="ataraxia_transport.peerpacketdecodingstream.html" class="tsd-kind-icon">Peer<wbr>Packet<wbr>Decoding<wbr>Stream</a>
+					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-module">
+						<a href="ataraxia_transport.streamingpeer.html" class="tsd-kind-icon">Streaming<wbr>Peer</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="../interfaces/ataraxia_transport.authdatamessage.html" class="tsd-kind-icon">Auth<wbr>Data<wbr>Message</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="../interfaces/ataraxia_transport.authmessage.html" class="tsd-kind-icon">Auth<wbr>Message</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="../interfaces/ataraxia_transport.dataackmessage.html" class="tsd-kind-icon">Data<wbr>Ack<wbr>Message</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="../interfaces/ataraxia_transport.datamessage.html" class="tsd-kind-icon">Data<wbr>Message</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="../interfaces/ataraxia_transport.datamessagepathentry.html" class="tsd-kind-icon">Data<wbr>Message<wbr>Path<wbr>Entry</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="../interfaces/ataraxia_transport.datarejectmessage.html" class="tsd-kind-icon">Data<wbr>Reject<wbr>Message</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="../interfaces/ataraxia_transport.hellomessage.html" class="tsd-kind-icon">Hello<wbr>Message</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="../interfaces/ataraxia_transport.nodedetailsmessage.html" class="tsd-kind-icon">Node<wbr>Details<wbr>Message</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="../interfaces/ataraxia_transport.noderequestmessage.html" class="tsd-kind-icon">Node<wbr>Request<wbr>Message</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="../interfaces/ataraxia_transport.noderoutingdetails.html" class="tsd-kind-icon">Node<wbr>Routing<wbr>Details</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="../interfaces/ataraxia_transport.noderoutingsummary.html" class="tsd-kind-icon">Node<wbr>Routing<wbr>Summary</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="../interfaces/ataraxia_transport.nodesummarymessage.html" class="tsd-kind-icon">Node<wbr>Summary<wbr>Message</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="../interfaces/ataraxia_transport.nodewithlatency.html" class="tsd-kind-icon">Node<wbr>With<wbr>Latency</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="../interfaces/ataraxia_transport.peer.html" class="tsd-kind-icon">Peer</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="../interfaces/ataraxia_transport.selectmessage.html" class="tsd-kind-icon">Select<wbr>Message</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="../interfaces/ataraxia_transport.transport.html" class="tsd-kind-icon">Transport</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="../interfaces/ataraxia_transport.transportoptions.html" class="tsd-kind-icon">Transport<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter">
+						<a href="../modules/ataraxia_transport.html#peermessage" class="tsd-kind-icon">Peer<wbr>Message</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-module">
+						<a href="../modules/ataraxia_transport.html#decodebinarypeermessage" class="tsd-kind-icon">decode<wbr>Binary<wbr>Peer<wbr>Message</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter">
+						<a href="../modules/ataraxia_transport.html#encodebinarypeermessage" class="tsd-kind-icon">encode<wbr>Binary<wbr>Peer<wbr>Message</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter">
+						<a href="../modules/ataraxia_transport.html#encodepeerpacket" class="tsd-kind-icon">encode<wbr>Peer<wbr>Packet</a>
+					</li>
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
+<footer class="with-border-bottom">
+	<div class="container">
+		<h2>Legend</h2>
+		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
+				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
+				<li class="tsd-kind-function tsd-has-type-parameter"><span class="tsd-kind-icon">Function with type parameter</span></li>
+				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
+				<li class="tsd-kind-type-alias tsd-has-type-parameter"><span class="tsd-kind-icon">Type alias with type parameter</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
+				<li class="tsd-kind-class tsd-has-type-parameter"><span class="tsd-kind-icon">Class with type parameter</span></li>
+				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
+				<li class="tsd-kind-interface tsd-has-type-parameter"><span class="tsd-kind-icon">Interface with type parameter</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
+			</ul>
+		</div>
+	</div>
+</footer>
+<div class="container tsd-generator">
+	<p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p>
+</div>
+<div class="overlay"></div>
+<script src="../assets/js/main.js"></script>
+</body>
+</html>
