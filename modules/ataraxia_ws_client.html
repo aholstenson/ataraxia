@@ -65,6 +65,36 @@
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p><a href="../classes/ataraxia_ws_client.websocketclienttransport.html">WebSocket client-side transport</a> that
+						joins a <a href="../classes/ataraxia.network.html">Network</a> by connecting to a websocket server.</p>
+					</div>
+					<pre><code class="language-javascript"><span style="color: #AF00DB">import</span><span style="color: #000000"> { </span><span style="color: #001080">Network</span><span style="color: #000000">, </span><span style="color: #001080">AnonymousAuth</span><span style="color: #000000"> } </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;ataraxia&#039;</span><span style="color: #000000">;</span>
+<span style="color: #AF00DB">import</span><span style="color: #000000"> { </span><span style="color: #001080">WebSocketClientTransport</span><span style="color: #000000"> } </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;ataraxia-ws-client&#039;</span><span style="color: #000000">;</span>
+
+<span style="color: #008000">// Setup a network with a WebSocket client</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">net</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">Network</span><span style="color: #000000">({</span>
+<span style="color: #000000">  </span><span style="color: #001080">name:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;name-of-your-app-or-network&#039;</span><span style="color: #000000">,</span>
+<span style="color: #000000">  </span><span style="color: #001080">transports:</span><span style="color: #000000"> [</span>
+<span style="color: #000000">    </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">WebSocketClientTransport</span><span style="color: #000000">({</span>
+<span style="color: #000000">      </span><span style="color: #008000">// URL to the websocket on the server</span>
+<span style="color: #000000">      </span><span style="color: #001080">url:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;ws://localhost:7000&#039;</span><span style="color: #000000">,</span>
+<span style="color: #000000">      </span><span style="color: #008000">// If using outside a browser, define how a WebSocket is created</span>
+<span style="color: #000000">      </span><span style="color: #795E26">factory</span><span style="color: #001080">:</span><span style="color: #000000"> </span><span style="color: #001080">url</span><span style="color: #000000"> </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">WebSocket</span><span style="color: #000000">(</span><span style="color: #001080">url</span><span style="color: #000000">),</span>
+<span style="color: #000000">      </span><span style="color: #008000">// Use anonymous authentication</span>
+<span style="color: #000000">      </span><span style="color: #001080">authentication:</span><span style="color: #000000"> [</span>
+<span style="color: #000000">        </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">AnonymousAuth</span><span style="color: #000000">()</span>
+<span style="color: #000000">      ]</span>
+<span style="color: #000000">    })</span>
+<span style="color: #000000">  ]</span>
+<span style="color: #000000">});</span>
+
+<span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">net</span><span style="color: #000000">.</span><span style="color: #795E26">start</span><span style="color: #000000">();</span>
+</code></pre>
+				</div>
+			</section>
 			<section class="tsd-panel-group tsd-index-group">
 				<h2>Index</h2>
 				<section class="tsd-panel tsd-index-panel">
@@ -100,7 +130,7 @@
 					<div class="tsd-signature tsd-kind-icon">Web<wbr>Socket<wbr>Factory<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span>url<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><a href="../interfaces/ataraxia_ws_client.websocket.html" class="tsd-signature-type" data-tsd-kind="Interface">WebSocket</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/a06eae2/packages/ws-client/src/WebSocketFactory.ts#L3">packages/ws-client/src/WebSocketFactory.ts:3</a></li>
+							<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/21f583b/packages/ws-client/src/WebSocketFactory.ts#L3">packages/ws-client/src/WebSocketFactory.ts:3</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">

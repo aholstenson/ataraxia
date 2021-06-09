@@ -65,6 +65,61 @@
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p><a href="../classes/ataraxia_services.services.html">Services</a> with RPC and events, provides a service layer on top of a
+							<a href="../classes/ataraxia.network.html">Network</a> allowing nodes to register, discover and call services on
+						the network.</p>
+					</div>
+					<pre><code class="language-javascript"><span style="color: #AF00DB">import</span><span style="color: #000000"> { </span><span style="color: #001080">Services</span><span style="color: #000000"> } </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;ataraxia-services&#039;</span><span style="color: #000000">;</span>
+
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">net</span><span style="color: #000000"> = ... </span><span style="color: #008000">// setup network with at least one transport</span>
+
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">services</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">Services</span><span style="color: #000000">(</span><span style="color: #001080">net</span><span style="color: #000000">);</span>
+
+<span style="color: #001080">services</span><span style="color: #000000">.</span><span style="color: #795E26">onServiceAvailable</span><span style="color: #000000">(</span><span style="color: #001080">service</span><span style="color: #000000"> </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #001080">service</span><span style="color: #000000">.</span><span style="color: #001080">id</span><span style="color: #000000">, </span><span style="color: #A31515">&#039;is now available&#039;</span><span style="color: #000000">));</span>
+<span style="color: #001080">services</span><span style="color: #000000">.</span><span style="color: #795E26">onServiceUnavailable</span><span style="color: #000000">(</span><span style="color: #001080">service</span><span style="color: #000000"> </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #001080">service</span><span style="color: #000000">.</span><span style="color: #001080">id</span><span style="color: #000000">, </span><span style="color: #A31515">&#039;is no longer available&#039;</span><span style="color: #000000">));</span>
+
+<span style="color: #008000">// Start the network</span>
+<span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">net</span><span style="color: #000000">.</span><span style="color: #795E26">start</span><span style="color: #000000">();</span>
+
+<span style="color: #008000">// Start the services on top of the network</span>
+<span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">services</span><span style="color: #000000">.</span><span style="color: #795E26">start</span><span style="color: #000000">();</span>
+
+<span style="color: #008000">// Register a service as a plain object</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">handle</span><span style="color: #000000"> = </span><span style="color: #001080">services</span><span style="color: #000000">.</span><span style="color: #795E26">register</span><span style="color: #000000">({</span>
+<span style="color: #000000">  </span><span style="color: #001080">id:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;service-id&#039;</span><span style="color: #000000">,</span>
+
+<span style="color: #000000">  </span><span style="color: #795E26">hello</span><span style="color: #000000">() {</span>
+<span style="color: #000000">    </span><span style="color: #AF00DB">return</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;Hello world&#039;</span><span style="color: #000000">;</span>
+<span style="color: #000000">  }</span>
+<span style="color: #000000">});</span>
+
+<span style="color: #008000">// Classes can be registered and created</span>
+<span style="color: #001080">services</span><span style="color: #000000">.</span><span style="color: #795E26">register</span><span style="color: #000000">(</span><span style="color: #0000FF">class</span><span style="color: #000000"> </span><span style="color: #267F99">Test</span><span style="color: #000000"> {</span>
+<span style="color: #000000">  </span><span style="color: #0000FF">constructor</span><span style="color: #000000">(</span><span style="color: #001080">handle</span><span style="color: #000000">) {</span>
+<span style="color: #000000">    </span><span style="color: #0000FF">this</span><span style="color: #000000">.</span><span style="color: #001080">handle</span><span style="color: #000000"> = </span><span style="color: #001080">handle</span><span style="color: #000000">;</span>
+
+<span style="color: #000000">    </span><span style="color: #0000FF">this</span><span style="color: #000000">.</span><span style="color: #001080">id</span><span style="color: #000000"> = </span><span style="color: #A31515">&#039;service-id&#039;</span><span style="color: #000000">;</span>
+<span style="color: #000000">  }</span>
+
+<span style="color: #000000">  </span><span style="color: #795E26">hello</span><span style="color: #000000">() {</span>
+<span style="color: #000000">    </span><span style="color: #AF00DB">return</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;Hello World&#039;</span><span style="color: #000000">;</span>
+<span style="color: #000000">  }</span>
+<span style="color: #000000">});</span>
+
+<span style="color: #008000">// Interact with services</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">service</span><span style="color: #000000"> = </span><span style="color: #001080">services</span><span style="color: #000000">.</span><span style="color: #795E26">get</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;service-id&#039;</span><span style="color: #000000">);</span>
+<span style="color: #AF00DB">if</span><span style="color: #000000">(</span><span style="color: #001080">service</span><span style="color: #000000">) {</span>
+<span style="color: #000000">  </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;Service found&#039;</span><span style="color: #000000">, </span><span style="color: #001080">service</span><span style="color: #000000">);</span>
+
+<span style="color: #000000">  </span><span style="color: #008000">// Call functions on the service</span>
+<span style="color: #000000">  </span><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">reply</span><span style="color: #000000"> = </span><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">service</span><span style="color: #000000">.</span><span style="color: #795E26">hello</span><span style="color: #000000">();</span>
+<span style="color: #000000">}</span>
+</code></pre>
+				</div>
+			</section>
 			<section class="tsd-panel-group tsd-index-group">
 				<h2>Index</h2>
 				<section class="tsd-panel tsd-index-panel">
@@ -160,7 +215,7 @@
 					<div class="tsd-signature tsd-kind-icon">Local<wbr>Service<wbr>Def<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">LocalService</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>handle<span class="tsd-signature-symbol">: </span><a href="../interfaces/ataraxia_services.servicehandle.html" class="tsd-signature-type" data-tsd-kind="Interface">ServiceHandle</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">LocalService</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">new </span><span class="tsd-signature-symbol">(</span>handle<span class="tsd-signature-symbol">: </span><a href="../interfaces/ataraxia_services.servicehandle.html" class="tsd-signature-type" data-tsd-kind="Interface">ServiceHandle</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">LocalService</span><span class="tsd-signature-symbol">)</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/a06eae2/packages/services/src/Services.ts#L40">packages/services/src/Services.ts:40</a></li>
+							<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/21f583b/packages/services/src/Services.ts#L40">packages/services/src/Services.ts:40</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -183,7 +238,7 @@
 					<div class="tsd-signature tsd-kind-icon">service<wbr>Reflect<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">typeof </span><a href="ataraxia_services.html#servicereflect-1" class="tsd-signature-type" data-tsd-kind="Variable">serviceReflect</a><span class="tsd-signature-symbol"> = ...</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/a06eae2/packages/services/src/Service.ts#L6">packages/services/src/Service.ts:6</a></li>
+							<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/21f583b/packages/services/src/Service.ts#L6">packages/services/src/Service.ts:6</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
