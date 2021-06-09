@@ -20,7 +20,34 @@ export interface HyperswarmTransportOptions {
 }
 
 /**
- * Hyperswarm based transport.
+ * Hyperswarm based transport. This transport will connect to
+ * [Hyperswarm](https://github.com/hyperswarm/hyperswarm) and attempt to find
+ * peers that are published under a specific topic. When peers are found they
+ * will be connected to, a secure channel established and authentication will
+ * occur.
+ *
+ * ```javascript
+ * import { Network, AnonymousAuth } from 'ataraxia';
+ * import { HyperswarmTransport } from 'ataraxia-hyperswarm';
+ *
+ * // Setup a network over Hyperswarm
+ * const net = new Network({
+ *   name: 'name-of-your-app-or-network',
+ *   transports: [
+ *     new HyperswarmTransport({
+ *       // Topic used to find peers
+ *       topic: 'Unique Topic',
+ *       // Setup anonymous authentication
+ *       authentication: [
+ *         new AnonymousAuth()
+ *       ]
+ *     })
+ *   ]
+ * });
+ *
+ * // Join the network
+ * await net.join();
+ * ```
  */
 export class HyperswarmTransport extends AbstractTransport {
 	private readonly options: HyperswarmTransportOptions;
