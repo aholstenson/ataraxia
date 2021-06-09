@@ -1,6 +1,7 @@
 # Ataraxia
 
-[![npm version](https://badge.fury.io/js/ataraxia.svg)](https://badge.fury.io/js/ataraxia)
+[![npm version](https://img.shields.io/npm/v/ataraxia)](https://www.npmjs.com/package/ataraxia)
+[![Build Status](https://github.com/aholstenson/ataraxia/actions/workflows/ci.yml/badge.svg)](https://github.com/aholstenson/ataraxia/actions/workflows/ci.yml)
 
 <p align="center">
   <img width="460" src="https://raw.githubusercontent.com/aholstenson/ataraxia/master/docs/mesh-example.png">
