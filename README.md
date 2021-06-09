@@ -3,7 +3,7 @@
 [![npm version](https://badge.fury.io/js/ataraxia.svg)](https://badge.fury.io/js/ataraxia)
 
 <p align="center">
-  <img width="460" src="./docs/mesh-example.png">
+  <img width="460" src="https://raw.githubusercontent.com/aholstenson/ataraxia/master/docs/mesh-example.png">
 </p>
 
 Mesh networking with peer-to-peer messaging for NodeJS and the browser.
