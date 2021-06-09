@@ -18,6 +18,7 @@ jobs:
       - name: Generate docs
         run: |
           yarn install
+          npx lerna bootstrap
           npm run apidocs
 
       - name: Deploy
