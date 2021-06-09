@@ -58,26 +58,16 @@
 	<div class="row">
 		<div class="col-8 col-content">
 			<div class="tsd-panel tsd-typography">
-				<a href="#ataraxia" id="ataraxia" style="color: inherit; text-decoration: none;">
-					<h1>Ataraxia</h1>
-				</a>
-				<p><a href="https://badge.fury.io/js/ataraxia"><img src="https://badge.fury.io/js/ataraxia.svg" alt="npm version"></a></p>
-				<p align="center">
-					<img width="460" src="https://raw.githubusercontent.com/aholstenson/ataraxia/master/docs/mesh-example.png">
-				</p>
-				<p>Mesh networking with peer-to-peer messaging for NodeJS and the browser.
-					Ataraxia connects different instances together and allows messages to be passed
-					between these instances. Some instances may act as routers for other instances
-				to create a mesh network.</p>
+				<p>Mesh networking with peer-to-peer messaging for NodeJS and the browser. Ataraxia connects different instances together and allows messages to be passed between these instances. Some instances may act as routers for other instances to create a mesh network.</p>
 				<p>Ataraxia is split into several projects:</p>
 				<ul>
-					<li><a href="packages/core">ataraxia</a> is the main library that provides the messaging functionality</li>
-					<li><a href="packages/local">ataraxia-local</a> provides a machine-local transport</li>
-					<li><a href="packages/tcp">ataraxia-tcp</a> provides a TCP-based transport with local network discovery</li>
-					<li><a href="packages/hyperswarm">ataraxia-hyperswarm</a> provides a Hyperswarm-based transport over the public Internet</li>
-					<li><a href="packages/ws-client">ataraxia-ws-client</a> provides a websocket client</li>
-					<li><a href="packages/ws-server">ataraxia-ws-server</a> provides a websocket server</li>
-					<li><a href="packages/services">ataraxia-services</a> provides easy-to-use services with RPC and events</li>
+					<li><a href="modules/ataraxia.html">ataraxia</a> is the main library that provides the messaging functionality</li>
+					<li><a href="modules/ataraxia_local.html">ataraxia-local</a> provides a machine-local transport</li>
+					<li><a href="modules/ataraxia_tcp.html">ataraxia-tcp</a> provides a TCP-based transport with local network discovery</li>
+					<li><a href="modules/ataraxia_hyperswarm.html">ataraxia-hyperswarm</a> provides a Hyperswarm-based transport over the public Internet</li>
+					<li><a href="modules/ataraxia_ws_client.html">ataraxia-ws-client</a> provides a websocket client</li>
+					<li><a href="modules/ataraxia_ws_server.html">ataraxia-ws-server</a> provides a websocket server</li>
+					<li><a href="modules/ataraxia_services.html">ataraxia-services</a> provides easy-to-use services with RPC and events</li>
 				</ul>
 				<a href="#features" id="features" style="color: inherit; text-decoration: none;">
 					<h2>Features</h2>
@@ -86,115 +76,15 @@
 					<li>Instances can send and receive messages from other instances</li>
 					<li>Partially connected mesh network, messages will be routed to their target</li>
 					<li>Authentication support, anonymous and shared secret authentication available in core</li>
-					<li>RPC support via <a href="https://github.com/aholstenson/ataraxia/tree/master/packages/services">ataraxia-services</a> that lets you call methods and receive events from services registered anywhere in the network</li>
+					<li>RPC support via <a href="modules/ataraxia_services.html">ataraxia-services</a> that lets you call methods and receive events from services registered anywhere in the network</li>
 					<li>Support for different transports<ul>
-							<li><a href="https://github.com/aholstenson/ataraxia/tree/master/packages/local">ataraxia-local</a> provides a machine-local transport</li>
-							<li><a href="https://github.com/aholstenson/ataraxia/tree/master/packages/tcp">ataraxia-tcp</a> provides a TCP-based transport with customizable discovery of peers and encrypted connections</li>
-							<li><a href="https://github.com/aholstenson/ataraxia/tree/master/packages/ws-client">ataraxia-ws-client</a> and <a href="https://github.com/aholstenson/ataraxia/tree/master/packages/ws-server">ataraxia-ws-server</a> for websockets</li>
-							<li><a href="https://github.com/aholstenson/ataraxia/tree/master/packages/hyperswarm">ataraxia-hyperswarm</a> provides a transport that uses Hyperswarm to connect to peers over the public Internet</li>
+							<li><a href="modules/ataraxia_local.html">ataraxia-local</a> provides a machine-local transport</li>
+							<li><a href="modules/ataraxia_tcp.html">ataraxia-tcp</a> provides a TCP-based transport with customizable discovery of peers and encrypted connections</li>
+							<li><a href="modules/ataraxia_ws_client.html">ataraxia-ws-client</a> and <a href="modules/ataraxia_ws_server.html">ataraxia-ws-server</a> for websockets</li>
+							<li><a href="modules/ataraxia_hyperswarm.html">ataraxia-hyperswarm</a> provides a transport that uses Hyperswarm to connect to peers over the public Internet</li>
 						</ul>
 					</li>
 				</ul>
-				<a href="#example-with-tcp-transport" id="example-with-tcp-transport" style="color: inherit; text-decoration: none;">
-					<h2>Example with TCP transport</h2>
-				</a>
-				<pre><code class="language-javascript"><span style="color: #AF00DB">import</span><span style="color: #000000"> { </span><span style="color: #001080">Network</span><span style="color: #000000">, </span><span style="color: #001080">AnonymousAuth</span><span style="color: #000000"> } </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;ataraxia&#039;</span><span style="color: #000000">;</span>
-<span style="color: #AF00DB">import</span><span style="color: #000000"> { </span><span style="color: #001080">TCPTransport</span><span style="color: #000000">, </span><span style="color: #001080">TCPPeerMDNSDiscovery</span><span style="color: #000000"> } </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;ataraxia-tcp&#039;</span><span style="color: #000000">;</span>
-
-<span style="color: #008000">// Setup a network with a TCP transport</span>
-<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">net</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">Network</span><span style="color: #000000">({</span>
-<span style="color: #000000">  </span><span style="color: #001080">name:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;name-of-your-app-or-network&#039;</span><span style="color: #000000">,</span>
-<span style="color: #000000">  </span>
-<span style="color: #000000">  </span><span style="color: #001080">transports:</span><span style="color: #000000"> [</span>
-
-<span style="color: #000000">    </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">TCPTransport</span><span style="color: #000000">({</span>
-<span style="color: #000000">      </span><span style="color: #008000">// Discover peers using mDNS</span>
-<span style="color: #000000">      </span><span style="color: #001080">discovery:</span><span style="color: #000000"> </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">TCPPeerMDNSDiscovery</span><span style="color: #000000">(),</span>
-
-<span style="color: #000000">      </span><span style="color: #008000">// Setup anonymous authentication</span>
-<span style="color: #000000">      </span><span style="color: #001080">authentication:</span><span style="color: #000000"> [</span>
-<span style="color: #000000">        </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">AnonymousAuth</span><span style="color: #000000">()</span>
-<span style="color: #000000">      ]</span>
-<span style="color: #000000">    })</span>
-<span style="color: #000000">  </span>
-<span style="color: #000000">  ]</span>
-<span style="color: #000000">});</span>
-
-<span style="color: #001080">net</span><span style="color: #000000">.</span><span style="color: #795E26">onNodeAvailable</span><span style="color: #000000">(</span><span style="color: #001080">node</span><span style="color: #000000"> </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
-<span style="color: #000000">  </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;A new node is available:&#039;</span><span style="color: #000000">, </span><span style="color: #001080">node</span><span style="color: #000000">.</span><span style="color: #001080">id</span><span style="color: #000000">);</span>
-<span style="color: #000000">  </span><span style="color: #001080">node</span><span style="color: #000000">.</span><span style="color: #795E26">send</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;hello&#039;</span><span style="color: #000000">);</span>
-<span style="color: #000000">});</span>
-
-<span style="color: #001080">net</span><span style="color: #000000">.</span><span style="color: #795E26">onMessage</span><span style="color: #000000">(</span><span style="color: #001080">msg</span><span style="color: #000000"> </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
-<span style="color: #000000">  </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;A message was received&#039;</span><span style="color: #000000">, </span><span style="color: #001080">msg</span><span style="color: #000000">.</span><span style="color: #001080">type</span><span style="color: #000000">, </span><span style="color: #A31515">&#039;with data&#039;</span><span style="color: #000000">, </span><span style="color: #001080">msg</span><span style="color: #000000">.</span><span style="color: #001080">data</span><span style="color: #000000">, </span><span style="color: #A31515">&#039;from&#039;</span><span style="color: #000000">, </span><span style="color: #001080">msg</span><span style="color: #000000">.</span><span style="color: #001080">source</span><span style="color: #000000">.</span><span style="color: #001080">id</span><span style="color: #000000">);</span>
-<span style="color: #000000">});</span>
-
-<span style="color: #008000">// Start the network</span>
-<span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">net</span><span style="color: #000000">.</span><span style="color: #795E26">start</span><span style="color: #000000">();</span>
-</code></pre>
-				<a href="#example-with-machine-local-transport-and-tcp-transport" id="example-with-machine-local-transport-and-tcp-transport" style="color: inherit; text-decoration: none;">
-					<h2>Example with machine-local transport and TCP transport</h2>
-				</a>
-				<p>This example creates a network where instances on the same machine connect to
-					each other locally first and then elects one instance to handle connections
-				to other machines on the same network.</p>
-				<pre><code class="language-javascript"><span style="color: #AF00DB">import</span><span style="color: #000000"> { </span><span style="color: #001080">Network</span><span style="color: #000000">, </span><span style="color: #001080">AnonymousAuth</span><span style="color: #000000"> } </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;ataraxia&#039;</span><span style="color: #000000">;</span>
-<span style="color: #AF00DB">import</span><span style="color: #000000"> { </span><span style="color: #001080">TCPTransport</span><span style="color: #000000">, </span><span style="color: #001080">TCPPeerMDNSDiscovery</span><span style="color: #000000"> } </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;ataraxia-tcp&#039;</span><span style="color: #000000">;</span>
-<span style="color: #AF00DB">import</span><span style="color: #000000"> { </span><span style="color: #001080">MachineLocalTransport</span><span style="color: #000000"> } </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;ataraxia-local&#039;</span><span style="color: #000000">;</span>
-
-<span style="color: #008000">// Setup a network</span>
-<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">net</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">Network</span><span style="color: #000000">({</span>
-<span style="color: #000000">  </span><span style="color: #001080">name:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;name-of-your-app-or-network&#039;</span>
-<span style="color: #000000">});</span>
-
-<span style="color: #001080">net</span><span style="color: #000000">.</span><span style="color: #795E26">addTransport</span><span style="color: #000000">(</span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">MachineLocalTransport</span><span style="color: #000000">([</span>
-<span style="color: #000000">  </span><span style="color: #001080">onLeader</span><span style="color: #000000">: () </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
-<span style="color: #000000">    </span><span style="color: #008000">/*</span>
-<span style="color: #008000">    * The leader event is emitted when this instance becomes the leader</span>
-<span style="color: #008000">    * of the machine-local network. This instance will now handle</span>
-<span style="color: #008000">    * connections to other machines in the network.</span>
-<span style="color: #008000">    */</span>
-<span style="color: #000000">    </span><span style="color: #001080">net</span><span style="color: #000000">.</span><span style="color: #795E26">addTransport</span><span style="color: #000000">(</span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">TCPTransport</span><span style="color: #000000">({</span>
-<span style="color: #000000">      </span><span style="color: #001080">discovery:</span><span style="color: #000000"> </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">TCPPeerMDNSDiscovery</span><span style="color: #000000">(),</span>
-
-<span style="color: #000000">      </span><span style="color: #001080">authentication:</span><span style="color: #000000"> [</span>
-<span style="color: #000000">        </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">AnonymousAuth</span><span style="color: #000000">()</span>
-<span style="color: #000000">      ]</span>
-<span style="color: #000000">    }));</span>
-<span style="color: #000000">  }</span>
-<span style="color: #000000">]);</span>
-
-<span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">net</span><span style="color: #000000">.</span><span style="color: #795E26">start</span><span style="color: #000000">();</span>
-</code></pre>
-				<a href="#support-for-services" id="support-for-services" style="color: inherit; text-decoration: none;">
-					<h2>Support for services</h2>
-				</a>
-				<p>Services are supported via <code>ataraxia-services</code>, where objects can be registered
-				and functions on them called remotely:</p>
-				<pre><code class="language-javascript"><span style="color: #AF00DB">import</span><span style="color: #000000"> { </span><span style="color: #001080">Services</span><span style="color: #000000"> } </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;ataraxia-services&#039;</span><span style="color: #000000">;</span>
-
-<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">net</span><span style="color: #000000"> = ... </span><span style="color: #008000">// setup network with at least one transport</span>
-
-<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">services</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">Services</span><span style="color: #000000">(</span><span style="color: #001080">net</span><span style="color: #000000">);</span>
-
-<span style="color: #001080">services</span><span style="color: #000000">.</span><span style="color: #795E26">onAvailable</span><span style="color: #000000">(</span><span style="color: #001080">service</span><span style="color: #000000"> </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #001080">service</span><span style="color: #000000">.</span><span style="color: #001080">id</span><span style="color: #000000">, </span><span style="color: #A31515">&#039;is now available&#039;</span><span style="color: #000000">));</span>
-<span style="color: #001080">services</span><span style="color: #000000">.</span><span style="color: #795E26">onUnavailable</span><span style="color: #000000">(</span><span style="color: #001080">service</span><span style="color: #000000"> </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #001080">service</span><span style="color: #000000">.</span><span style="color: #001080">id</span><span style="color: #000000">, </span><span style="color: #A31515">&#039;is no longer available&#039;</span><span style="color: #000000">));</span>
-
-<span style="color: #008000">// Start the network</span>
-<span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">net</span><span style="color: #000000">.</span><span style="color: #795E26">start</span><span style="color: #000000">();</span>
-
-<span style="color: #008000">// Start the services on top of the network</span>
-<span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">services</span><span style="color: #000000">.</span><span style="color: #795E26">start</span><span style="color: #000000">();</span>
-
-<span style="color: #008000">// Register a service as a plain object</span>
-<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">handle</span><span style="color: #000000"> = </span><span style="color: #001080">services</span><span style="color: #000000">.</span><span style="color: #795E26">register</span><span style="color: #000000">({</span>
-<span style="color: #000000">  </span><span style="color: #001080">id:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;service-id&#039;</span><span style="color: #000000">,</span>
-<span style="color: #000000">  </span>
-<span style="color: #000000">  </span><span style="color: #795E26">hello</span><span style="color: #000000">() {</span>
-<span style="color: #000000">    </span><span style="color: #AF00DB">return</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;Hello world&#039;</span><span style="color: #000000">;</span>
-<span style="color: #000000">  }</span>
-<span style="color: #000000">});</span>
-</code></pre>
 			</div>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
