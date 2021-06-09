@@ -1,4 +1,9 @@
-Mesh networking with peer-to-peer messaging for NodeJS and the browser. Ataraxia connects different instances together and allows messages to be passed between these instances. Some instances may act as routers for other instances to create a mesh network.
+Ataraxia is mesh networking library with peer-to-peer messaging for NodeJS and
+the browser. Ataraxia connects different instances together and allows messages
+to be passed between these instances. Some instances may act as routers for 
+other instances to create a mesh network.
+
+[![npm version](https://img.shields.io/npm/v/ataraxia)](https://www.npmjs.com/package/ataraxia)
 
 Ataraxia is split into several projects:
 
