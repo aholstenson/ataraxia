@@ -28,8 +28,8 @@ services.onServiceUnavailable(service => console.log(service.id, 'is no longer a
 // Join the network
 await net.join();
 
-// Start the services on top of the network
-await services.start();
+// Join the services layer on top of the network
+await services.join();
 
 // Register a service as a plain object
 const handle = services.register({

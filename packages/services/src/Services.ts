@@ -108,22 +108,22 @@ export class Services {
 
 
 	/**
-	 * Start the services allowing access to remote services.
+	 * Join the services layer allowing access to remote services.
 	 *
 	 * @returns
 	 *   promise that resolves when services have started
 	 */
-	public start(): Promise<void> {
+	public join(): Promise<void> {
 		return this.exchange.join();
 	}
 
 	/**
-	 * Stop the services no longer allowing access to remote services.
+	 * Leave the services no longer allowing access to remote services.
 	 *
 	 * @returns
 	 *   promise that resolves when services have stopped
 	 */
-	public stop(): Promise<void> {
+	public leave(): Promise<void> {
 		return this.exchange.leave();
 	}
 
