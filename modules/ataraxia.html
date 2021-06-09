@@ -65,6 +65,48 @@
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>Mesh networking with peer-to-peer messaging for NodeJS and the browser.
+							Ataraxia connects different instances together and allows messages to be passed
+							between these instances. Some instances may act as routers for other instances
+						to create a partially connected mesh network.</p>
+					</div>
+					<p><a href="../classes/ataraxia.network.html">Network</a> is the main class used to join a network:</p>
+					<pre><code class="language-javascript"><span style="color: #AF00DB">import</span><span style="color: #000000"> { </span><span style="color: #001080">Network</span><span style="color: #000000">, </span><span style="color: #001080">AnonymousAuth</span><span style="color: #000000"> } </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;ataraxia&#039;</span><span style="color: #000000">;</span>
+<span style="color: #AF00DB">import</span><span style="color: #000000"> { </span><span style="color: #001080">TCPTransport</span><span style="color: #000000">, </span><span style="color: #001080">TCPPeerMDNSDiscovery</span><span style="color: #000000"> } </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;ataraxia-tcp&#039;</span><span style="color: #000000">;</span>
+
+<span style="color: #008000">// Setup a network with a TCP transport</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">net</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">Network</span><span style="color: #000000">({</span>
+<span style="color: #000000">  </span><span style="color: #001080">name:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;name-of-your-app-or-network&#039;</span><span style="color: #000000">,</span>
+<span style="color: #000000">  </span><span style="color: #001080">transports:</span><span style="color: #000000"> [</span>
+<span style="color: #000000">    </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">TCPTransport</span><span style="color: #000000">({</span>
+<span style="color: #000000">      </span><span style="color: #008000">// Discover peers using mDNS</span>
+<span style="color: #000000">      </span><span style="color: #001080">discovery:</span><span style="color: #000000"> </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">TCPPeerMDNSDiscovery</span><span style="color: #000000">(),</span>
+<span style="color: #000000">      </span><span style="color: #008000">// Setup anonymous authentication</span>
+<span style="color: #000000">      </span><span style="color: #001080">authentication:</span><span style="color: #000000"> [</span>
+<span style="color: #000000">        </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">AnonymousAuth</span><span style="color: #000000">()</span>
+<span style="color: #000000">      ]</span>
+<span style="color: #000000">    })</span>
+<span style="color: #000000">  ]</span>
+<span style="color: #000000">});</span>
+
+<span style="color: #001080">net</span><span style="color: #000000">.</span><span style="color: #795E26">onNodeAvailable</span><span style="color: #000000">(</span><span style="color: #001080">node</span><span style="color: #000000"> </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
+<span style="color: #000000">  </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;A new node is available&#039;</span><span style="color: #000000">, </span><span style="color: #001080">node</span><span style="color: #000000">);</span>
+<span style="color: #000000">});</span>
+
+<span style="color: #001080">net</span><span style="color: #000000">.</span><span style="color: #795E26">onMessage</span><span style="color: #000000">(</span><span style="color: #001080">msg</span><span style="color: #000000"> </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
+<span style="color: #000000">  </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;A new message was received&#039;</span><span style="color: #000000">);</span>
+<span style="color: #000000">});</span>
+
+<span style="color: #008000">// Start the network</span>
+<span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">net</span><span style="color: #000000">.</span><span style="color: #795E26">start</span><span style="color: #000000">();</span>
+</code></pre>
+					<p>Authentication is provided via <a href="../classes/ataraxia.anonymousauth.html">AnonymousAuth</a> or
+					<a href="../classes/ataraxia.sharedsecretauth.html">SharedSecretAuth</a>.</p>
+				</div>
+			</section>
 			<section class="tsd-panel-group tsd-index-group">
 				<h2>Index</h2>
 				<section class="tsd-panel tsd-index-panel">
@@ -124,7 +166,7 @@
 					<div class="tsd-signature tsd-kind-icon">Auth<wbr>Client<wbr>Reply<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><a href="../enums/ataraxia.authclientreplytype.html#reject" class="tsd-signature-type" data-tsd-kind="Enumeration member">Reject</a><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{ </span>data<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ArrayBuffer</span><span class="tsd-signature-symbol">; </span>type<span class="tsd-signature-symbol">: </span><a href="../enums/ataraxia.authclientreplytype.html#data" class="tsd-signature-type" data-tsd-kind="Enumeration member">Data</a><span class="tsd-signature-symbol"> }</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/30083d5/packages/core/src/auth/AuthClientFlow.ts#L19">packages/core/src/auth/AuthClientFlow.ts:19</a></li>
+							<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/a06eae2/packages/core/src/auth/AuthClientFlow.ts#L19">packages/core/src/auth/AuthClientFlow.ts:19</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -139,7 +181,7 @@
 					<div class="tsd-signature tsd-kind-icon">Auth<wbr>Server<wbr>Reply<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><a href="../enums/ataraxia.authserverreplytype.html#ok" class="tsd-signature-type" data-tsd-kind="Enumeration member">Ok</a><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{ </span>type<span class="tsd-signature-symbol">: </span><a href="../enums/ataraxia.authserverreplytype.html#reject" class="tsd-signature-type" data-tsd-kind="Enumeration member">Reject</a><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{ </span>data<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ArrayBuffer</span><span class="tsd-signature-symbol">; </span>type<span class="tsd-signature-symbol">: </span><a href="../enums/ataraxia.authserverreplytype.html#data" class="tsd-signature-type" data-tsd-kind="Enumeration member">Data</a><span class="tsd-signature-symbol"> }</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/30083d5/packages/core/src/auth/AuthServerFlow.ts#L24">packages/core/src/auth/AuthServerFlow.ts:24</a></li>
+							<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/a06eae2/packages/core/src/auth/AuthServerFlow.ts#L24">packages/core/src/auth/AuthServerFlow.ts:24</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -154,7 +196,7 @@
 					<div class="tsd-signature tsd-kind-icon">Message<wbr>Data&lt;MessageTypes, T&gt;<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">MessageTypes</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/30083d5/packages/core/src/MessageData.ts#L4">packages/core/src/MessageData.ts:4</a></li>
+							<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/a06eae2/packages/core/src/MessageData.ts#L4">packages/core/src/MessageData.ts:4</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -178,7 +220,7 @@
 					<div class="tsd-signature tsd-kind-icon">Message<wbr>Type&lt;MessageTypes&gt;<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">MessageTypes</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/30083d5/packages/core/src/MessageType.ts#L4">packages/core/src/MessageType.ts:4</a></li>
+							<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/a06eae2/packages/core/src/MessageType.ts#L4">packages/core/src/MessageType.ts:4</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -199,7 +241,7 @@
 					<div class="tsd-signature tsd-kind-icon">Message<wbr>Union&lt;MessageTypes&gt;<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{</span><span class="tsd-signature-symbol">[ </span><span class="tsd-signature-type">P</span><span class="tsd-signature-symbol"> in </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">MessageTypes</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">P</span><span class="tsd-signature-symbol"> extends </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> ? </span><a href="../interfaces/ataraxia.message.html" class="tsd-signature-type" data-tsd-kind="Interface">Message</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">MessageTypes</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">P</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> : </span><span class="tsd-signature-type">never</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">MessageTypes</span><span class="tsd-signature-symbol">]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/30083d5/packages/core/src/MessageUnion.ts#L14">packages/core/src/MessageUnion.ts:14</a></li>
+							<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/a06eae2/packages/core/src/MessageUnion.ts#L14">packages/core/src/MessageUnion.ts:14</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
