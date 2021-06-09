@@ -26,6 +26,7 @@
 			"packages/ws-server/src/index.ts",
 			"packages/services/src/index.ts"
 		],
+		"readme": "./docs/apidocs.md",
 		"out": "apidocs",
 		"excludePrivate": true
 	}
