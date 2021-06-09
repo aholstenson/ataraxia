@@ -1,5 +1,7 @@
 /* eslint-disable tsdoc/syntax,jsdoc/require-description */
 /**
+ * Classes and types related to implementing transports.
+ *
  * @module ataraxia/transport
  */
 

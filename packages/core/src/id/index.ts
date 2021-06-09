@@ -1,5 +1,7 @@
 /* eslint-disable tsdoc/syntax,jsdoc/require-description */
 /**
+ * Utilities related to binary identifiers.
+ *
  * @module ataraxia/id
  */
 
