@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "ataraxia": "^0.10.0",
-    "atvik": "^1.0.0",
+    "atvik": "^2.0.0",
     "debug": "^4.3.1"
   }
 }
