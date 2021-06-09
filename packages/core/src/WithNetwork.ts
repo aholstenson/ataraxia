@@ -5,7 +5,12 @@ export interface WithNetwork {
 	/**
 	 * The identifier of the current node within the network.
 	 */
-	readonly networkId: ArrayBuffer;
+	readonly networkIdBinary: ArrayBuffer;
+
+	/**
+	 * Identifier of this node as a string.
+	 */
+	readonly networkId: string;
 
 	/**
 	 * The debug namespace.

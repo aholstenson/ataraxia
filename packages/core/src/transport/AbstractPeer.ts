@@ -236,7 +236,7 @@ export abstract class AbstractPeer implements Peer {
 
 		// Write the hello message
 		const message: HelloMessage = {
-			id: this.parent.networkId,
+			id: this.parent.networkIdBinary,
 			capabilities: new Set()
 		};
 
@@ -363,7 +363,7 @@ export abstract class AbstractPeer implements Peer {
 
 		// Send our reply
 		const reply: SelectMessage = {
-			id: this.parent.networkId,
+			id: this.parent.networkIdBinary,
 			capabilities: capabilities
 		};
 

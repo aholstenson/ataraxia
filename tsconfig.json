@@ -18,7 +18,6 @@
 		"entryPoints": [
 			"packages/core/src/index.ts",
 			"packages/core/src/transport/index.ts",
-			"packages/core/src/id/index.ts",
 			"packages/local/src/index.ts",
 			"packages/tcp/src/index.ts",
 			"packages/hyperswarm/src/index.ts",

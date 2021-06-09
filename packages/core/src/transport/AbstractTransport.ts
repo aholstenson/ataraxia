@@ -107,7 +107,8 @@ export class AbstractTransport implements Transport {
 		this.debug('Starting with id ' + encodeId(options.networkId));
 
 		this._network = {
-			networkId: options.networkId,
+			networkIdBinary: options.networkId,
+			networkId: encodeId(options.networkId),
 			debugNamespace: this.debug.namespace
 		};
 

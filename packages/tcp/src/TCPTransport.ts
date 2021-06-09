@@ -3,7 +3,6 @@ import { createServer, Server } from 'net';
 import { ServicePublisher, ServiceDiscovery, MultiAddressService, HostAndPort } from 'tinkerhub-discovery';
 
 import { AuthProvider } from 'ataraxia';
-import { encodeId } from 'ataraxia/id';
 import { AbstractTransport, TransportOptions } from 'ataraxia/transport';
 
 import { TCPPeer } from './TCPPeer';
@@ -112,7 +111,7 @@ export class TCPTransport extends AbstractTransport {
 				if(this.discovery && this.discovery.publish) {
 					// A discovery is available, ask it to publish the service
 					this.servicePublisher = this.discovery.publish({
-						networkId: encodeId(this.network.networkId),
+						networkId: this.network.networkId,
 						networkName: options.networkName,
 						port: this._port
 					});
@@ -127,7 +126,7 @@ export class TCPTransport extends AbstractTransport {
 		}
 
 		if(this.discovery && this.discovery.newDiscovery) {
-			const encodedId = encodeId(this.network.networkId);
+			const encodedId = this.network.networkId;
 
 			// Attempt to start a discovery to find peers
 			this.serviceDiscovery = this.discovery.newDiscovery({

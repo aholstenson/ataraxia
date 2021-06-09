@@ -102,9 +102,9 @@ export class Topology {
 
 		this.debug = debug(parent.debugNamespace + ':topology');
 
-		this.self = new TopologyNode(this, parent.networkId);
+		this.self = new TopologyNode(this, parent.networkIdBinary);
 		this.self.direct = true;
-		this.nodes.set(parent.networkId, this.self);
+		this.nodes.set(parent.networkIdBinary, this.self);
 
 		this.routing = new Routing(this.debug.namespace,
 			this.self,

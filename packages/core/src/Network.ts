@@ -137,7 +137,8 @@ export class Network<MessageTypes extends object = any> {
 
 		// Setup the topology of the network
 		this.topology = new Topology({
-			networkId: this.networkIdBinary,
+			networkIdBinary: this.networkIdBinary,
+			networkId: this.networkId,
 			debugNamespace: debugNamespace
 		}, options);
 
