@@ -32,6 +32,17 @@ export interface RequestReplyHelperOptions {
 }
 
 /**
+ * Options that can be used when preparing a request.
+ */
+export interface PrepareRequestOptions {
+	/**
+	 * The number of milliseconds to wait before this request is considered
+	 * to have timed out.
+	 */
+	timeout?: number;
+}
+
+/**
  * Helper for managing requests and replies that are identified via a
  * number.
  *
@@ -56,8 +67,8 @@ export class RequestReplyHelper<Result> {
 	private readonly pending: Map<number, PendingMessage<Result>>;
 	private idCounter: number;
 
-	public constructor(options: RequestReplyHelperOptions = {}) {
-		this.defaultTimeout = options.timeout || 30000;
+	public constructor(options?: RequestReplyHelperOptions) {
+		this.defaultTimeout = options?.timeout ?? 30000;
 
 		this.pending = new Map();
 		this.idCounter = 0;
@@ -80,17 +91,23 @@ export class RequestReplyHelper<Result> {
 	 * Prepare a request, will return the identifier to use and a promise that
 	 * will resolve when the reply is registered.
 	 *
+	 * @param options -
+	 *   options for this request
 	 * @returns
 	 *   array with request id and promise. The promise will resolve or reject
 	 *   when a result or error is registered, or when it times out
 	 */
-	public prepareRequest(): [ number, Promise<Result> ] {
+	public prepareRequest(options?: PrepareRequestOptions): [ id: number, result: Promise<Result> ] {
 		const messageId = this.idCounter++;
+		const timeout = options?.timeout ?? this.defaultTimeout;
 		const promise = new Promise<Result>((resolve, reject) => {
 			this.pending.set(messageId, {
 				resolve: resolve,
 				reject: reject,
-				timeout: setTimeout(() => this.registerError(messageId, new Error('Timed out')), this.defaultTimeout)
+				timeout: setTimeout(
+					() => this.registerError(messageId, new Error('Timed out')),
+					timeout
+				)
 			});
 		});
 
