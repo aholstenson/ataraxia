@@ -1,5 +1,5 @@
 import { AnonymousAuth } from '../../src/auth';
-import { generateId } from '../../src/id';
+import { encodeId, generateId } from '../../src/id';
 import { AbstractPeer, PeerMessageType, PeerMessage, DisconnectReason } from '../../src/transport';
 import { WithNetwork } from '../../src/WithNetwork';
 
@@ -30,8 +30,10 @@ describe('Transport: AbstractPeer', function() {
  *   fake network
  */
 function testNetwork(): WithNetwork {
+	const id = generateId();
 	return {
-		networkId: generateId(),
+		networkId: encodeId(id),
+		networkIdBinary: id,
 		debugNamespace: 'tests:abstract-peer'
 	};
 }
