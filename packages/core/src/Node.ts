@@ -23,7 +23,7 @@ export interface Node<MessageTypes extends object = any> {
 	/**
 	 * Event emitted when a message is received by this node.
 	 */
-	readonly onMessage: Subscribable<this, [ MessageUnion<MessageTypes> ]>;
+	readonly onMessage: Subscribable<this, [ message: MessageUnion<MessageTypes> ]>;
 
 	/**
 	 * Send a message to this node. This will return a promise that will

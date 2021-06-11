@@ -23,17 +23,17 @@ export class ExchangeImpl<MessageTypes extends object> implements Exchange<Messa
 	/**
 	 * Event emitted whenever a node joins this exchange.
 	 */
-	private readonly nodeAvailableEvent: Event<this, [ Node<MessageTypes> ]>;
+	private readonly nodeAvailableEvent: Event<this, [ node: Node<MessageTypes> ]>;
 
 	/**
 	 * Event emitted whenever a node leaves this exchange.
 	 */
-	private readonly nodeUnavailableEvent: Event<this, [ Node<MessageTypes> ]>;
+	private readonly nodeUnavailableEvent: Event<this, [ node: Node<MessageTypes> ]>;
 
 	/**
 	 * Event emitted whenever a message is received for this exchange.
 	 */
-	private readonly messageEvent: Event<this, [ MessageUnion<MessageTypes> ]>;
+	private readonly messageEvent: Event<this, [ message: MessageUnion<MessageTypes> ]>;
 
 	public constructor(initializer: () => SharedExchange) {
 		this.initializer = initializer;

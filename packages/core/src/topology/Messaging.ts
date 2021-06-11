@@ -35,7 +35,7 @@ export class Messaging {
 
 	private readonly pending: Map<number, SentMessage>;
 	private readonly routing: Routing;
-	private readonly dataEvent: Event<any, [ ArrayBuffer, string, ArrayBuffer ]>;
+	private readonly dataEvent: Event<any, [ node: ArrayBuffer, type: string, payload: ArrayBuffer ]>;
 
 	private idCounter: number;
 

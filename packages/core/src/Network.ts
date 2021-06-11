@@ -105,9 +105,9 @@ export class Network<MessageTypes extends object = any> {
 	 */
 	private readonly exchanges: Exchanges;
 
-	private readonly nodeAvailableEvent: Event<this, [ Node<MessageTypes> ]>;
-	private readonly nodeUnavailableEvent: Event<this, [ Node<MessageTypes> ]>;
-	private readonly messageEvent: Event<this, [ MessageUnion<MessageTypes> ]>;
+	private readonly nodeAvailableEvent: Event<this, [ node: Node<MessageTypes> ]>;
+	private readonly nodeUnavailableEvent: Event<this, [ node: Node<MessageTypes> ]>;
+	private readonly messageEvent: Event<this, [ message: MessageUnion<MessageTypes> ]>;
 
 	/**
 	 * Create a new network. A network must be provided a `name` which is a

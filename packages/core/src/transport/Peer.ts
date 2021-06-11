@@ -31,7 +31,7 @@ export interface Peer {
 	/**
 	 * Event emitted when a message is received from the peer.
 	 */
-	readonly onData: Subscribable<this, [ PeerMessageType, any ]>;
+	readonly onData: Subscribable<this, [ type: PeerMessageType, payload: any ]>;
 
 	/**
 	 * If this peer is fully connected.

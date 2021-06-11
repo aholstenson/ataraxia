@@ -43,17 +43,17 @@ export interface Exchange<MessageTypes extends object = any> {
 	/**
 	 * Event emitted when a new node joins this exchange.
 	 */
-	readonly onNodeAvailable: Subscribable<this, [ Node<MessageTypes> ]>;
+	readonly onNodeAvailable: Subscribable<this, [ node: Node<MessageTypes> ]>;
 
 	/**
 	 * Event emitted when a node leaves this exchange.
 	 */
-	readonly onNodeUnavailable: Subscribable<this, [ Node<MessageTypes> ]>;
+	readonly onNodeUnavailable: Subscribable<this, [ node: Node<MessageTypes> ]>;
 
 	/**
 	 * Event emitted when a message is received on this exchange.
 	 */
-	readonly onMessage: Subscribable<this, [ MessageUnion<MessageTypes> ]>;
+	readonly onMessage: Subscribable<this, [ message: MessageUnion<MessageTypes> ]>;
 
 	/**
 	 * Broadcast a message to all nodes that have joined this exchange.

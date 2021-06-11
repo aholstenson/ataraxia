@@ -62,9 +62,9 @@ export class Topology {
 
 	private readonly endpoint: boolean;
 
-	private readonly availableEvent: Event<this, [ TopologyNode ]>;
-	private readonly unavailableEvent: Event<this, [ TopologyNode ]>;
-	private readonly dataEvent: Event<this, [ ArrayBuffer, string, ArrayBuffer ]>;
+	private readonly availableEvent: Event<this, [ node: TopologyNode ]>;
+	private readonly unavailableEvent: Event<this, [ node: TopologyNode ]>;
+	private readonly dataEvent: Event<this, [ node: ArrayBuffer, type: string, payload: ArrayBuffer ]>;
 
 	private readonly self: TopologyNode;
 	private readonly nodes: IdMap<TopologyNode>;
