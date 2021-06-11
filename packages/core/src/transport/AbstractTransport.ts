@@ -15,8 +15,7 @@ import { TransportOptions } from './TransportOptions';
 export class AbstractTransport implements Transport {
 	private readonly transportName: string;
 
-	private readonly peerConnectEvent: Event<this, [ Peer ]>;
-	private readonly peerDisconnectEvent: Event<this, [ Peer ]>;
+	private readonly peerConnectEvent: Event<this, [ peer: Peer ]>;
 
 	protected debug: debug.Debugger;
 
@@ -34,7 +33,6 @@ export class AbstractTransport implements Transport {
 	 */
 	public constructor(name: string) {
 		this.peerConnectEvent = new Event(this);
-		this.peerDisconnectEvent = new Event(this);
 
 		this.peers = new Set();
 
@@ -51,16 +49,6 @@ export class AbstractTransport implements Transport {
 	 */
 	public get onPeerConnect() {
 		return this.peerConnectEvent.subscribable;
-	}
-
-	/**
-	 * Event for when a peer is disconnected.
-	 *
-	 * @returns
-	 *   `Subscribable` that can be used to register listeners
-	 */
-	public get onPeerDisconnect() {
-		return this.peerDisconnectEvent.subscribable;
 	}
 
 	/**
@@ -157,7 +145,6 @@ export class AbstractTransport implements Transport {
 			this.peers.delete(peer);
 
 			this.debug('Peer with id', encodeId(peer.id), 'is no longer available');
-			this.peerDisconnectEvent.emit(peer);
 		});
 
 		if(peer.connected) {
