@@ -110,7 +110,6 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-protected"><a href="ataraxia_tcp.tcptransport.html#network" class="tsd-kind-icon">network</a></li>
 								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="ataraxia_tcp.tcptransport.html#onpeerconnect" class="tsd-kind-icon">on<wbr>Peer<wbr>Connect</a></li>
-								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="ataraxia_tcp.tcptransport.html#onpeerdisconnect" class="tsd-kind-icon">on<wbr>Peer<wbr>Disconnect</a></li>
 								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="ataraxia_tcp.tcptransport.html#port" class="tsd-kind-icon">port</a></li>
 								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="ataraxia_tcp.tcptransport.html#started" class="tsd-kind-icon">started</a></li>
 							</ul>
@@ -140,7 +139,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides AbstractTransport.constructor</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/3fcfb1a/packages/tcp/src/TCPTransport.ts#L47">packages/tcp/src/TCPTransport.ts:47</a></li>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/3ff258e/packages/tcp/src/TCPTransport.ts#L47">packages/tcp/src/TCPTransport.ts:47</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -163,7 +162,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from AbstractTransport.debug</p>
 						<ul>
-							<li>Defined in packages/core/dist/types/transport/AbstractTransport.d.ts:14</li>
+							<li>Defined in packages/core/dist/types/transport/AbstractTransport.d.ts:13</li>
 						</ul>
 					</aside>
 				</section>
@@ -174,7 +173,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from AbstractTransport.peers</p>
 						<ul>
-							<li>Defined in packages/core/dist/types/transport/AbstractTransport.d.ts:17</li>
+							<li>Defined in packages/core/dist/types/transport/AbstractTransport.d.ts:16</li>
 						</ul>
 					</aside>
 				</section>
@@ -191,7 +190,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in packages/core/dist/types/transport/AbstractTransport.d.ts:54</li>
+									<li>Defined in packages/core/dist/types/transport/AbstractTransport.d.ts:46</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -209,13 +208,13 @@
 					<a name="onpeerconnect" class="tsd-anchor"></a>
 					<h3>on<wbr>Peer<wbr>Connect</h3>
 					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> onPeerConnect<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Subscribable</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">this</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">Peer</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> onPeerConnect<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Subscribable</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">this</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-symbol">[</span>peer<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Peer</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in packages/core/dist/types/transport/AbstractTransport.d.ts:32</li>
+									<li>Defined in packages/core/dist/types/transport/AbstractTransport.d.ts:31</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -223,30 +222,7 @@
 									<p>Event for when a new peer is connected via this transport.</p>
 								</div>
 							</div>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Subscribable</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">this</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">Peer</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span></h4>
-							<p>  <code>Subscribable</code> that can be used to register listeners</p>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class">
-					<a name="onpeerdisconnect" class="tsd-anchor"></a>
-					<h3>on<wbr>Peer<wbr>Disconnect</h3>
-					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> onPeerDisconnect<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Subscribable</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">this</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">Peer</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in packages/core/dist/types/transport/AbstractTransport.d.ts:39</li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Event for when a peer is disconnected.</p>
-								</div>
-							</div>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Subscribable</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">this</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">Peer</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Subscribable</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">this</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-symbol">[</span>peer<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Peer</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span></h4>
 							<p>  <code>Subscribable</code> that can be used to register listeners</p>
 						</li>
 					</ul>
@@ -261,7 +237,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/3fcfb1a/packages/tcp/src/TCPTransport.ts#L75">packages/tcp/src/TCPTransport.ts:75</a></li>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/3ff258e/packages/tcp/src/TCPTransport.ts#L75">packages/tcp/src/TCPTransport.ts:75</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -284,7 +260,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in packages/core/dist/types/transport/AbstractTransport.d.ts:46</li>
+									<li>Defined in packages/core/dist/types/transport/AbstractTransport.d.ts:38</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -310,7 +286,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/3fcfb1a/packages/tcp/src/TCPTransport.ts#L199">packages/tcp/src/TCPTransport.ts:199</a></li>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/3ff258e/packages/tcp/src/TCPTransport.ts#L199">packages/tcp/src/TCPTransport.ts:199</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -342,7 +318,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from AbstractTransport.addPeer</p>
 								<ul>
-									<li>Defined in packages/core/dist/types/transport/AbstractTransport.d.ts:79</li>
+									<li>Defined in packages/core/dist/types/transport/AbstractTransport.d.ts:71</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -377,7 +353,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides AbstractTransport.start</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/3fcfb1a/packages/tcp/src/TCPTransport.ts#L79">packages/tcp/src/TCPTransport.ts:79</a></li>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/3ff258e/packages/tcp/src/TCPTransport.ts#L79">packages/tcp/src/TCPTransport.ts:79</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -401,7 +377,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides AbstractTransport.stop</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/3fcfb1a/packages/tcp/src/TCPTransport.ts#L175">packages/tcp/src/TCPTransport.ts:175</a></li>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/3ff258e/packages/tcp/src/TCPTransport.ts#L175">packages/tcp/src/TCPTransport.ts:175</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -466,9 +442,6 @@
 							</li>
 							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
 								<a href="ataraxia_tcp.tcptransport.html#onpeerconnect" class="tsd-kind-icon">on<wbr>Peer<wbr>Connect</a>
-							</li>
-							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
-								<a href="ataraxia_tcp.tcptransport.html#onpeerdisconnect" class="tsd-kind-icon">on<wbr>Peer<wbr>Disconnect</a>
 							</li>
 							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
 								<a href="ataraxia_tcp.tcptransport.html#port" class="tsd-kind-icon">port</a>

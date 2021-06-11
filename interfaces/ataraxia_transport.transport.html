@@ -71,8 +71,14 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>Transport that can be used to connect peers together.</p>
+						<p>Transport that can be used to connect peers together. Transports are how
+							<a href="ataraxia_transport.peer.html">Peer</a>s are discovered and connected to. An implementation of this
+							interface must support being started and stopped and should report peers
+						via the <a href="ataraxia_transport.transport.html#onpeerconnect">onPeerConnect</a> event.</p>
 					</div>
+					<p>To simplify implementation transports are commonly implemented via
+						<a href="../classes/ataraxia_transport.abstracttransport.html">AbstractTransport</a> which takes care of the event firing and stopping
+					active peers when the transport is being stopped.</p>
 				</div>
 			</section>
 			<section class="tsd-panel tsd-hierarchy">
@@ -97,7 +103,6 @@
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="ataraxia_transport.transport.html#onpeerconnect" class="tsd-kind-icon">on<wbr>Peer<wbr>Connect</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="ataraxia_transport.transport.html#onpeerdisconnect" class="tsd-kind-icon">on<wbr>Peer<wbr>Disconnect</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
@@ -115,30 +120,15 @@
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="onpeerconnect" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagReadonly">Readonly</span> on<wbr>Peer<wbr>Connect</h3>
-					<div class="tsd-signature tsd-kind-icon">on<wbr>Peer<wbr>Connect<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Subscribable</span><span class="tsd-signature-symbol">&lt;</span><a href="ataraxia_transport.transport.html" class="tsd-signature-type" data-tsd-kind="Interface">Transport</a><span class="tsd-signature-symbol">, </span><span class="tsd-signature-symbol">[</span><a href="ataraxia_transport.peer.html" class="tsd-signature-type" data-tsd-kind="Interface">Peer</a><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span></div>
+					<div class="tsd-signature tsd-kind-icon">on<wbr>Peer<wbr>Connect<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Subscribable</span><span class="tsd-signature-symbol">&lt;</span><a href="ataraxia_transport.transport.html" class="tsd-signature-type" data-tsd-kind="Interface">Transport</a><span class="tsd-signature-symbol">, </span><span class="tsd-signature-symbol">[</span>peer<span class="tsd-signature-symbol">: </span><a href="ataraxia_transport.peer.html" class="tsd-signature-type" data-tsd-kind="Interface">Peer</a><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/3fcfb1a/packages/core/src/transport/Transport.ts#L23">packages/core/src/transport/Transport.ts:23</a></li>
+							<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/3ff258e/packages/core/src/transport/Transport.ts#L40">packages/core/src/transport/Transport.ts:40</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>Event for when this transport connects to a peer.</p>
-						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="onpeerdisconnect" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagReadonly">Readonly</span> on<wbr>Peer<wbr>Disconnect</h3>
-					<div class="tsd-signature tsd-kind-icon">on<wbr>Peer<wbr>Disconnect<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Subscribable</span><span class="tsd-signature-symbol">&lt;</span><a href="ataraxia_transport.transport.html" class="tsd-signature-type" data-tsd-kind="Interface">Transport</a><span class="tsd-signature-symbol">, </span><span class="tsd-signature-symbol">[</span><a href="ataraxia_transport.peer.html" class="tsd-signature-type" data-tsd-kind="Interface">Peer</a><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/3fcfb1a/packages/core/src/transport/Transport.ts#L28">packages/core/src/transport/Transport.ts:28</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Event for when this transport disconnects from a peer.</p>
 						</div>
 					</div>
 				</section>
@@ -155,7 +145,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/3fcfb1a/packages/core/src/transport/Transport.ts#L13">packages/core/src/transport/Transport.ts:13</a></li>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/3ff258e/packages/core/src/transport/Transport.ts#L27">packages/core/src/transport/Transport.ts:27</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -167,9 +157,16 @@
 							<ul class="tsd-parameters">
 								<li>
 									<h5>options: <a href="ataraxia_transport.transportoptions.html" class="tsd-signature-type" data-tsd-kind="Interface">TransportOptions</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>-
+											options describing some details about how to join the network, such
+											as the identifier of this node, the network name and if joining as
+										a client or not.</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<p>  promise returning if the transport was started or not</p>
 						</li>
 					</ul>
 				</section>
@@ -183,7 +180,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/3fcfb1a/packages/core/src/transport/Transport.ts#L18">packages/core/src/transport/Transport.ts:18</a></li>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/3ff258e/packages/core/src/transport/Transport.ts#L35">packages/core/src/transport/Transport.ts:35</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -192,6 +189,7 @@
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<p>  promise returning if the transport was stopped or not</p>
 						</li>
 					</ul>
 				</section>
@@ -301,9 +299,6 @@
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
 								<a href="ataraxia_transport.transport.html#onpeerconnect" class="tsd-kind-icon">on<wbr>Peer<wbr>Connect</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="ataraxia_transport.transport.html#onpeerdisconnect" class="tsd-kind-icon">on<wbr>Peer<wbr>Disconnect</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface">
 								<a href="ataraxia_transport.transport.html#start" class="tsd-kind-icon">start</a>

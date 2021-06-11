@@ -138,7 +138,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/3fcfb1a/packages/core/src/RequestReplyHelper.ts#L57">packages/core/src/RequestReplyHelper.ts:57</a></li>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/3ff258e/packages/core/src/RequestReplyHelper.ts#L68">packages/core/src/RequestReplyHelper.ts:68</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -150,7 +150,7 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>options: <a href="../interfaces/ataraxia.requestreplyhelperoptions.html" class="tsd-signature-type" data-tsd-kind="Interface">RequestReplyHelperOptions</a><span class="tsd-signature-symbol"> = {}</span></h5>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> options: <a href="../interfaces/ataraxia.requestreplyhelperoptions.html" class="tsd-signature-type" data-tsd-kind="Interface">RequestReplyHelperOptions</a></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="ataraxia.requestreplyhelper.html" class="tsd-signature-type" data-tsd-kind="Class">RequestReplyHelper</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Result</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -164,13 +164,13 @@
 					<a name="preparerequest" class="tsd-anchor"></a>
 					<h3>prepare<wbr>Request</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">prepare<wbr>Request<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Result</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">]</span></li>
+						<li class="tsd-signature tsd-kind-icon">prepare<wbr>Request<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">?: </span><a href="../interfaces/ataraxia.preparerequestoptions.html" class="tsd-signature-type" data-tsd-kind="Interface">PrepareRequestOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span>id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">, </span>result<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Result</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">]</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/3fcfb1a/packages/core/src/RequestReplyHelper.ts#L87">packages/core/src/RequestReplyHelper.ts:87</a></li>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/3ff258e/packages/core/src/RequestReplyHelper.ts#L100">packages/core/src/RequestReplyHelper.ts:100</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -179,7 +179,17 @@
 									will resolve when the reply is registered.</p>
 								</div>
 							</div>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Result</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">]</span></h4>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> options: <a href="../interfaces/ataraxia.preparerequestoptions.html" class="tsd-signature-type" data-tsd-kind="Interface">PrepareRequestOptions</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>-
+										options for this request</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-symbol">[</span>id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">, </span>result<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Result</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">]</span></h4>
 							<p>  array with request id and promise. The promise will resolve or reject
 							when a result or error is registered, or when it times out</p>
 						</li>
@@ -195,7 +205,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/3fcfb1a/packages/core/src/RequestReplyHelper.ts#L129">packages/core/src/RequestReplyHelper.ts:129</a></li>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/3ff258e/packages/core/src/RequestReplyHelper.ts#L146">packages/core/src/RequestReplyHelper.ts:146</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -235,7 +245,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/3fcfb1a/packages/core/src/RequestReplyHelper.ts#L109">packages/core/src/RequestReplyHelper.ts:109</a></li>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/3ff258e/packages/core/src/RequestReplyHelper.ts#L126">packages/core/src/RequestReplyHelper.ts:126</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -366,6 +376,9 @@
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-module tsd-has-type-parameter">
 						<a href="../interfaces/ataraxia.node.html" class="tsd-kind-icon">Node</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="../interfaces/ataraxia.preparerequestoptions.html" class="tsd-kind-icon">Prepare<wbr>Request<wbr>Options</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-module">
 						<a href="../interfaces/ataraxia.requestreplyhelperoptions.html" class="tsd-kind-icon">Request<wbr>Reply<wbr>Helper<wbr>Options</a>
