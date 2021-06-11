@@ -49,9 +49,9 @@ export class Services {
 	private readonly nodes: Map<string, ServiceNodeData>;
 	private readonly exchange: Exchange<ServiceMessages>;
 
-	private readonly serviceAvailableEvent: Event<this, [ Service ]>;
-	private readonly serviceUnavailableEvent: Event<this, [ Service ]>;
-	private readonly serviceUpdatedEvent: Event<this, [ Service ]>;
+	private readonly serviceAvailableEvent: Event<this, [ service: Service ]>;
+	private readonly serviceUnavailableEvent: Event<this, [ service: Service ]>;
+	private readonly serviceUpdatedEvent: Event<this, [ service: Service ]>;
 
 	/**
 	 * The local version, incremented whenever local services are added,
