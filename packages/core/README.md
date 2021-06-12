@@ -160,14 +160,14 @@ const handle = services.register({
 
   The automatically generated id of this node.
 
-* `start(): Promise<Boolean>`
+* `join(): Promise<Boolean>`
   
   Returns: `true` if network was started, `false` otherwise
 
   Start the network and its transports. This will start up all transports and
   perform initial connections to peers.
 
-* `stop(): Promise<Boolean>`
+* `leave(): Promise<Boolean>`
 
   Returns: `true` if network was stopped, `false` otherwise
   

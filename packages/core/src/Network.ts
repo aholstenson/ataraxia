@@ -59,14 +59,16 @@ export interface NetworkOptions {
  * await net.join();
  * ```
  *
- * ## Nodes
+ * ## Nodes of the network
  *
  * When a network is joined this instance will start emitting events about
  * what nodes are available on the network. It is recommended to use
  * {@link onNodeAvailable} and {@link onNodeUnavailable} to keep track of what
  * nodes the instance can communicate with.
  *
- * ## Messaging
+ * It's possible to iterate over a snapshot of nodes using {@link nodes}.
+ *
+ * ## Sending and receiving messages
  *
  * Messaging in Ataraxia does not guarantee delivery, messages may or may not
  * reach their intended targets.
@@ -81,6 +83,70 @@ export interface NetworkOptions {
  * It is possible to broadcast a message to all the known nodes via
  * {@link broadcast}, but as with regular messages no delivery is guaranteed
  * and large broadcasts are discouraged.
+ *
+ * ## Exchanges
+ *
+ * Exchanges are a way to create named sub-groups of the network that nodes can
+ * join and leave as needed. Broadcasting a message on an exchange will only
+ * send it to known members of the exchange.
+ *
+ * ```typescript
+ * const exchange = net.createExchange('name-of-exchange');
+ *
+ * // Exchanges need to be joined
+ * await exchange.join();
+ *
+ * // Broadcast to the known members
+ * await exchange.broadcast('typeOfMessage', dataOfMessage);
+ * ```
+ *
+ * ## Typing of messages
+ *
+ * The network and exchanges can be typed when using TypeScript.
+ *
+ * The types are defined as an interface with the keys representing the
+ * message types tied to the type of message:
+ *
+ * ```typescript
+ * interface EchoMessages {
+ *   'namespace:echo': { message: string };
+ *   'namespace:echo-reply': { reply: string };
+ * }
+ * ```
+ *
+ * An exchange can then be typed via:
+ *
+ * ```typescript
+ * const exchange: Exchange<EchoMessages> = net.createExchange<EchoMessage>('echo');
+ * ```
+ *
+ * This will help TypeScript validate messages that are sent:
+ *
+ * ```typescript
+ * // TypeScript will allow this
+ * exchange.broadcast('namespace:echo', { message: 'Test' });
+ *
+ * // TypeScript will not allow these
+ * exchange.broadcast('namespace:echo', { msg: 'Test' });
+ * exchange.broadcast('namespace:e', { message: 'Test' });
+ * ```
+ *
+ * The same is true for listeners:
+ *
+ * ```typescript
+ * exchange.onMessage(msg => {
+ *   if(msg.type === 'namespace:echo') {
+ *      // In here msg.data will be of the type { message: string }
+ *      const data = msg.data;
+ *      msg.source.send('namespace:echo-reply', { reply: data.message })
+ *        .catch(errorHandler);
+ *   } else if(msg.type === 'namespace:echo-reply') {
+ *     // msg.data will be { reply: string }
+ *   } else {
+ *      // No message of this type
+ *   }
+ * });
+ * ```
  */
 export class Network<MessageTypes extends object = any> {
 	/**
@@ -254,7 +320,7 @@ export class Network<MessageTypes extends object = any> {
 	}
 
 	/**
-	 * Get the nodes that can be currently seen in the network.
+	 * Get a snapshot of nodes that can be currently seen in the network.
 	 *
 	 * @returns
 	 *   array of nodes
