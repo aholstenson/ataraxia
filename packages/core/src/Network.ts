@@ -58,6 +58,29 @@ export interface NetworkOptions {
  *
  * await net.join();
  * ```
+ *
+ * ## Nodes
+ *
+ * When a network is joined this instance will start emitting events about
+ * what nodes are available on the network. It is recommended to use
+ * {@link onNodeAvailable} and {@link onNodeUnavailable} to keep track of what
+ * nodes the instance can communicate with.
+ *
+ * ## Messaging
+ *
+ * Messaging in Ataraxia does not guarantee delivery, messages may or may not
+ * reach their intended targets.
+ *
+ * The {@link onMessage} event can be used to listen to events from any node,
+ * which is recommended to do when building something that deals with many
+ * nodes. If you're only interested in messages from a single node,
+ * {@link Node.onMessage} can be used instead.
+ *
+ * To send a message to a single node use {@link Node.send}.
+ *
+ * It is possible to broadcast a message to all the known nodes via
+ * {@link broadcast}, but as with regular messages no delivery is guaranteed
+ * and large broadcasts are discouraged.
  */
 export class Network<MessageTypes extends object = any> {
 	/**
@@ -189,18 +212,43 @@ export class Network<MessageTypes extends object = any> {
 		options.transports?.forEach(t => this.addTransport(t));
 	}
 
+	/**
+	 * Event emitted when a {@link Node} becomes available.
+	 *
+	 * @returns
+	 *   subscribable function
+	 */
 	public get onNodeAvailable() {
 		return this.#nodeAvailableEvent.subscribable;
 	}
 
+	/**
+	 * Event emitted when a {@link Node} becomes unavailable.
+	 *
+	 * @returns
+	 *   subscribable function
+	 */
 	public get onNodeUnavailable() {
 		return this.#nodeUnavailableEvent.subscribable;
 	}
 
+	/**
+	 * Event emitted when a message is received from any node on the network.
+	 *
+	 * @returns
+	 *   subscribable function
+	 */
 	public get onMessage() {
 		return this.#messageEvent.subscribable;
 	}
 
+	/**
+	 * The identifier this local node has, this is the name other nodes see
+	 * us as.
+	 *
+	 * @returns
+	 *   network identifier as string
+	 */
 	public get networkId() {
 		return encodeId(this.networkIdBinary);
 	}
