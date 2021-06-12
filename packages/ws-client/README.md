@@ -2,6 +2,7 @@
 
 [![npm version](https://img.shields.io/npm/v/ataraxia-ws-client)](https://www.npmjs.com/package/ataraxia-ws-client)
 [![Dependencies](https://img.shields.io/librariesio/release/npm/ataraxia-ws-client)](https://libraries.io/npm/ataraxia-ws-client)
+[![Typedoc](https://img.shields.io/badge/typedoc-ataraxia--ws--client-%23fff)](https://aholstenson.github.io/ataraxia/modules/ataraxia_ws_client.html)
 
 Client that connects to a [Ataraxia network](https://github.com/aholstenson/ataraxia)
 using a websocket. This module makes it possible for NodeJS-instances (using

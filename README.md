@@ -8,6 +8,7 @@
 
 [![npm version](https://img.shields.io/npm/v/ataraxia)](https://www.npmjs.com/package/ataraxia)
 [![Build Status](https://github.com/aholstenson/ataraxia/actions/workflows/ci.yml/badge.svg)](https://github.com/aholstenson/ataraxia/actions/workflows/ci.yml)
+[![Typedoc](https://img.shields.io/badge/typedoc-available-%23fff)](https://aholstenson.github.io/ataraxia)
 
 Connect nodes, such as NodeJS-apps or browsers, together and send messages 
 between them. Provides a mesh network with peer-to-peer messaging, allowing

@@ -2,6 +2,7 @@
 
 [![npm version](https://img.shields.io/npm/v/ataraxia-ws-server)](https://www.npmjs.com/package/ataraxia-ws-server)
 [![Dependencies](https://img.shields.io/librariesio/release/npm/ataraxia-ws-server)](https://libraries.io/npm/ataraxia-ws-server)
+[![Typedoc](https://img.shields.io/badge/typedoc-ataraxia--ws--server-%23fff)](https://aholstenson.github.io/ataraxia/modules/ataraxia_ws_server.html)
 
 Server that allows clients to connect to an [Ataraxia network](https://github.com/aholstenson/ataraxia)
 via websockets. This implementation uses [ws](https://github.com/websockets/ws)

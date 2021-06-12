@@ -2,6 +2,7 @@
 
 [![npm version](https://img.shields.io/npm/v/ataraxia-local)](https://www.npmjs.com/package/ataraxia-local)
 [![Dependencies](https://img.shields.io/librariesio/release/npm/ataraxia-local)](https://libraries.io/npm/ataraxia-local)
+[![Typedoc](https://img.shields.io/badge/typedoc-ataraxia--local-%23fff)](https://aholstenson.github.io/ataraxia/modules/ataraxia_local.html)
 
 Machine-local transport for [Ataraxia](https://github.com/aholstenson/ataraxia).
 This transport connects together instances on the same machine via a Unix

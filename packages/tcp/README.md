@@ -2,6 +2,7 @@
 
 [![npm version](https://img.shields.io/npm/v/ataraxia-tcp)](https://www.npmjs.com/package/ataraxia-tcp)
 [![Dependencies](https://img.shields.io/librariesio/release/npm/ataraxia-tcp)](https://libraries.io/npm/ataraxia-tcp)
+[![Typedoc](https://img.shields.io/badge/typedoc-ataraxia--tcp-%23fff)](https://aholstenson.github.io/ataraxia/modules/ataraxia_tcp.html)
 
 TCP transport for [Ataraxia](https://github.com/aholstenson/ataraxia). This
 transport can discover and automatically connect to other peers using a

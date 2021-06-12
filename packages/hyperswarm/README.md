@@ -2,6 +2,7 @@
 
 [![npm version](https://img.shields.io/npm/v/ataraxia-hyperswarm)](https://www.npmjs.com/package/ataraxia-hyperswarm)
 [![Dependencies](https://img.shields.io/librariesio/release/npm/ataraxia-hyperswarm)](https://libraries.io/npm/ataraxia-hyperswarm)
+[![Typedoc](https://img.shields.io/badge/typedoc-ataraxia--hyperswarm-%23fff)](https://aholstenson.github.io/ataraxia/modules/ataraxia_hyperswarm.html)
 
 Hyperswarm transport for [Ataraxia](https://github.com/aholstenson/ataraxia). 
 This transport discovers and connects to peers using a specific topic via the

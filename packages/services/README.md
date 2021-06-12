@@ -2,6 +2,7 @@
 
 [![npm version](https://img.shields.io/npm/v/ataraxia-services)](https://www.npmjs.com/package/ataraxia-services)
 [![Dependencies](https://img.shields.io/librariesio/release/npm/ataraxia-services)](https://libraries.io/npm/ataraxia-services)
+[![Typedoc](https://img.shields.io/badge/typedoc-ataraxia--services-%23fff)](https://aholstenson.github.io/ataraxia/modules/ataraxia_services.html)
 
 Services with RPC and events for [Ataraxia](https://github.com/aholstenson/ataraxia).
 
