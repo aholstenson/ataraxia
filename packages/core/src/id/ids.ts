@@ -1,3 +1,5 @@
+import { randomBytes } from '../randomBytes';
+
 /*
  * Simple encoding to custom characters.
  */
@@ -91,32 +93,18 @@ export function decodeId(input: string): ArrayBuffer {
 	return new Uint8Array(bytes.reverse()).buffer;
 }
 
-// Epoch is a base date to make the millisecond part of the id smaller
-const EPOCH = Date.UTC(2017, 1, 1);
-
 /**
- * Generate identifiers that can be used to represent nodes. These are designed
- * to be fairly unique, in that they use a millisecond timestamp combined with
- * a random number.
- *
- * This is similar to flake implementations but does not give as strong
- * guarantee that identifiers will be unique if many are generated at the
- * same millisecond.
+ * Generate identifiers that can be used to represent nodes. These are a random
+ * UUID, generates 16 bytes of data and sets the markers used for UUID v4.
  *
  * @returns
- *   String representing the identifier.
+ *   buffer with id
  */
 export function generateId(): ArrayBuffer {
-	// Combine time with a random number
-	const time = Date.now() - EPOCH;
-	const random = Math.floor((Math.random()) * 4194304);
-
-	const buffer = new ArrayBuffer(8);
-	const view = new DataView(buffer);
-	view.setUint32(0, Math.floor(time / 1024) & 0xFFFFFFFF, false);
-	view.setUint32(4, ((time & 1023) << 24) | random, false);
-
-	return buffer;
+	const bytes = randomBytes(16);
+	bytes[6] = (bytes[6] & 0x0f) | 0x40;
+	bytes[8] = (bytes[8] & 0x3f) | 0x80;
+	return bytes.buffer;
 }
 
 const NO_ID = new ArrayBuffer(0);
