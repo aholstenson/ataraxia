@@ -7,6 +7,15 @@ import { MessageUnion } from './MessageUnion';
 /**
  * Node within the network. Nodes are individual instances that you can
  * exchange messages with.
+ *
+ * Nodes are usually retrieved via a {@link Network} or {@link Exchange}. When
+ * a node becomes available you may opt in to events about the node via
+ * subscribable functions such as {@link onMessage} and {@link onUnavailable}.
+ *
+ * When a node becomes unavailable you should stop listening to events and
+ * discard the node.
+ *
+ * Messages to the specific node may be sent via {@link send}.
  */
 export interface Node<MessageTypes extends object = any> {
 	/**
