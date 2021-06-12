@@ -35,6 +35,54 @@ export interface MachineLocalTransportOptions {
 /**
  * Machine local transport. Uses Unix sockets to connect to peers on the
  * same machine.
+ *
+ * Usage example:
+ *
+ * ```javascript
+ * import { Network, AnonymousAuth } from 'ataraxia';
+ * import { MachineLocalTransport } from 'ataraxia-local';
+ *
+ * // Setup a network
+ * const net = new Network({
+ *   name: 'name-of-your-app-or-network',
+ *
+ *   transports: [
+ *     new MachineLocalTransport()
+ *   ]
+ * });
+ *
+ * await net.join();
+ * ```
+ *
+ * The event {@link onLeader} or the option {@link MachineLocalTransportOptions.onLeader}
+ * can be used to perform actions if the transport instance becomes the leader
+ * of nodes running on the local machine.
+ *
+ * Example starting a TCP transport when becoming the leader:
+ *
+ * ```javascript
+ * import { Network, AnonymousAuth } from 'ataraxia';
+ * import { TCPTransport, TCPPeerMDNSDiscovery } from 'ataraxia-tcp';
+ * import { MachineLocalTransport } from 'ataraxia-local';
+ *
+ * const net = new Network({
+ *   name: 'name-of-your-app-or-network',
+ * });
+ *
+ * net.addTransport(new MachineLocalTransport({
+ *   onLeader: () => {
+ *     net.addTransport(new TCPTransport({
+ *       discovery: new TCPPeerMDNSDiscovery(),
+ *
+ *       authentication: [
+ *         new AnonymousAuth()
+ *       ]
+ *     }));
+ *   }
+ * });
+ *
+ * await net.join();
+ * ```
  */
 export class MachineLocalTransport extends AbstractTransport {
 	private path: string;
@@ -56,10 +104,30 @@ export class MachineLocalTransport extends AbstractTransport {
 		}
 	}
 
+	/**
+	 * Get if this instance is considered the leader of the nodes running on
+	 * this local machine.
+	 *
+	 * @returns
+	 *   `true` if this instance is the leader
+	 */
 	public get leader() {
 		return this._leader;
 	}
 
+	/**
+	 * Event emitted if this instance becomes the leader of nodes running on
+	 * this local machine.
+	 *
+	 * ```javascript
+	 * instance.onLeader(() => {
+	 *    // Do something here, such as starting another transport
+	 * });
+	 * ```
+	 *
+	 * @returns
+	 *   subscribable
+	 */
 	public get onLeader(): Subscribable<this> {
 		return this.leaderEvent.subscribable;
 	}

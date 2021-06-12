@@ -45,7 +45,7 @@ const net = new Network({
   name: 'name-of-your-app-or-network',
 });
 
-net.addTransport(new MachineLocalTransport([
+net.addTransport(new MachineLocalTransport({
   onLeader: () => {
     /*
     * The leader event is emitted when this instance becomes the leader
@@ -60,7 +60,7 @@ net.addTransport(new MachineLocalTransport([
       ]
     }));
   }
-]);
+});
 
 await net.join();
 ```
