@@ -206,6 +206,16 @@ export class Network<MessageTypes extends object = any> {
 	}
 
 	/**
+	 * Get the nodes that can be currently seen in the network.
+	 *
+	 * @returns
+	 *   array of nodes
+	 */
+	public get nodes(): Node[] {
+		return [ ... this.#nodes.values() ];
+	}
+
+	/**
 	 * Add a transport to this network. If the network is started the transport
 	 * will also be started.
 	 *
