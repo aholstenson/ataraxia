@@ -1,67 +1,65 @@
-# Ataraxia
-
-[![npm version](https://img.shields.io/npm/v/ataraxia)](https://www.npmjs.com/package/ataraxia)
-[![Build Status](https://github.com/aholstenson/ataraxia/actions/workflows/ci.yml/badge.svg)](https://github.com/aholstenson/ataraxia/actions/workflows/ci.yml)
-
 <p align="center">
   <img width="460" src="https://raw.githubusercontent.com/aholstenson/ataraxia/master/docs/mesh-example.png">
 </p>
 
-Mesh networking with peer-to-peer messaging for NodeJS and the browser.
-Ataraxia connects different instances together and allows messages to be passed
-between these instances. Some instances may act as routers for other instances
-to create a mesh network.
+<p align="center">
 
-Ataraxia is split into several projects:
+  [![npm version](https://img.shields.io/npm/v/ataraxia)](https://www.npmjs.com/package/ataraxia)
+  [![Build Status](https://github.com/aholstenson/ataraxia/actions/workflows/ci.yml/badge.svg)](https://github.com/aholstenson/ataraxia/actions/workflows/ci.yml)
 
-* [ataraxia](packages/core) is the main library that provides the messaging functionality
-* [ataraxia-local](packages/local) provides a machine-local transport
-* [ataraxia-tcp](packages/tcp) provides a TCP-based transport with local network discovery
-* [ataraxia-hyperswarm](packages/hyperswarm) provides a Hyperswarm-based transport over the public Internet
-* [ataraxia-ws-client](packages/ws-client) provides a websocket client
-* [ataraxia-ws-server](packages/ws-server) provides a websocket server
-* [ataraxia-services](packages/services) provides easy-to-use services with RPC and events
+</p>
 
-## Features
+# Ataraxia
 
-* Instances can send and receive messages from other instances
-* Partially connected mesh network, messages will be routed to their target
-* Authentication support, anonymous and shared secret authentication available in core
-* RPC support via [ataraxia-services](https://github.com/aholstenson/ataraxia/tree/master/packages/services) that lets you call methods and receive events from services registered anywhere in the network
-* Support for different transports
-  * [ataraxia-local](https://github.com/aholstenson/ataraxia/tree/master/packages/local) provides a machine-local transport
-  * [ataraxia-tcp](https://github.com/aholstenson/ataraxia/tree/master/packages/tcp) provides a TCP-based transport with customizable discovery of peers and encrypted connections
-  * [ataraxia-ws-client](https://github.com/aholstenson/ataraxia/tree/master/packages/ws-client) and [ataraxia-ws-server](https://github.com/aholstenson/ataraxia/tree/master/packages/ws-server) for websockets
-  * [ataraxia-hyperswarm](https://github.com/aholstenson/ataraxia/tree/master/packages/hyperswarm) provides a transport that uses Hyperswarm to connect to peers over the public Internet
+Connect nodes, such as NodeJS-apps or browsers, together and send messages 
+between them. Provides a mesh network with peer-to-peer messaging, allowing
+messages to be routed between nodes that are not directly connected with each
+other.
 
-## Example with TCP transport
+* Instances can **send and receive messages** from other instances
+* Partially connected **mesh network**, messages will be routed to their target if needed
+* **Authentication support**, anonymous and shared secret authentication available in core
+* **Encryption**, most transports establish an encrypted connection by default
+* **RPC**,  register and consume services anywhere in the network, supports method call and events, via [ataraxia-services](https://github.com/aholstenson/ataraxia/tree/master/packages/services)
+* Support for **different transports**
+  * [Machine-local transport](https://github.com/aholstenson/ataraxia/tree/master/packages/local), connect to NodeJS-instances on the local machine 
+  * [TCP-based transport](https://github.com/aholstenson/ataraxia/tree/master/packages/tcp) with customizable discovery of peers, [mDNS](https://aholstenson.github.io/ataraxia/classes/ataraxia_tcp.tcppeermdnsdiscovery.html) included for discovery on the local network
+  * Websockets, both [server-side](https://github.com/aholstenson/ataraxia/tree/master/packages/ws-server) 
+    and [client-side](https://github.com/aholstenson/ataraxia/tree/master/packages/ws-client) variants 
+  * [Hyperswarm](https://github.com/aholstenson/ataraxia/tree/master/packages/hyperswarm)
+    to find and connect to peers over the public Internet
+
+## Getting started
+
+To setup your own network install the `ataraxia` package and at least one
+transport such as `ataraxia-tcp`:
+
+```
+$ npm install ataraxia ataraxia-tcp
+```
+
+A network can then be created and joined:
 
 ```javascript
 import { Network, AnonymousAuth } from 'ataraxia';
 import { TCPTransport, TCPPeerMDNSDiscovery } from 'ataraxia-tcp';
 
-// Setup a network with a TCP transport
 const net = new Network({
-  name: 'name-of-your-app-or-network',
-  
+  name: 'ataraxia-example',
   transports: [
-
     new TCPTransport({
-      // Discover peers using mDNS
       discovery: new TCPPeerMDNSDiscovery(),
-
-      // Setup anonymous authentication
       authentication: [
         new AnonymousAuth()
       ]
     })
-  
   ]
 });
 
 net.onNodeAvailable(node => {
   console.log('A new node is available:', node.id);
-  node.send('hello');
+  node.send('hello')
+    .catch(err => console.log('Unable to send hello', err));
 });
 
 net.onMessage(msg => {
@@ -72,11 +70,20 @@ net.onMessage(msg => {
 await net.join();
 ```
 
-## Example with machine-local transport and TCP transport
+## Usage
+
+The package [ataraxia](https://github.com/aholstenson/ataraxia/tree/master/packages/core) 
+contains the main code used to setup and join a [network](https://aholstenson.github.io/ataraxia/classes/ataraxia.network.html).
+
+When a network is joined [nodes](https://aholstenson.github.io/ataraxia/interfaces/ataraxia.node.html)
+will become available and unavailable, opening up for the ability to send and
+receive messages from them.
+
+### Machine-local transport with TCP transport
 
 This example creates a network where instances on the same machine connect to
 each other locally first and then elects one instance to handle connections
-to other machines on the same network.
+to other machines on the same physical network.
 
 ```javascript
 import { Network, AnonymousAuth } from 'ataraxia';
@@ -108,7 +115,7 @@ net.addTransport(new MachineLocalTransport([
 await net.join();
 ```
 
-## Support for services
+### Support for services
 
 Services are supported via `ataraxia-services`, where objects can be registered
 and functions on them called remotely:
@@ -138,3 +145,31 @@ const handle = services.register({
   }
 });
 ```
+
+## Contributing
+
+Think this project is useful? Reporting issues, asking for clarification and
+PRs are greatly appreciated.
+
+### PRs
+
+If you want to contribute code changes the way to do so is via PRs. For new
+features open an issue first that the PR can be tied to.
+
+1. Fork the project
+2. Create a feature branch (`git checkout -b feature/cool-feature`)
+3. Work on your changes
+4. Push your changes (`git push origin feature/cool-feature`)
+5. Open a pull request
+
+### Working with the code
+
+This project uses [Lerna](https://lerna.js.org/) together with
+[Yarn](https://yarnpkg.com/) to manage several packages. You'll need to install
+at least Yarn 1.x to work with the code.
+
+When checking out the code run `yarn install` and `npx lerna boostrap` to get
+started.
+
+Commit messages should follow the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/)
+specification.
