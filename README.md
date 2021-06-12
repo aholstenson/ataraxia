@@ -1,5 +1,5 @@
 <p align="center">
-  <img width="460" src="https://raw.githubusercontent.com/aholstenson/ataraxia/master/docs/mesh-example.png">
+  <img width="460" src="https://raw.githubusercontent.com/aholstenson/ataraxia/master/docs/mesh-example.svg">
 </p>
 
 <p align="center">
