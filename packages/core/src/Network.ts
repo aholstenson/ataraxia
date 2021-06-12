@@ -63,7 +63,7 @@ export class Network<MessageTypes extends object = any> {
 	/**
 	 * Debugger for log messages.
 	 */
-	private debug: debug.Debugger;
+	readonly #debug: debug.Debugger;
 
 	/**
 	 * The identifier this node has when connecting to the network.
@@ -83,31 +83,31 @@ export class Network<MessageTypes extends object = any> {
 	/**
 	 * The transports for the network.
 	 */
-	private readonly transports: Transport[];
+	readonly #transports: Transport[];
 
 	/**
 	 * If the network is currently active.
 	 */
-	private active: boolean;
+	#active: boolean;
 
 	/**
 	 * The topology of the network.
 	 */
-	private readonly topology: Topology;
+	readonly #topology: Topology;
 
 	/**
 	 * The nodes of the network.
 	 */
-	private readonly nodes: Map<string, NetworkNode>;
+	readonly #nodes: Map<string, NetworkNode>;
 
 	/**
 	 * Tracking for exchanges.
 	 */
-	private readonly exchanges: Exchanges;
+	readonly #exchanges: Exchanges;
 
-	private readonly nodeAvailableEvent: Event<this, [ node: Node<MessageTypes> ]>;
-	private readonly nodeUnavailableEvent: Event<this, [ node: Node<MessageTypes> ]>;
-	private readonly messageEvent: Event<this, [ message: MessageUnion<MessageTypes> ]>;
+	readonly #nodeAvailableEvent: Event<this, [ node: Node<MessageTypes> ]>;
+	readonly #nodeUnavailableEvent: Event<this, [ node: Node<MessageTypes> ]>;
+	readonly #messageEvent: Event<this, [ message: MessageUnion<MessageTypes> ]>;
 
 	/**
 	 * Create a new network. A network must be provided a `name` which is a
@@ -134,55 +134,55 @@ export class Network<MessageTypes extends object = any> {
 		}
 
 		const debugNamespace = 'ataraxia:' + options.name;
-		this.debug = debug(debugNamespace);
+		this.#debug = debug(debugNamespace);
 
 		this.networkIdBinary = generateId();
 		this.networkName = options.name;
 		this.endpoint = options.endpoint || false;
 
-		this.transports = [];
-		this.active = false;
+		this.#transports = [];
+		this.#active = false;
 
-		this.nodeAvailableEvent = new Event(this);
-		this.nodeUnavailableEvent = new Event(this);
-		this.messageEvent = new Event(this);
+		this.#nodeAvailableEvent = new Event(this);
+		this.#nodeUnavailableEvent = new Event(this);
+		this.#messageEvent = new Event(this);
 
-		this.nodes = new Map();
+		this.#nodes = new Map();
 
-		this.exchanges = new Exchanges(this);
+		this.#exchanges = new Exchanges(this);
 
 		// Setup the topology of the network
-		this.topology = new Topology({
+		this.#topology = new Topology({
 			networkIdBinary: this.networkIdBinary,
 			networkId: this.networkId,
 			debugNamespace: debugNamespace
 		}, options);
 
-		this.topology.onAvailable(n => {
-			const node = new NetworkNode(debugNamespace, this.topology, n.id);
-			this.nodes.set(node.id, node);
+		this.#topology.onAvailable(n => {
+			const node = new NetworkNode(debugNamespace, this.#topology, n.id);
+			this.#nodes.set(node.id, node);
 
-			this.nodeAvailableEvent.emit(node as any);
+			this.#nodeAvailableEvent.emit(node as any);
 		});
 
-		this.topology.onUnavailable(n => {
+		this.#topology.onUnavailable(n => {
 			const encodedId = encodeId(n.id);
-			const node = this.nodes.get(encodedId);
+			const node = this.#nodes.get(encodedId);
 			if(! node) return;
 
-			this.nodes.delete(encodedId);
+			this.#nodes.delete(encodedId);
 
 			node.emitUnavailable();
-			this.nodeUnavailableEvent.emit(node as any);
+			this.#nodeUnavailableEvent.emit(node as any);
 		});
 
-		this.topology.onData((id, type, data) => {
+		this.#topology.onData((id, type, data) => {
 			const encodedId = encodeId(id);
-			const node = this.nodes.get(encodedId);
+			const node = this.#nodes.get(encodedId);
 			if(! node) return;
 
 			const msg = node.emitMessage(type, data);
-			this.messageEvent.emit(msg as any);
+			this.#messageEvent.emit(msg as any);
 		});
 
 		// Add all the transports if given via options
@@ -190,15 +190,15 @@ export class Network<MessageTypes extends object = any> {
 	}
 
 	public get onNodeAvailable() {
-		return this.nodeAvailableEvent.subscribable;
+		return this.#nodeAvailableEvent.subscribable;
 	}
 
 	public get onNodeUnavailable() {
-		return this.nodeUnavailableEvent.subscribable;
+		return this.#nodeUnavailableEvent.subscribable;
 	}
 
 	public get onMessage() {
-		return this.messageEvent.subscribable;
+		return this.#messageEvent.subscribable;
 	}
 
 	public get networkId() {
@@ -213,24 +213,24 @@ export class Network<MessageTypes extends object = any> {
 	 *   instance of transport to add
 	 */
 	public addTransport(transport: Transport): void {
-		if(this.transports.indexOf(transport) >= 0) {
+		if(this.#transports.indexOf(transport) >= 0) {
 			return;
 		}
 
-		this.transports.push(transport);
+		this.#transports.push(transport);
 
 		// Whenever a peer is connected send it to the topology
-		transport.onPeerConnect(peer => this.topology.addPeer(peer));
+		transport.onPeerConnect(peer => this.#topology.addPeer(peer));
 
-		if(this.active) {
+		if(this.#active) {
 			transport.start({
 				networkId: this.networkIdBinary,
 				networkName: this.networkName,
 				endpoint: this.endpoint,
-				debugNamespace: this.debug.namespace
+				debugNamespace: this.#debug.namespace
 			})
 				.catch(ex => {
-					this.debug('Could not start transport', ex);
+					this.#debug('Could not start transport', ex);
 				});
 		}
 	}
@@ -243,31 +243,31 @@ export class Network<MessageTypes extends object = any> {
 	 *   represent if the network was actually started or not.
 	 */
 	public async join(): Promise<boolean> {
-		if(this.active) return false;
+		if(this.#active) return false;
 
-		this.debug('About to join network as ' + this.networkId);
+		this.#debug('About to join network as ' + this.networkId);
 
 		const options = {
 			networkId: this.networkIdBinary,
 			networkName: this.networkName,
 			endpoint: this.endpoint,
-			debugNamespace: this.debug.namespace
+			debugNamespace: this.#debug.namespace
 		};
 
-		this.active = true;
+		this.#active = true;
 
 		// Start the topology
-		await this.topology.start();
+		await this.#topology.start();
 
 		// Start all the transports
 		try {
-			await Promise.all(this.transports.map(t => t.start(options)));
+			await Promise.all(this.#transports.map(t => t.start(options)));
 			return true;
 		} catch(err) {
 			// Stop the topology if an error occurs
-			await this.topology.stop();
+			await this.#topology.stop();
 
-			this.active = false;
+			this.#active = false;
 
 			throw err;
 		}
@@ -281,14 +281,14 @@ export class Network<MessageTypes extends object = any> {
 	 *   represent if the network was actually stopper or not.
 	 */
 	public async leave(): Promise<boolean> {
-		if(! this.active) return false;
+		if(! this.#active) return false;
 
 		// Stop the topology
-		await this.topology.stop();
+		await this.#topology.stop();
 
 		// Stop all the transports
-		await Promise.all(this.transports.map(t => t.stop()));
-		this.active = false;
+		await Promise.all(this.#transports.map(t => t.stop()));
+		this.#active = false;
 		return true;
 	}
 
@@ -307,10 +307,10 @@ export class Network<MessageTypes extends object = any> {
 		const promises: Promise<void>[] = [];
 
 		// Send to all nodes that have joined the exchange
-		for(const node of this.nodes.values()) {
+		for(const node of this.#nodes.values()) {
 			promises.push(node.send(type, data)
 				.catch(ex => {
-					this.debug('Could not broadcast to ' + node.id, ex);
+					this.#debug('Could not broadcast to ' + node.id, ex);
 				}));
 		}
 
@@ -328,6 +328,6 @@ export class Network<MessageTypes extends object = any> {
 	 *   instance of Exchange
 	 */
 	public createExchange<MT extends object = any>(id: string): Exchange<MT> {
-		return this.exchanges.createExchange(id);
+		return this.#exchanges.createExchange(id);
 	}
 }
