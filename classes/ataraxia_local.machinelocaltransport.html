@@ -74,6 +74,47 @@
 						<p>Machine local transport. Uses Unix sockets to connect to peers on the
 						same machine.</p>
 					</div>
+					<p>Usage example:</p>
+					<pre><code class="language-javascript"><span style="color: #AF00DB">import</span><span style="color: #000000"> { </span><span style="color: #001080">Network</span><span style="color: #000000">, </span><span style="color: #001080">AnonymousAuth</span><span style="color: #000000"> } </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;ataraxia&#039;</span><span style="color: #000000">;</span>
+<span style="color: #AF00DB">import</span><span style="color: #000000"> { </span><span style="color: #001080">MachineLocalTransport</span><span style="color: #000000"> } </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;ataraxia-local&#039;</span><span style="color: #000000">;</span>
+
+<span style="color: #008000">// Setup a network</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">net</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">Network</span><span style="color: #000000">({</span>
+<span style="color: #000000">  </span><span style="color: #001080">name:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;name-of-your-app-or-network&#039;</span><span style="color: #000000">,</span>
+
+<span style="color: #000000">  </span><span style="color: #001080">transports:</span><span style="color: #000000"> [</span>
+<span style="color: #000000">    </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">MachineLocalTransport</span><span style="color: #000000">()</span>
+<span style="color: #000000">  ]</span>
+<span style="color: #000000">});</span>
+
+<span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">net</span><span style="color: #000000">.</span><span style="color: #795E26">join</span><span style="color: #000000">();</span>
+</code></pre>
+					<p>The event <a href="ataraxia_local.machinelocaltransport.html#onleader">onLeader</a> or the option <a href="../interfaces/ataraxia_local.machinelocaltransportoptions.html#onleader">MachineLocalTransportOptions.onLeader</a>
+						can be used to perform actions if the transport instance becomes the leader
+					of nodes running on the local machine.</p>
+					<p>Example starting a TCP transport when becoming the leader:</p>
+					<pre><code class="language-javascript"><span style="color: #AF00DB">import</span><span style="color: #000000"> { </span><span style="color: #001080">Network</span><span style="color: #000000">, </span><span style="color: #001080">AnonymousAuth</span><span style="color: #000000"> } </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;ataraxia&#039;</span><span style="color: #000000">;</span>
+<span style="color: #AF00DB">import</span><span style="color: #000000"> { </span><span style="color: #001080">TCPTransport</span><span style="color: #000000">, </span><span style="color: #001080">TCPPeerMDNSDiscovery</span><span style="color: #000000"> } </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;ataraxia-tcp&#039;</span><span style="color: #000000">;</span>
+<span style="color: #AF00DB">import</span><span style="color: #000000"> { </span><span style="color: #001080">MachineLocalTransport</span><span style="color: #000000"> } </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;ataraxia-local&#039;</span><span style="color: #000000">;</span>
+
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">net</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">Network</span><span style="color: #000000">({</span>
+<span style="color: #000000">  </span><span style="color: #001080">name:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;name-of-your-app-or-network&#039;</span><span style="color: #000000">,</span>
+<span style="color: #000000">});</span>
+
+<span style="color: #001080">net</span><span style="color: #000000">.</span><span style="color: #795E26">addTransport</span><span style="color: #000000">(</span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">MachineLocalTransport</span><span style="color: #000000">({</span>
+<span style="color: #000000">  </span><span style="color: #795E26">onLeader</span><span style="color: #001080">:</span><span style="color: #000000"> () </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
+<span style="color: #000000">    </span><span style="color: #001080">net</span><span style="color: #000000">.</span><span style="color: #795E26">addTransport</span><span style="color: #000000">(</span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">TCPTransport</span><span style="color: #000000">({</span>
+<span style="color: #000000">      </span><span style="color: #001080">discovery:</span><span style="color: #000000"> </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">TCPPeerMDNSDiscovery</span><span style="color: #000000">(),</span>
+
+<span style="color: #000000">      </span><span style="color: #001080">authentication:</span><span style="color: #000000"> [</span>
+<span style="color: #000000">        </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">AnonymousAuth</span><span style="color: #000000">()</span>
+<span style="color: #000000">      ]</span>
+<span style="color: #000000">    }));</span>
+<span style="color: #000000">  }</span>
+<span style="color: #000000">});</span>
+
+<span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">net</span><span style="color: #000000">.</span><span style="color: #795E26">join</span><span style="color: #000000">();</span>
+</code></pre>
 				</div>
 			</section>
 			<section class="tsd-panel tsd-hierarchy">
@@ -140,7 +181,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides AbstractTransport.constructor</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/30f9141/packages/local/src/MachineLocalTransport.ts#L44">packages/local/src/MachineLocalTransport.ts:44</a></li>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/7308639/packages/local/src/MachineLocalTransport.ts#L92">packages/local/src/MachineLocalTransport.ts:92</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -191,10 +232,17 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/30f9141/packages/local/src/MachineLocalTransport.ts#L59">packages/local/src/MachineLocalTransport.ts:59</a></li>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/7308639/packages/local/src/MachineLocalTransport.ts#L114">packages/local/src/MachineLocalTransport.ts:114</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Get if this instance is considered the leader of the nodes running on
+									this local machine.</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+							<p>  <code>true</code> if this instance is the leader</p>
 						</li>
 					</ul>
 				</section>
@@ -232,10 +280,21 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/30f9141/packages/local/src/MachineLocalTransport.ts#L63">packages/local/src/MachineLocalTransport.ts:63</a></li>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/7308639/packages/local/src/MachineLocalTransport.ts#L131">packages/local/src/MachineLocalTransport.ts:131</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Event emitted if this instance becomes the leader of nodes running on
+									this local machine.</p>
+								</div>
+								<pre><code class="language-javascript"><span style="color: #001080">instance</span><span style="color: #000000">.</span><span style="color: #795E26">onLeader</span><span style="color: #000000">(() </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
+<span style="color: #000000">   </span><span style="color: #008000">// Do something here, such as starting another transport</span>
+<span style="color: #000000">});</span>
+</code></pre>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Subscribable</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">this</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<p>  subscribable</p>
 						</li>
 					</ul>
 				</section>
@@ -334,7 +393,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides AbstractTransport.start</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/30f9141/packages/local/src/MachineLocalTransport.ts#L67">packages/local/src/MachineLocalTransport.ts:67</a></li>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/7308639/packages/local/src/MachineLocalTransport.ts#L135">packages/local/src/MachineLocalTransport.ts:135</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -358,7 +417,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides AbstractTransport.stop</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/30f9141/packages/local/src/MachineLocalTransport.ts#L105">packages/local/src/MachineLocalTransport.ts:105</a></li>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/7308639/packages/local/src/MachineLocalTransport.ts#L173">packages/local/src/MachineLocalTransport.ts:173</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span></h4>
