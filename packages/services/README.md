@@ -1,7 +1,7 @@
 # ataraxia-services
 
-[![npm version](https://badge.fury.io/js/ataraxia-services.svg)](https://badge.fury.io/js/ataraxia-services)
-[![Dependencies](https://david-dm.org/aholstenson/ataraxia/status.svg?path=packages/services)](https://david-dm.org/aholstenson/ataraxia?path=packages/services)
+[![npm version](https://img.shields.io/npm/v/ataraxia-services)](https://www.npmjs.com/package/ataraxia-services)
+[![Dependencies](https://img.shields.io/librariesio/release/npm/ataraxia-services)](https://libraries.io/npm/ataraxia-services)
 
 Services with RPC and events for [Ataraxia](https://github.com/aholstenson/ataraxia).
 

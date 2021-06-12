@@ -1,7 +1,7 @@
 # ataraxia-hyperswarm
 
-[![npm version](https://badge.fury.io/js/ataraxia-hyperswarm.svg)](https://badge.fury.io/js/ataraxia-hyperswarm)
-[![Dependencies](https://david-dm.org/aholstenson/ataraxia/status.svg?path=packages/hyperswarm)](https://david-dm.org/aholstenson/ataraxia?path=packages/hyperswarm)
+[![npm version](https://img.shields.io/npm/v/ataraxia-hyperswarm)](https://www.npmjs.com/package/ataraxia-hyperswarm)
+[![Dependencies](https://img.shields.io/librariesio/release/npm/ataraxia-hyperswarm)](https://libraries.io/npm/ataraxia-hyperswarm)
 
 Hyperswarm transport for [Ataraxia](https://github.com/aholstenson/ataraxia). 
 This transport discovers and connects to peers using a specific topic via the

@@ -2,14 +2,12 @@
   <img width="460" src="https://raw.githubusercontent.com/aholstenson/ataraxia/master/docs/mesh-example.svg">
 </p>
 
-<p align="center">
-
-  [![npm version](https://img.shields.io/npm/v/ataraxia)](https://www.npmjs.com/package/ataraxia)
-  [![Build Status](https://github.com/aholstenson/ataraxia/actions/workflows/ci.yml/badge.svg)](https://github.com/aholstenson/ataraxia/actions/workflows/ci.yml)
-
 </p>
 
 # Ataraxia
+
+[![npm version](https://img.shields.io/npm/v/ataraxia)](https://www.npmjs.com/package/ataraxia)
+[![Build Status](https://github.com/aholstenson/ataraxia/actions/workflows/ci.yml/badge.svg)](https://github.com/aholstenson/ataraxia/actions/workflows/ci.yml)
 
 Connect nodes, such as NodeJS-apps or browsers, together and send messages 
 between them. Provides a mesh network with peer-to-peer messaging, allowing

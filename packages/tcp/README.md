@@ -1,7 +1,7 @@
 # ataraxia-tcp
 
-[![npm version](https://badge.fury.io/js/ataraxia-tcp.svg)](https://badge.fury.io/js/ataraxia-tcp)
-[![Dependencies](https://david-dm.org/aholstenson/ataraxia/status.svg?path=packages/tcp)](https://david-dm.org/aholstenson/ataraxia?path=packages/tcp)
+[![npm version](https://img.shields.io/npm/v/ataraxia-tcp)](https://www.npmjs.com/package/ataraxia-tcp)
+[![Dependencies](https://img.shields.io/librariesio/release/npm/ataraxia-tcp)](https://libraries.io/npm/ataraxia-tcp)
 
 TCP transport for [Ataraxia](https://github.com/aholstenson/ataraxia). This
 transport can discover and automatically connect to other peers using a

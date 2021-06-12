@@ -1,7 +1,7 @@
 # ataraxia
 
-[![npm version](https://badge.fury.io/js/ataraxia.svg)](https://badge.fury.io/js/ataraxia)
-[![Dependencies](https://david-dm.org/aholstenson/ataraxia/status.svg?path=packages/core)](https://david-dm.org/aholstenson/ataraxia?path=packages/core)
+[![npm version](https://img.shields.io/npm/v/ataraxia)](https://www.npmjs.com/package/ataraxia)
+[![Dependencies](https://img.shields.io/librariesio/release/npm/ataraxia)](https://libraries.io/npm/ataraxia)
 
 <p align="center">
   <img width="460" src="https://raw.githubusercontent.com/aholstenson/ataraxia/master/docs/mesh-example.svg">

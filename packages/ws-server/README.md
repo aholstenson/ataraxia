@@ -1,7 +1,7 @@
 # ataraxia-ws-server
 
-[![npm version](https://badge.fury.io/js/ataraxia-ws-server.svg)](https://badge.fury.io/js/ataraxia-ws-server)
-[![Dependencies](https://david-dm.org/aholstenson/ataraxia/status.svg?path=packages/ws-server)](https://david-dm.org/aholstenson/ataraxia?path=packages/ws-server)
+[![npm version](https://img.shields.io/npm/v/ataraxia-ws-server)](https://www.npmjs.com/package/ataraxia-ws-server)
+[![Dependencies](https://img.shields.io/librariesio/release/npm/ataraxia-ws-server)](https://libraries.io/npm/ataraxia-ws-server)
 
 Server that allows clients to connect to an [Ataraxia network](https://github.com/aholstenson/ataraxia)
 via websockets. This implementation uses [ws](https://github.com/websockets/ws)

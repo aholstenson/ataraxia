@@ -1,7 +1,7 @@
 # ataraxia-cli
 
-[![npm version](https://badge.fury.io/js/ataraxia-cli.svg)](https://badge.fury.io/js/ataraxia-cli)
-[![Dependencies](https://david-dm.org/aholstenson/ataraxia/status.svg?path=packages/cli)](https://david-dm.org/aholstenson/ataraxia?path=packages/cli)
+[![npm version](https://img.shields.io/npm/v/ataraxia-cli)](https://www.npmjs.com/package/ataraxia-cli)
+[![Dependencies](https://img.shields.io/librariesio/release/npm/ataraxia-cli)](https://libraries.io/npm/ataraxia-cli)
 
 Command-cline to help with debugging an [Ataraxia](https://github.com/aholstenson/ataraxia)
 network.
