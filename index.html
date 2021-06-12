@@ -58,37 +58,61 @@
 	<div class="row">
 		<div class="col-8 col-content">
 			<div class="tsd-panel tsd-typography">
-				<p>Ataraxia is mesh networking library with peer-to-peer messaging for NodeJS and
-					the browser. Ataraxia connects different instances together and allows messages
-					to be passed between these instances. Some instances may act as routers for
-				other instances to create a mesh network.</p>
-				<p><a href="https://www.npmjs.com/package/ataraxia"><img src="https://img.shields.io/npm/v/ataraxia" alt="npm version"></a></p>
-				<p>Ataraxia is split into several projects:</p>
+				<p>Connect nodes, such as NodeJS-apps or browsers, together and send messages
+					between them. Provides a mesh network with peer-to-peer messaging, allowing
+					messages to be routed between nodes that are not directly connected with each
+				other.</p>
 				<ul>
-					<li><a href="modules/ataraxia.html">ataraxia</a> is the main library that provides the messaging functionality</li>
-					<li><a href="modules/ataraxia_local.html">ataraxia-local</a> provides a machine-local transport</li>
-					<li><a href="modules/ataraxia_tcp.html">ataraxia-tcp</a> provides a TCP-based transport with local network discovery</li>
-					<li><a href="modules/ataraxia_hyperswarm.html">ataraxia-hyperswarm</a> provides a Hyperswarm-based transport over the public Internet</li>
-					<li><a href="modules/ataraxia_ws_client.html">ataraxia-ws-client</a> provides a websocket client</li>
-					<li><a href="modules/ataraxia_ws_server.html">ataraxia-ws-server</a> provides a websocket server</li>
-					<li><a href="modules/ataraxia_services.html">ataraxia-services</a> provides easy-to-use services with RPC and events</li>
-				</ul>
-				<a href="#features" id="features" style="color: inherit; text-decoration: none;">
-					<h2>Features</h2>
-				</a>
-				<ul>
-					<li>Instances can send and receive messages from other instances</li>
-					<li>Partially connected mesh network, messages will be routed to their target</li>
-					<li>Authentication support, anonymous and shared secret authentication available in core</li>
-					<li>RPC support via <a href="modules/ataraxia_services.html">ataraxia-services</a> that lets you call methods and receive events from services registered anywhere in the network</li>
-					<li>Support for different transports<ul>
-							<li><a href="modules/ataraxia_local.html">ataraxia-local</a> provides a machine-local transport</li>
-							<li><a href="modules/ataraxia_tcp.html">ataraxia-tcp</a> provides a TCP-based transport with customizable discovery of peers and encrypted connections</li>
-							<li><a href="modules/ataraxia_ws_client.html">ataraxia-ws-client</a> and <a href="modules/ataraxia_ws_server.html">ataraxia-ws-server</a> for websockets</li>
-							<li><a href="modules/ataraxia_hyperswarm.html">ataraxia-hyperswarm</a> provides a transport that uses Hyperswarm to connect to peers over the public Internet</li>
+					<li>Instances can <strong>send and receive messages</strong> from other instances</li>
+					<li>Partially connected <strong>mesh network</strong>, messages will be routed to their target if needed</li>
+					<li><strong>Authentication support</strong>, <a href="classes/ataraxia.anonymousauth.html">anonymous</a> and <a href="classes/ataraxia.sharedsecretauth.html">shared secret</a> authentication available in core</li>
+					<li><strong>Encryption</strong>, most transports establish an encrypted connection by default</li>
+					<li><strong>RPC</strong>,  register and consume services anywhere in the network, supports method call and events, via <a href="modules/ataraxia_services.html">ataraxia-services</a></li>
+					<li>Support for <strong>different transports</strong><ul>
+							<li><a href="classes/ataraxia_local.machinelocaltransport.html">Machine-local transport</a>, connect to NodeJS-instances on the local machine </li>
+							<li><a href="classes/ataraxia_tcp.tcptransport.html">TCP-based transport</a> with customizable discovery of peers, <a href="classes/ataraxia_tcp.tcppeermdnsdiscovery.html">mDNS</a> included for discovery on the local network</li>
+							<li>Websockets, both <a href="classes/ataraxia_ws_server.websocketservertransport.html">server-side</a> and
+							<a href="classes/ataraxia_ws_client.websocketclienttransport.html">client-side</a> variants</li>
+							<li><a href="classes/ataraxia_hyperswarm.hyperswarmtransport.html">Hyperswarm</a> to find and connect to peers over the public Internet</li>
 						</ul>
 					</li>
 				</ul>
+				<a href="#getting-started" id="getting-started" style="color: inherit; text-decoration: none;">
+					<h2>Getting started</h2>
+				</a>
+				<p>To setup your own network install the <code>ataraxia</code> package and at least one
+				transport such as <code>ataraxia-tcp</code>:</p>
+				<pre><code><span style="color: #001080">$</span><span style="color: #000000"> </span><span style="color: #001080">npm</span><span style="color: #000000"> </span><span style="color: #001080">install</span><span style="color: #000000"> </span><span style="color: #001080">ataraxia</span><span style="color: #000000"> </span><span style="color: #001080">ataraxia</span><span style="color: #000000">-</span><span style="color: #001080">tcp</span>
+</code></pre>
+				<p>A network can then be created and joined:</p>
+				<pre><code class="language-javascript"><span style="color: #AF00DB">import</span><span style="color: #000000"> { </span><span style="color: #001080">Network</span><span style="color: #000000">, </span><span style="color: #001080">AnonymousAuth</span><span style="color: #000000"> } </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;ataraxia&#039;</span><span style="color: #000000">;</span>
+<span style="color: #AF00DB">import</span><span style="color: #000000"> { </span><span style="color: #001080">TCPTransport</span><span style="color: #000000">, </span><span style="color: #001080">TCPPeerMDNSDiscovery</span><span style="color: #000000"> } </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;ataraxia-tcp&#039;</span><span style="color: #000000">;</span>
+
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">net</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">Network</span><span style="color: #000000">({</span>
+<span style="color: #000000">  </span><span style="color: #001080">name:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;ataraxia-example&#039;</span><span style="color: #000000">,</span>
+<span style="color: #000000">  </span><span style="color: #001080">transports:</span><span style="color: #000000"> [</span>
+<span style="color: #000000">    </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">TCPTransport</span><span style="color: #000000">({</span>
+<span style="color: #000000">      </span><span style="color: #001080">discovery:</span><span style="color: #000000"> </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">TCPPeerMDNSDiscovery</span><span style="color: #000000">(),</span>
+<span style="color: #000000">      </span><span style="color: #001080">authentication:</span><span style="color: #000000"> [</span>
+<span style="color: #000000">        </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">AnonymousAuth</span><span style="color: #000000">()</span>
+<span style="color: #000000">      ]</span>
+<span style="color: #000000">    })</span>
+<span style="color: #000000">  ]</span>
+<span style="color: #000000">});</span>
+
+<span style="color: #001080">net</span><span style="color: #000000">.</span><span style="color: #795E26">onNodeAvailable</span><span style="color: #000000">(</span><span style="color: #001080">node</span><span style="color: #000000"> </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
+<span style="color: #000000">  </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;A new node is available:&#039;</span><span style="color: #000000">, </span><span style="color: #001080">node</span><span style="color: #000000">.</span><span style="color: #001080">id</span><span style="color: #000000">);</span>
+<span style="color: #000000">  </span><span style="color: #001080">node</span><span style="color: #000000">.</span><span style="color: #795E26">send</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;hello&#039;</span><span style="color: #000000">)</span>
+<span style="color: #000000">    .</span><span style="color: #795E26">catch</span><span style="color: #000000">(</span><span style="color: #001080">err</span><span style="color: #000000"> </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;Unable to send hello&#039;</span><span style="color: #000000">));</span>
+<span style="color: #000000">});</span>
+
+<span style="color: #001080">net</span><span style="color: #000000">.</span><span style="color: #795E26">onMessage</span><span style="color: #000000">(</span><span style="color: #001080">msg</span><span style="color: #000000"> </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
+<span style="color: #000000">  </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;A message was received&#039;</span><span style="color: #000000">, </span><span style="color: #001080">msg</span><span style="color: #000000">.</span><span style="color: #001080">type</span><span style="color: #000000">, </span><span style="color: #A31515">&#039;with data&#039;</span><span style="color: #000000">, </span><span style="color: #001080">msg</span><span style="color: #000000">.</span><span style="color: #001080">data</span><span style="color: #000000">, </span><span style="color: #A31515">&#039;from&#039;</span><span style="color: #000000">, </span><span style="color: #001080">msg</span><span style="color: #000000">.</span><span style="color: #001080">source</span><span style="color: #000000">.</span><span style="color: #001080">id</span><span style="color: #000000">);</span>
+<span style="color: #000000">});</span>
+
+<span style="color: #008000">// Join the network</span>
+<span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">net</span><span style="color: #000000">.</span><span style="color: #795E26">join</span><span style="color: #000000">();</span>
+</code></pre>
 			</div>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">

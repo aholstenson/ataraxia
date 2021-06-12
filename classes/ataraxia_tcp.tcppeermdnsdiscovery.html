@@ -74,6 +74,25 @@
 						<p>Discovery of peers using mDNS and DNS-SD on the local network. Will announce
 						using the name of the network.</p>
 					</div>
+					<p>This discovery is intended to be used with {@link TCPBasedTransport}.</p>
+					<p>Example:</p>
+					<pre><code class="language-javascript"><span style="color: #AF00DB">import</span><span style="color: #000000"> { </span><span style="color: #001080">Network</span><span style="color: #000000">, </span><span style="color: #001080">AnonymousAuth</span><span style="color: #000000"> } </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;ataraxia&#039;</span><span style="color: #000000">;</span>
+<span style="color: #AF00DB">import</span><span style="color: #000000"> { </span><span style="color: #001080">TCPTransport</span><span style="color: #000000">, </span><span style="color: #001080">TCPPeerMDNSDiscovery</span><span style="color: #000000"> } </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;ataraxia-tcp&#039;</span><span style="color: #000000">;</span>
+
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">net</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">Network</span><span style="color: #000000">({</span>
+<span style="color: #000000">  </span><span style="color: #001080">name:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;ataraxia-example&#039;</span><span style="color: #000000">,</span>
+
+<span style="color: #000000">  </span><span style="color: #001080">transports:</span><span style="color: #000000"> [</span>
+<span style="color: #000000">    </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">TCPTransport</span><span style="color: #000000">({</span>
+<span style="color: #000000">      </span><span style="color: #001080">discovery:</span><span style="color: #000000"> </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">TCPPeerMDNSDiscovery</span><span style="color: #000000">(),</span>
+
+<span style="color: #000000">      </span><span style="color: #001080">authentication:</span><span style="color: #000000"> [</span>
+<span style="color: #000000">        </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">AnonymousAuth</span><span style="color: #000000">()</span>
+<span style="color: #000000">      ]</span>
+<span style="color: #000000">    })</span>
+<span style="color: #000000">  ]</span>
+<span style="color: #000000">});</span>
+</code></pre>
 				</div>
 			</section>
 			<section class="tsd-panel tsd-hierarchy">
@@ -140,7 +159,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/ataraxia_tcp.tcppeerdiscovery.html">TCPPeerDiscovery</a>.<a href="../interfaces/ataraxia_tcp.tcppeerdiscovery.html#newdiscovery">newDiscovery</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/3ff258e/packages/tcp/src/TCPPeerMDNSDiscovery.ts#L10">packages/tcp/src/TCPPeerMDNSDiscovery.ts:10</a></li>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/d5bb118/packages/tcp/src/TCPPeerMDNSDiscovery.ts#L33">packages/tcp/src/TCPPeerMDNSDiscovery.ts:33</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -171,7 +190,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/ataraxia_tcp.tcppeerdiscovery.html">TCPPeerDiscovery</a>.<a href="../interfaces/ataraxia_tcp.tcppeerdiscovery.html#publish">publish</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/3ff258e/packages/tcp/src/TCPPeerMDNSDiscovery.ts#L16">packages/tcp/src/TCPPeerMDNSDiscovery.ts:16</a></li>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/d5bb118/packages/tcp/src/TCPPeerMDNSDiscovery.ts#L39">packages/tcp/src/TCPPeerMDNSDiscovery.ts:39</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
