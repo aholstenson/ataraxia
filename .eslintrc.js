@@ -53,7 +53,7 @@ module.exports = {
 		'@typescript-eslint/consistent-type-assertions': [ 'error' ],
 		'@typescript-eslint/consistent-type-definitions': [ 'error' ],
 		'@typescript-eslint/explicit-member-accessibility': [
-			'error',
+			'warn',
 			{
 				'accessibility': 'explicit'
 			}
