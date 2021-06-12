@@ -1,3 +1,7 @@
+<p align="center">
+  <img width="460" height="258" src="https://raw.githubusercontent.com/aholstenson/ataraxia/master/docs/mesh-example.svg">
+</p>
+
 Connect nodes, such as NodeJS-apps or browsers, together and send messages 
 between them. Provides a mesh network with peer-to-peer messaging, allowing
 messages to be routed between nodes that are not directly connected with each
