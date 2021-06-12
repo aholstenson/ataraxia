@@ -5,6 +5,29 @@ import { TCPPeerDiscovery, TCPDiscoveryDetails, TCPServerDetails } from './TCPPe
 /**
  * Discovery of peers using mDNS and DNS-SD on the local network. Will announce
  * using the name of the network.
+ *
+ * This discovery is intended to be used with {@link TCPBasedTransport}.
+ *
+ * Example:
+ *
+ * ```javascript
+ * import { Network, AnonymousAuth } from 'ataraxia';
+ * import { TCPTransport, TCPPeerMDNSDiscovery } from 'ataraxia-tcp';
+ *
+ * const net = new Network({
+ *   name: 'ataraxia-example',
+ *
+ *   transports: [
+ *     new TCPTransport({
+ *       discovery: new TCPPeerMDNSDiscovery(),
+ *
+ *       authentication: [
+ *         new AnonymousAuth()
+ *       ]
+ *     })
+ *   ]
+ * });
+ * ```
  */
 export class TCPPeerMDNSDiscovery implements TCPPeerDiscovery {
 	public newDiscovery(options: TCPDiscoveryDetails) {
