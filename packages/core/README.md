@@ -2,6 +2,7 @@
 
 [![npm version](https://img.shields.io/npm/v/ataraxia)](https://www.npmjs.com/package/ataraxia)
 [![Dependencies](https://img.shields.io/librariesio/release/npm/ataraxia)](https://libraries.io/npm/ataraxia)
+[![Typedoc](https://img.shields.io/badge/typedoc-ataraxia-%23fff)](https://aholstenson.github.io/ataraxia/modules/ataraxia.html)
 
 <p align="center">
   <img width="460" src="https://raw.githubusercontent.com/aholstenson/ataraxia/master/docs/mesh-example.svg">
