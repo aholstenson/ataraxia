@@ -1,6 +1,5 @@
 import { Encoder, Decoder } from '@stablelib/cbor';
 import { hmac } from 'fast-sha256';
-import { TextEncoder } from 'fastestsmallesttextencoderdecoder';
 
 import { randomBytes } from '../randomBytes';
 
@@ -31,7 +30,7 @@ export class SharedSecretAuth implements AuthProvider {
 
 	public constructor(options: SharedSecretAuthOptions) {
 		if(typeof options.secret === 'string') {
-			const encoder = new TextEncoder();
+			const encoder = createTextEncoder();
 			this.secret = encoder.encode(options.secret);
 		} else {
 			this.secret = options.secret;
@@ -211,3 +210,19 @@ function calculateResponse(
 	return hmac(new Uint8Array(key), combinedChallenge);
 }
 
+/**
+ * Utility function to create a TextEncoder.
+ *
+ * @returns
+ *   instance of TextEncoder
+ */
+function createTextEncoder(): any {
+	const a = globalThis as any;
+	if(typeof a.TextEncoder === 'undefined') {
+		// eslint-disable-next-line @typescript-eslint/no-var-requires
+		const { TextEncoder } = require('util');
+		return new TextEncoder();
+	} else {
+		return new a.TextEncoder();
+	}
+}
