@@ -2,10 +2,9 @@ import { createHash } from 'crypto';
 import { Duplex } from 'stream';
 
 import hyperswarm, { Swarm } from 'hyperswarm';
-import peer from 'noise-peer';
 
 import { AuthProvider, WithNetwork } from 'ataraxia';
-import { AbstractTransport, StreamingPeer, TransportOptions } from 'ataraxia/transport';
+import { AbstractTransport, EncryptedStreamingPeer, TransportOptions } from 'ataraxia/transport';
 
 /**
  * Options that can be used for a Hyperswarm transport.
@@ -128,7 +127,7 @@ export class HyperswarmTransport extends AbstractTransport {
 	}
 }
 
-class HyperswarmPeer extends StreamingPeer {
+class HyperswarmPeer extends EncryptedStreamingPeer {
 	public constructor(
 		network: WithNetwork,
 		authProviders: ReadonlyArray<AuthProvider>,
@@ -137,15 +136,6 @@ class HyperswarmPeer extends StreamingPeer {
 	) {
 		super(network, authProviders);
 
-		const stream = peer(socket, client);
-		this.setStream(stream);
-
-		stream.on('connected', () => {
-			if(client) {
-				this.negotiateAsClient();
-			} else {
-				this.negotiateAsServer();
-			}
-		});
+		this.setStream(socket, client);
 	}
 }

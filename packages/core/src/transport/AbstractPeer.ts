@@ -98,7 +98,7 @@ export abstract class AbstractPeer implements Peer {
 		authProviders: ReadonlyArray<AuthProvider>
 	) {
 		this.parent = parent;
-		this.debug = debug(parent.debugNamespace + ':pending-peer');
+		this.debug = debug(parent.debugNamespace + ':peer:pending');
 
 		this.authProviders = authProviders;
 
@@ -231,7 +231,9 @@ export abstract class AbstractPeer implements Peer {
 	 * Initiate negotiation as the server. This will send the initial Hello
 	 * to the client and this peer will start waiting for a reply.
 	 */
-	public negotiateAsServer() {
+	protected negotiateAsServer() {
+		this.debug = debug(this.parent.debugNamespace + ':peer:pending:server');
+
 		this.state = State.WaitingForSelect;
 
 		// Write the hello message
@@ -250,7 +252,9 @@ export abstract class AbstractPeer implements Peer {
 	 * Initiate negotiation as the client. This will switch the peer into a
 	 * client mode and wait for the initial Hello from the server.
 	 */
-	public negotiateAsClient() {
+	protected negotiateAsClient() {
+		this.debug = debug(this.parent.debugNamespace + ':peer:pending:client');
+
 		this.registerLatencySend();
 
 		this.state = State.WaitingForHello;
@@ -649,6 +653,8 @@ export abstract class AbstractPeer implements Peer {
 	}
 
 	private switchToActive() {
+		this.debug('Switching to active');
+
 		// Make sure the timeout won't be triggered
 		clearTimeout(this.helloTimeout);
 		this.helloTimeout = undefined;

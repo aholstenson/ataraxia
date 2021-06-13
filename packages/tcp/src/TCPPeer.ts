@@ -1,17 +1,14 @@
 import { Socket, connect } from 'net';
 
-import peer from 'noise-peer';
 import { HostAndPort } from 'tinkerhub-discovery';
 
 import { WithNetwork, BackOff, AuthProvider } from 'ataraxia';
-import { StreamingPeer, DisconnectReason } from 'ataraxia/transport';
+import { EncryptedStreamingPeer, DisconnectReason } from 'ataraxia/transport';
 
 /**
  * Peer for TCP transport, represents either a server or a client connection.
- * Extends `StreamingPeer` and uses `noise-peer` to establish a secure
- * connection.
  */
-export class TCPPeer extends StreamingPeer {
+export class TCPPeer extends EncryptedStreamingPeer {
 	private _serverSocket?: Socket;
 	public addresses: HostAndPort[];
 
@@ -51,9 +48,7 @@ export class TCPPeer extends StreamingPeer {
 		socket.on('close', () => this._serverSocket = undefined);
 
 		// Use this connection if there is no other connection active
-		const stream = peer(socket, false);
-		this.setStream(stream);
-		stream.on('connected', () => this.negotiateAsServer());
+		this.setStream(socket, false);
 	}
 
 	public get serverSocket() {
@@ -114,12 +109,8 @@ export class TCPPeer extends StreamingPeer {
 			this.debug('Negotiating connection via ' + address.host + ':' + address.port);
 		});
 
-		const stream = peer(client, true);
-		stream.on('connected', () => {
-			this.debug('Connected via ' + address.host + ':' + address.port);
-			this.negotiateAsClient();
-		});
-		this.setStream(stream);
+		this.debug('Connected via ' + address.host + ':' + address.port);
+		this.setStream(client, true);
 	}
 
 	protected didConnect() {

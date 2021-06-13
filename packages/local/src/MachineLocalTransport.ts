@@ -1,11 +1,12 @@
 import { Socket } from 'net';
 import { tmpdir } from 'os';
 import { join } from 'path';
+import { Duplex } from 'stream';
 
 import { Event, Subscribable } from 'atvik';
 import { LowLevelNetwork } from 'local-machine-network';
 
-import { AnonymousAuth } from 'ataraxia';
+import { AnonymousAuth, AuthProvider, WithNetwork } from 'ataraxia';
 import {
 	AbstractTransport,
 	StreamingPeer,
@@ -152,13 +153,7 @@ export class MachineLocalTransport extends AbstractTransport {
 		});
 
 		const handlePeer = (socket: Socket, server: boolean) => {
-			const peer = new LocalPeer(this.network, AUTH);
-			peer.setStream(socket);
-			if(server) {
-				peer.negotiateAsServer();
-			} else {
-				peer.negotiateAsClient();
-			}
+			const peer = new LocalPeer(this.network, AUTH, socket, ! server);
 			this.addPeer(peer);
 		};
 
@@ -183,6 +178,17 @@ export class MachineLocalTransport extends AbstractTransport {
 
 
 class LocalPeer extends StreamingPeer {
+	public constructor(
+		network: WithNetwork,
+		authProviders: ReadonlyArray<AuthProvider>,
+		socket: Duplex,
+		client: boolean
+	) {
+		super(network, authProviders);
+
+		this.setStream(socket, client);
+	}
+
 	public disconnect() {
 		// Disconnect does nothing for local transport
 		this.handleDisconnect(DisconnectReason.Manual);

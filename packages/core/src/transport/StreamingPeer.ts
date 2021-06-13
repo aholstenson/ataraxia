@@ -28,8 +28,10 @@ export class StreamingPeer extends AbstractPeer {
 	 *
 	 * @param stream -
 	 *   duplex stream to use
+	 * @param client -
+	 *   if this peer is a client
 	 */
-	public setStream(stream: Duplex) {
+	protected setStream(stream: Duplex, client: boolean) {
 		if(this.stream) {
 			// Request that the previous socket is destroyed
 			this.stream.destroy();
@@ -69,6 +71,12 @@ export class StreamingPeer extends AbstractPeer {
 		// Catch errors on pipe and decoder
 		decoder.on('error', err => this.debug('Error from decoder', err));
 		pipe.on('error', err => this.debug('Error from pipe', err));
+
+		if(client) {
+			this.negotiateAsClient();
+		} else {
+			this.negotiateAsServer();
+		}
 	}
 
 	/**
@@ -156,13 +164,12 @@ export class StreamingPeer extends AbstractPeer {
 		const data = encodePeerPacket(type, payload);
 		const socket = this.stream;
 
-		return new Promise((resolve, reject) => socket.write(data, err => {
-			if(err) {
-				this.debug('Could not send data;', err);
-				reject(err);
-			} else {
+		return new Promise(resolve => {
+			if(socket.write(data)) {
 				resolve();
+			} else {
+				socket.once('drain', resolve);
 			}
-		}));
+		});
 	}
 }
