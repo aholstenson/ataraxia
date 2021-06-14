@@ -160,8 +160,8 @@ export class TCPTransport extends AbstractTransport {
 					const peer = this.foundPeers.get(service.id);
 					if(! peer) return;
 
-					this.debug('Peer with id', service.id, 'no longer available, disconnecting');
-					peer.disconnect();
+					this.debug('Peer with id', service.id, 'no longer available, will no longer try reconnecting');
+					peer.stopConnecting();
 
 					this.foundPeers.delete(service.id);
 				});
