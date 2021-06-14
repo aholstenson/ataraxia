@@ -53,9 +53,12 @@ module.exports = {
 		'@typescript-eslint/consistent-type-assertions': [ 'error' ],
 		'@typescript-eslint/consistent-type-definitions': [ 'error' ],
 		'@typescript-eslint/explicit-member-accessibility': [
-			'warn',
+			'error',
 			{
-				'accessibility': 'explicit'
+				'accessibility': 'explicit',
+				'overrides': {
+					'properties': 'off'
+				}
 			}
 		],
 		'@typescript-eslint/indent': [ 'error', 'tab', {
