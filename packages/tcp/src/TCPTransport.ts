@@ -5,8 +5,9 @@ import { ServicePublisher, ServiceDiscovery, MultiAddressService, HostAndPort } 
 import { AuthProvider } from 'ataraxia';
 import { AbstractTransport, TransportOptions } from 'ataraxia/transport';
 
-import { TCPPeer } from './TCPPeer';
+import { TCPClientPeer } from './TCPClientPeer';
 import { TCPPeerDiscovery } from './TCPPeerDiscovery';
+import { TCPServerPeer } from './TCPServerPeer';
 
 /**
  * Options that can be used for a TCP transport.
@@ -36,7 +37,7 @@ export class TCPTransport extends AbstractTransport {
 	private readonly authProviders: ReadonlyArray<AuthProvider>;
 
 	private _port: number;
-	private foundPeers: Map<string, TCPPeer>;
+	private foundPeers: Map<string, TCPClientPeer>;
 
 	private discovery?: TCPPeerDiscovery;
 	private server?: Server;
@@ -90,8 +91,11 @@ export class TCPTransport extends AbstractTransport {
 			});
 
 			this.server.on('connection', socket => {
-				const peer = new TCPPeer(this.network, this.authProviders);
-				peer.serverSocket = socket;
+				const peer = new TCPServerPeer(
+					this.network,
+					this.authProviders,
+					socket
+				);
 
 				this.addPeer(peer);
 			});
@@ -146,7 +150,7 @@ export class TCPTransport extends AbstractTransport {
 					this.debug('Peer with id', service.id, 'now available, attempting connect');
 
 					// Setup the peer to attempt to connect to
-					const peer = this.setupPeer(service.addresses);
+					const peer = this.connectToPeer(service.addresses);
 
 					// Track the peer
 					this.foundPeers.set(service.id, peer);
@@ -166,7 +170,7 @@ export class TCPTransport extends AbstractTransport {
 
 		// Request connection to all manual peers added
 		for(const manualPeer of this.manualPeers) {
-			this.setupPeer([ manualPeer ]);
+			this.connectToPeer([ manualPeer ]);
 		}
 
 		return true;
@@ -213,17 +217,17 @@ export class TCPTransport extends AbstractTransport {
 		this.manualPeers.push(instance);
 
 		if(this.started) {
-			this.setupPeer([ instance ]);
+			this.connectToPeer([ instance ]);
 		}
 	}
 
-	private setupPeer(addresses: HostAndPort[]) {
-		const peer = new TCPPeer(this.network, this.authProviders);
+	private connectToPeer(addresses: HostAndPort[]) {
+		const peer = new TCPClientPeer(
+			this.network,
+			this.authProviders,
+			addresses
+		);
 		this.addPeer(peer);
-
-		peer.setReachableVia(addresses);
-		peer.tryConnect();
-
 		return peer;
 	}
 }

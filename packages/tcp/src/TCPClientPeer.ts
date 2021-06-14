@@ -1,4 +1,4 @@
-import { Socket, connect } from 'net';
+import { connect } from 'net';
 
 import { HostAndPort } from 'tinkerhub-discovery';
 
@@ -6,10 +6,9 @@ import { WithNetwork, BackOff, AuthProvider } from 'ataraxia';
 import { EncryptedStreamingPeer, DisconnectReason } from 'ataraxia/transport';
 
 /**
- * Peer for TCP transport, represents either a server or a client connection.
+ * Peer for TCP transport, used for outgoing connections to a server.
  */
-export class TCPPeer extends EncryptedStreamingPeer {
-	private _serverSocket?: Socket;
+export class TCPClientPeer extends EncryptedStreamingPeer {
 	public addresses: HostAndPort[];
 
 	private readonly backOff: BackOff;
@@ -19,7 +18,8 @@ export class TCPPeer extends EncryptedStreamingPeer {
 
 	public constructor(
 		network: WithNetwork,
-		authProviders: ReadonlyArray<AuthProvider>
+		authProviders: ReadonlyArray<AuthProvider>,
+		addresses: HostAndPort[]
 	) {
 		super(network, authProviders);
 
@@ -28,48 +28,13 @@ export class TCPPeer extends EncryptedStreamingPeer {
 			maxDelay: 30000
 		});
 
-		this.addresses = [];
-		this.addressAttempt = 0;
-	}
-
-	/**
-	 * Set socket to use in server mode.
-	 */
-	public set serverSocket(socket: Socket | undefined) {
-		if(! socket) {
-			throw new Error('Tried setting an undefined server socket');
-		}
-
-		this._serverSocket = socket;
-
-		this.debug('Client connected from', socket.remoteAddress);
-
-		// Setup the server socket to remove itself if it disconnects
-		socket.on('close', () => this._serverSocket = undefined);
-
-		// Use this connection if there is no other connection active
-		this.setStream(socket, false);
-	}
-
-	public get serverSocket() {
-		return this._serverSocket;
-	}
-
-	/**
-	 * Set the addresses that this peer can be reached via.
-	 *
-	 * @param addresses -
-	 *   array of host and ports
-	 */
-	public setReachableVia(addresses: HostAndPort[]) {
 		this.addresses = addresses;
 		this.addressAttempt = 0;
+
+		this.tryConnect();
 	}
 
 	protected handleDisconnect(reason: DisconnectReason, err?: Error) {
-		// Remove the server socket if it exists
-		this._serverSocket = undefined;
-
 		// Make sure that parent peer is disconnected
 		super.handleDisconnect(reason, err);
 
@@ -91,11 +56,11 @@ export class TCPPeer extends EncryptedStreamingPeer {
 	/**
 	 * Attempt to connect to a server, will try addresses in order.
 	 */
-	public tryConnect() {
+	private tryConnect() {
 		clearTimeout(this.connectTimeout);
 
 		// Only continue if we have some addresses we know of
-		if(! this.addresses) return;
+		if(this.addresses.length === 0) return;
 
 		const address = this.addresses[this.addressAttempt];
 		this.debug('Attempting connect to ' + address.host + ':' + address.port);
@@ -119,7 +84,12 @@ export class TCPPeer extends EncryptedStreamingPeer {
 	}
 
 	public disconnect() {
+		this.stopConnecting();
 		super.disconnect();
+	}
+
+	public stopConnecting() {
+		this.addresses = [];
 		clearTimeout(this.connectTimeout);
 	}
 }
