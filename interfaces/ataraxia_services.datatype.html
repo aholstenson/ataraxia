@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>AuthProvider | Ataraxia</title>
+	<title>DataType | Ataraxia</title>
 	<meta name="description" content="Documentation for Ataraxia">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -55,13 +55,13 @@
 					<a href="../modules.html">Ataraxia</a>
 				</li>
 				<li>
-					<a href="../modules/ataraxia.html">ataraxia</a>
+					<a href="../modules/ataraxia_services.html">ataraxia-services</a>
 				</li>
 				<li>
-					<a href="ataraxia.authprovider.html">AuthProvider</a>
+					<a href="ataraxia_services.datatype.html">DataType</a>
 				</li>
 			</ul>
-			<h1>Interface AuthProvider</h1>
+			<h1>Interface DataType&lt;T&gt;</h1>
 		</div>
 	</div>
 </header>
@@ -71,24 +71,25 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>Authentication provider responsible for creating and managing authentication
-						flows.</p>
+						<p>Declaration of a specific type of data, used to convert to and from this
+						type.</p>
 					</div>
 				</div>
+			</section>
+			<section class="tsd-panel tsd-type-parameters">
+				<h3>Type parameters</h3>
+				<ul class="tsd-type-parameters">
+					<li>
+						<h4>T</h4>
+					</li>
+				</ul>
 			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">AuthProvider</span>
+						<span class="target">DataType</span>
 					</li>
-				</ul>
-			</section>
-			<section class="tsd-panel">
-				<h3>Implemented by</h3>
-				<ul class="tsd-hierarchy">
-					<li><a href="../classes/ataraxia.anonymousauth.html" class="tsd-signature-type" data-tsd-kind="Class">AnonymousAuth</a></li>
-					<li><a href="../classes/ataraxia.sharedsecretauth.html" class="tsd-signature-type" data-tsd-kind="Class">SharedSecretAuth</a></li>
 				</ul>
 			</section>
 			<section class="tsd-panel-group tsd-index-group">
@@ -98,14 +99,14 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="ataraxia.authprovider.html#id" class="tsd-kind-icon">id</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="ataraxia_services.datatype.html#id" class="tsd-kind-icon">id</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="ataraxia.authprovider.html#createclientflow" class="tsd-kind-icon">create<wbr>Client<wbr>Flow</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="ataraxia.authprovider.html#createserverflow" class="tsd-kind-icon">create<wbr>Server<wbr>Flow</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="ataraxia_services.datatype.html#frombasic" class="tsd-kind-icon">from<wbr>Basic</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="ataraxia_services.datatype.html#tobasic" class="tsd-kind-icon">to<wbr>Basic</a></li>
 							</ul>
 						</section>
 					</div>
@@ -119,13 +120,12 @@
 					<div class="tsd-signature tsd-kind-icon">id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/7ee4ab4/packages/core/src/auth/AuthProvider.ts#L14">packages/core/src/auth/AuthProvider.ts:14</a></li>
+							<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/7ee4ab4/packages/service-contracts/src/DataType.ts#L11">packages/service-contracts/src/DataType.ts:11</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>A readonly identifier for this provider. Used during authentication to
-							uniquely identify the provider.</p>
+							<p>The identifier of this data type.</p>
 						</div>
 					</div>
 				</section>
@@ -133,58 +133,65 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Methods</h2>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
-					<a name="createclientflow" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> create<wbr>Client<wbr>Flow</h3>
+					<a name="frombasic" class="tsd-anchor"></a>
+					<h3>from<wbr>Basic</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">create<wbr>Client<wbr>Flow<span class="tsd-signature-symbol">(</span>context<span class="tsd-signature-symbol">: </span><a href="ataraxia.authcontext.html" class="tsd-signature-type" data-tsd-kind="Interface">AuthContext</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="ataraxia.authclientflow.html" class="tsd-signature-type" data-tsd-kind="Interface">AuthClientFlow</a></li>
+						<li class="tsd-signature tsd-kind-icon">from<wbr>Basic<span class="tsd-signature-symbol">(</span>value<span class="tsd-signature-symbol">: </span><a href="../modules/ataraxia_services.html#basicvalue" class="tsd-signature-type" data-tsd-kind="Type alias">BasicValue</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/7ee4ab4/packages/core/src/auth/AuthProvider.ts#L19">packages/core/src/auth/AuthProvider.ts:19</a></li>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/7ee4ab4/packages/service-contracts/src/DataType.ts#L26">packages/service-contracts/src/DataType.ts:26</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Create a client flow for the current network.</p>
+									<p>Convert a basic value into the specific value.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>context: <a href="ataraxia.authcontext.html" class="tsd-signature-type" data-tsd-kind="Interface">AuthContext</a></h5>
+									<h5>value: <a href="../modules/ataraxia_services.html#basicvalue" class="tsd-signature-type" data-tsd-kind="Type alias">BasicValue</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>-</p>
+									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="ataraxia.authclientflow.html" class="tsd-signature-type" data-tsd-kind="Interface">AuthClientFlow</a></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">T</span></h4>
 						</li>
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
-					<a name="createserverflow" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> create<wbr>Server<wbr>Flow</h3>
+					<a name="tobasic" class="tsd-anchor"></a>
+					<h3>to<wbr>Basic</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">create<wbr>Server<wbr>Flow<span class="tsd-signature-symbol">(</span>context<span class="tsd-signature-symbol">: </span><a href="ataraxia.authcontext.html" class="tsd-signature-type" data-tsd-kind="Interface">AuthContext</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="ataraxia.authserverflow.html" class="tsd-signature-type" data-tsd-kind="Interface">AuthServerFlow</a></li>
+						<li class="tsd-signature tsd-kind-icon">to<wbr>Basic<span class="tsd-signature-symbol">(</span>value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../modules/ataraxia_services.html#basicvalue" class="tsd-signature-type" data-tsd-kind="Type alias">BasicValue</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/7ee4ab4/packages/core/src/auth/AuthProvider.ts#L24">packages/core/src/auth/AuthProvider.ts:24</a></li>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/7ee4ab4/packages/service-contracts/src/DataType.ts#L19">packages/service-contracts/src/DataType.ts:19</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Create a server flow for the current network.</p>
+									<p>Convert a specific value into a basic value that can be sent over the
+									network.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>context: <a href="ataraxia.authcontext.html" class="tsd-signature-type" data-tsd-kind="Interface">AuthContext</a></h5>
+									<h5>value: <span class="tsd-signature-type">T</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>-</p>
+									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="ataraxia.authserverflow.html" class="tsd-signature-type" data-tsd-kind="Interface">AuthServerFlow</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="../modules/ataraxia_services.html#basicvalue" class="tsd-signature-type" data-tsd-kind="Type alias">BasicValue</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -196,7 +203,7 @@
 					<li class=" ">
 						<a href="../modules.html">Modules</a>
 					</li>
-					<li class="current tsd-kind-module">
+					<li class=" tsd-kind-module">
 						<a href="../modules/ataraxia.html">ataraxia</a>
 					</li>
 					<li class=" tsd-kind-module">
@@ -205,7 +212,7 @@
 					<li class=" tsd-kind-module">
 						<a href="../modules/ataraxia_local.html">ataraxia-<wbr>local</a>
 					</li>
-					<li class=" tsd-kind-module">
+					<li class="current tsd-kind-module">
 						<a href="../modules/ataraxia_services.html">ataraxia-<wbr>services</a>
 					</li>
 					<li class=" tsd-kind-module">
@@ -224,95 +231,86 @@
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-enum tsd-parent-kind-module">
-						<a href="../enums/ataraxia.authclientreplytype.html" class="tsd-kind-icon">Auth<wbr>Client<wbr>Reply<wbr>Type</a>
-					</li>
-					<li class=" tsd-kind-enum tsd-parent-kind-module">
-						<a href="../enums/ataraxia.authserverreplytype.html" class="tsd-kind-icon">Auth<wbr>Server<wbr>Reply<wbr>Type</a>
-					</li>
-					<li class=" tsd-kind-class tsd-parent-kind-module">
-						<a href="../classes/ataraxia.anonymousauth.html" class="tsd-kind-icon">Anonymous<wbr>Auth</a>
-					</li>
-					<li class=" tsd-kind-class tsd-parent-kind-module">
-						<a href="../classes/ataraxia.backoff.html" class="tsd-kind-icon">Back<wbr>Off</a>
+					<li class=" tsd-kind-class tsd-parent-kind-module tsd-has-type-parameter tsd-is-external">
+						<a href="../classes/ataraxia_services.asyncevent.html" class="tsd-kind-icon">Async<wbr>Event</a>
 					</li>
 					<li class=" tsd-kind-class tsd-parent-kind-module tsd-has-type-parameter">
-						<a href="../classes/ataraxia.network.html" class="tsd-kind-icon">Network</a>
-					</li>
-					<li class=" tsd-kind-class tsd-parent-kind-module tsd-has-type-parameter">
-						<a href="../classes/ataraxia.requestreplyhelper.html" class="tsd-kind-icon">Request<wbr>Reply<wbr>Helper</a>
+						<a href="../classes/ataraxia_services.servicecontract.html" class="tsd-kind-icon">Service<wbr>Contract</a>
 					</li>
 					<li class=" tsd-kind-class tsd-parent-kind-module">
-						<a href="../classes/ataraxia.sharedsecretauth.html" class="tsd-kind-icon">Shared<wbr>Secret<wbr>Auth</a>
+						<a href="../classes/ataraxia_services.services.html" class="tsd-kind-icon">Services</a>
 					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-module">
-						<a href="ataraxia.authclientflow.html" class="tsd-kind-icon">Auth<wbr>Client<wbr>Flow</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-module">
-						<a href="ataraxia.authcontext.html" class="tsd-kind-icon">Auth<wbr>Context</a>
+					<li class=" tsd-kind-interface tsd-parent-kind-module tsd-has-type-parameter tsd-is-external">
+						<a href="ataraxia_services.asyncsubscribable.html" class="tsd-kind-icon">Async<wbr>Subscribable</a>
 					</li>
 				</ul>
 				<ul class="current">
-					<li class="current tsd-kind-interface tsd-parent-kind-module">
-						<a href="ataraxia.authprovider.html" class="tsd-kind-icon">Auth<wbr>Provider</a>
+					<li class="current tsd-kind-interface tsd-parent-kind-module tsd-has-type-parameter">
+						<a href="ataraxia_services.datatype.html" class="tsd-kind-icon">Data<wbr>Type</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="ataraxia.authprovider.html#id" class="tsd-kind-icon">id</a>
+								<a href="ataraxia_services.datatype.html#id" class="tsd-kind-icon">id</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface">
-								<a href="ataraxia.authprovider.html#createclientflow" class="tsd-kind-icon">create<wbr>Client<wbr>Flow</a>
+								<a href="ataraxia_services.datatype.html#frombasic" class="tsd-kind-icon">from<wbr>Basic</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface">
-								<a href="ataraxia.authprovider.html#createserverflow" class="tsd-kind-icon">create<wbr>Server<wbr>Flow</a>
+								<a href="ataraxia_services.datatype.html#tobasic" class="tsd-kind-icon">to<wbr>Basic</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
 					<li class=" tsd-kind-interface tsd-parent-kind-module">
-						<a href="ataraxia.authserverflow.html" class="tsd-kind-icon">Auth<wbr>Server<wbr>Flow</a>
+						<a href="ataraxia_services.service.html" class="tsd-kind-icon">Service</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-module">
-						<a href="ataraxia.backoffoptions.html" class="tsd-kind-icon">Back<wbr>Off<wbr>Options</a>
+						<a href="ataraxia_services.serviceeventcontract.html" class="tsd-kind-icon">Service<wbr>Event<wbr>Contract</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-module tsd-has-type-parameter">
-						<a href="ataraxia.exchange.html" class="tsd-kind-icon">Exchange</a>
+						<a href="ataraxia_services.serviceeventdescription.html" class="tsd-kind-icon">Service<wbr>Event<wbr>Description</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="ataraxia_services.servicehandle.html" class="tsd-kind-icon">Service<wbr>Handle</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="ataraxia_services.servicemethodcontract.html" class="tsd-kind-icon">Service<wbr>Method<wbr>Contract</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-module tsd-has-type-parameter">
-						<a href="ataraxia.message.html" class="tsd-kind-icon">Message</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-module">
-						<a href="ataraxia.networkoptions.html" class="tsd-kind-icon">Network<wbr>Options</a>
+						<a href="ataraxia_services.servicemethoddescription.html" class="tsd-kind-icon">Service<wbr>Method<wbr>Description</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-module tsd-has-type-parameter">
-						<a href="ataraxia.node.html" class="tsd-kind-icon">Node</a>
+						<a href="ataraxia_services.serviceparamdescription.html" class="tsd-kind-icon">Service<wbr>Param<wbr>Description</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-module">
-						<a href="ataraxia.preparerequestoptions.html" class="tsd-kind-icon">Prepare<wbr>Request<wbr>Options</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-module">
-						<a href="ataraxia.requestreplyhelperoptions.html" class="tsd-kind-icon">Request<wbr>Reply<wbr>Helper<wbr>Options</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-module">
-						<a href="ataraxia.sharedsecretauthoptions.html" class="tsd-kind-icon">Shared<wbr>Secret<wbr>Auth<wbr>Options</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-module">
-						<a href="ataraxia.withnetwork.html" class="tsd-kind-icon">With<wbr>Network</a>
+						<a href="ataraxia_services.serviceparametercontract.html" class="tsd-kind-icon">Service<wbr>Parameter<wbr>Contract</a>
 					</li>
 					<li class=" tsd-kind-type-alias tsd-parent-kind-module">
-						<a href="../modules/ataraxia.html#authclientreply" class="tsd-kind-icon">Auth<wbr>Client<wbr>Reply</a>
+						<a href="../modules/ataraxia_services.html#basicvalue" class="tsd-kind-icon">Basic<wbr>Value</a>
 					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-module">
-						<a href="../modules/ataraxia.html#authserverreply" class="tsd-kind-icon">Auth<wbr>Server<wbr>Reply</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter">
-						<a href="../modules/ataraxia.html#messagedata" class="tsd-kind-icon">Message<wbr>Data</a>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter tsd-is-external">
+						<a href="../modules/ataraxia_services.html#listener" class="tsd-kind-icon">Listener</a>
 					</li>
 					<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter">
-						<a href="../modules/ataraxia.html#messagetype" class="tsd-kind-icon">Message<wbr>Type</a>
+						<a href="../modules/ataraxia_services.html#localservice" class="tsd-kind-icon">Local<wbr>Service</a>
 					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter">
-						<a href="../modules/ataraxia.html#messageunion" class="tsd-kind-icon">Message<wbr>Union</a>
+					<li class=" tsd-kind-variable tsd-parent-kind-module">
+						<a href="../modules/ataraxia_services.html#booleantype" class="tsd-kind-icon">boolean<wbr>Type</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-module">
+						<a href="../modules/ataraxia_services.html#numbertype" class="tsd-kind-icon">number<wbr>Type</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-module">
+						<a href="../modules/ataraxia_services.html#stringtype" class="tsd-kind-icon">string<wbr>Type</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-module">
+						<a href="../modules/ataraxia_services.html#voidtype" class="tsd-kind-icon">void<wbr>Type</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter">
+						<a href="../modules/ataraxia_services.html#arraytype" class="tsd-kind-icon">array<wbr>Type</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-module">
+						<a href="../modules/ataraxia_services.html#servicecontract-1" class="tsd-kind-icon">service<wbr>Contract</a>
 					</li>
 				</ul>
 			</nav>

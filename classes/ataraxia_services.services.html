@@ -98,13 +98,13 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="ataraxia_services.services.html#onserviceavailable" class="tsd-kind-icon">on<wbr>Service<wbr>Available</a></li>
 								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="ataraxia_services.services.html#onserviceunavailable" class="tsd-kind-icon">on<wbr>Service<wbr>Unavailable</a></li>
-								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="ataraxia_services.services.html#onserviceupdated" class="tsd-kind-icon">on<wbr>Service<wbr>Updated</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="ataraxia_services.services.html#onserviceupdate" class="tsd-kind-icon">on<wbr>Service<wbr>Update</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter"><a href="ataraxia_services.services.html#get" class="tsd-kind-icon">get</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="ataraxia_services.services.html#get" class="tsd-kind-icon">get</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><a href="ataraxia_services.services.html#handlemessage" class="tsd-kind-icon">handle<wbr>Message</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><a href="ataraxia_services.services.html#handlenodeavailable" class="tsd-kind-icon">handle<wbr>Node<wbr>Available</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><a href="ataraxia_services.services.html#handlenodeunavailable" class="tsd-kind-icon">handle<wbr>Node<wbr>Unavailable</a></li>
@@ -140,7 +140,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/9862f01/packages/services/src/Services.ts#L72">packages/services/src/Services.ts:72</a></li>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/7ee4ab4/packages/services/src/Services.ts#L75">packages/services/src/Services.ts:75</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -166,10 +166,16 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/9862f01/packages/services/src/Services.ts#L97">packages/services/src/Services.ts:97</a></li>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/7ee4ab4/packages/services/src/Services.ts#L106">packages/services/src/Services.ts:106</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Event emitted when a service becomes available.</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Subscribable</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">this</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-symbol">[</span>service<span class="tsd-signature-symbol">: </span><a href="../interfaces/ataraxia_services.service.html" class="tsd-signature-type" data-tsd-kind="Interface">Service</a><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<p>  subscribable</p>
 						</li>
 					</ul>
 				</section>
@@ -183,73 +189,63 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/9862f01/packages/services/src/Services.ts#L101">packages/services/src/Services.ts:101</a></li>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/7ee4ab4/packages/services/src/Services.ts#L116">packages/services/src/Services.ts:116</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Event emitted when a service becomes unavailable.</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Subscribable</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">this</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-symbol">[</span>service<span class="tsd-signature-symbol">: </span><a href="../interfaces/ataraxia_services.service.html" class="tsd-signature-type" data-tsd-kind="Interface">Service</a><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<p>  subscribable</p>
 						</li>
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class">
-					<a name="onserviceupdated" class="tsd-anchor"></a>
-					<h3>on<wbr>Service<wbr>Updated</h3>
+					<a name="onserviceupdate" class="tsd-anchor"></a>
+					<h3>on<wbr>Service<wbr>Update</h3>
 					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> onServiceUpdated<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Subscribable</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">this</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-symbol">[</span>service<span class="tsd-signature-symbol">: </span><a href="../interfaces/ataraxia_services.service.html" class="tsd-signature-type" data-tsd-kind="Interface">Service</a><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> onServiceUpdate<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Subscribable</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">this</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-symbol">[</span>service<span class="tsd-signature-symbol">: </span><a href="../interfaces/ataraxia_services.service.html" class="tsd-signature-type" data-tsd-kind="Interface">Service</a><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/9862f01/packages/services/src/Services.ts#L105">packages/services/src/Services.ts:105</a></li>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/7ee4ab4/packages/services/src/Services.ts#L126">packages/services/src/Services.ts:126</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Event emitted when a service is updated.</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Subscribable</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">this</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-symbol">[</span>service<span class="tsd-signature-symbol">: </span><a href="../interfaces/ataraxia_services.service.html" class="tsd-signature-type" data-tsd-kind="Interface">Service</a><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<p>  subscribable</p>
 						</li>
 					</ul>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Methods</h2>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
 					<a name="get" class="tsd-anchor"></a>
 					<h3>get</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
-						<li class="tsd-signature tsd-kind-icon">get&lt;S&gt;<span class="tsd-signature-symbol">(</span>id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">(</span><a href="../interfaces/ataraxia_services.service.html" class="tsd-signature-type" data-tsd-kind="Interface">Service</a><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">)</span></li>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">get<span class="tsd-signature-symbol">(</span>id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/ataraxia_services.service.html" class="tsd-signature-type" data-tsd-kind="Interface">Service</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/9862f01/packages/services/src/Services.ts#L230">packages/services/src/Services.ts:230</a></li>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/7ee4ab4/packages/services/src/Services.ts#L294">packages/services/src/Services.ts:294</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Get a service if it is available. Will return a proxy that can be used
-									to invoke methods on the service regardless if it is remote or local:</p>
+									<p>Get information about a service with the given identifier.</p>
 								</div>
-								<pre><code class="language-javascript"><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">instance</span><span style="color: #000000"> = </span><span style="color: #001080">services</span><span style="color: #000000">.</span><span style="color: #795E26">get</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;example:test&#039;</span><span style="color: #000000">);</span>
-<span style="color: #AF00DB">if</span><span style="color: #000000">(</span><span style="color: #001080">instance</span><span style="color: #000000">) {</span>
-<span style="color: #000000">  </span><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">instance</span><span style="color: #000000">.</span><span style="color: #795E26">doStuff</span><span style="color: #000000">();</span>
-<span style="color: #000000">}</span>
-</code></pre>
-								<p>For TypeScript it is possible to scope it to a known interface:</p>
-								<pre><code class="language-typescript"><span style="color: #0000FF">interface</span><span style="color: #000000"> </span><span style="color: #267F99">TestService</span><span style="color: #000000"> {</span>
-<span style="color: #000000">  </span><span style="color: #795E26">doStuff</span><span style="color: #000000">(): </span><span style="color: #267F99">Promise</span><span style="color: #000000">&lt;</span><span style="color: #267F99">void</span><span style="color: #000000">&gt;;</span>
-<span style="color: #000000">}</span>
-
-<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">instance</span><span style="color: #000000"> = </span><span style="color: #001080">services</span><span style="color: #000000">.</span><span style="color: #795E26">get</span><span style="color: #000000">&lt;</span><span style="color: #267F99">TestService</span><span style="color: #000000">&gt;(</span><span style="color: #A31515">&#039;example:test&#039;</span><span style="color: #000000">);</span>
-<span style="color: #AF00DB">if</span><span style="color: #000000">(</span><span style="color: #001080">instance</span><span style="color: #000000">) {</span>
-<span style="color: #000000">  </span><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">instance</span><span style="color: #000000">.</span><span style="color: #795E26">doStuff</span><span style="color: #000000">();</span>
-<span style="color: #000000">}</span>
-</code></pre>
 							</div>
-							<h4 class="tsd-type-parameters-title">Type parameters</h4>
-							<ul class="tsd-type-parameters">
-								<li>
-									<h4>S<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span></h4>
-								</li>
-							</ul>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -260,7 +256,7 @@
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">(</span><a href="../interfaces/ataraxia_services.service.html" class="tsd-signature-type" data-tsd-kind="Interface">Service</a><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">)</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="../interfaces/ataraxia_services.service.html" class="tsd-signature-type" data-tsd-kind="Interface">Service</a></h4>
 							<p>  <code>Service</code> instance or <code>null</code> if service is unavailable</p>
 						</li>
 					</ul>
@@ -275,7 +271,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/9862f01/packages/services/src/Services.ts#L361">packages/services/src/Services.ts:361</a></li>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/7ee4ab4/packages/services/src/Services.ts#L444">packages/services/src/Services.ts:444</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -308,7 +304,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/9862f01/packages/services/src/Services.ts#L312">packages/services/src/Services.ts:312</a></li>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/7ee4ab4/packages/services/src/Services.ts#L395">packages/services/src/Services.ts:395</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -341,7 +337,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/9862f01/packages/services/src/Services.ts#L331">packages/services/src/Services.ts:331</a></li>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/7ee4ab4/packages/services/src/Services.ts#L414">packages/services/src/Services.ts:414</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -373,7 +369,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/9862f01/packages/services/src/Services.ts#L476">packages/services/src/Services.ts:476</a></li>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/7ee4ab4/packages/services/src/Services.ts#L559">packages/services/src/Services.ts:559</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -412,7 +408,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/9862f01/packages/services/src/Services.ts#L667">packages/services/src/Services.ts:667</a></li>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/7ee4ab4/packages/services/src/Services.ts#L750">packages/services/src/Services.ts:750</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -451,7 +447,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/9862f01/packages/services/src/Services.ts#L598">packages/services/src/Services.ts:598</a></li>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/7ee4ab4/packages/services/src/Services.ts#L681">packages/services/src/Services.ts:681</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -490,7 +486,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/9862f01/packages/services/src/Services.ts#L640">packages/services/src/Services.ts:640</a></li>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/7ee4ab4/packages/services/src/Services.ts#L723">packages/services/src/Services.ts:723</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -529,7 +525,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/9862f01/packages/services/src/Services.ts#L582">packages/services/src/Services.ts:582</a></li>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/7ee4ab4/packages/services/src/Services.ts#L665">packages/services/src/Services.ts:665</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -562,7 +558,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/9862f01/packages/services/src/Services.ts#L545">packages/services/src/Services.ts:545</a></li>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/7ee4ab4/packages/services/src/Services.ts#L628">packages/services/src/Services.ts:628</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -602,7 +598,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/9862f01/packages/services/src/Services.ts#L425">packages/services/src/Services.ts:425</a></li>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/7ee4ab4/packages/services/src/Services.ts#L508">packages/services/src/Services.ts:508</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -641,7 +637,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/9862f01/packages/services/src/Services.ts#L401">packages/services/src/Services.ts:401</a></li>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/7ee4ab4/packages/services/src/Services.ts#L484">packages/services/src/Services.ts:484</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -680,7 +676,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/9862f01/packages/services/src/Services.ts#L514">packages/services/src/Services.ts:514</a></li>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/7ee4ab4/packages/services/src/Services.ts#L597">packages/services/src/Services.ts:597</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -719,7 +715,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/9862f01/packages/services/src/Services.ts#L116">packages/services/src/Services.ts:116</a></li>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/7ee4ab4/packages/services/src/Services.ts#L136">packages/services/src/Services.ts:136</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -742,7 +738,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/9862f01/packages/services/src/Services.ts#L126">packages/services/src/Services.ts:126</a></li>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/7ee4ab4/packages/services/src/Services.ts#L146">packages/services/src/Services.ts:146</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -759,28 +755,59 @@
 					<a name="register" class="tsd-anchor"></a>
 					<h3>register</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">register<span class="tsd-signature-symbol">(</span>serviceDef<span class="tsd-signature-symbol">: </span><a href="../modules/ataraxia_services.html#localservicedef" class="tsd-signature-type" data-tsd-kind="Type alias">LocalServiceDef</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/ataraxia_services.servicehandle.html" class="tsd-signature-type" data-tsd-kind="Interface">ServiceHandle</a></li>
+						<li class="tsd-signature tsd-kind-icon">register<span class="tsd-signature-symbol">(</span>id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, instanceOrFactory<span class="tsd-signature-symbol">: </span><a href="../modules/ataraxia_services.html#localservice" class="tsd-signature-type" data-tsd-kind="Type alias">LocalService</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/ataraxia_services.servicehandle.html" class="tsd-signature-type" data-tsd-kind="Interface">ServiceHandle</a></li>
+						<li class="tsd-signature tsd-kind-icon">register<span class="tsd-signature-symbol">(</span>instanceOrFactory<span class="tsd-signature-symbol">: </span><a href="../modules/ataraxia_services.html#localservice" class="tsd-signature-type" data-tsd-kind="Type alias">LocalService</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>serviceId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/ataraxia_services.servicehandle.html" class="tsd-signature-type" data-tsd-kind="Interface">ServiceHandle</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/9862f01/packages/services/src/Services.ts#L139">packages/services/src/Services.ts:139</a></li>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/7ee4ab4/packages/services/src/Services.ts#L160">packages/services/src/Services.ts:160</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Register a new service that should be made available locally and
-									remotely to other nodes.</p>
+									<p>Register an object using a specific identifier.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>serviceDef: <a href="../modules/ataraxia_services.html#localservicedef" class="tsd-signature-type" data-tsd-kind="Type alias">LocalServiceDef</a></h5>
+									<h5>id: <span class="tsd-signature-type">string</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>-
-										definition of service</p>
+										identifier of the service</p>
+									</div>
+								</li>
+								<li>
+									<h5>instanceOrFactory: <a href="../modules/ataraxia_services.html#localservice" class="tsd-signature-type" data-tsd-kind="Type alias">LocalService</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>-
+										instance to expose or factory for the instance</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="../interfaces/ataraxia_services.servicehandle.html" class="tsd-signature-type" data-tsd-kind="Interface">ServiceHandle</a></h4>
+							<p>  handle that can be used to remove service</p>
+						</li>
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/7ee4ab4/packages/services/src/Services.ts#L170">packages/services/src/Services.ts:170</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Register an object that contains a service identifier.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>instanceOrFactory: <a href="../modules/ataraxia_services.html#localservice" class="tsd-signature-type" data-tsd-kind="Type alias">LocalService</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>serviceId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>-
+										instance to expose or factory for the instance</p>
 									</div>
 								</li>
 							</ul>
@@ -793,13 +820,13 @@
 					<a name="registerservicereflect" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagProtected">Protected</span> register<wbr>Service<wbr>Reflect</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-protected">
-						<li class="tsd-signature tsd-kind-icon">register<wbr>Service<wbr>Reflect<span class="tsd-signature-symbol">(</span>reflect<span class="tsd-signature-symbol">: </span><a href="ataraxia_services.servicereflect.html" class="tsd-signature-type" data-tsd-kind="Class">ServiceReflect</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">register<wbr>Service<wbr>Reflect<span class="tsd-signature-symbol">(</span>reflect<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ServiceReflect</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/9862f01/packages/services/src/Services.ts#L241">packages/services/src/Services.ts:241</a></li>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/7ee4ab4/packages/services/src/Services.ts#L311">packages/services/src/Services.ts:311</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -810,7 +837,7 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>reflect: <a href="ataraxia_services.servicereflect.html" class="tsd-signature-type" data-tsd-kind="Class">ServiceReflect</a></h5>
+									<h5>reflect: <span class="tsd-signature-type">ServiceReflect</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>-
 										reflect instance for the service</p>
@@ -825,13 +852,13 @@
 					<a name="unregisterservicereflect" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagProtected">Protected</span> unregister<wbr>Service<wbr>Reflect</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-protected">
-						<li class="tsd-signature tsd-kind-icon">unregister<wbr>Service<wbr>Reflect<span class="tsd-signature-symbol">(</span>reflect<span class="tsd-signature-symbol">: </span><a href="ataraxia_services.servicereflect.html" class="tsd-signature-type" data-tsd-kind="Class">ServiceReflect</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">unregister<wbr>Service<wbr>Reflect<span class="tsd-signature-symbol">(</span>reflect<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ServiceReflect</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/9862f01/packages/services/src/Services.ts#L290">packages/services/src/Services.ts:290</a></li>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/7ee4ab4/packages/services/src/Services.ts#L373">packages/services/src/Services.ts:373</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -842,7 +869,7 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>reflect: <a href="ataraxia_services.servicereflect.html" class="tsd-signature-type" data-tsd-kind="Class">ServiceReflect</a></h5>
+									<h5>reflect: <span class="tsd-signature-type">ServiceReflect</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>-
 										reflect instance</p>
@@ -857,13 +884,13 @@
 					<a name="updateservicereflect" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagProtected">Protected</span> update<wbr>Service<wbr>Reflect</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-protected">
-						<li class="tsd-signature tsd-kind-icon">update<wbr>Service<wbr>Reflect<span class="tsd-signature-symbol">(</span>currentReflect<span class="tsd-signature-symbol">: </span><a href="ataraxia_services.servicereflect.html" class="tsd-signature-type" data-tsd-kind="Class">ServiceReflect</a>, newReflect<span class="tsd-signature-symbol">: </span><a href="ataraxia_services.servicereflect.html" class="tsd-signature-type" data-tsd-kind="Class">ServiceReflect</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">update<wbr>Service<wbr>Reflect<span class="tsd-signature-symbol">(</span>currentReflect<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ServiceReflect</span>, newReflect<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ServiceReflect</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/9862f01/packages/services/src/Services.ts#L269">packages/services/src/Services.ts:269</a></li>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/7ee4ab4/packages/services/src/Services.ts#L352">packages/services/src/Services.ts:352</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -874,14 +901,14 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>currentReflect: <a href="ataraxia_services.servicereflect.html" class="tsd-signature-type" data-tsd-kind="Class">ServiceReflect</a></h5>
+									<h5>currentReflect: <span class="tsd-signature-type">ServiceReflect</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>-
 										current reflect instance</p>
 									</div>
 								</li>
 								<li>
-									<h5>newReflect: <a href="ataraxia_services.servicereflect.html" class="tsd-signature-type" data-tsd-kind="Class">ServiceReflect</a></h5>
+									<h5>newReflect: <span class="tsd-signature-type">ServiceReflect</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>-
 										new reflect instance</p>
@@ -928,8 +955,11 @@
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-class tsd-parent-kind-module">
-						<a href="ataraxia_services.servicereflect.html" class="tsd-kind-icon">Service<wbr>Reflect</a>
+					<li class=" tsd-kind-class tsd-parent-kind-module tsd-has-type-parameter tsd-is-external">
+						<a href="ataraxia_services.asyncevent.html" class="tsd-kind-icon">Async<wbr>Event</a>
+					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-module tsd-has-type-parameter">
+						<a href="ataraxia_services.servicecontract.html" class="tsd-kind-icon">Service<wbr>Contract</a>
 					</li>
 				</ul>
 				<ul class="current">
@@ -946,9 +976,9 @@
 								<a href="ataraxia_services.services.html#onserviceunavailable" class="tsd-kind-icon">on<wbr>Service<wbr>Unavailable</a>
 							</li>
 							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
-								<a href="ataraxia_services.services.html#onserviceupdated" class="tsd-kind-icon">on<wbr>Service<wbr>Updated</a>
+								<a href="ataraxia_services.services.html#onserviceupdate" class="tsd-kind-icon">on<wbr>Service<wbr>Update</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
+							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="ataraxia_services.services.html#get" class="tsd-kind-icon">get</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-protected">
@@ -1009,32 +1039,62 @@
 					</li>
 				</ul>
 				<ul class="after-current">
+					<li class=" tsd-kind-interface tsd-parent-kind-module tsd-has-type-parameter tsd-is-external">
+						<a href="../interfaces/ataraxia_services.asyncsubscribable.html" class="tsd-kind-icon">Async<wbr>Subscribable</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module tsd-has-type-parameter">
+						<a href="../interfaces/ataraxia_services.datatype.html" class="tsd-kind-icon">Data<wbr>Type</a>
+					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-module">
 						<a href="../interfaces/ataraxia_services.service.html" class="tsd-kind-icon">Service</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="../interfaces/ataraxia_services.serviceeventcontract.html" class="tsd-kind-icon">Service<wbr>Event<wbr>Contract</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module tsd-has-type-parameter">
+						<a href="../interfaces/ataraxia_services.serviceeventdescription.html" class="tsd-kind-icon">Service<wbr>Event<wbr>Description</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-module">
 						<a href="../interfaces/ataraxia_services.servicehandle.html" class="tsd-kind-icon">Service<wbr>Handle</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-module">
-						<a href="../interfaces/ataraxia_services.servicemethod.html" class="tsd-kind-icon">Service<wbr>Method</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-module">
-						<a href="../interfaces/ataraxia_services.serviceparameter.html" class="tsd-kind-icon">Service<wbr>Parameter</a>
+						<a href="../interfaces/ataraxia_services.servicemethodcontract.html" class="tsd-kind-icon">Service<wbr>Method<wbr>Contract</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-module tsd-has-type-parameter">
-						<a href="../interfaces/ataraxia_services.subscribable.html" class="tsd-kind-icon">Subscribable</a>
+						<a href="../interfaces/ataraxia_services.servicemethoddescription.html" class="tsd-kind-icon">Service<wbr>Method<wbr>Description</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module tsd-has-type-parameter">
+						<a href="../interfaces/ataraxia_services.serviceparamdescription.html" class="tsd-kind-icon">Service<wbr>Param<wbr>Description</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-module">
-						<a href="../interfaces/ataraxia_services.subscriptionhandle.html" class="tsd-kind-icon">Subscription<wbr>Handle</a>
+						<a href="../interfaces/ataraxia_services.serviceparametercontract.html" class="tsd-kind-icon">Service<wbr>Parameter<wbr>Contract</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-module">
+						<a href="../modules/ataraxia_services.html#basicvalue" class="tsd-kind-icon">Basic<wbr>Value</a>
 					</li>
 					<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter tsd-is-external">
 						<a href="../modules/ataraxia_services.html#listener" class="tsd-kind-icon">Listener</a>
 					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-module">
-						<a href="../modules/ataraxia_services.html#localservicedef" class="tsd-kind-icon">Local<wbr>Service<wbr>Def</a>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter">
+						<a href="../modules/ataraxia_services.html#localservice" class="tsd-kind-icon">Local<wbr>Service</a>
 					</li>
 					<li class=" tsd-kind-variable tsd-parent-kind-module">
-						<a href="../modules/ataraxia_services.html#servicereflect-1" class="tsd-kind-icon">service<wbr>Reflect</a>
+						<a href="../modules/ataraxia_services.html#booleantype" class="tsd-kind-icon">boolean<wbr>Type</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-module">
+						<a href="../modules/ataraxia_services.html#numbertype" class="tsd-kind-icon">number<wbr>Type</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-module">
+						<a href="../modules/ataraxia_services.html#stringtype" class="tsd-kind-icon">string<wbr>Type</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-module">
+						<a href="../modules/ataraxia_services.html#voidtype" class="tsd-kind-icon">void<wbr>Type</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter">
+						<a href="../modules/ataraxia_services.html#arraytype" class="tsd-kind-icon">array<wbr>Type</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-module">
+						<a href="../modules/ataraxia_services.html#servicecontract-1" class="tsd-kind-icon">service<wbr>Contract</a>
 					</li>
 				</ul>
 			</nav>
