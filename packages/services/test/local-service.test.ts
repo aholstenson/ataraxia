@@ -203,6 +203,112 @@ describe('Services: Local', () => {
 		expect(receivedEvent).toBe(true);
 	});
 
+	it('Can register and call multiple services with same id', async () => {
+		const services = new Services(net);
+
+		@serviceContract(TestService)
+		class TestServiceImpl implements TestService {
+			public async hello(what: string) {
+				return 'Hello ' + what + '!';
+			}
+		}
+
+		services.register('test', new TestServiceImpl());
+
+		@serviceContract(EchoService)
+		class EchoServiceImpl implements EchoService {
+			private echoEvent = new AsyncEvent<this, [ string ]>(this);
+
+			public get onEcho() {
+				return this.echoEvent.subscribable;
+			}
+
+			public async echo(message: string) {
+				this.echoEvent.emit(message);
+				return message;
+			}
+		}
+
+		services.register('test', new EchoServiceImpl());
+
+		const service = services.get('test');
+		expect(service.available).toBe(true);
+
+		const s = await service.call('hello', 'world');
+		expect(s).toBe('Hello world!');
+
+		let receivedEvent = false;
+		await service.subscribe('onEcho', msg => {
+			receivedEvent = msg === 'echo1';
+		});
+
+		await service.call('echo', 'echo1');
+		expect(receivedEvent).toBe(true);
+	});
+
+	it('Can register service via extended class', async () => {
+		const services = new Services(net);
+
+		@serviceContract(TestService)
+		class TestService1 implements TestService {
+			public async hello(what: string) {
+				return 'Hello ' + what + '!';
+			}
+		}
+
+		class TestServiceImpl extends TestService1 {
+		}
+
+		services.register('test', new TestServiceImpl());
+
+		const service = services.get('test');
+		expect(service.available).toBe(true);
+
+		const s = await service.call('hello', 'world');
+		expect(s).toBe('Hello world!');
+	});
+
+	it('Can register service with multiple contracts', async () => {
+		const services = new Services(net);
+
+		@serviceContract(TestService)
+		class TestServiceImpl implements TestService {
+			public async hello(what: string) {
+				return 'Hello ' + what + '!';
+			}
+		}
+
+		@serviceContract(EchoService)
+		class EchoServiceImpl extends TestServiceImpl implements EchoService {
+			private echoEvent = new AsyncEvent<this, [ string ]>(this);
+
+			public get onEcho() {
+				return this.echoEvent.subscribable;
+			}
+
+			public async echo(message: string) {
+				this.echoEvent.emit(message);
+				return message;
+			}
+		}
+
+		services.register('test', new EchoServiceImpl());
+
+		const service = services.get('test');
+		expect(service.available).toBe(true);
+
+		const s = await service.call('hello', 'world');
+		expect(s).toBe('Hello world!');
+
+		let receivedEvent = false;
+		await service.subscribe('onEcho', msg => {
+			receivedEvent = msg === 'echo1';
+		});
+
+		await service.call('echo', 'echo1');
+		expect(receivedEvent).toBe(true);
+	});
+
 	it('onServiceAvailable triggers', async () => {
 		const services = new Services(net);
 
