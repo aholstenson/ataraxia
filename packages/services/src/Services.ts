@@ -268,6 +268,9 @@ export class Services {
 		// Remove the reflect instance from the local service
 		registration.reflect.removeReflect(reflect);
 
+		// Increase the local version
+		this.version++;
+
 		if(! registration.reflect.hasReflects()) {
 			// No more reflects means the service is no longer available locally
 			this.localServices.delete(reflect.id);
@@ -276,6 +279,12 @@ export class Services {
 			this.exchange.broadcast('service:unavailable', {
 				version: this.version,
 				service: reflect.id
+			}).catch(err => this.debug('Error occurred during service broadcast', err));
+		} else {
+			// Broadcast the changed service
+			this.exchange.broadcast('service:available', {
+				version: this.version,
+				def: toServiceDef(reflect)
 			}).catch(err => this.debug('Error occurred during service broadcast', err));
 		}
 
