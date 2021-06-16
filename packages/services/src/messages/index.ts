@@ -1,10 +1,5 @@
 export * from './ServiceMessages';
 
-export * from './ServiceDef';
-export * from './ServiceEventDef';
-export * from './ServiceMethodDef';
-export * from './ServiceMethodParameterDef';
-
 export * from './ServiceListRequestMessage';
 export * from './ServiceListReplyMessage';
 

@@ -1,4 +1,4 @@
-import { ServiceDef } from './ServiceDef';
+import { ServiceDef } from '../defs/ServiceDef';
 
 /**
  * Response to a request to list services.

@@ -17,7 +17,7 @@ npm install ataraxia-services
 ```
 
 ```javascript
-import { Services } from 'ataraxia-services';
+import { Services, ServiceContract, serviceContract, stringType } from 'ataraxia-services';
 
 const net = ... // setup network with at least one transport
 
@@ -32,79 +32,47 @@ await net.join();
 // Join the services layer on top of the network
 await services.join();
 
-// Register a service as a plain object
-const handle = services.register({
-  id: 'service-id',
+// Use contracts to describe services
+const EchoService = new ServiceContract()
+  .defineMethod('echo', {
+    returnType: stringType,
+    parameters: [
+      {
+        name: 'message',
+        type: stringType
+      }
+    ]
+  });
+
+// Services can be fetched using their id, and may or may not be available
+const echoService = services.get('service-id');
+
+// Contracts can be used to create a callable proxy
+const callableEchoService = echoService.as(EchoService);
+await callableEchoService.echo('message');
+
+// Implementations can be plain objects
+const handle = services.register('service-id', EchoService.implement({
+  echo(message) {
+    return Promise.resolve(message);
+  }
+}));
+
+// Implementations may also be classes - which can be decorated
+@serviceContract(EchoService)
+class EchoServiceImpl {
+  echo(message) {
+    return Promise.resolve(message);
+  }
+}
+services.register('service-id', new EchoServiceImpl());
+
+@serviceContract(EchoService)
+class EchoServiceImpl {
+  serviceId = 'echo';
   
-  hello() {
-    return 'Hello world';
-  }
-});
-
-// Classes can be registered and created
-services.register(class Test {
-  constructor(handle) {
-    this.handle = handle;
-
-    this.id = 'service-id';
-  }
-
-  hello() {
-    return 'Hello World';
-  }
-})
-
-// Interact with services
-const service = services.get('service-id');
-if(service) {
-  console.log('Service found', service);
-
-  // Call functions on the service
-  const reply = await service.hello();
-}
-```
-
-## Events
-
-`ataraxia-services` supports emitting and listening to events. The support for
-events is designed to be used via [Atvik](https://github.com/aholstenson/atvik).
-
-```javascript
-import { Event } from 'atvik';
-
-class TestService {
-  constructor(handle) {
-    this.id = 'test';
-
-    this.helloEvent = new Event(this);
-  }
-
-  get onHello() {
-    // This onX method makes the event available on the service
-    return this.helloEvent.subscribable;
-  }
-
-  sayHello(message) {
-    // Emit an event
-    this.helloEvent.emit(message);
-
-    // Return a result
-    return 'Hello ' + message + '!';
+  echo(message) {
+    return Promise.resolve(message);
   }
 }
-
-// Register the service
-services.register(TestService);
-
-// Get the service either on the same node or another node
-const service = services.get('test');
-
-// Listen to the event
-const handle = await service.onHello(message => console.log('Service emitted hello event:', message));
-
-// Call the method to emit the event
-await service.sayHello('World');
-
-// Unsubscribe from event
-await handle.unsubscribe();
 ```

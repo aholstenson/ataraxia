@@ -1,4 +1,6 @@
-import { Listener } from 'atvik';
+import { AsyncSubscriptionHandle, Listener } from 'atvik';
+
+import { BasicValue } from 'ataraxia-service-contracts';
 
 import { ServiceReflect } from './ServiceReflect';
 
@@ -16,7 +18,7 @@ export class MergedServiceReflect extends ServiceReflect {
 		this.reflects = [];
 	}
 
-	public apply(method: string, args: any[]): Promise<any> {
+	public apply(method: string, args: ReadonlyArray<BasicValue>): Promise<any> {
 		// TODO: Different invocation policies
 		for(const reflect of this.reflects) {
 			if(reflect.hasMethod(method)) {
@@ -27,12 +29,12 @@ export class MergedServiceReflect extends ServiceReflect {
 		return Promise.reject(new Error('Method ' + method + ' does not exist'));
 	}
 
-	public call(method: string, ...args: any[]): Promise<any> {
+	public call(method: string, ...args: ReadonlyArray<BasicValue>): Promise<any> {
 		return this.apply(method, args);
 	}
 
-	public async subscribe(event: string, listener: Listener<void, any[]>): Promise<void> {
-		const promises: Promise<void>[] = [];
+	public async subscribe(event: string, listener: Listener<void, any[]>): Promise<AsyncSubscriptionHandle> {
+		const promises: Promise<AsyncSubscriptionHandle>[] = [];
 
 		for(const reflect of this.reflects) {
 			if(reflect.hasEvent(event)) {
@@ -40,7 +42,12 @@ export class MergedServiceReflect extends ServiceReflect {
 			}
 		}
 
-		await Promise.all(promises);
+		const handles = await Promise.all(promises);
+		return {
+			async unsubscribe(): Promise<void> {
+				await Promise.all(handles.map(h => h.unsubscribe));
+			}
+		};
 	}
 
 	public async unsubscribe(event: string, listener: Listener<void, any[]>): Promise<boolean> {

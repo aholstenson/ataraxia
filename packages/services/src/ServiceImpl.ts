@@ -1,121 +1,301 @@
-import { Listener } from 'atvik';
+import { AsyncEvent, AsyncSubscribable, AsyncSubscriptionHandle, createAsyncSubscribable, Event, Listener, Subscribable, SubscriptionHandle } from 'atvik';
 
-import { ServiceReflect } from './reflect';
+import { BasicValue, ServiceContract, ServiceEventContract, ServiceParameterContract } from 'ataraxia-service-contracts';
+
+import { ServiceEventDef } from './defs/ServiceEventDef';
+import { ServiceMethodDef } from './defs/ServiceMethodDef';
+import { ServiceParameterDef } from './defs/ServiceParameterDef';
 import { MergedServiceReflect } from './reflect/MergedServiceReflect';
-import { serviceReflect } from './Service';
-import { Subscribable } from './Subscribable';
-import { SubscriptionHandle } from './SubscriptionHandle';
+import { Service } from './Service';
+import { Services } from './Services';
+import { ServiceReflect } from './reflect/ServiceReflect';
 
-export class ServiceImpl {
+/**
+ * Implementation of {@link Service}.
+ */
+export class ServiceImpl implements Service {
 	public readonly id: string;
-	public readonly proxy: any;
 
-	private readonly reflect: MergedServiceReflect;
+	private readonly reflect: () => MergedServiceReflect;
 
-	public constructor(id: string) {
+	private readonly availableEvent: Event<this>;
+	private readonly unavailableEvent: Event<this>;
+	private readonly updateEvent: Event<this>;
+
+	public constructor(
+		services: Services,
+		id: string,
+		reflect: () => MergedServiceReflect
+	) {
 		this.id = id;
-		this.reflect = new MergedServiceReflect(id);
+		this.reflect = reflect;
 
-		const self = this;
+		this.availableEvent = new Event(this);
+		bridgeEvents(id, services.onServiceAvailable, this.availableEvent);
+
+		this.unavailableEvent = new Event(this);
+		bridgeEvents(id, services.onServiceUnavailable, this.unavailableEvent);
+
+		this.updateEvent = new Event(this);
+		bridgeEvents(id, services.onServiceUpdate, this.updateEvent);
+	}
+
+	public get available() {
+		return this.reflect().hasReflects();
+	}
+
+	public get onAvailable() {
+		return this.availableEvent.subscribable;
+	}
+
+	public get onUnavailable() {
+		return this.unavailableEvent.subscribable;
+	}
+
+	public get onUpdate() {
+		return this.updateEvent.subscribable;
+	}
+
+	public as<T extends object>(contract: ServiceContract<T>): T {
 		const cache = new Map<string, any>();
-		this.proxy = new Proxy({}, {
-			get(obj, name) {
-				if(name === 'id') {
-					return self.id;
-				} else if(name === serviceReflect) {
-					return self.reflect;
-				} else if(typeof name === 'string') {
-					let handler = cache.get(name);
-					if(handler) return handler;
+		const reflect = this.reflect;
+		return new Proxy<T>({} as any, {
+			get(obj, name, receiver) {
+				if(typeof name !== 'string') {
+					return undefined;
+				}
 
-					if(name.startsWith('on')) {
-						// Assume this is an event, but only if the event exists
-						const eventName = name[2].toLowerCase() + name.substring(3);
-						if(self.reflect.hasEvent(eventName)) {
-							handler = createSubscribable(self.proxy, self.reflect, eventName);
-						}
-					}
+				let handler = cache.get(name);
+				if(handler) return handler;
 
-					// Default to invoking a method
-					if(! handler) {
-						handler = (...args: any[]) => self.reflect.apply(name, args);
-					}
+				const event = contract.getEvent(name);
+				if(event) {
+					handler = createEventBridge(receiver, reflect, event);
 
 					cache.set(name, handler);
 					return handler;
-				} else {
-					return undefined;
 				}
+
+				// Look for a method
+				const method = contract.getMethod(name);
+				if(method) {
+					const paramTypes = method.parameters.map(p => p.type);
+					const resultType = method.returnType;
+
+					handler = async (...args: any[]) => {
+						const convertedArgs: any[] = [];
+						for(let i = 0; i < paramTypes.length; i++) {
+							const arg = args[i];
+							convertedArgs[i] = typeof arg === 'undefined'
+								? undefined
+								: paramTypes[i].toBasic(arg);
+						}
+
+						const result = await reflect().apply(name, convertedArgs);
+						return resultType.fromBasic(result);
+					};
+
+					cache.set(name, handler);
+					return handler;
+				}
+
+				return undefined;
 			}
 		});
 	}
 
-	public addReflect(reflect: ServiceReflect) {
-		this.reflect.addReflect(reflect);
+	public matches(contract: ServiceContract<any>): boolean {
+		// Check that all methods in the contract are present
+		for(const method of contract.methods) {
+			const def = this.getMethod(method.name);
+			if(! def) return false;
+
+			// Verify the return type
+			if(def.returnType !== method.returnType.id) {
+				return false;
+			}
+
+			// Verify the parameter types
+			if(! checkParameterTypes(method.parameters, def.parameters)) {
+				return false;
+			}
+		}
+
+		// Check that all events in the contract are present
+		for(const event of contract.events) {
+			const def = this.getEvent(event.name);
+			if(! def) return false;
+
+			// Verify the parameter types
+			if(! checkParameterTypes(event.parameters, def.parameters)) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 
-	public removeReflect(reflect: ServiceReflect) {
-		this.reflect.removeReflect(reflect);
+	public apply(method: string, args: ReadonlyArray<BasicValue>): Promise<BasicValue> {
+		return this.reflect().apply(method, args);
 	}
 
-	public hasReflects() {
-		return this.reflect.hasReflects();
+	public call(method: string, ...args: ReadonlyArray<BasicValue>): Promise<BasicValue> {
+		return this.reflect().call(method, ...args);
+	}
+
+	public getMethod(name: string): ServiceMethodDef | null {
+		return this.reflect().getMethod(name);
+	}
+
+	public hasMethod(name: string): boolean {
+		return this.reflect().hasMethod(name);
+	}
+
+	public get methods(): ServiceMethodDef[] {
+		return this.reflect().methods;
+	}
+
+	public subscribe(event: string, listener: Listener<void, BasicValue[]>): Promise<AsyncSubscriptionHandle> {
+		return this.reflect().subscribe(event, listener);
+	}
+
+	public unsubscribe(event: string, listener: Listener<void, BasicValue[]>): Promise<boolean> {
+		return this.reflect().unsubscribe(event, listener);
+	}
+
+	public getEvent(name: string): ServiceEventDef | null {
+		return this.reflect().getEvent(name);
+	}
+
+	public hasEvent(name: string): boolean {
+		return this.reflect().hasEvent(name);
+	}
+
+	public get events(): ServiceEventDef[] {
+		return this.reflect().events;
 	}
 }
 
-/**
- * Create a `Subscribable` for an event that will delegate the subscription
- * to the `ServiceReflect` while also rewriting the .
- *
- * @param self -
- *   instance used as this for the emitted event
- * @param reflect -
- *   reflect used to control event subscription
- * @param event -
- *   name of event to create subscribable for
- * @returns
- *   `Subscribable` instance
- */
-function createSubscribable(
-	self: any,
-	reflect: ServiceReflect,
-	event: string
-): Subscribable<any, any[]> {
-	const listenerMapping = new Map<Listener<any, any[]>, Listener<void, any[]>>();
+function createEventBridge<T>(
+	instance: T,
+	reflect: () => ServiceReflect,
+	contract: ServiceEventContract
+): AsyncSubscribable<T, any[]> {
+	const event = new Event<T, any[]>(instance);
+	let handle: AsyncSubscriptionHandle | undefined;
 
-	const unsubscribe = async (listener: Listener<any, any[]>): Promise<boolean> => {
-		const actual = listenerMapping.get(listener);
-		if(actual) {
-			listenerMapping.delete(listener);
-			return reflect.unsubscribe(event, actual);
-		} else {
-			return false;
-		}
-	};
+	return createAsyncSubscribable({
+		async subscribe(listener) {
+			event.subscribe(listener);
 
-	const subscribe = async (listener: Listener<any, any[]>): Promise<SubscriptionHandle> => {
-		const actualListener = listener.bind(self);
-		listenerMapping.set(listener, actualListener);
-		await reflect.subscribe(event, actualListener);
+			if(! handle) {
+				handle = await reflect().subscribe(contract.name, (...args: BasicValue[]) => {
+					const params = contract.parameters;
+					const convertedArgs: any[] = [];
+					for(let i = 0; i < params.length; i++) {
+						const arg = args[i];
+						convertedArgs[i] = typeof arg === 'undefined'
+							? undefined
+							: params[i].type.fromBasic(arg);
+					}
 
-		return {
-			async unsubscribe(): Promise<void> {
-				await unsubscribe(actualListener);
+					event.emit(...convertedArgs);
+				});
 			}
-		};
-	};
+		},
 
-	subscribe.subscribe = subscribe;
-	subscribe.unsubscribe = unsubscribe;
-	subscribe.once = () => new Promise<any[]>(resolve => {
-		const listener = (...args: any[]) => {
-			unsubscribe(listener);
+		async unsubscribe(listener) {
+			const result = event.unsubscribe(listener);
 
-			resolve(args);
-		};
+			if(! event.hasListeners) {
+				await handle?.unsubscribe();
+				handle = undefined;
+			}
 
-		subscribe(listener);
+			return result;
+		}
 	});
+}
 
-	return subscribe;
+/**
+ * Check that parameters defined by a contract matches the ones in a
+ * definition.
+ *
+ * @param p1 -
+ *   contract side parameters
+ * @param p2 -
+ *   definition side parameters
+ * @returns
+ *   `true` if everything matches
+ */
+function checkParameterTypes(
+	p1: ReadonlyArray<ServiceParameterContract>,
+	p2: ReadonlyArray<ServiceParameterDef>
+): boolean {
+	const n = Math.max(p1.length, p2.length);
+	for(let i = 0; i < n; i++) {
+		const param1 = p1[i];
+		const param2 = p2[i];
+
+		if(param1 && param2) {
+			// Both parameters present, check types
+			if(param1.type.id !== param2.type) {
+				return false;
+			}
+
+			// Optional flag should be the same
+			if(param1.optional !== param2.optional) {
+				return false;
+			}
+		} else if(param1) {
+			// Only param1 exists - make sure its optional
+			if(! param1.optional) {
+				return false;
+			}
+		} else if(param2) {
+			// Only param2 exists - make sure its optional
+			if(! param2.optional) {
+				return false;
+			}
+		}
+	}
+
+	return true;
+}
+
+/**
+ * Bridge events from one subscribable to another if the service identifier
+ * matches.
+ *
+ * @param id -
+ *   id to look for
+ * @param parentEvent -
+ *   subscribable to bridge from
+ * @param event -
+ *   event to emit on
+ */
+function bridgeEvents(
+	id: string,
+	parentEvent: Subscribable<any, [ Service ]>,
+	event: Event<any>
+) {
+	let handle: SubscriptionHandle | undefined;
+	event.monitorListeners(() => {
+		if(event.hasListeners) {
+			if(! handle) {
+				// Listeners, but no subscription on parent event - subscribe
+				handle = parentEvent.subscribe(service => {
+					if(service.id === id) {
+						event.emit();
+					}
+				});
+			}
+		} else {
+			if(handle) {
+				// No listeners, but subscription active - unsubscribe
+				handle.unsubscribe();
+				handle = undefined;
+			}
+		}
+	});
 }

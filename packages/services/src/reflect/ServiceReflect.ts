@@ -1,7 +1,9 @@
-import { Listener } from 'atvik';
+import { AsyncSubscriptionHandle, Listener } from 'atvik';
 
-import { ServiceEvent } from './ServiceEvent';
-import { ServiceMethod } from './ServiceMethod';
+import { BasicValue } from 'ataraxia-service-contracts';
+
+import { ServiceEventDef } from '../defs/ServiceEventDef';
+import { ServiceMethodDef } from '../defs/ServiceMethodDef';
 
 /**
  * API for reflection on a service, allows for calling methods in a generic
@@ -13,13 +15,13 @@ export abstract class ServiceReflect {
 	 */
 	public readonly id: string;
 
-	protected _methods: Map<string, ServiceMethod>;
-	protected _events: Map<string, ServiceEvent>;
+	protected _methods: Map<string, ServiceMethodDef>;
+	protected _events: Map<string, ServiceEventDef>;
 
 	protected constructor(
 		id: string,
-		methods: Map<string, ServiceMethod>,
-		events: Map<string, ServiceEvent>,
+		methods: Map<string, ServiceMethodDef>,
+		events: Map<string, ServiceEventDef>,
 	) {
 		this.id = id;
 		this._methods = methods;
@@ -37,7 +39,7 @@ export abstract class ServiceReflect {
 	 *   promise that resolves with the result of the call or rejects if an
 	 *   error occurs
 	 */
-	public abstract apply(method: string, args: ReadonlyArray<any[]>): Promise<any>;
+	public abstract apply(method: string, args: ReadonlyArray<BasicValue>): Promise<BasicValue>;
 
 	/**
 	 * Call a method on this service passing.
@@ -50,7 +52,7 @@ export abstract class ServiceReflect {
 	 *   promise that resolves with the result of the call or rejects if an
 	 *   error occurs
 	 */
-	public call(method: string, ...args: ReadonlyArray<any[]>): Promise<any> {
+	public call(method: string, ...args: ReadonlyArray<BasicValue>): Promise<BasicValue> {
 		return this.apply(method, args);
 	}
 
@@ -62,7 +64,7 @@ export abstract class ServiceReflect {
 	 * @returns
 	 *   information about method if found, `null` otherwise
 	 */
-	public getMethod(name: string): ServiceMethod | null {
+	public getMethod(name: string): ServiceMethodDef | null {
 		return this._methods.get(name) || null;
 	}
 
@@ -84,7 +86,7 @@ export abstract class ServiceReflect {
 	 * @returns
 	 *   array with methods
 	 */
-	public get methods(): ServiceMethod[] {
+	public get methods(): ServiceMethodDef[] {
 		return [ ...this._methods.values() ];
 	}
 
@@ -98,7 +100,7 @@ export abstract class ServiceReflect {
 	 * @returns
 	 *   promise that resolves when the listener is subscribed
 	 */
-	public abstract subscribe(event: string, listener: Listener<void, any[]>): Promise<void>;
+	public abstract subscribe(event: string, listener: Listener<void, BasicValue[]>): Promise<AsyncSubscriptionHandle>;
 
 	/**
 	 * Unsubscribe from an event.
@@ -110,7 +112,7 @@ export abstract class ServiceReflect {
 	 * @returns
 	 *   promise that resolves when the listener is unsubscribed
 	 */
-	public abstract unsubscribe(event: string, listener: Listener<void, any[]>): Promise<boolean>;
+	public abstract unsubscribe(event: string, listener: Listener<void, BasicValue[]>): Promise<boolean>;
 
 	/**
 	 * Get information about an available event.
@@ -120,7 +122,7 @@ export abstract class ServiceReflect {
 	 * @returns
 	 *   event if available or `null` if event doesn't exist
 	 */
-	public getEvent(name: string): ServiceEvent | null {
+	public getEvent(name: string): ServiceEventDef | null {
 		return this._events.get(name) || null;
 	}
 
@@ -142,7 +144,7 @@ export abstract class ServiceReflect {
 	 * @returns
 	 *   array with available events
 	 */
-	public get events(): ServiceEvent[] {
+	public get events(): ServiceEventDef[] {
 		return [ ...this._events.values() ];
 	}
 }

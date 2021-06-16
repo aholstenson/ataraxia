@@ -14,3 +14,9 @@ export * from './ServiceContract';
 export * from './ServiceMethodContract';
 export * from './ServiceEventContract';
 export * from './ServiceParameterContract';
+
+export { AsyncEvent } from 'atvik';
+export type {
+	Listener,
+	AsyncSubscribable
+} from 'atvik';

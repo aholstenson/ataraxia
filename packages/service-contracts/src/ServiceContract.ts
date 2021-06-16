@@ -67,6 +67,18 @@ export class ServiceContract<T extends object> {
 	}
 
 	/**
+	 * Get the contract for a method via its name.
+	 *
+	 * @param name -
+	 *   name of method
+	 * @returns
+	 *   contract for method or `null` if method does not exist
+	 */
+	public getMethod(name: string): ServiceMethodContract | null {
+		return this._methods.get(name) ?? null;
+	}
+
+	/**
 	 * Get all of the events defined by this contract.
 	 *
 	 * @returns
@@ -74,6 +86,18 @@ export class ServiceContract<T extends object> {
 	 */
 	public get events(): ReadonlyArray<ServiceEventContract> {
 		return [ ...this._events.values() ];
+	}
+
+	/**
+	 * Get the contract for an event via its name.
+	 *
+	 * @param name -
+	 *   name of event
+	 * @returns
+	 *   contract for event or `null` if event does not exist
+	 */
+	public getEvent(name: string): ServiceEventContract | null {
+		return this._events.get(name) ?? null;
 	}
 
 	/**
@@ -207,7 +231,7 @@ export class ServiceContract<T extends object> {
 	>(
 		name: K,
 		desc: ServiceMethodDescription<V, A>
-	) {
+	): ServiceContract<T> {
 		const methods = new Map(this._methods);
 		methods.set(name, {
 			name: name,
@@ -235,7 +259,7 @@ export class ServiceContract<T extends object> {
 	>(
 		name: K,
 		desc: ServiceEventDescription<A>
-	) {
+	): ServiceContract<T> {
 		const events = new Map(this._events);
 		events.set(name, {
 			name: name,

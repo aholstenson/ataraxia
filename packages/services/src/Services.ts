@@ -1,4 +1,4 @@
-import { Event } from 'atvik';
+import { Event, Subscribable } from 'atvik';
 import debug from 'debug';
 
 import {
@@ -8,11 +8,11 @@ import {
 	MessageUnion,
 	RequestReplyHelper
 } from 'ataraxia';
+import { ServiceContract } from 'ataraxia-service-contracts';
 
-import { LocalService } from './LocalService';
+import { ServiceDef } from './defs/ServiceDef';
 import {
 	ServiceMessages,
-	ServiceDef,
 	ServiceListRequestMessage,
 	ServiceListReplyMessage,
 	ServiceInvokeRequest,
@@ -23,12 +23,15 @@ import {
 	ServiceEventSubscribeMessage,
 	ServiceEventUnsubscribeMessage
 } from './messages';
-import { ServiceReflect } from './reflect';
-import { LocalServiceReflect } from './reflect/local';
-import { RemoteServiceReflect, RemoteServiceHelper } from './reflect/remote';
+import { LocalServiceReflect } from './reflect/LocalServiceReflect';
+import { MergedServiceReflect } from './reflect/MergedServiceReflect';
+import { RemoteServiceHelper } from './reflect/RemoteServiceHelper';
+import { RemoteServiceReflect } from './reflect/RemoteServiceReflect';
+import { ServiceReflect } from './reflect/ServiceReflect';
 import { Service } from './Service';
 import { ServiceHandle } from './ServiceHandle';
 import { ServiceImpl } from './ServiceImpl';
+import { ServiceInfo } from './ServiceInfo';
 
 /**
  * Type definition for local services. Supports three cases:
@@ -37,9 +40,9 @@ import { ServiceImpl } from './ServiceImpl';
  * * Function that takes a `ServiceHandle` and returns `LocalService`
  * * Constructor that takes a `ServiceHandle`
  */
-export type LocalServiceDef = LocalService
-	| ((handle: ServiceHandle) => LocalService)
-	| (new (handle: ServiceHandle) => LocalService);
+export type LocalService<T> = T
+	| ((handle: ServiceHandle) => T)
+	| (new (handle: ServiceHandle) => T);
 
 /**
  * Distributed service registry for exposing and consuming remote services.
@@ -51,7 +54,7 @@ export class Services {
 
 	private readonly serviceAvailableEvent: Event<this, [ service: Service ]>;
 	private readonly serviceUnavailableEvent: Event<this, [ service: Service ]>;
-	private readonly serviceUpdatedEvent: Event<this, [ service: Service ]>;
+	private readonly serviceUpdateEvent: Event<this, [ service: Service ]>;
 
 	/**
 	 * The local version, incremented whenever local services are added,
@@ -65,9 +68,9 @@ export class Services {
 	private readonly localServices: Map<string, LocalServiceData>;
 
 	/**
-	 * Services, both local and remote.
+	 * Information about local and remote services.
 	 */
-	private readonly services: Map<string, ServiceImpl>;
+	private readonly services: Map<string, ServiceInfo>;
 
 	private readonly calls: RequestReplyHelper<any>;
 
@@ -77,7 +80,7 @@ export class Services {
 
 		this.serviceAvailableEvent = new Event(this);
 		this.serviceUnavailableEvent = new Event(this);
-		this.serviceUpdatedEvent = new Event(this);
+		this.serviceUpdateEvent = new Event(this);
 
 		this.version = 0;
 
@@ -94,18 +97,35 @@ export class Services {
 		});
 	}
 
-	public get onServiceAvailable() {
+	/**
+	 * Event emitted when a service becomes available.
+	 *
+	 * @returns
+	 *   subscribable
+	 */
+	public get onServiceAvailable(): Subscribable<this, [ service: Service ]> {
 		return this.serviceAvailableEvent.subscribable;
 	}
 
-	public get onServiceUnavailable() {
+	/**
+	 * Event emitted when a service becomes unavailable.
+	 *
+	 * @returns
+	 *   subscribable
+	 */
+	public get onServiceUnavailable(): Subscribable<this, [ service: Service ]> {
 		return this.serviceUnavailableEvent.subscribable;
 	}
 
-	public get onServiceUpdated() {
-		return this.serviceUpdatedEvent.subscribable;
+	/**
+	 * Event emitted when a service is updated.
+	 *
+	 * @returns
+	 *   subscribable
+	 */
+	public get onServiceUpdate(): Subscribable<this, [ service: Service ]> {
+		return this.serviceUpdateEvent.subscribable;
 	}
-
 
 	/**
 	 * Join the services layer allowing access to remote services.
@@ -128,51 +148,99 @@ export class Services {
 	}
 
 	/**
-	 * Register a new service that should be made available locally and
-	 * remotely to other nodes.
+	 * Register an object using a specific identifier.
 	 *
-	 * @param serviceDef -
-	 *   definition of service
+	 * @param id -
+	 *   identifier of the service
+	 * @param instanceOrFactory -
+	 *   instance to expose or factory for the instance
 	 * @returns
 	 *   handle that can be used to remove service
 	 */
-	public register(serviceDef: LocalServiceDef): ServiceHandle {
+	public register(id: string, instanceOrFactory: LocalService<object>): ServiceHandle;
+
+	/**
+	 * Register an object that contains a service identifier.
+	 *
+	 * @param instanceOrFactory -
+	 *   instance to expose or factory for the instance
+	 * @returns
+	 *   handle that can be used to remove service
+	 */
+	public register(instanceOrFactory: LocalService<{ serviceId: string }>): ServiceHandle;
+
+	/**
+	 * Register a new service that should be made available locally and
+	 * remotely to other nodes.
+	 *
+	 * @param idOrInstance -
+	 *   identifier of service, or an object with the serviceId property
+	 * @param instance -
+	 *   instance to register with
+	 * @returns
+	 *   handle that can be used to remove service
+	 */
+	public register(
+		idOrInstance: string | LocalService<{ serviceId: string }>,
+		instance?: LocalService<object>
+	): ServiceHandle {
 		const handle = new ServiceHandleImpl();
-		let service: LocalService;
-		if(typeof serviceDef === 'function') {
+		const actualInstanceOrFactory = typeof idOrInstance === 'string'
+			? instance
+			: idOrInstance;
+
+		if(! actualInstanceOrFactory) {
+			throw new Error('An instance or factory to create it is required');
+		}
+
+		let service: object;
+		if(typeof actualInstanceOrFactory === 'function') {
 			/*
 			 * The service is being registered either using a factory function
 			 * or as a class.
 			 */
 			try {
-				service = Reflect.construct(serviceDef, [ handle ]);
+				service = Reflect.construct(actualInstanceOrFactory, [ handle ]);
 			} catch(ex) {
 				// TODO: This should probably check the error
-				service = (serviceDef as any)(handle);
+				service = (actualInstanceOrFactory as any)(handle);
 			}
 		} else {
-			service = serviceDef;
+			service = actualInstanceOrFactory;
 		}
 
-		const id = service.id;
+		// Get the identifier from the argument or service instance
+		const id = typeof idOrInstance === 'string'
+			? idOrInstance
+			: (service as any).serviceId as string | undefined;
+
 		if(typeof id !== 'string' || id.trim() === '') {
 			throw new Error('Services must have a non-empty id');
 		}
 
-		if(this.localServices.has(id)) {
-			throw new Error('Local service with id ' + id + ' already available');
+		// Get the contract being implemented
+		const contract = ServiceContract.get(service);
+		if(! contract) {
+			throw new Error('Unable to determine service contract, use ServiceContract.implement, define a property serviceContract or check that your class is decorated');
+		}
+
+		let registration = this.localServices.get(id);
+		if(! registration) {
+			registration = {
+				nodeSubscriptionHandles: new Map(),
+
+				reflect: new MergedServiceReflect(id)
+			};
+
+			this.localServices.set(id, registration);
 		}
 
 		// Create the reflect used to call methods of the local service
-		const reflect = new LocalServiceReflect(service);
+		const reflect = new LocalServiceReflect(id, contract, service);
 		handle.unregisterService = () => this.unregister(reflect);
 
 		// Register the service
-		this.localServices.set(id, {
-			reflect: reflect,
-
-			nodeSubscriptionHandles: new Map()
-		});
+		registration.reflect.addReflect(reflect);
 		this.version++;
 
 		// Broadcast that the service is now available
@@ -187,49 +255,51 @@ export class Services {
 		return handle;
 	}
 
+	/**
+	 * Unregister a previously registered service.
+	 *
+	 * @param reflect -
+	 *   instance to remove
+	 */
 	private unregister(reflect: ServiceReflect) {
-		this.localServices.delete(reflect.id);
-		this.unregisterServiceReflect(reflect);
+		const registration = this.localServices.get(reflect.id);
+		if(! registration) return;
 
-		// Broadcast that the service is no longer available
-		this.exchange.broadcast('service:unavailable', {
-			version: this.version,
-			service: reflect.id
-		}).catch(err => this.debug('Error occurred during service broadcast', err));
+		// Remove the reflect instance from the local service
+		registration.reflect.removeReflect(reflect);
+
+		if(! registration.reflect.hasReflects()) {
+			// No more reflects means the service is no longer available locally
+			this.localServices.delete(reflect.id);
+
+			// Broadcast that the service is no longer available
+			this.exchange.broadcast('service:unavailable', {
+				version: this.version,
+				service: reflect.id
+			}).catch(err => this.debug('Error occurred during service broadcast', err));
+		}
+
+		// Unregister locally
+		this.unregisterServiceReflect(reflect);
 	}
 
 	/**
-	 * Get a service if it is available. Will return a proxy that can be used
-	 * to invoke methods on the service regardless if it is remote or local:
-	 *
-	 * ```javascript
-	 * const instance = services.get('example:test');
-	 * if(instance) {
-	 *   await instance.doStuff();
-	 * }
-	 * ```
-	 *
-	 * For TypeScript it is possible to scope it to a known interface:
-	 *
-	 * ```typescript
-	 * interface TestService {
-	 *   doStuff(): Promise<void>;
-	 * }
-	 *
-	 * const instance = services.get<TestService>('example:test');
-	 * if(instance) {
-	 *   await instance.doStuff();
-	 * }
-	 * ```
+	 * Get information about a service with the given identifier.
 	 *
 	 * @param id -
 	 *   the identifier of the service
 	 * @returns
 	 *   `Service` instance or `null` if service is unavailable
 	 */
-	public get<S extends object>(id: string): (Service & S) | null {
+	public get(id: string): Service {
 		const service = this.services.get(id);
-		return service ? service.proxy : null;
+		if(service) {
+			// Service is currently registered, fetch the instance from it
+			return service.instance;
+		} else {
+			// Service is not registered - create a new instance
+			return this.createServiceImpl(id);
+		}
 	}
 
 	/**
@@ -245,7 +315,7 @@ export class Services {
 		let emitAvailable = false;
 		if(! service) {
 			// Create the new service if not available
-			service = new ServiceImpl(reflect.id);
+			service = new ServiceInfo(reflect.id, this.createServiceImpl(reflect.id));
 			this.services.set(reflect.id, service);
 
 			emitAvailable = true;
@@ -254,8 +324,21 @@ export class Services {
 		service.addReflect(reflect);
 
 		if(emitAvailable) {
-			this.serviceAvailableEvent.emit(service.proxy);
+			this.serviceAvailableEvent.emit(service.instance);
+		} else {
+			this.serviceUpdateEvent.emit(service.instance);
 		}
+	}
+
+	private createServiceImpl(id: string): ServiceImpl {
+		return new ServiceImpl(this, id, () => {
+			const s = this.services.get(id);
+			if(! s) {
+				throw new Error('No implementations of the service ' + id + ' are available');
+			}
+
+			return s.reflect;
+		});
 	}
 
 	/**
@@ -278,7 +361,7 @@ export class Services {
 		service.removeReflect(currentReflect);
 		service.addReflect(newReflect);
 
-		this.serviceUpdatedEvent.emit(service.proxy);
+		this.serviceUpdateEvent.emit(service.instance);
 	}
 
 	/**
@@ -295,10 +378,10 @@ export class Services {
 
 		service.removeReflect(reflect);
 
-		if(! service.hasReflects()) {
+		if(! service.reflect.hasReflects()) {
 			this.services.delete(reflect.id);
 
-			this.serviceUnavailableEvent.emit(service.proxy);
+			this.serviceUnavailableEvent.emit(service.instance);
 		}
 	}
 
@@ -723,22 +806,8 @@ export class Services {
 function toServiceDef(reflect: ServiceReflect): ServiceDef {
 	return {
 		id: reflect.id,
-		methods: reflect.methods.map(m => ({
-			name: m.name,
-			parameters: m.parameters.map(p => ({
-				name: p.name,
-				typeId: p.typeId,
-				rest: p.rest
-			}))
-		})),
-		events: reflect.events.map(e => ({
-			name: e.name,
-			parameters: e.parameters.map(p => ({
-				name: p.name,
-				typeId: p.typeId,
-				rest: p.rest
-			}))
-		}))
+		methods: reflect.methods,
+		events: reflect.events
 	};
 }
 
@@ -764,7 +833,7 @@ interface LocalServiceData {
 	 * The reflect used to invoke methods and to listen to events on this
 	 * service.
 	 */
-	readonly reflect: ServiceReflect;
+	readonly reflect: MergedServiceReflect;
 
 	/**
 	 * Mapping between node identifiers and subscription handles. First level

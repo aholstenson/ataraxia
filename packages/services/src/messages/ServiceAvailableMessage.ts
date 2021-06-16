@@ -1,4 +1,4 @@
-import { ServiceDef } from './ServiceDef';
+import { ServiceDef } from '../defs/ServiceDef';
 
 /**
  * Message sent to all nodes when a new service is available or updated.

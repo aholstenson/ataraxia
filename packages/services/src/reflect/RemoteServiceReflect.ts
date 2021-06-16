@@ -1,18 +1,13 @@
+import { AsyncSubscriptionHandle, Listener } from 'atvik';
 
-import { Listener } from 'atvik';
+import { BasicValue } from 'ataraxia-service-contracts';
 
-import {
-	ServiceDef,
-	ServiceMethodDef,
-	ServiceMethodParameterDef,
-	ServiceEventDef
-} from '../../messages';
-import { ServiceEvent } from '../ServiceEvent';
-import { ServiceMethod } from '../ServiceMethod';
-import { ServiceParameter } from '../ServiceParameter';
-import { ServiceReflect } from '../ServiceReflect';
+import { ServiceDef } from '../defs/ServiceDef';
+import { ServiceEventDef } from '../defs/ServiceEventDef';
+import { ServiceMethodDef } from '../defs/ServiceMethodDef';
 
 import { RemoteServiceHelper } from './RemoteServiceHelper';
+import { ServiceReflect } from './ServiceReflect';
 
 /**
  * Implementation of `ServiceReflect` for remote services.
@@ -25,30 +20,35 @@ export class RemoteServiceReflect extends ServiceReflect {
 		def: ServiceDef,
 		helper: RemoteServiceHelper
 	) {
-		const methods = toServiceMethods(def);
-		const events = toServiceEvents(def);
-
-		super(def.id, methods, events);
+		super(def.id, toServiceMethods(def), toServiceEvents(def));
 
 		this.helper = helper;
 		this.eventRegistrations = new Map();
 	}
 
-	public apply(method: string, args: any[]): Promise<any> {
+	public override apply(method: string, args: BasicValue[]): Promise<BasicValue> {
 		return this.helper.call(method, args);
 	}
 
-	public async subscribe(event: string, listener: Listener<void, any[]>): Promise<void> {
+	public override async subscribe(event: string, listener: Listener<void, any[]>): Promise<AsyncSubscriptionHandle> {
+		const self = this;
+		const unsubscriber = {
+			async unsubscribe() {
+				await self.unsubscribe(event, listener);
+			}
+		};
+
 		const listeners = this.eventRegistrations.get(event);
 		if(listeners) {
 			listeners.push(listener);
-			return;
+			return unsubscriber;
 		}
 
 		// This is a new registration, store it and then ask to subscribe
 		this.eventRegistrations.set(event, [ listener ]);
 
 		await this.helper.requestSubscribe(event);
+		return unsubscriber;
 	}
 
 	public async unsubscribe(event: string, listener: Listener<void, any[]>): Promise<boolean> {
@@ -88,42 +88,11 @@ export class RemoteServiceReflect extends ServiceReflect {
  *   map of `ServiceMethod`
  */
 function toServiceMethods(def: ServiceDef) {
-	const methods = new Map<string, ServiceMethod>();
+	const methods = new Map<string, ServiceMethodDef>();
 	for(const methodDef of def.methods) {
-		methods.set(methodDef.name, toServiceMethod(methodDef));
+		methods.set(methodDef.name, methodDef);
 	}
 	return methods;
-}
-
-/**
- * Turn a `ServiceMethodDef` into a `ServiceMethod`.
- *
- * @param def -
- *   definition to convert
- * @returns
- *   `ServiceMethod` instance
- */
-function toServiceMethod(def: ServiceMethodDef): ServiceMethod {
-	return {
-		name: def.name,
-		parameters: def.parameters.map(toServiceParameter)
-	};
-}
-
-/**
- * Convert a `ServiceMethodParameterDef` into a `ServiceParameter`.
- *
- * @param def -
- *   definition to convert
- * @returns
- *   `ServiceParameter` instance
- */
-function toServiceParameter(def: ServiceMethodParameterDef): ServiceParameter {
-	return {
-		name: def.name,
-		typeId: def.typeId,
-		rest: def.rest
-	};
 }
 
 /**
@@ -135,24 +104,9 @@ function toServiceParameter(def: ServiceMethodParameterDef): ServiceParameter {
  *   map of `ServiceEvent`
  */
 function toServiceEvents(def: ServiceDef) {
-	const events = new Map<string, ServiceEvent>();
+	const events = new Map<string, ServiceEventDef>();
 	for(const eventDef of def.events) {
-		events.set(eventDef.name, toServiceEvent(eventDef));
+		events.set(eventDef.name, eventDef);
 	}
 	return events;
-}
-
-/**
- * Convert a `ServiceEventDef` into a `ServiceEvent`.
- *
- * @param def -
- *   definition to convert
- * @returns
- *   `ServiceEvent` instance
- */
-function toServiceEvent(def: ServiceEventDef): ServiceEvent {
-	return {
-		name: def.name,
-		parameters: def.parameters.map(toServiceParameter)
-	};
 }

@@ -5,6 +5,8 @@
 		"rootDir": "./src",
 		"outDir": "dist/cjs",
 		"declarationDir": "dist/types",
+
+		"experimentalDecorators": true,
 	},
 	"include": [
 		"src"
