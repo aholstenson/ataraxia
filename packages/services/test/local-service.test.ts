@@ -114,4 +114,70 @@ describe('Services: Local', () => {
 		const s = await proxy.hello('world');
 		expect(s).toBe('Hello world!');
 	});
+
+	it('onServiceAvailable triggers', async () => {
+		const services = new Services(net);
+
+		let availableCount = 0;
+		services.onServiceAvailable(s => availableCount++);
+
+		services.register('test', TestService.implement({
+			async hello(what: string) {
+				return 'Hello ' + what + '!';
+			}
+		}));
+
+		expect(availableCount).toBe(1);
+	});
+
+	it('onServiceUnavailable triggers', async () => {
+		const services = new Services(net);
+
+		let unavailableCount = 0;
+		services.onServiceUnavailable(s => unavailableCount++);
+
+		const handle = services.register('test', TestService.implement({
+			async hello(what: string) {
+				return 'Hello ' + what + '!';
+			}
+		}));
+
+		handle.unregister();
+
+		expect(unavailableCount).toBe(1);
+	});
+
+	it('Service.onAvailable triggers', async () => {
+		const services = new Services(net);
+
+		const service = services.get('test');
+		let availableCount = 0;
+		service.onAvailable(() => availableCount++);
+
+		services.register('test', TestService.implement({
+			async hello(what: string) {
+				return 'Hello ' + what + '!';
+			}
+		}));
+
+		expect(availableCount).toBe(1);
+	});
+
+	it('Service.onUnavailable triggers', async () => {
+		const services = new Services(net);
+
+		const service = services.get('test');
+		let unavailableCount = 0;
+		service.onUnavailable(() => unavailableCount++);
+
+		const handle = services.register('test', TestService.implement({
+			async hello(what: string) {
+				return 'Hello ' + what + '!';
+			}
+		}));
+
+		handle.unregister();
+
+		expect(unavailableCount).toBe(1);
+	});
 });

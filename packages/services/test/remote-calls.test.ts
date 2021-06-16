@@ -101,4 +101,138 @@ describe('Services: Remote Calls', () => {
 		await testNetwork.shutdown();
 		throw new Error('Service not found');
 	});
+
+	it('onServiceAvailable triggers', async () => {
+		const testNetwork = new TestNetwork();
+		testNetwork.bidirectional('a', 'b');
+
+		const a = testNetwork.network('a');
+		const b = testNetwork.network('b');
+
+		const aServices = new Services(a);
+		const bServices = new Services(b);
+
+		await aServices.join();
+		await bServices.join();
+
+		let availableCount = 0;
+		bServices.onServiceAvailable(s => availableCount++);
+
+		aServices.register('test', TestService.implement({
+			async hello(what: string) {
+				return 'Hello ' + what + '!';
+			}
+		}));
+
+		await testNetwork.consolidate();
+
+		expect(availableCount).toBe(1);
+
+		await aServices.leave();
+		await bServices.leave();
+		await testNetwork.shutdown();
+	});
+
+	it('onServiceUnavailable triggers', async () => {
+		const testNetwork = new TestNetwork();
+		testNetwork.bidirectional('a', 'b');
+
+		const a = testNetwork.network('a');
+		const b = testNetwork.network('b');
+
+		const aServices = new Services(a);
+		const bServices = new Services(b);
+
+		await aServices.join();
+		await bServices.join();
+
+		let unavailableCount = 0;
+		bServices.onServiceUnavailable(s => unavailableCount++);
+
+		const handle = aServices.register('test', TestService.implement({
+			async hello(what: string) {
+				return 'Hello ' + what + '!';
+			}
+		}));
+
+		await testNetwork.consolidate();
+
+		handle.unregister();
+
+		await testNetwork.consolidate();
+
+		expect(unavailableCount).toBe(1);
+
+		await aServices.leave();
+		await bServices.leave();
+		await testNetwork.shutdown();
+	});
+
+	it('Service.onAvailable triggers', async () => {
+		const testNetwork = new TestNetwork();
+		testNetwork.bidirectional('a', 'b');
+
+		const a = testNetwork.network('a');
+		const b = testNetwork.network('b');
+
+		const aServices = new Services(a);
+		const bServices = new Services(b);
+
+		await aServices.join();
+		await bServices.join();
+
+		const service = bServices.get('test');
+		let availableCount = 0;
+		service.onAvailable(() => availableCount++);
+
+		aServices.register('test', TestService.implement({
+			async hello(what: string) {
+				return 'Hello ' + what + '!';
+			}
+		}));
+
+		await testNetwork.consolidate();
+
+		expect(availableCount).toBe(1);
+
+		await aServices.leave();
+		await bServices.leave();
+		await testNetwork.shutdown();
+	});
+
+	it('Service.onUnavailable triggers', async () => {
+		const testNetwork = new TestNetwork();
+		testNetwork.bidirectional('a', 'b');
+
+		const a = testNetwork.network('a');
+		const b = testNetwork.network('b');
+
+		const aServices = new Services(a);
+		const bServices = new Services(b);
+
+		await aServices.join();
+		await bServices.join();
+
+		const service = bServices.get('test');
+		let unavailableCount = 0;
+		service.onUnavailable(() => unavailableCount++);
+
+		const handle = aServices.register('test', TestService.implement({
+			async hello(what: string) {
+				return 'Hello ' + what + '!';
+			}
+		}));
+
+		await testNetwork.consolidate();
+
+		handle.unregister();
+
+		await testNetwork.consolidate();
+
+		expect(unavailableCount).toBe(1);
+
+		await aServices.leave();
+		await bServices.leave();
+		await testNetwork.shutdown();
+	});
 });
