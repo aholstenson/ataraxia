@@ -1,5 +1,5 @@
 import { Network } from 'ataraxia';
-import { serviceContract, ServiceContract, stringType } from 'ataraxia-service-contracts';
+import { AsyncEvent, AsyncSubscribable, serviceContract, ServiceContract, stringType } from 'ataraxia-service-contracts';
 
 import { ServiceHandle } from '../src/ServiceHandle';
 import { Services } from '../src/Services';
@@ -15,6 +15,31 @@ interface TestService {
 
 const TestService = new ServiceContract<TestService>()
 	.describeMethod('hello', {
+		returnType: stringType,
+		parameters: [
+			{
+				name: 'message',
+				type: stringType
+			}
+		]
+	});
+
+interface EchoService {
+	onEcho: AsyncSubscribable<this, [ string ]>;
+
+	echo(message: string): Promise<string>;
+}
+
+const EchoService = new ServiceContract<EchoService>()
+	.describeEvent('onEcho', {
+		parameters: [
+			{
+				name: 'message',
+				type: stringType
+			}
+		]
+	})
+	.describeMethod('echo', {
 		returnType: stringType,
 		parameters: [
 			{
@@ -113,6 +138,69 @@ describe('Services: Local', () => {
 		const proxy = service.as(TestService);
 		const s = await proxy.hello('world');
 		expect(s).toBe('Hello world!');
+	});
+
+	it('Can listen to event', async () => {
+		const services = new Services(net);
+
+		@serviceContract(EchoService)
+		class EchoServiceImpl implements EchoService {
+			private echoEvent = new AsyncEvent<this, [ string ]>(this);
+
+			public get onEcho() {
+				return this.echoEvent.subscribable;
+			}
+
+			public async echo(message: string) {
+				this.echoEvent.emit(message);
+				return message;
+			}
+		}
+
+		services.register('test', new EchoServiceImpl());
+
+		const service = services.get('test');
+		expect(service.available).toBe(true);
+
+		let receivedEvent = false;
+		await service.subscribe('onEcho', msg => {
+			receivedEvent = msg === 'echo1';
+		});
+
+		await service.call('echo', 'echo1');
+		expect(receivedEvent).toBe(true);
+	});
+
+	it('Can listen to event via proxy', async () => {
+		const services = new Services(net);
+
+		@serviceContract(EchoService)
+		class EchoServiceImpl implements EchoService {
+			private echoEvent = new AsyncEvent<this, [ string ]>(this);
+
+			public get onEcho() {
+				return this.echoEvent.subscribable;
+			}
+
+			public async echo(message: string) {
+				this.echoEvent.emit(message);
+				return message;
+			}
+		}
+
+		services.register('test', new EchoServiceImpl());
+
+		const service = services.get('test');
+		expect(service.available).toBe(true);
+
+		let receivedEvent = false;
+		const proxy = service.as(EchoService);
+		await proxy.onEcho(msg => {
+			receivedEvent = msg === 'echo1';
+		});
+
+		await service.call('echo', 'echo1');
+		expect(receivedEvent).toBe(true);
 	});
 
 	it('onServiceAvailable triggers', async () => {
