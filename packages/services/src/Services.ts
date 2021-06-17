@@ -36,8 +36,8 @@ import { ServiceInfo } from './ServiceInfo';
 /**
  * Type definition for local services. Supports three cases:
  *
- * * Already constructed `LocalService`
- * * Function that takes a `ServiceHandle` and returns `LocalService`
+ * * Already constructed instance
+ * * Function that takes a `ServiceHandle` and returns instance
  * * Constructor that takes a `ServiceHandle`
  */
 export type LocalService<T> = T
@@ -46,6 +46,174 @@ export type LocalService<T> = T
 
 /**
  * Distributed service registry for exposing and consuming remote services.
+ *
+ * ```javascript
+ * const services = new Services(net);
+ *
+ * // Join the services
+ * await services.join();
+ * ```
+ *
+ * ## Service contracts
+ *
+ * The service support is built around contracts that define what methods and
+ * events are supported. Contracts are defined using {@link ServiceContract}:
+ *
+ * ```javascript
+ * const EchoService = new ServiceContract()
+ *   .defineMethod('echo', {
+ *      returnType: stringType,
+ *      parameters: [
+ *        {
+ *           name: 'message',
+ *           type: stringType
+ *        }
+ *      ]
+ *   })
+ *   .defineEvent('onEcho', {
+ *     parameters: [
+ *       {
+ *         name: 'message',
+ *         type: stringType
+ *       }
+ *     ]
+ *   });
+ * ```
+ *
+ * ## Implementing and registering services
+ *
+ * When a contract has been defined it should be implemented, either as a class
+ * or as a one-off instance.
+ *
+ * ### Classes
+ *
+ * Classes are commonly implemented using a decorator to indicate what contract
+ * they support:
+ *
+ * ```javascript
+ * @serviceContract(EchoService)
+ * class EchoServiceImpl {
+ *   constructor() {
+ *     this.echoEvent = new AsyncEvent(this);
+ *   }
+ *
+ *   get onEcho() {
+ *     return this.echoEvent.subscribable;
+ *   }
+ *
+ *   async echo(message) {
+ *     this.echoEvent.emit(message);
+ *     return message;
+ *   }
+ * }
+ *
+ * // Register a new instance
+ * services.register('echo', new EchoServiceImpl());
+ * ```
+ *
+ * ### Instance
+ *
+ * Instance implementations are useful for singleton services without events:
+ *
+ * ```javascript
+ * const NoEventEchoService = new ServiceContract()
+ *   .defineMethod('echo', {
+ *      returnType: stringType,
+ *      parameters: [
+ *        {
+ *           name: 'message',
+ *           type: stringType
+ *        }
+ *      ]
+ *   });
+ *
+ * // Implement the contract
+ * const instance = NoEventEchoService.implement({
+ *   async echo(message) {
+ *     return message;
+ *   }
+ * });
+ *
+ * // Register the instance
+ * services.register('echo', instance);
+ * ```
+ *
+ * ## Consuming services
+ *
+ * {@link Service}s are commonly consumed either by their identifier or
+ * dynamically using events.
+ *
+ * ### Events
+ *
+ * It is possible to listen for events becoming available and unavailable using
+ * {@link onServiceAvailable} and {@link onServiceUnavailable}:
+ *
+ * ```javascript
+ * services.onServiceAvailable(service => {
+ *   // Do something with the service here
+ * });
+ *
+ * services.onServiceUnavailable(service => {
+ *   // Stop doing something with the service
+ * });
+ * ```
+ *
+ * Updates to services can occur if multiple instances are registered for the
+ * same id, in which case they are merged and update events emitted if the
+ * supported methods and events change:
+ *
+ * ```javascript
+ * services.onServiceUpdate(service => {
+ *   // Service has been updated, determine if we are still interested in it
+ * });
+ * ```
+ *
+ * ### Getting specific services
+ *
+ * {@link get} can be used to get a service based on a known identifier. Doing
+ * so allows you to determine its availability, listen to changes, events and
+ * invoke methods.
+ *
+ * ```javascript
+ * const service = services.get('echo');
+ *
+ * if(service.available) {
+ *   await service.call('echo', 'Hello world!');
+ * }
+ * ```
+ *
+ * Events are available on the service instance and can be used to listen for
+ * changes to it, see {@link Service.onAvailable}, {@link Service.onUnavailable}
+ * and {@link Service.onUpdate}.
+ *
+ * ### Creating proxies
+ *
+ * Creating a proxy is the recommended way to call methods and listen to events
+ * from a service. It allows for a very similar style of use for services that
+ * are remote as for services that are local.
+ *
+ * Proxies are created from a contract and use the methods and events defined
+ * in them to create the proxied instance:
+ *
+ * ```javascript
+ * const echoService = service.as(EchoService);
+ * ```
+ *
+ * A proxied service can then be called as a normal class:
+ *
+ * ```javascript
+ * const result = await echoService.echo('Hello world!');
+ * ```
+ *
+ * Events work similar to how they would locally:
+ *
+ * ```javascript
+ * await echoService.onEcho(message => console.log('Echoed:', message));
+ * ```
+ *
+ * Methods in a contract will become a method on the proxy that returns a
+ * `Promise`, so method calls must always be awaited to retrieve the result.
+ * Events will become an instance of {@link AsyncSubscribable}.
  */
 export class Services {
 	private readonly debug: debug.Debugger;
