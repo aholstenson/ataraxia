@@ -70,7 +70,7 @@ export class Services {
 	/**
 	 * Information about local and remote services.
 	 */
-	private readonly services: Map<string, ServiceInfo>;
+	private readonly _services: Map<string, ServiceInfo>;
 
 	private readonly calls: RequestReplyHelper<any>;
 
@@ -90,7 +90,7 @@ export class Services {
 		this.exchange.onNodeUnavailable(this.handleNodeUnavailable.bind(this));
 
 		this.localServices = new Map();
-		this.services = new Map();
+		this._services = new Map();
 
 		this.calls = new RequestReplyHelper({
 			timeout: 60000
@@ -301,7 +301,7 @@ export class Services {
 	 *   `Service` instance or `null` if service is unavailable
 	 */
 	public get(id: string): Service {
-		const service = this.services.get(id);
+		const service = this._services.get(id);
 		if(service) {
 			// Service is currently registered, fetch the instance from it
 			return service.instance;
@@ -317,15 +317,15 @@ export class Services {
 	 * @param reflect -
 	 *   reflect instance for the service
 	 */
-	protected registerServiceReflect(
+	private registerServiceReflect(
 		reflect: ServiceReflect
 	) {
-		let service = this.services.get(reflect.id);
+		let service = this._services.get(reflect.id);
 		let emitAvailable = false;
 		if(! service) {
 			// Create the new service if not available
 			service = new ServiceInfo(reflect.id, this.createServiceImpl(reflect.id));
-			this.services.set(reflect.id, service);
+			this._services.set(reflect.id, service);
 
 			emitAvailable = true;
 		}
@@ -341,7 +341,7 @@ export class Services {
 
 	private createServiceImpl(id: string): ServiceImpl {
 		return new ServiceImpl(this, id, () => {
-			const s = this.services.get(id);
+			const s = this._services.get(id);
 			if(! s) {
 				throw new Error('No implementations of the service ' + id + ' are available');
 			}
@@ -358,11 +358,11 @@ export class Services {
 	 * @param newReflect -
 	 *   new reflect instance
 	 */
-	protected updateServiceReflect(
+	private updateServiceReflect(
 		currentReflect: ServiceReflect,
 		newReflect: ServiceReflect
 	) {
-		const service = this.services.get(currentReflect.id);
+		const service = this._services.get(currentReflect.id);
 		if(! service) return;
 
 		// TODO: Check if reflects are equivalent and abort
@@ -379,16 +379,16 @@ export class Services {
 	 * @param reflect -
 	 *   reflect instance
 	 */
-	protected unregisterServiceReflect(
+	private unregisterServiceReflect(
 		reflect: ServiceReflect
 	) {
-		const service = this.services.get(reflect.id);
+		const service = this._services.get(reflect.id);
 		if(! service) return;
 
 		service.removeReflect(reflect);
 
 		if(! service.reflect.hasReflects()) {
-			this.services.delete(reflect.id);
+			this._services.delete(reflect.id);
 
 			this.serviceUnavailableEvent.emit(service.instance);
 		}
@@ -401,7 +401,7 @@ export class Services {
 	 * @param node -
 	 *   node that is now available
 	 */
-	protected handleNodeAvailable(node: Node<ServiceMessages>) {
+	private handleNodeAvailable(node: Node<ServiceMessages>) {
 		const state: ServiceNodeData = {
 			node: node,
 			version: 0,
@@ -420,7 +420,7 @@ export class Services {
 	 * @param node -
 	 *   node that is now unavailable
 	 */
-	protected handleNodeUnavailable(node: Node<ServiceMessages>) {
+	private handleNodeUnavailable(node: Node<ServiceMessages>) {
 		const state = this.nodes.get(node.id);
 		if(! state) return;
 
@@ -450,7 +450,7 @@ export class Services {
 	 * @param msg -
 	 *   incoming message
 	 */
-	protected handleMessage(msg: MessageUnion<ServiceMessages>) {
+	private handleMessage(msg: MessageUnion<ServiceMessages>) {
 		switch(msg.type) {
 			case 'service:list-request':
 				this.handleServiceListRequest(msg.source, msg.data);
@@ -490,7 +490,7 @@ export class Services {
 	 * @param message -
 	 *   details about the request
 	 */
-	protected handleServiceListRequest(node: Node<ServiceMessages>, message: ServiceListRequestMessage) {
+	private handleServiceListRequest(node: Node<ServiceMessages>, message: ServiceListRequestMessage) {
 		// The node has the latest version of our services
 		if(message.lastVersion === this.version) return;
 
@@ -514,7 +514,7 @@ export class Services {
 	 * @param message -
 	 *   message with service info
 	 */
-	protected handleServiceListReply(node: Node<ServiceMessages>, message: ServiceListReplyMessage) {
+	private handleServiceListReply(node: Node<ServiceMessages>, message: ServiceListReplyMessage) {
 		const data = this.nodes.get(node.id);
 		if(! data) return;
 
@@ -565,7 +565,7 @@ export class Services {
 	 * @param message -
 	 *   message describing the service that is now available
 	 */
-	protected handleServiceAvailable(node: Node<ServiceMessages>, message: ServiceAvailableMessage) {
+	private handleServiceAvailable(node: Node<ServiceMessages>, message: ServiceAvailableMessage) {
 		const data = this.nodes.get(node.id);
 		if(! data) return;
 
@@ -603,7 +603,7 @@ export class Services {
 	 * @param message -
 	 *   message with the service that is no longer available
 	 */
-	protected handleServiceUnavailable(node: Node<ServiceMessages>, message: ServiceUnavailableMessage) {
+	private handleServiceUnavailable(node: Node<ServiceMessages>, message: ServiceUnavailableMessage) {
 		const data = this.nodes.get(node.id);
 		if(! data) return;
 
@@ -634,7 +634,7 @@ export class Services {
 	 * @param message -
 	 *   message describing the invocation
 	 */
-	protected handleServiceInvokeRequest(node: Node<ServiceMessages>, message: ServiceInvokeRequest) {
+	private handleServiceInvokeRequest(node: Node<ServiceMessages>, message: ServiceInvokeRequest) {
 		const service = this.localServices.get(message.service);
 		if(! service) {
 			node.send('service:invoke-reply', {
@@ -671,7 +671,7 @@ export class Services {
 	 * @param message -
 	 *   reply to invocation
 	 */
-	protected handleServiceInvokeReply(message: ServiceInvokeReply) {
+	private handleServiceInvokeReply(message: ServiceInvokeReply) {
 		if(typeof message.error === 'string') {
 			this.calls.registerError(message.id, new Error(message.error));
 		} else {
@@ -687,7 +687,7 @@ export class Services {
 	 * @param message -
 	 *   message describing the event being subscribed to
 	 */
-	protected handleServiceEventSubscribe(node: Node<ServiceMessages>, message: ServiceEventSubscribeMessage) {
+	private handleServiceEventSubscribe(node: Node<ServiceMessages>, message: ServiceEventSubscribeMessage) {
 		const service = this.localServices.get(message.service);
 		if(! service) return;
 
@@ -729,7 +729,7 @@ export class Services {
 	 * @param message -
 	 *   message describing the event being unsubscribed from
 	 */
-	protected handleServiceEventUnsubscribe(node: Node<ServiceMessages>, message: ServiceEventUnsubscribeMessage) {
+	private handleServiceEventUnsubscribe(node: Node<ServiceMessages>, message: ServiceEventUnsubscribeMessage) {
 		const service = this.localServices.get(message.service);
 		if(! service) return;
 
@@ -756,7 +756,7 @@ export class Services {
 	 * @param message -
 	 *   message describing the event
 	 */
-	protected handleServiceEventEmit(node: Node<ServiceMessages>, message: ServiceEventEmitMessage) {
+	private handleServiceEventEmit(node: Node<ServiceMessages>, message: ServiceEventEmitMessage) {
 		const data = this.nodes.get(node.id);
 		if(! data) return;
 
