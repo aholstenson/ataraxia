@@ -14,7 +14,7 @@ import {
 } from 'ataraxia-transport';
 
 import { IdMap, IdSet } from '../id';
-import { WithNetwork } from '../WithNetwork';
+import { Network } from '../Network';
 
 import { Messaging } from './Messaging';
 import { Routing } from './Routing';
@@ -60,7 +60,7 @@ export interface TopologyOptions {
  */
 // TODO: Gossip about updated peer latencies
 export class Topology {
-	private readonly parent: WithNetwork;
+	private readonly parent: Network;
 	private readonly debug: debug.Debugger;
 
 	private readonly endpoint: boolean;
@@ -91,7 +91,7 @@ export class Topology {
 	 * @param options -
 	 *   options to apply
 	 */
-	public constructor(parent: WithNetwork, options: TopologyOptions) {
+	public constructor(parent: Network, options: TopologyOptions) {
 		this.parent = parent;
 		this.endpoint = options.endpoint || false;
 		this.broadcastTimeout = null;
@@ -103,7 +103,7 @@ export class Topology {
 		this.unavailableEvent = new Event(this);
 		this.dataEvent = new Event(this);
 
-		this.debug = debug(parent.debugNamespace + ':topology');
+		this.debug = debug('ataraxia:' + parent.networkName + ':topology');
 
 		this.self = new TopologyNode(this, parent.networkIdBinary);
 		this.self.direct = true;

@@ -61,7 +61,5 @@ export * from './MessageData';
 export * from './MessageType';
 export * from './MessageUnion';
 
-export * from './WithNetwork';
-
 export * from './exchange/Exchange';
 export * from './RequestReplyHelper';

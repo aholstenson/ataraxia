@@ -241,11 +241,7 @@ export class Network<MessageTypes extends object = any> {
 		this.#exchanges = new Exchanges(this);
 
 		// Setup the topology of the network
-		this.#topology = new Topology({
-			networkIdBinary: this.networkIdBinary,
-			networkId: this.networkId,
-			debugNamespace: debugNamespace
-		}, options);
+		this.#topology = new Topology(this, options);
 
 		this.#topology.onAvailable(n => {
 			const node = new NetworkNode(debugNamespace, this.#topology, n.id);
