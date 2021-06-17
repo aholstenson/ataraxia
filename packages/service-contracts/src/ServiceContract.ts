@@ -12,7 +12,7 @@ const contractMarker = Symbol('serviceContract');
  * can be listened to.
  *
  * ```javascript
- * const contract = new ServiceContract()
+ * const EchoService = new ServiceContract()
  *   .defineMethod('echo', {
  *      returnType: stringType,
  *      parameters: [
@@ -42,6 +42,113 @@ const contractMarker = Symbol('serviceContract');
  *        }
  *      ]
  *   });
+ * ```
+ *
+ * ## Defining methods
+ *
+ * Methods are defined with {@link defineMethod} and need to provide the name
+ * of the method, its return type and parameters.
+ *
+ * For methods that return nothing {@link voidType} should be used:
+ *
+ * ```javascript
+ * .defineMethod('methodWithoutReturnValue', {
+ *   returnType: voidType,
+ *   parameters: []
+ * })
+ * ```
+ *
+ * ## Defining events
+ *
+ * Events are defined with {@link defineEvent} and should provide information
+ * about the parameters the event emits. For implementations `AsyncEvent` is
+ * assumed to be used.
+ *
+ * ```javascript
+ * const contract = new ServiceContract()
+ *   .defineEvent('onEcho', {
+ *     parameters: [
+ *       {
+ *         name: 'message',
+ *         type: stringType
+ *       }
+ *     ]
+ *   });
+ *
+ * class Impl {
+ *   constructor() {
+ *     this.echoEvent = new AsyncEvent(this);
+ *   }
+ *
+ *   get onHello() {
+ *     return this.echoEvent.subscribable;
+ *   }
+ * }
+ * ```
+ *
+ * ## Using contracts
+ *
+ * When using classes the recommended way to mark what contract a class
+ * implements is to use the {@link serviceContract} decorator:
+ *
+ * ```javascript
+ * @serviceContract(EchoService)
+ * class EchoServiceImpl {
+ *   async echo(message) {
+ *      return message;
+ *   }
+ * }
+ * ```
+ *
+ * If the decorator is not used you can define a static property called
+ * `serviceContract` instead:
+ *
+ * ```javascript
+ * class EchoServiceImpl {
+ *   static serviceContract = EchoService;
+ *
+ *   async echo(message) {
+ *      return message;
+ *   }
+ * }
+ * ```
+ *
+ * Contracts will traverse the prototype chain, so defining contract on
+ * extended classes work well:
+ *
+ * ```javascript
+ * @serviceContract(EchoService)
+ * class AbstractEchoService {
+ *   async echo(message) {
+ *      return message;
+ *   }
+ * }
+ *
+ * class EchoServiceImpl extends AbstractEchoService {
+ * }
+ * ```
+ *
+ * For plain objects the easiest way to use a contract is to use
+ * {@link implement}:
+ *
+ * ```javascript
+ * const instance = EchoService.implement({
+ *   async echo(message) {
+ *     return message;
+ *   }
+ * });
+ * ```
+ *
+ * As with classes a property may be used instead:
+ *
+ * ```javascript
+ * const instance = {
+ *   serviceContract: EchoService,
+ *
+ *   async echo(message) {
+ *     return message;
+ *   }
+ * };
  * ```
  */
 export class ServiceContract<T extends object> {
@@ -273,6 +380,40 @@ export class ServiceContract<T extends object> {
 
 /**
  * Decorator for defining what contract a certain class implements.
+ *
+ * ```javascript
+ * @serviceContract(contractHere)
+ * class ServiceImpl {
+ *   ...
+ * }
+ * ```
+ *
+ * With Typescript the decorator can't validate the type, but it is recommended
+ * to implement the same type as the contract was defined with:
+ *
+ * ```typescript
+ * interface EchoService {
+ *   echo(message: string): Promise<string>;
+ * }
+ *
+ * const EchoService = new ServiceContract<EchoService>()
+ *   .defineMethod('echo', {
+ *      returnType: stringType,
+ *      parameters: [
+ *        {
+ *           name: 'message',
+ *           type: stringType
+ *        }
+ *      ]
+ *   });
+ *
+ * @serviceContract(EchoService)
+ * class EchoServiceImpl implements EchoService {
+ *   async echo(message: string) {
+ *     return message;
+ *   }
+ * }
+ * ```
  *
  * @param contract -
  *   the contract that is implemented
