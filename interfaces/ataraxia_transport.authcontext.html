@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>DataAckMessage | Ataraxia</title>
+	<title>AuthContext | Ataraxia</title>
 	<meta name="description" content="Documentation for Ataraxia">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -58,10 +58,10 @@
 					<a href="../modules/ataraxia_transport.html">ataraxia-transport</a>
 				</li>
 				<li>
-					<a href="ataraxia_transport.dataackmessage.html">DataAckMessage</a>
+					<a href="ataraxia_transport.authcontext.html">AuthContext</a>
 				</li>
 			</ul>
-			<h1>Interface DataAckMessage</h1>
+			<h1>Interface AuthContext</h1>
 		</div>
 	</div>
 </header>
@@ -71,8 +71,8 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>Message sent backwards when the target node acknowledges having received
-						the message.</p>
+						<p>Context information that can be used during authentication. Used to pass in
+						extra information that a <code>AuthProvider</code> may use if needed.</p>
 					</div>
 				</div>
 			</section>
@@ -80,7 +80,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">DataAckMessage</span>
+						<span class="target">AuthContext</span>
 					</li>
 				</ul>
 			</section>
@@ -91,7 +91,8 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="ataraxia_transport.dataackmessage.html#id" class="tsd-kind-icon">id</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="ataraxia_transport.authcontext.html#localpublicsecurity" class="tsd-kind-icon">local<wbr>Public<wbr>Security</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="ataraxia_transport.authcontext.html#remotepublicsecurity" class="tsd-kind-icon">remote<wbr>Public<wbr>Security</a></li>
 							</ul>
 						</section>
 					</div>
@@ -100,14 +101,38 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="id" class="tsd-anchor"></a>
-					<h3>id</h3>
-					<div class="tsd-signature tsd-kind-icon">id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<a name="localpublicsecurity" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> local<wbr>Public<wbr>Security</h3>
+					<div class="tsd-signature tsd-kind-icon">local<wbr>Public<wbr>Security<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">ArrayBuffer</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/766b9c0/packages/transport/src/messages/DataMessage.ts#L47">packages/transport/src/messages/DataMessage.ts:47</a></li>
+							<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/766b9c0/packages/transport/src/auth/AuthContext.ts#L12">packages/transport/src/auth/AuthContext.ts:12</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>An optional buffer representing a publicly known security challenge.
+								For TLS this can be the hash of the certificate used by the local
+							transport.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="remotepublicsecurity" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> remote<wbr>Public<wbr>Security</h3>
+					<div class="tsd-signature tsd-kind-icon">remote<wbr>Public<wbr>Security<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">ArrayBuffer</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/766b9c0/packages/transport/src/auth/AuthContext.ts#L19">packages/transport/src/auth/AuthContext.ts:19</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>An optional buffer representing a publicly known security challenge
+								from the remote peer. For TLS this can be the hash of the certificate
+							of the server being connected to.</p>
+						</div>
+					</div>
 				</section>
 			</section>
 		</div>
@@ -154,10 +179,13 @@
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface tsd-parent-kind-module">
-						<a href="ataraxia_transport.dataackmessage.html" class="tsd-kind-icon">Data<wbr>Ack<wbr>Message</a>
+						<a href="ataraxia_transport.authcontext.html" class="tsd-kind-icon">Auth<wbr>Context</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="ataraxia_transport.dataackmessage.html#id" class="tsd-kind-icon">id</a>
+								<a href="ataraxia_transport.authcontext.html#localpublicsecurity" class="tsd-kind-icon">local<wbr>Public<wbr>Security</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="ataraxia_transport.authcontext.html#remotepublicsecurity" class="tsd-kind-icon">remote<wbr>Public<wbr>Security</a>
 							</li>
 						</ul>
 					</li>

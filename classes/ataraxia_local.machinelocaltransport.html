@@ -151,10 +151,10 @@
 							<h3>Accessors</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="ataraxia_local.machinelocaltransport.html#leader" class="tsd-kind-icon">leader</a></li>
-								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="ataraxia_local.machinelocaltransport.html#network" class="tsd-kind-icon">network</a></li>
 								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="ataraxia_local.machinelocaltransport.html#onleader" class="tsd-kind-icon">on<wbr>Leader</a></li>
 								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited"><a href="ataraxia_local.machinelocaltransport.html#onpeerconnect" class="tsd-kind-icon">on<wbr>Peer<wbr>Connect</a></li>
 								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited"><a href="ataraxia_local.machinelocaltransport.html#started" class="tsd-kind-icon">started</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited"><a href="ataraxia_local.machinelocaltransport.html#transportoptions" class="tsd-kind-icon">transport<wbr>Options</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
@@ -181,7 +181,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides <a href="ataraxia_transport.abstracttransport.html">AbstractTransport</a>.<a href="ataraxia_transport.abstracttransport.html#constructor">constructor</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/df777bc/packages/local/src/MachineLocalTransport.ts#L93">packages/local/src/MachineLocalTransport.ts:93</a></li>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/766b9c0/packages/local/src/MachineLocalTransport.ts#L94">packages/local/src/MachineLocalTransport.ts:94</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -209,7 +209,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="ataraxia_transport.abstracttransport.html">AbstractTransport</a>.<a href="ataraxia_transport.abstracttransport.html#debug">debug</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/df777bc/packages/core/src/transport/AbstractTransport.ts#L20">packages/core/src/transport/AbstractTransport.ts:20</a></li>
+							<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/766b9c0/packages/transport/src/AbstractTransport.ts#L18">packages/transport/src/AbstractTransport.ts:18</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -220,7 +220,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="ataraxia_transport.abstracttransport.html">AbstractTransport</a>.<a href="ataraxia_transport.abstracttransport.html#peers">peers</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/df777bc/packages/core/src/transport/AbstractTransport.ts#L25">packages/core/src/transport/AbstractTransport.ts:25</a></li>
+							<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/766b9c0/packages/transport/src/AbstractTransport.ts#L22">packages/transport/src/AbstractTransport.ts:22</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -237,7 +237,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/df777bc/packages/local/src/MachineLocalTransport.ts#L115">packages/local/src/MachineLocalTransport.ts:115</a></li>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/766b9c0/packages/local/src/MachineLocalTransport.ts#L116">packages/local/src/MachineLocalTransport.ts:116</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -251,30 +251,6 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-					<a name="network" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagProtected">Protected</span> network</h3>
-					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> network<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/ataraxia.withnetwork.html" class="tsd-signature-type" data-tsd-kind="Interface">WithNetwork</a></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/df777bc/packages/core/src/transport/AbstractTransport.ts#L71">packages/core/src/transport/AbstractTransport.ts:71</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Get the network of this transport. Can only be used after this transport
-									has been started.</p>
-								</div>
-							</div>
-							<h4 class="tsd-returns-title">Returns <a href="../interfaces/ataraxia.withnetwork.html" class="tsd-signature-type" data-tsd-kind="Interface">WithNetwork</a></h4>
-							<p>  network instance</p>
-						</li>
-					</ul>
-				</section>
 				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class">
 					<a name="onleader" class="tsd-anchor"></a>
 					<h3>on<wbr>Leader</h3>
@@ -285,7 +261,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/df777bc/packages/local/src/MachineLocalTransport.ts#L132">packages/local/src/MachineLocalTransport.ts:132</a></li>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/766b9c0/packages/local/src/MachineLocalTransport.ts#L133">packages/local/src/MachineLocalTransport.ts:133</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -313,7 +289,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/df777bc/packages/core/src/transport/AbstractTransport.ts#L50">packages/core/src/transport/AbstractTransport.ts:50</a></li>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/766b9c0/packages/transport/src/AbstractTransport.ts#L57">packages/transport/src/AbstractTransport.ts:57</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -336,7 +312,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/df777bc/packages/core/src/transport/AbstractTransport.ts#L60">packages/core/src/transport/AbstractTransport.ts:60</a></li>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/766b9c0/packages/transport/src/AbstractTransport.ts#L67">packages/transport/src/AbstractTransport.ts:67</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -346,6 +322,23 @@
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
 							<p>  <code>true</code> if transport is started</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
+					<a name="transportoptions" class="tsd-anchor"></a>
+					<h3>transport<wbr>Options</h3>
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> transportOptions<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/ataraxia_transport.transportoptions.html" class="tsd-signature-type" data-tsd-kind="Interface">TransportOptions</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/766b9c0/packages/transport/src/AbstractTransport.ts#L43">packages/transport/src/AbstractTransport.ts:43</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <a href="../interfaces/ataraxia_transport.transportoptions.html" class="tsd-signature-type" data-tsd-kind="Interface">TransportOptions</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -363,7 +356,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="ataraxia_transport.abstracttransport.html">AbstractTransport</a>.<a href="ataraxia_transport.abstracttransport.html#addpeer">addPeer</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/df777bc/packages/core/src/transport/AbstractTransport.ts#L133">packages/core/src/transport/AbstractTransport.ts:133</a></li>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/766b9c0/packages/transport/src/AbstractTransport.ts#L120">packages/transport/src/AbstractTransport.ts:120</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -398,7 +391,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides <a href="ataraxia_transport.abstracttransport.html">AbstractTransport</a>.<a href="ataraxia_transport.abstracttransport.html#start">start</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/df777bc/packages/local/src/MachineLocalTransport.ts#L136">packages/local/src/MachineLocalTransport.ts:136</a></li>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/766b9c0/packages/local/src/MachineLocalTransport.ts#L137">packages/local/src/MachineLocalTransport.ts:137</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -428,7 +421,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides <a href="ataraxia_transport.abstracttransport.html">AbstractTransport</a>.<a href="ataraxia_transport.abstracttransport.html#stop">stop</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/df777bc/packages/local/src/MachineLocalTransport.ts#L168">packages/local/src/MachineLocalTransport.ts:168</a></li>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/766b9c0/packages/local/src/MachineLocalTransport.ts#L169">packages/local/src/MachineLocalTransport.ts:169</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -468,13 +461,16 @@
 						<a href="../modules/ataraxia_tcp.html">ataraxia-<wbr>tcp</a>
 					</li>
 					<li class=" tsd-kind-module">
+						<a href="../modules/ataraxia_transport.html">ataraxia-<wbr>transport</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/ataraxia_transport_streams.html">ataraxia-<wbr>transport-<wbr>streams</a>
+					</li>
+					<li class=" tsd-kind-module">
 						<a href="../modules/ataraxia_ws_client.html">ataraxia-<wbr>ws-<wbr>client</a>
 					</li>
 					<li class=" tsd-kind-module">
 						<a href="../modules/ataraxia_ws_server.html">ataraxia-<wbr>ws-<wbr>server</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="../modules/ataraxia_transport.html">ataraxia/transport</a>
 					</li>
 				</ul>
 			</nav>
@@ -497,9 +493,6 @@
 							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
 								<a href="ataraxia_local.machinelocaltransport.html#leader" class="tsd-kind-icon">leader</a>
 							</li>
-							<li class=" tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
-								<a href="ataraxia_local.machinelocaltransport.html#network" class="tsd-kind-icon">network</a>
-							</li>
 							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
 								<a href="ataraxia_local.machinelocaltransport.html#onleader" class="tsd-kind-icon">on<wbr>Leader</a>
 							</li>
@@ -508,6 +501,9 @@
 							</li>
 							<li class=" tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
 								<a href="ataraxia_local.machinelocaltransport.html#started" class="tsd-kind-icon">started</a>
+							</li>
+							<li class=" tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited">
+								<a href="ataraxia_local.machinelocaltransport.html#transportoptions" class="tsd-kind-icon">transport<wbr>Options</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
 								<a href="ataraxia_local.machinelocaltransport.html#addpeer" class="tsd-kind-icon">add<wbr>Peer</a>
