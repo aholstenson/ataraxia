@@ -75,6 +75,42 @@
 							to listen for availability, retrieve metadata about methods and events and
 						to cast it to a proxy based on a contract.</p>
 					</div>
+					<a href="#availability" id="availability" style="color: inherit; text-decoration: none;">
+						<h2>Availability</h2>
+					</a>
+					<p>The property <a href="ataraxia_services.service.html#available">available</a> will indicate if a service is currently
+						available and can be called. Events are available in the form of
+					<a href="ataraxia_services.service.html#onavailable">onAvailable</a>, <a href="ataraxia_services.service.html#onunavailable">onUnavailable</a> and <a href="ataraxia_services.service.html#onupdate">onUpdate</a>.</p>
+					<pre><code class="language-javascript"><span style="color: #001080">service</span><span style="color: #000000">.</span><span style="color: #795E26">onAvailable</span><span style="color: #000000">(() </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;This service has become available&#039;</span><span style="color: #000000">));</span>
+<span style="color: #001080">service</span><span style="color: #000000">.</span><span style="color: #795E26">onUnavailable</span><span style="color: #000000">(() </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;This service has become unavailable&#039;</span><span style="color: #000000">));</span>
+<span style="color: #001080">service</span><span style="color: #000000">.</span><span style="color: #795E26">onUpdate</span><span style="color: #000000">(() </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;This service has updated&#039;</span><span style="color: #000000">));</span>
+</code></pre>
+					<a href="#contracts" id="contracts" style="color: inherit; text-decoration: none;">
+						<h2>Contracts</h2>
+					</a>
+					<p>Services keep track of the methods and events that are available and these
+					can be inspected to determine if a service supports something specific.</p>
+					<p>The method <a href="ataraxia_services.service.html#matches">matches</a> can be used to check if a specific contract is
+					supported by a service.</p>
+					<a href="#proxies" id="proxies" style="color: inherit; text-decoration: none;">
+						<h2>Proxies</h2>
+					</a>
+					<p>Creating a proxy is the recommended way to call methods and listen to events
+						from a service. It allows for a very similar style of use for services that
+					are remote as for services that are local.</p>
+					<p>Proxies are created from a contract and use the methods and events defined
+					in them to create the proxied instance:</p>
+					<pre><code class="language-javascript"><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">echoService</span><span style="color: #000000"> = </span><span style="color: #001080">service</span><span style="color: #000000">.</span><span style="color: #795E26">as</span><span style="color: #000000">(</span><span style="color: #001080">EchoService</span><span style="color: #000000">);</span>
+</code></pre>
+					<p>A proxied service can then be called as a normal class:</p>
+					<pre><code class="language-javascript"><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">result</span><span style="color: #000000"> = </span><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">echoService</span><span style="color: #000000">.</span><span style="color: #795E26">echo</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;Hello world!&#039;</span><span style="color: #000000">);</span>
+</code></pre>
+					<p>Events work similar to how they would locally:</p>
+					<pre><code class="language-javascript"><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">echoService</span><span style="color: #000000">.</span><span style="color: #795E26">onEcho</span><span style="color: #000000">(</span><span style="color: #001080">message</span><span style="color: #000000"> </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> </span><span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;Echoed:&#039;</span><span style="color: #000000">, </span><span style="color: #001080">message</span><span style="color: #000000">));</span>
+</code></pre>
+					<p>Methods in a contract will become a method on the proxy that returns a
+						<code>Promise</code>, so method calls must always be awaited to retrieve the result.
+					Events will become an instance of <a href="../modules/ataraxia_services.html#asyncsubscribable">AsyncSubscribable</a>.</p>
 				</div>
 			</section>
 			<section class="tsd-panel tsd-hierarchy">
@@ -127,7 +163,7 @@
 					<div class="tsd-signature tsd-kind-icon">available<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/82e4db1/packages/services/src/Service.ts#L23">packages/services/src/Service.ts:23</a></li>
+							<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/c2ec029/packages/services/src/Service.ts#L72">packages/services/src/Service.ts:72</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -143,7 +179,7 @@
 					<div class="tsd-signature tsd-kind-icon">events<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">ServiceEventDef</span><span class="tsd-signature-symbol">[]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/82e4db1/packages/services/src/Service.ts#L212">packages/services/src/Service.ts:212</a></li>
+							<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/c2ec029/packages/services/src/Service.ts#L261">packages/services/src/Service.ts:261</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -163,7 +199,7 @@
 					<div class="tsd-signature tsd-kind-icon">id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/82e4db1/packages/services/src/Service.ts#L17">packages/services/src/Service.ts:17</a></li>
+							<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/c2ec029/packages/services/src/Service.ts#L66">packages/services/src/Service.ts:66</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -178,7 +214,7 @@
 					<div class="tsd-signature tsd-kind-icon">methods<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">ServiceMethodDef</span><span class="tsd-signature-symbol">[]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/82e4db1/packages/services/src/Service.ts#L159">packages/services/src/Service.ts:159</a></li>
+							<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/c2ec029/packages/services/src/Service.ts#L208">packages/services/src/Service.ts:208</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -198,7 +234,7 @@
 					<div class="tsd-signature tsd-kind-icon">on<wbr>Available<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Subscribable</span><span class="tsd-signature-symbol">&lt;</span><a href="ataraxia_services.service.html" class="tsd-signature-type" data-tsd-kind="Interface">Service</a><span class="tsd-signature-symbol">, </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/82e4db1/packages/services/src/Service.ts#L32">packages/services/src/Service.ts:32</a></li>
+							<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/c2ec029/packages/services/src/Service.ts#L81">packages/services/src/Service.ts:81</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -215,7 +251,7 @@
 					<div class="tsd-signature tsd-kind-icon">on<wbr>Unavailable<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Subscribable</span><span class="tsd-signature-symbol">&lt;</span><a href="ataraxia_services.service.html" class="tsd-signature-type" data-tsd-kind="Interface">Service</a><span class="tsd-signature-symbol">, </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/82e4db1/packages/services/src/Service.ts#L41">packages/services/src/Service.ts:41</a></li>
+							<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/c2ec029/packages/services/src/Service.ts#L90">packages/services/src/Service.ts:90</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -232,7 +268,7 @@
 					<div class="tsd-signature tsd-kind-icon">on<wbr>Update<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Subscribable</span><span class="tsd-signature-symbol">&lt;</span><a href="ataraxia_services.service.html" class="tsd-signature-type" data-tsd-kind="Interface">Service</a><span class="tsd-signature-symbol">, </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/82e4db1/packages/services/src/Service.ts#L57">packages/services/src/Service.ts:57</a></li>
+							<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/c2ec029/packages/services/src/Service.ts#L106">packages/services/src/Service.ts:106</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -262,7 +298,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/82e4db1/packages/services/src/Service.ts#L114">packages/services/src/Service.ts:114</a></li>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/c2ec029/packages/services/src/Service.ts#L163">packages/services/src/Service.ts:163</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -305,7 +341,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/82e4db1/packages/services/src/Service.ts#L87">packages/services/src/Service.ts:87</a></li>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/c2ec029/packages/services/src/Service.ts#L136">packages/services/src/Service.ts:136</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -362,7 +398,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/82e4db1/packages/services/src/Service.ts#L131">packages/services/src/Service.ts:131</a></li>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/c2ec029/packages/services/src/Service.ts#L180">packages/services/src/Service.ts:180</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -405,7 +441,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/82e4db1/packages/services/src/Service.ts#L194">packages/services/src/Service.ts:194</a></li>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/c2ec029/packages/services/src/Service.ts#L243">packages/services/src/Service.ts:243</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -438,7 +474,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/82e4db1/packages/services/src/Service.ts#L141">packages/services/src/Service.ts:141</a></li>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/c2ec029/packages/services/src/Service.ts#L190">packages/services/src/Service.ts:190</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -471,7 +507,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/82e4db1/packages/services/src/Service.ts#L204">packages/services/src/Service.ts:204</a></li>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/c2ec029/packages/services/src/Service.ts#L253">packages/services/src/Service.ts:253</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -504,7 +540,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/82e4db1/packages/services/src/Service.ts#L151">packages/services/src/Service.ts:151</a></li>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/c2ec029/packages/services/src/Service.ts#L200">packages/services/src/Service.ts:200</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -537,7 +573,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/82e4db1/packages/services/src/Service.ts#L97">packages/services/src/Service.ts:97</a></li>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/c2ec029/packages/services/src/Service.ts#L146">packages/services/src/Service.ts:146</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -570,7 +606,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/82e4db1/packages/services/src/Service.ts#L172">packages/services/src/Service.ts:172</a></li>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/c2ec029/packages/services/src/Service.ts#L221">packages/services/src/Service.ts:221</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -611,7 +647,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/82e4db1/packages/services/src/Service.ts#L184">packages/services/src/Service.ts:184</a></li>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/c2ec029/packages/services/src/Service.ts#L233">packages/services/src/Service.ts:233</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
