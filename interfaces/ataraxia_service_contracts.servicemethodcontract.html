@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>ServiceParameterContract | Ataraxia</title>
+	<title>ServiceMethodContract | Ataraxia</title>
 	<meta name="description" content="Documentation for Ataraxia">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -55,13 +55,13 @@
 					<a href="../modules.html">Ataraxia</a>
 				</li>
 				<li>
-					<a href="../modules/ataraxia_services.html">ataraxia-services</a>
+					<a href="../modules/ataraxia_service_contracts.html">ataraxia-service-contracts</a>
 				</li>
 				<li>
-					<a href="ataraxia_services.serviceparametercontract.html">ServiceParameterContract</a>
+					<a href="ataraxia_service_contracts.servicemethodcontract.html">ServiceMethodContract</a>
 				</li>
 			</ul>
-			<h1>Interface ServiceParameterContract</h1>
+			<h1>Interface ServiceMethodContract</h1>
 		</div>
 	</div>
 </header>
@@ -71,7 +71,7 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>Parameter definition used in <a href="ataraxia_services.servicemethodcontract.html">ServiceMethodContract</a> and <a href="ataraxia_services.serviceeventcontract.html">ServiceEventContract</a>.</p>
+						<p>Method contract for a service.</p>
 					</div>
 				</div>
 			</section>
@@ -79,7 +79,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">ServiceParameterContract</span>
+						<span class="target">ServiceMethodContract</span>
 					</li>
 				</ul>
 			</section>
@@ -90,11 +90,10 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="ataraxia_services.serviceparametercontract.html#description" class="tsd-kind-icon">description</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="ataraxia_services.serviceparametercontract.html#name" class="tsd-kind-icon">name</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="ataraxia_services.serviceparametercontract.html#optional" class="tsd-kind-icon">optional</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="ataraxia_services.serviceparametercontract.html#rest" class="tsd-kind-icon">rest</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="ataraxia_services.serviceparametercontract.html#type" class="tsd-kind-icon">type</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="ataraxia_service_contracts.servicemethodcontract.html#description" class="tsd-kind-icon">description</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="ataraxia_service_contracts.servicemethodcontract.html#name" class="tsd-kind-icon">name</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="ataraxia_service_contracts.servicemethodcontract.html#parameters" class="tsd-kind-icon">parameters</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="ataraxia_service_contracts.servicemethodcontract.html#returntype" class="tsd-kind-icon">return<wbr>Type</a></li>
 							</ul>
 						</section>
 					</div>
@@ -108,12 +107,12 @@
 					<div class="tsd-signature tsd-kind-icon">description<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/c5850e1/packages/service-contracts/src/ServiceParameterContract.ts#L20">packages/service-contracts/src/ServiceParameterContract.ts:20</a></li>
+							<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/82e4db1/packages/service-contracts/src/ServiceMethodContract.ts#L21">packages/service-contracts/src/ServiceMethodContract.ts:21</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Description of this parameter.</p>
+							<p>Optional description of the method.</p>
 						</div>
 					</div>
 				</section>
@@ -123,57 +122,42 @@
 					<div class="tsd-signature tsd-kind-icon">name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/c5850e1/packages/service-contracts/src/ServiceParameterContract.ts#L10">packages/service-contracts/src/ServiceParameterContract.ts:10</a></li>
+							<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/82e4db1/packages/service-contracts/src/ServiceMethodContract.ts#L11">packages/service-contracts/src/ServiceMethodContract.ts:11</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>The name of the parameter.</p>
+							<p>The name of the method.</p>
 						</div>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="optional" class="tsd-anchor"></a>
-					<h3>optional</h3>
-					<div class="tsd-signature tsd-kind-icon">optional<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<a name="parameters" class="tsd-anchor"></a>
+					<h3>parameters</h3>
+					<div class="tsd-signature tsd-kind-icon">parameters<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">readonly </span><a href="ataraxia_service_contracts.serviceparametercontract.html" class="tsd-signature-type" data-tsd-kind="Interface">ServiceParameterContract</a><span class="tsd-signature-symbol">[]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/c5850e1/packages/service-contracts/src/ServiceParameterContract.ts#L25">packages/service-contracts/src/ServiceParameterContract.ts:25</a></li>
+							<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/82e4db1/packages/service-contracts/src/ServiceMethodContract.ts#L26">packages/service-contracts/src/ServiceMethodContract.ts:26</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Get if the parameter is optional.</p>
+							<p>Parameters of the method.</p>
 						</div>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="rest" class="tsd-anchor"></a>
-					<h3>rest</h3>
-					<div class="tsd-signature tsd-kind-icon">rest<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<a name="returntype" class="tsd-anchor"></a>
+					<h3>return<wbr>Type</h3>
+					<div class="tsd-signature tsd-kind-icon">return<wbr>Type<span class="tsd-signature-symbol">:</span> <a href="ataraxia_service_contracts.datatype.html" class="tsd-signature-type" data-tsd-kind="Interface">DataType</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/c5850e1/packages/service-contracts/src/ServiceParameterContract.ts#L30">packages/service-contracts/src/ServiceParameterContract.ts:30</a></li>
+							<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/82e4db1/packages/service-contracts/src/ServiceMethodContract.ts#L16">packages/service-contracts/src/ServiceMethodContract.ts:16</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>If the parameter represents rest parameters.</p>
-						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="type" class="tsd-anchor"></a>
-					<h3>type</h3>
-					<div class="tsd-signature tsd-kind-icon">type<span class="tsd-signature-symbol">:</span> <a href="ataraxia_services.datatype.html" class="tsd-signature-type" data-tsd-kind="Interface">DataType</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/c5850e1/packages/service-contracts/src/ServiceParameterContract.ts#L15">packages/service-contracts/src/ServiceParameterContract.ts:15</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The type of the parameter.</p>
+							<p>Type identifier for data returned.</p>
 						</div>
 					</div>
 				</section>
@@ -195,6 +179,9 @@
 						<a href="../modules/ataraxia_local.html">ataraxia-<wbr>local</a>
 					</li>
 					<li class="current tsd-kind-module">
+						<a href="../modules/ataraxia_service_contracts.html">ataraxia-<wbr>service-<wbr>contracts</a>
+					</li>
+					<li class=" tsd-kind-module">
 						<a href="../modules/ataraxia_services.html">ataraxia-<wbr>services</a>
 					</li>
 					<li class=" tsd-kind-module">
@@ -214,91 +201,76 @@
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
 					<li class=" tsd-kind-class tsd-parent-kind-module tsd-has-type-parameter tsd-is-external">
-						<a href="../classes/ataraxia_services.asyncevent.html" class="tsd-kind-icon">Async<wbr>Event</a>
+						<a href="../classes/ataraxia_service_contracts.asyncevent.html" class="tsd-kind-icon">Async<wbr>Event</a>
 					</li>
 					<li class=" tsd-kind-class tsd-parent-kind-module tsd-has-type-parameter">
-						<a href="../classes/ataraxia_services.servicecontract.html" class="tsd-kind-icon">Service<wbr>Contract</a>
-					</li>
-					<li class=" tsd-kind-class tsd-parent-kind-module">
-						<a href="../classes/ataraxia_services.services.html" class="tsd-kind-icon">Services</a>
+						<a href="../classes/ataraxia_service_contracts.servicecontract.html" class="tsd-kind-icon">Service<wbr>Contract</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-module tsd-has-type-parameter tsd-is-external">
-						<a href="ataraxia_services.asyncsubscribable.html" class="tsd-kind-icon">Async<wbr>Subscribable</a>
+						<a href="ataraxia_service_contracts.asyncsubscribable.html" class="tsd-kind-icon">Async<wbr>Subscribable</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-module tsd-has-type-parameter">
-						<a href="ataraxia_services.datatype.html" class="tsd-kind-icon">Data<wbr>Type</a>
+						<a href="ataraxia_service_contracts.datatype.html" class="tsd-kind-icon">Data<wbr>Type</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-module">
-						<a href="ataraxia_services.service.html" class="tsd-kind-icon">Service</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-module">
-						<a href="ataraxia_services.serviceeventcontract.html" class="tsd-kind-icon">Service<wbr>Event<wbr>Contract</a>
+						<a href="ataraxia_service_contracts.serviceeventcontract.html" class="tsd-kind-icon">Service<wbr>Event<wbr>Contract</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-module tsd-has-type-parameter">
-						<a href="ataraxia_services.serviceeventdescription.html" class="tsd-kind-icon">Service<wbr>Event<wbr>Description</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-module">
-						<a href="ataraxia_services.servicehandle.html" class="tsd-kind-icon">Service<wbr>Handle</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-module">
-						<a href="ataraxia_services.servicemethodcontract.html" class="tsd-kind-icon">Service<wbr>Method<wbr>Contract</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-module tsd-has-type-parameter">
-						<a href="ataraxia_services.servicemethoddescription.html" class="tsd-kind-icon">Service<wbr>Method<wbr>Description</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-module tsd-has-type-parameter">
-						<a href="ataraxia_services.serviceparamdescription.html" class="tsd-kind-icon">Service<wbr>Param<wbr>Description</a>
+						<a href="ataraxia_service_contracts.serviceeventdescription.html" class="tsd-kind-icon">Service<wbr>Event<wbr>Description</a>
 					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface tsd-parent-kind-module">
-						<a href="ataraxia_services.serviceparametercontract.html" class="tsd-kind-icon">Service<wbr>Parameter<wbr>Contract</a>
+						<a href="ataraxia_service_contracts.servicemethodcontract.html" class="tsd-kind-icon">Service<wbr>Method<wbr>Contract</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="ataraxia_services.serviceparametercontract.html#description" class="tsd-kind-icon">description</a>
+								<a href="ataraxia_service_contracts.servicemethodcontract.html#description" class="tsd-kind-icon">description</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="ataraxia_services.serviceparametercontract.html#name" class="tsd-kind-icon">name</a>
+								<a href="ataraxia_service_contracts.servicemethodcontract.html#name" class="tsd-kind-icon">name</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="ataraxia_services.serviceparametercontract.html#optional" class="tsd-kind-icon">optional</a>
+								<a href="ataraxia_service_contracts.servicemethodcontract.html#parameters" class="tsd-kind-icon">parameters</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="ataraxia_services.serviceparametercontract.html#rest" class="tsd-kind-icon">rest</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="ataraxia_services.serviceparametercontract.html#type" class="tsd-kind-icon">type</a>
+								<a href="ataraxia_service_contracts.servicemethodcontract.html#returntype" class="tsd-kind-icon">return<wbr>Type</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
+					<li class=" tsd-kind-interface tsd-parent-kind-module tsd-has-type-parameter">
+						<a href="ataraxia_service_contracts.servicemethoddescription.html" class="tsd-kind-icon">Service<wbr>Method<wbr>Description</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module tsd-has-type-parameter">
+						<a href="ataraxia_service_contracts.serviceparamdescription.html" class="tsd-kind-icon">Service<wbr>Param<wbr>Description</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="ataraxia_service_contracts.serviceparametercontract.html" class="tsd-kind-icon">Service<wbr>Parameter<wbr>Contract</a>
+					</li>
 					<li class=" tsd-kind-type-alias tsd-parent-kind-module">
-						<a href="../modules/ataraxia_services.html#basicvalue" class="tsd-kind-icon">Basic<wbr>Value</a>
+						<a href="../modules/ataraxia_service_contracts.html#basicvalue" class="tsd-kind-icon">Basic<wbr>Value</a>
 					</li>
 					<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter tsd-is-external">
-						<a href="../modules/ataraxia_services.html#listener" class="tsd-kind-icon">Listener</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter">
-						<a href="../modules/ataraxia_services.html#localservice" class="tsd-kind-icon">Local<wbr>Service</a>
+						<a href="../modules/ataraxia_service_contracts.html#listener" class="tsd-kind-icon">Listener</a>
 					</li>
 					<li class=" tsd-kind-variable tsd-parent-kind-module">
-						<a href="../modules/ataraxia_services.html#booleantype" class="tsd-kind-icon">boolean<wbr>Type</a>
+						<a href="../modules/ataraxia_service_contracts.html#booleantype" class="tsd-kind-icon">boolean<wbr>Type</a>
 					</li>
 					<li class=" tsd-kind-variable tsd-parent-kind-module">
-						<a href="../modules/ataraxia_services.html#numbertype" class="tsd-kind-icon">number<wbr>Type</a>
+						<a href="../modules/ataraxia_service_contracts.html#numbertype" class="tsd-kind-icon">number<wbr>Type</a>
 					</li>
 					<li class=" tsd-kind-variable tsd-parent-kind-module">
-						<a href="../modules/ataraxia_services.html#stringtype" class="tsd-kind-icon">string<wbr>Type</a>
+						<a href="../modules/ataraxia_service_contracts.html#stringtype" class="tsd-kind-icon">string<wbr>Type</a>
 					</li>
 					<li class=" tsd-kind-variable tsd-parent-kind-module">
-						<a href="../modules/ataraxia_services.html#voidtype" class="tsd-kind-icon">void<wbr>Type</a>
+						<a href="../modules/ataraxia_service_contracts.html#voidtype" class="tsd-kind-icon">void<wbr>Type</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter">
-						<a href="../modules/ataraxia_services.html#arraytype" class="tsd-kind-icon">array<wbr>Type</a>
+						<a href="../modules/ataraxia_service_contracts.html#arraytype" class="tsd-kind-icon">array<wbr>Type</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-module">
-						<a href="../modules/ataraxia_services.html#servicecontract-1" class="tsd-kind-icon">service<wbr>Contract</a>
+						<a href="../modules/ataraxia_service_contracts.html#servicecontract-1" class="tsd-kind-icon">service<wbr>Contract</a>
 					</li>
 				</ul>
 			</nav>
