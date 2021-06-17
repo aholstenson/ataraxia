@@ -60,7 +60,6 @@ export interface TopologyOptions {
  */
 // TODO: Gossip about updated peer latencies
 export class Topology {
-	private readonly parent: Network;
 	private readonly debug: debug.Debugger;
 
 	private readonly endpoint: boolean;
@@ -91,8 +90,7 @@ export class Topology {
 	 * @param options -
 	 *   options to apply
 	 */
-	public constructor(parent: Network, options: TopologyOptions) {
-		this.parent = parent;
+	public constructor(parent: Pick<Network, 'networkName' | 'networkIdBinary'>, options: TopologyOptions) {
 		this.endpoint = options.endpoint || false;
 		this.broadcastTimeout = null;
 
