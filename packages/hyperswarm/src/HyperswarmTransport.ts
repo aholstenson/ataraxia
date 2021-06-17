@@ -3,8 +3,12 @@ import { Duplex } from 'stream';
 
 import hyperswarm, { Swarm } from 'hyperswarm';
 
-import { AuthProvider, WithNetwork } from 'ataraxia';
-import { AbstractTransport, EncryptedStreamingPeer, TransportOptions } from 'ataraxia/transport';
+import {
+	AbstractTransport,
+	AuthProvider,
+	TransportOptions
+} from 'ataraxia-transport';
+import { EncryptedStreamingPeer } from 'ataraxia-transport-streams';
 
 /**
  * Options that can be used for a Hyperswarm transport.
@@ -80,7 +84,7 @@ export class HyperswarmTransport extends AbstractTransport {
 			this.debug('Connecting to a peer, client=', info.client);
 
 			this.addPeer(new HyperswarmPeer(
-				this.network,
+				this.transportOptions,
 				this.options.authentication,
 				socket,
 				info.client
@@ -129,12 +133,12 @@ export class HyperswarmTransport extends AbstractTransport {
 
 class HyperswarmPeer extends EncryptedStreamingPeer {
 	public constructor(
-		network: WithNetwork,
+		transportOptions: TransportOptions,
 		authProviders: ReadonlyArray<AuthProvider>,
 		socket: Duplex,
 		client: boolean
 	) {
-		super(network, authProviders);
+		super(transportOptions, authProviders);
 
 		this.setStream(socket, client);
 	}

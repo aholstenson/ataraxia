@@ -1,7 +1,6 @@
 import { Event, SubscriptionHandle } from 'atvik';
 import debug from 'debug';
 
-import { IdMap, IdSet, encodeId, sameId } from '../id';
 import {
 	Peer,
 	NodeRoutingSummary,
@@ -9,8 +8,12 @@ import {
 	PeerMessageType,
 	NodeRequestMessage,
 	NodeDetailsMessage,
-	NodeRoutingDetails
-} from '../transport';
+	NodeRoutingDetails,
+	encodeId,
+	sameId
+} from 'ataraxia-transport';
+
+import { IdMap, IdSet } from '../id';
 import { WithNetwork } from '../WithNetwork';
 
 import { Messaging } from './Messaging';

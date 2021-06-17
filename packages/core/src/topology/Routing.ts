@@ -2,8 +2,9 @@ import { FibonacciHeap } from '@tyriar/fibonacci-heap';
 import { Event } from 'atvik';
 import debugFactory from 'debug';
 
-import { IdMap, encodeId } from '../id';
-import { Peer } from '../transport';
+import { encodeId, Peer } from 'ataraxia-transport';
+
+import { IdMap } from '../id';
 
 import { TopologyNode } from './TopologyNode';
 
@@ -99,7 +100,10 @@ export class Routing {
 					this.availableEvent.emit(node);
 				}
 			} else {
-				this.debug('Not available', encodeId(node.id));
+				if(this.debug.enabled) {
+					this.debug('Not available', encodeId(node.id));
+				}
+
 				node.previousReachable = false;
 				this.unavailableEvent.emit(node);
 

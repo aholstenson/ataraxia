@@ -1,4 +1,4 @@
-import { encodeId } from './ids';
+import { encodeId } from 'ataraxia-transport';
 
 /**
  * Set for keeping track of identifiers.

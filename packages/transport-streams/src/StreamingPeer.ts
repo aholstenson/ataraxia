@@ -1,10 +1,13 @@
 import { Duplex } from 'stream';
 
-import { AbstractPeer } from './AbstractPeer';
-import { encodePeerPacket, PeerPacketDecodingStream } from './binary';
-import { DisconnectReason } from './DisconnectReason';
-import { PeerMessage } from './messages/PeerMessage';
-import { PeerMessageType } from './messages/PeerMessageType';
+import {
+	AbstractPeer,
+	DisconnectReason,
+	PeerMessage,
+	PeerMessageType
+} from 'ataraxia-transport';
+
+import { encodePeerPacket, PeerPacketDecodingStream } from './binaryStreams';
 
 /**
  * Peer that connects via a binary streaming protocol.

@@ -1,15 +1,16 @@
 import { Event } from 'atvik';
 import debug from 'debug';
 
-import { sameId, encodeId } from '../id';
 import {
 	Peer,
 	PeerMessageType,
 	DataMessage,
 	DataAckMessage,
 	DataRejectMessage,
-	DataMessagePathEntry
-} from '../transport';
+	DataMessagePathEntry,
+	encodeId,
+	sameId
+} from 'ataraxia-transport';
 
 import { Routing } from './Routing';
 

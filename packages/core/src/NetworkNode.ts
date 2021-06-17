@@ -4,7 +4,8 @@ import { Encoder, Decoder } from '@stablelib/cbor';
 import { Event } from 'atvik';
 import { debug } from 'debug';
 
-import { encodeId } from './id';
+import { encodeId } from 'ataraxia-transport';
+
 import { Message } from './Message';
 import { Node } from './Node';
 import { Topology } from './topology';

@@ -4,6 +4,11 @@ import { Node } from './Node';
 
 /**
  * Message received over a network.
+ *
+ * @typeParam MessageTypes -
+ *   definition of types
+ * @typeParam T -
+ *   keys that are valid, generated via `MessageTypes`
  */
 export interface Message<MessageTypes extends object = any, T extends MessageType<MessageTypes> = keyof MessageTypes & string> {
 	/**

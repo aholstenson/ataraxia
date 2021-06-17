@@ -2,8 +2,12 @@
 /**
  * Classes and types related to implementing transports.
  *
- * @module ataraxia/transport
+ * @module ataraxia-transport
  */
+export * from './auth';
+export * from './ids';
+
+export * from './BackOff';
 
 export * from './Transport';
 export * from './AbstractTransport';
@@ -16,5 +20,3 @@ export * from './DisconnectReason';
 
 export * from './Peer';
 export * from './AbstractPeer';
-export * from './StreamingPeer';
-export * from './EncryptedStreamingPeer';

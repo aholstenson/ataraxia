@@ -14,7 +14,8 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "ataraxia": "^0.10.0",
+    "ataraxia-transport": "^0.10.0",
+    "ataraxia-transport-streams": "^0.10.0",
     "atvik": "^2.0.0",
     "debug": "^4.3.1",
     "local-machine-network": "^0.3.0"

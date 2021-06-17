@@ -1,7 +1,10 @@
-import { AbstractPeer } from '../transport/AbstractPeer';
-import { DisconnectReason } from '../transport/DisconnectReason';
-import { PeerMessageType, PeerMessage } from '../transport/messages';
-import { Peer } from '../transport/Peer';
+import {
+	AbstractPeer,
+	DisconnectReason,
+	Peer,
+	PeerMessage,
+	PeerMessageType
+} from 'ataraxia-transport';
 
 export interface TestPeer extends Peer {
 	connect(): void;

@@ -2,8 +2,13 @@ import { connect } from 'net';
 
 import { HostAndPort } from 'tinkerhub-discovery';
 
-import { WithNetwork, BackOff, AuthProvider } from 'ataraxia';
-import { EncryptedStreamingPeer, DisconnectReason } from 'ataraxia/transport';
+import {
+	AuthProvider,
+	BackOff,
+	DisconnectReason,
+	TransportOptions
+} from 'ataraxia-transport';
+import { EncryptedStreamingPeer } from 'ataraxia-transport-streams';
 
 /**
  * Peer for TCP transport, used for outgoing connections to a server.
@@ -17,11 +22,11 @@ export class TCPClientPeer extends EncryptedStreamingPeer {
 	private connectTimeout: any;
 
 	public constructor(
-		network: WithNetwork,
+		options: TransportOptions,
 		authProviders: ReadonlyArray<AuthProvider>,
 		addresses: HostAndPort[]
 	) {
-		super(network, authProviders);
+		super(options, authProviders);
 
 		this.backOff = new BackOff({
 			delay: 100,

@@ -1,9 +1,7 @@
 import { Event } from 'atvik';
 import debug from 'debug';
 
-import { encodeId } from '../id';
-import { WithNetwork } from '../WithNetwork';
-
+import { encodeId } from './ids';
 import { Peer } from './Peer';
 import { Transport } from './Transport';
 import { TransportOptions } from './TransportOptions';
@@ -21,8 +19,9 @@ export class AbstractTransport implements Transport {
 
 	private _started: boolean;
 
-	private _network?: WithNetwork;
 	protected readonly peers: Set<Peer>;
+
+	private _transportOptions?: TransportOptions;
 
 	/**
 	 * Create a new instance.
@@ -39,6 +38,14 @@ export class AbstractTransport implements Transport {
 		this._started = false;
 		this.transportName = name;
 		this.debug = debug('ataraxia:no-network:' + name);
+	}
+
+	public get transportOptions() {
+		if(! this._transportOptions) {
+			throw new Error();
+		}
+
+		return this._transportOptions;
 	}
 
 	/**
@@ -62,21 +69,6 @@ export class AbstractTransport implements Transport {
 	}
 
 	/**
-	 * Get the network of this transport. Can only be used after this transport
-	 * has been started.
-	 *
-	 * @returns
-	 *   network instance
-	 */
-	protected get network(): WithNetwork {
-		if(! this._network) {
-			throw new Error('Can\'t access network before start() is called');
-		}
-
-		return this._network;
-	}
-
-	/**
 	 * Start this transport.
 	 *
 	 * @param options -
@@ -91,14 +83,9 @@ export class AbstractTransport implements Transport {
 
 		this.debug = debug('ataraxia:' + options.networkName + ':' + this.transportName);
 		this._started = true;
+		this._transportOptions = options;
 
 		this.debug('Starting with id ' + encodeId(options.networkId));
-
-		this._network = {
-			networkIdBinary: options.networkId,
-			networkId: encodeId(options.networkId),
-			debugNamespace: this.debug.namespace
-		};
 
 		return true;
 	}

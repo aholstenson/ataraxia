@@ -1,12 +1,13 @@
-import { AuthProvider, WithNetwork } from 'ataraxia';
 import {
+	AuthProvider,
 	AbstractPeer,
 	PeerMessageType,
 	PeerMessage,
 	encodeBinaryPeerMessage,
 	decodeBinaryPeerMessage,
-	DisconnectReason
-} from 'ataraxia/transport';
+	DisconnectReason,
+	TransportOptions
+} from 'ataraxia-transport';
 
 import { WebSocket } from './WebSocket';
 
@@ -17,8 +18,11 @@ import { WebSocket } from './WebSocket';
 export abstract class AbstractWebSocketPeer extends AbstractPeer {
 	private socket?: WebSocket;
 
-	public constructor(parent: WithNetwork, authProviders: ReadonlyArray<AuthProvider>) {
-		super(parent, authProviders);
+	public constructor(
+		transportOptions: TransportOptions,
+		authProviders: ReadonlyArray<AuthProvider>
+	) {
+		super(transportOptions, authProviders);
 	}
 
 	public setSocket(socket: WebSocket) {

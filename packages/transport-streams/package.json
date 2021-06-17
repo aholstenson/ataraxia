@@ -1,0 +1,26 @@
+{
+  "name": "ataraxia-transport-streams",
+  "version": "0.10.0",
+  "description": "Utilities for Ataraxia transports that use Node streams.",
+  "license": "MIT",
+  "repository": "https://github.com/aholstenson/ataraxia/tree/master/packages/transport-streams",
+  "keywords": [
+    "ataraxia"
+  ],
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "types": "./dist/types/index.d.ts",
+  "sideEffects": false,
+  "scripts": {
+    "lint": "tslint  --project tsconfig.build.json -t codeFrame 'src/**/*.ts' 'test/**/*.ts'",
+    "build": "tsc --project tsconfig.build.json --module commonjs --outDir dist/cjs",
+    "prebuild": "rimraf dist",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "@stablelib/cbor": "^1.0.1",
+    "ataraxia-transport": "^0.10.0",
+    "debug": "^4.3.1",
+    "noise-secret-stream": "^3.0.2"
+  }
+}

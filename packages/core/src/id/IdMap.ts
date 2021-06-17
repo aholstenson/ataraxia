@@ -1,4 +1,4 @@
-import { encodeId } from './ids';
+import { encodeId } from 'ataraxia-transport';
 
 /**
  * `Map`-like structure where keys are buffers with identifiers.

@@ -1,4 +1,4 @@
-import { AbstractTransport, Peer } from '../transport';
+import { AbstractTransport, Peer } from 'ataraxia-transport';
 
 /**
  * Transport suitable for use with tests, only support manual adding of peers.

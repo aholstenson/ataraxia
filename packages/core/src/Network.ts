@@ -1,16 +1,16 @@
 import { Event } from 'atvik';
 import debug from 'debug';
 
+import { Transport, generateId, encodeId } from 'ataraxia-transport';
+
 import { Exchange } from './exchange/Exchange';
 import { Exchanges } from './exchange/Exchanges';
-import { generateId, encodeId } from './id';
 import { MessageData } from './MessageData';
 import { MessageType } from './MessageType';
 import { MessageUnion } from './MessageUnion';
 import { NetworkNode } from './NetworkNode';
 import { Node } from './Node';
 import { Topology } from './topology';
-import { Transport } from './transport';
 
 /**
  * Options that can be provided for `Network`.

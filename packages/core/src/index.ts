@@ -44,7 +44,14 @@
  * @module ataraxia
  */
 
-export * from './auth';
+export {
+	AuthProvider,
+	AnonymousAuth,
+	SharedSecretAuth,
+	SharedSecretAuthOptions,
+
+	Transport
+} from 'ataraxia-transport';
 
 export * from './Network';
 export * from './Node';
@@ -58,5 +65,3 @@ export * from './WithNetwork';
 
 export * from './exchange/Exchange';
 export * from './RequestReplyHelper';
-
-export * from './BackOff';

@@ -17,7 +17,7 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "ataraxia": "^0.10.0",
+    "ataraxia-transport": "^0.10.0",
     "debug": "^4.3.1"
   }
 }

@@ -1,7 +1,8 @@
 import { INode } from '@tyriar/fibonacci-heap';
 
-import { IdSet, encodeId } from '../id';
-import { Peer, NodeRoutingDetails } from '../transport';
+import { encodeId, Peer, NodeRoutingDetails } from 'ataraxia-transport';
+
+import { IdSet } from '../id';
 
 import { Topology } from './Topology';
 

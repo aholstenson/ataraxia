@@ -14,7 +14,8 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "ataraxia": "^0.10.0",
+    "ataraxia-transport": "^0.10.0",
+    "ataraxia-transport-streams": "^0.10.0",
     "debug": "^4.3.1",
     "tinkerhub-discovery": "^0.6.0",
     "tinkerhub-mdns": "^0.5.1"

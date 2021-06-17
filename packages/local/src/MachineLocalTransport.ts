@@ -6,13 +6,14 @@ import { Duplex } from 'stream';
 import { Event, Subscribable } from 'atvik';
 import { LowLevelNetwork } from 'local-machine-network';
 
-import { AnonymousAuth, AuthProvider, WithNetwork } from 'ataraxia';
 import {
 	AbstractTransport,
-	StreamingPeer,
 	TransportOptions,
-	DisconnectReason
-} from 'ataraxia/transport';
+	DisconnectReason,
+	AnonymousAuth,
+	AuthProvider
+} from 'ataraxia-transport';
+import { StreamingPeer } from 'ataraxia-transport-streams';
 
 const AUTH = [ new AnonymousAuth() ];
 
@@ -153,7 +154,7 @@ export class MachineLocalTransport extends AbstractTransport {
 		});
 
 		const handlePeer = (socket: Socket, server: boolean) => {
-			const peer = new LocalPeer(this.network, AUTH, socket, ! server);
+			const peer = new LocalPeer(this.transportOptions, AUTH, socket, ! server);
 			this.addPeer(peer);
 		};
 
@@ -179,12 +180,12 @@ export class MachineLocalTransport extends AbstractTransport {
 
 class LocalPeer extends StreamingPeer {
 	public constructor(
-		network: WithNetwork,
+		transportOptions: TransportOptions,
 		authProviders: ReadonlyArray<AuthProvider>,
 		socket: Duplex,
 		client: boolean
 	) {
-		super(network, authProviders);
+		super(transportOptions, authProviders);
 
 		this.setStream(socket, client);
 	}

@@ -1,5 +1,8 @@
-import { AuthProvider } from 'ataraxia';
-import { AbstractTransport, TransportOptions } from 'ataraxia/transport';
+import {
+	AuthProvider,
+	AbstractTransport,
+	TransportOptions
+} from 'ataraxia-transport';
 
 import { WebSocketClientPeer } from './WebSocketClientPeer';
 import { WebSocketFactory } from './WebSocketFactory';
@@ -80,7 +83,7 @@ export class WebSocketClientTransport extends AbstractTransport {
 			|| defaultWebSocketFactory;
 
 		this.peer = new WebSocketClientPeer(
-			this.network,
+			this.transportOptions,
 			this.options.authentication,
 			factory,
 			this.options.url

@@ -1,7 +1,10 @@
 import { Socket, } from 'net';
 
-import { WithNetwork, AuthProvider } from 'ataraxia';
-import { EncryptedStreamingPeer } from 'ataraxia/transport';
+import {
+	AuthProvider,
+	TransportOptions
+} from 'ataraxia-transport';
+import { EncryptedStreamingPeer } from 'ataraxia-transport-streams';
 
 /**
  * Peer for TCP transport, used when representing an incoming connection
@@ -9,11 +12,11 @@ import { EncryptedStreamingPeer } from 'ataraxia/transport';
  */
 export class TCPServerPeer extends EncryptedStreamingPeer {
 	public constructor(
-		network: WithNetwork,
+		transportOptions: TransportOptions,
 		authProviders: ReadonlyArray<AuthProvider>,
 		socket: Socket
 	) {
-		super(network, authProviders);
+		super(transportOptions, authProviders);
 
 		this.debug('Client connected from', socket.remoteAddress);
 

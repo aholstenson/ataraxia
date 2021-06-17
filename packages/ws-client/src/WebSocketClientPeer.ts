@@ -1,5 +1,9 @@
-import { AuthProvider, BackOff, WithNetwork } from 'ataraxia';
-import { DisconnectReason } from 'ataraxia/transport';
+import {
+	AuthProvider,
+	BackOff,
+	DisconnectReason,
+	TransportOptions
+} from 'ataraxia-transport';
 
 import { AbstractWebSocketPeer } from './AbstractWebSocketPeer';
 import { WebSocketFactory } from './WebSocketFactory';
@@ -13,12 +17,12 @@ export class WebSocketClientPeer extends AbstractWebSocketPeer {
 	private connectTimeout: any;
 
 	public constructor(
-		parent: WithNetwork,
+		transportOptions: TransportOptions,
 		authProviders: ReadonlyArray<AuthProvider>,
 		factory: WebSocketFactory,
 		url: string
 	) {
-		super(parent, authProviders);
+		super(transportOptions, authProviders);
 
 		this.factory = factory;
 		this.url = url;

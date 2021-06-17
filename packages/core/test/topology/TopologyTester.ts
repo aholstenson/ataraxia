@@ -1,5 +1,6 @@
 /* eslint-disable no-param-reassign */
-import { decodeId, encodeId } from '../../src/id';
+import { decodeId, encodeId } from 'ataraxia-transport';
+
 import { peersBetween, TestPeer } from '../../src/test';
 import { Topology } from '../../src/topology';
 

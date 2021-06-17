@@ -1,9 +1,11 @@
 import { Transform, TransformCallback } from 'stream';
 
-import { PeerMessageType, PeerMessage } from '../messages';
-
-import { decodeBinaryPeerMessage } from './decodeBinaryPeerMessage';
-import { encodeBinaryPeerMessage } from './encodeBinaryPeerMessage';
+import {
+	decodeBinaryPeerMessage,
+	encodeBinaryPeerMessage,
+	PeerMessage,
+	PeerMessageType
+} from 'ataraxia-transport';
 
 const ADDITIONAL_INFO_8_BITS = 24;
 const ADDITIONAL_INFO_16_BITS = 25;

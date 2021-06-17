@@ -10,11 +10,9 @@ import {
 	AuthServerReply,
 	AuthClientReplyType,
 	AuthClientReply
-} from '../auth';
-import { noId, encodeId } from '../id';
-import { WithNetwork } from '../WithNetwork';
-
+} from './auth';
 import { DisconnectReason } from './DisconnectReason';
+import { noId, encodeId } from './ids';
 import {
 	PeerMessageType,
 	PeerMessage,
@@ -24,6 +22,7 @@ import {
 	AuthDataMessage
 } from './messages';
 import { Peer } from './Peer';
+import { TransportOptions } from './TransportOptions';
 
 /**
  * The interval at which pings are sent.
@@ -58,7 +57,7 @@ const enum State {
  * protocol versions and requested features.
  */
 export abstract class AbstractPeer implements Peer {
-	protected readonly parent: WithNetwork;
+	protected readonly transportOptions: TransportOptions;
 
 	protected debug: debug.Debugger;
 	private failureDetector: FailureDetector;
@@ -88,17 +87,17 @@ export abstract class AbstractPeer implements Peer {
 	/**
 	 * Create a new peer over the given transport.
 	 *
-	 * @param parent -
+	 * @param transportOptions -
 	 *   the transport this belongs to
 	 * @param authProviders -
 	 *   `AuthProvider` instances to use to authenticate with the other side
 	 */
 	public constructor(
-		parent: WithNetwork,
+		transportOptions: TransportOptions,
 		authProviders: ReadonlyArray<AuthProvider>
 	) {
-		this.parent = parent;
-		this.debug = debug(parent.debugNamespace + ':peer:pending');
+		this.transportOptions = transportOptions;
+		this.debug = debug(transportOptions.debugNamespace + ':peer:pending');
 
 		this.authProviders = authProviders;
 
@@ -232,13 +231,13 @@ export abstract class AbstractPeer implements Peer {
 	 * to the client and this peer will start waiting for a reply.
 	 */
 	protected negotiateAsServer() {
-		this.debug = debug(this.parent.debugNamespace + ':peer:pending:server');
+		this.debug = debug(this.transportOptions.debugNamespace + ':peer:pending:server');
 
 		this.state = State.WaitingForSelect;
 
 		// Write the hello message
 		const message: HelloMessage = {
-			id: this.parent.networkIdBinary,
+			id: this.transportOptions.networkId,
 			capabilities: new Set()
 		};
 
@@ -253,7 +252,7 @@ export abstract class AbstractPeer implements Peer {
 	 * client mode and wait for the initial Hello from the server.
 	 */
 	protected negotiateAsClient() {
-		this.debug = debug(this.parent.debugNamespace + ':peer:pending:client');
+		this.debug = debug(this.transportOptions.debugNamespace + ':peer:pending:client');
 
 		this.registerLatencySend();
 
@@ -357,7 +356,7 @@ export abstract class AbstractPeer implements Peer {
 		this.id = message.id;
 
 		// Update debugging with the identifier of the peer
-		this.debug = debug(this.parent.debugNamespace + ':peer:' + encodeId(this.id) + ':client');
+		this.debug = debug(this.transportOptions.debugNamespace + ':peer:' + encodeId(this.id) + ':client');
 
 		// TODO: Select capabilities wanted
 		const capabilities = new Set<string>();
@@ -367,7 +366,7 @@ export abstract class AbstractPeer implements Peer {
 
 		// Send our reply
 		const reply: SelectMessage = {
-			id: this.parent.networkIdBinary,
+			id: this.transportOptions.networkId,
 			capabilities: capabilities
 		};
 
@@ -392,7 +391,7 @@ export abstract class AbstractPeer implements Peer {
 		this.id = message.id;
 
 		// Update debugging with the identifier of the peer
-		this.debug = debug(this.parent.debugNamespace + ':peer:' + encodeId(this.id) + ':server');
+		this.debug = debug(this.transportOptions.debugNamespace + ':peer:' + encodeId(this.id) + ':server');
 
 		// TODO: Handle incoming capabilities
 
@@ -701,7 +700,7 @@ export abstract class AbstractPeer implements Peer {
 	 */
 	protected forceConnect(id: ArrayBuffer) {
 		this.id = id;
-		this.debug = debug(this.parent.debugNamespace + ':peer:' + encodeId(this.id) + ':client');
+		this.debug = debug(this.transportOptions.debugNamespace + ':peer:' + encodeId(this.id) + ':client');
 
 		this.latencyValues.push(0);
 		this.switchToActive();

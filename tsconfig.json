@@ -8,7 +8,6 @@
 		"baseUrl": ".",
 		"paths": {
 			"ataraxia": [ "./packages/core/src" ],
-			"ataraxia/transport": [ "./packages/core/src/transport" ],
 			"ataraxia-*": [ "./packages/*/src" ]
 		}
 	},
@@ -18,7 +17,8 @@
 		"name": "Ataraxia",
 		"entryPoints": [
 			"packages/core/src/index.ts",
-			"packages/core/src/transport/index.ts",
+			"packages/transport/src/index.ts",
+			"packages/transport-streams/src/index.ts",
 			"packages/local/src/index.ts",
 			"packages/tcp/src/index.ts",
 			"packages/hyperswarm/src/index.ts",

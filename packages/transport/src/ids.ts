@@ -1,4 +1,4 @@
-import { randomBytes } from '../randomBytes';
+import { randomBytes } from './randomBytes';
 
 /*
  * Simple encoding to custom characters.
