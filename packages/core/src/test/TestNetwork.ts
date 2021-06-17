@@ -63,7 +63,8 @@ export class TestNetwork {
 				name: 'tests'
 			});
 			network.addTransport(transport);
-			network.join();
+			network.join()
+				.catch(() => { /* test will fail if network isn't joined */ });
 
 			info = {
 				id: network.networkIdBinary,

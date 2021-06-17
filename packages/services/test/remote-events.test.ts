@@ -48,7 +48,7 @@ describe('Services: Remote Events', () => {
 					receivedEvent = msg === 'world';
 				});
 
-				event.emit('world');
+				await event.emit('world');
 
 				await testNetwork.consolidate();
 			} finally {
@@ -91,7 +91,7 @@ describe('Services: Remote Events', () => {
 					receivedEvent = msg === 'world';
 				});
 
-				event.emit('world');
+				await event.emit('world');
 
 				await testNetwork.consolidate();
 			} finally {

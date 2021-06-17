@@ -110,6 +110,7 @@ module.exports = {
 		'@typescript-eslint/semi': [ 'error', 'always' ],
 		'@typescript-eslint/triple-slash-reference': [ 'error' ],
 		'@typescript-eslint/unified-signatures': [ 'off' ],
+		'@typescript-eslint/no-floating-promises': [ 'error' ],
 
 		'prefer-const': [ 'warn' ],
 		'no-var': [ 'error' ],

@@ -152,7 +152,7 @@ describe('Services: Local', () => {
 			}
 
 			public async echo(message: string) {
-				this.echoEvent.emit(message);
+				await this.echoEvent.emit(message);
 				return message;
 			}
 		}
@@ -183,7 +183,7 @@ describe('Services: Local', () => {
 			}
 
 			public async echo(message: string) {
-				this.echoEvent.emit(message);
+				await this.echoEvent.emit(message);
 				return message;
 			}
 		}
@@ -224,7 +224,7 @@ describe('Services: Local', () => {
 			}
 
 			public async echo(message: string) {
-				this.echoEvent.emit(message);
+				await this.echoEvent.emit(message);
 				return message;
 			}
 		}
@@ -287,7 +287,7 @@ describe('Services: Local', () => {
 			}
 
 			public async echo(message: string) {
-				this.echoEvent.emit(message);
+				await this.echoEvent.emit(message);
 				return message;
 			}
 		}

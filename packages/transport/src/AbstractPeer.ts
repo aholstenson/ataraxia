@@ -474,7 +474,7 @@ export abstract class AbstractPeer implements Peer {
 				} catch(err) {
 					this.abort('Could not get or send initial auth message', err);
 				}
-			})();
+			})().catch(err => this.abort('Unexpected error', err));
 
 			// Queue a negotiation timeout
 			this.queueNegotiationTimeout();
@@ -531,7 +531,7 @@ export abstract class AbstractPeer implements Peer {
 				// Retry the next authentication method
 				this.sendInitialAuth();
 			}
-		})();
+		})().catch(err => this.abort('Unexpected error', err));
 
 		this.queueNegotiationTimeout();
 	}
@@ -588,7 +588,7 @@ export abstract class AbstractPeer implements Peer {
 			} catch(err) {
 				this.abort('Error while sending auth reply', err);
 			}
-		})();
+		})().catch(err => this.abort('Unexpected error', err));
 
 		this.queueNegotiationTimeout();
 	}
@@ -646,7 +646,7 @@ export abstract class AbstractPeer implements Peer {
 			} catch(err) {
 				this.abort('Error while sending auth reply', err);
 			}
-		})();
+		})().catch(err => this.abort('Unexpected error', err));
 
 		this.queueNegotiationTimeout();
 	}
