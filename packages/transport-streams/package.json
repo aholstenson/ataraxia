@@ -1,6 +1,6 @@
 {
   "name": "ataraxia-transport-streams",
-  "version": "0.10.0",
+  "version": "0.11.0",
   "description": "Utilities for Ataraxia transports that use Node streams.",
   "license": "MIT",
   "repository": "https://github.com/aholstenson/ataraxia/tree/master/packages/transport-streams",
@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "@stablelib/cbor": "^1.0.1",
-    "ataraxia-transport": "^0.10.0",
+    "ataraxia-transport": "^0.11.0",
     "debug": "^4.3.1",
     "noise-secret-stream": "^3.0.2"
   }
