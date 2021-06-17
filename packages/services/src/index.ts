@@ -5,50 +5,49 @@
  * the network.
  *
  * ```javascript
- * import { Services } from 'ataraxia-services';
+ * import { Services, ServiceContract, stringType } from 'ataraxia-services';
  *
  * const net = ... // setup network with at least one transport
  *
  * const services = new Services(net);
  *
- * services.onServiceAvailable(service => console.log(service.id, 'is now available'));
- * services.onServiceUnavailable(service => console.log(service.id, 'is no longer available'));
+ * services.onAvailable(service => console.log(service.id, 'is now available'));
+ * services.onUnavailable(service => console.log(service.id, 'is no longer available'));
  *
  * // Join the network
  * await net.join();
  *
- * // Join the services layer on top of the network
+ * // Join the services on top of the network
  * await services.join();
  *
- * // Register a service as a plain object
- * const handle = services.register({
- *   id: 'service-id',
+ * // Use contracts to describe services
+ * const EchoService = new ServiceContract()
+ *   .defineMethod('echo', {
+ *     returnType: stringType,
+ *     parameters: [
+ *       {
+ *         name: 'message',
+ *         type: stringType
+ *       }
+ *     ]
+ *   });
  *
- *   hello() {
- *     return 'Hello world';
+ * // Easily register and expose services to other nodes
+ * services.register('echo', EchoService.implement({
+ *   echo(message) {
+ *     return Promise.resolve(message);
  *   }
- * });
+ * }));
  *
- * // Classes can be registered and created
- * services.register(class Test {
- *   constructor(handle) {
- *     this.handle = handle;
+ * // Consume a service registered anywhere, local or remote
+ * const echoService = services.get('echo');
+ * if(echoService.available) {
+ *   // Call methods
+ *   await echoService.call('echo', 'Hello world');
  *
- *     this.id = 'service-id';
- *   }
- *
- *   hello() {
- *     return 'Hello World';
- *   }
- * });
- *
- * // Interact with services
- * const service = services.get('service-id');
- * if(service) {
- *   console.log('Service found', service);
- *
- *   // Call functions on the service
- *   const reply = await service.hello();
+ *   // Or create a proxy for a cleaner API
+ *   const proxied = echoService.as(EchoService);
+ *   await proxied.echo('Hello world');
  * }
  * ```
  *
