@@ -118,7 +118,7 @@ Services are supported via `ataraxia-services`, where objects can be registered
 and functions on them called remotely:
 
 ```javascript
-import { Services } from 'ataraxia-services';
+import { Services, ServiceContract, stringType } from 'ataraxia-services';
 
 const net = ... // setup network with at least one transport
 
@@ -133,14 +133,35 @@ await net.join();
 // Join the services on top of the network
 await services.join();
 
-// Register a service as a plain object
-const handle = services.register({
-  id: 'service-id',
-  
-  hello() {
-    return 'Hello world';
+// Use contracts to describe services
+const EchoService = new ServiceContract()
+  .defineMethod('echo', {
+    returnType: stringType,
+    parameters: [
+      {
+        name: 'message',
+        type: stringType
+      }
+    ]
+  });
+
+// Easily register and expose services to other nodes
+services.register('echo', EchoService.implement({
+  echo(message) {
+    return Promise.resolve(message);
   }
-});
+}));
+
+// Consume a service registered anywhere, local or remote
+const echoService = services.get('echo');
+if(echoService.available) {
+  // Call methods
+  await echoService.call('echo', 'Hello world');
+  
+  // Or create a proxy for a cleaner API
+  const proxied = echoService.as(EchoService);
+  await proxied.echo('Hello world');
+}
 ```
 
 ## API
