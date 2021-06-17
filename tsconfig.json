@@ -24,6 +24,7 @@
 			"packages/hyperswarm/src/index.ts",
 			"packages/ws-client/src/index.ts",
 			"packages/ws-server/src/index.ts",
+			"packages/service-contracts/src/index.ts",
 			"packages/services/src/index.ts"
 		],
 		"readme": "./docs/apidocs.md",
