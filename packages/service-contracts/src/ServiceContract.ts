@@ -80,7 +80,7 @@ const contractMarker = Symbol('serviceContract');
  *     this.echoEvent = new AsyncEvent(this);
  *   }
  *
- *   get onHello() {
+ *   get onEcho() {
  *     return this.echoEvent.subscribable;
  *   }
  * }
