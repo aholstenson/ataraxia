@@ -9,6 +9,55 @@ import { ServiceMethodDef } from './defs/ServiceMethodDef';
  * Service that may be callable somewhere in the network. Provides utilities
  * to listen for availability, retrieve metadata about methods and events and
  * to cast it to a proxy based on a contract.
+ *
+ * ## Availability
+ *
+ * The property {@link available} will indicate if a service is currently
+ * available and can be called. Events are available in the form of
+ * {@link onAvailable}, {@link onUnavailable} and {@link onUpdate}.
+ *
+ * ```javascript
+ * service.onAvailable(() => console.log('This service has become available'));
+ * service.onUnavailable(() => console.log('This service has become unavailable'));
+ * service.onUpdate(() => console.log('This service has updated'));
+ * ```
+ *
+ * ## Contracts
+ *
+ * Services keep track of the methods and events that are available and these
+ * can be inspected to determine if a service supports something specific.
+ *
+ * The method {@link matches} can be used to check if a specific contract is
+ * supported by a service.
+ *
+ * ## Proxies
+ *
+ * Creating a proxy is the recommended way to call methods and listen to events
+ * from a service. It allows for a very similar style of use for services that
+ * are remote as for services that are local.
+ *
+ * Proxies are created from a contract and use the methods and events defined
+ * in them to create the proxied instance:
+ *
+ * ```javascript
+ * const echoService = service.as(EchoService);
+ * ```
+ *
+ * A proxied service can then be called as a normal class:
+ *
+ * ```javascript
+ * const result = await echoService.echo('Hello world!');
+ * ```
+ *
+ * Events work similar to how they would locally:
+ *
+ * ```javascript
+ * await echoService.onEcho(message => console.log('Echoed:', message));
+ * ```
+ *
+ * Methods in a contract will become a method on the proxy that returns a
+ * `Promise`, so method calls must always be awaited to retrieve the result.
+ * Events will become an instance of {@link AsyncSubscribable}.
  */
 export interface Service {
 	/**
