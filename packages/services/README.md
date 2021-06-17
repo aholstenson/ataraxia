@@ -4,20 +4,31 @@
 [![Dependencies](https://img.shields.io/librariesio/release/npm/ataraxia-services)](https://libraries.io/npm/ataraxia-services)
 [![Typedoc](https://img.shields.io/badge/typedoc-ataraxia--services-%23fff)](https://aholstenson.github.io/ataraxia/modules/ataraxia_services.html)
 
-Services with RPC and events for [Ataraxia](https://github.com/aholstenson/ataraxia).
+Services with RPC and events for an [Ataraxia](https://github.com/aholstenson/ataraxia)
+network.
 
-This project provides a service layer on top of a Ataraxia network and allows
-nodes to easily register services and to call methods and receive events on
-services on other nodes.
-
+* Based around **well-defined contracts**, making what a service supports very clear
+* **Register** services, allowing them to be consumed anywhere in the network
+* **Access services** via identifiers or events
+* Listen for when services **become available or unavailable** either globally or specifically on a single service
+* Support for **remote events** via [Atvik](https://aholstenson.github.io/atvik/),
+  letting nodes listen to events from another node
+* Create **proxy objects** for a more natural way to call methods and listen to events,
+  with support for type conversions and TypeScript declarations
+  
 ## Usage
+
+To use services on top of a network install `ataraxia-services`:
 
 ```
 npm install ataraxia-services
 ```
 
+Services can then be consumed and registered by creating a [Services](https://aholstenson.github.io/ataraxia/classes/ataraxia_services.services.html)
+instance on top of the network:
+
 ```javascript
-import { Services, ServiceContract, serviceContract, stringType } from 'ataraxia-services';
+import { Services, ServiceContract, stringType } from 'ataraxia-services';
 
 const net = ... // setup network with at least one transport
 
@@ -44,35 +55,21 @@ const EchoService = new ServiceContract()
     ]
   });
 
-// Services can be fetched using their id, and may or may not be available
-const echoService = services.get('service-id');
-
-// Contracts can be used to create a callable proxy
-const callableEchoService = echoService.as(EchoService);
-await callableEchoService.echo('message');
-
-// Implementations can be plain objects
-const handle = services.register('service-id', EchoService.implement({
+// Easily register and expose services to other nodes
+services.register('echo', EchoService.implement({
   echo(message) {
     return Promise.resolve(message);
   }
 }));
 
-// Implementations may also be classes - which can be decorated
-@serviceContract(EchoService)
-class EchoServiceImpl {
-  echo(message) {
-    return Promise.resolve(message);
-  }
-}
-services.register('service-id', new EchoServiceImpl());
-
-@serviceContract(EchoService)
-class EchoServiceImpl {
-  serviceId = 'echo';
+// Consume a service registered anywhere, local or remote
+const echoService = services.get('echo');
+if(echoService.available) {
+  // Call methods
+  await echoService.call('echo', 'Hello world');
   
-  echo(message) {
-    return Promise.resolve(message);
-  }
+  // Or create a proxy for a cleaner API
+  const proxied = echoService.as(EchoService);
+  await proxied.echo('Hello world');
 }
 ```
