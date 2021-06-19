@@ -60,7 +60,7 @@ export class TestNetwork {
 		if(! info) {
 			const transport = new TestTransport();
 			const network = new Network({
-				name: 'tests'
+				name: 'tests:' + id
 			});
 			network.addTransport(transport);
 			network.join()
