@@ -97,7 +97,11 @@ export class Routing {
 			if(available) {
 				if(! node.previousReachable) {
 					node.previousReachable = true;
-					this.availableEvent.emit(node);
+
+					if(node !== this.self) {
+						// Protect against self as a node
+						this.availableEvent.emit(node);
+					}
 				}
 			} else {
 				if(this.debug.enabled) {
