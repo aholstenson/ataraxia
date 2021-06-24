@@ -179,6 +179,12 @@
 					</li>
 				</ul>
 			</section>
+			<section class="tsd-panel">
+				<h3>Implements</h3>
+				<ul class="tsd-hierarchy">
+					<li><span class="tsd-signature-type">Group</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">MessageTypes</span><span class="tsd-signature-symbol">&gt;</span></li>
+				</ul>
+			</section>
 			<section class="tsd-panel-group tsd-index-group">
 				<h2>Index</h2>
 				<section class="tsd-panel tsd-index-panel">
@@ -193,8 +199,8 @@
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="ataraxia.network.html#endpoint" class="tsd-kind-icon">endpoint</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="ataraxia.network.html#name" class="tsd-kind-icon">name</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="ataraxia.network.html#networkidbinary" class="tsd-kind-icon">network<wbr>IdBinary</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="ataraxia.network.html#networkname" class="tsd-kind-icon">network<wbr>Name</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
@@ -232,7 +238,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/4022d7f/packages/core/src/Network.ts#L199">packages/core/src/Network.ts:199</a></li>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/8996117/packages/core/src/Network.ts#L200">packages/core/src/Network.ts:200</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -278,7 +284,7 @@
 					<div class="tsd-signature tsd-kind-icon">endpoint<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/4022d7f/packages/core/src/Network.ts#L170">packages/core/src/Network.ts:170</a></li>
+							<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/8996117/packages/core/src/Network.ts#L171">packages/core/src/Network.ts:171</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -288,32 +294,33 @@
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="networkidbinary" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagReadonly">Readonly</span> network<wbr>IdBinary</h3>
-					<div class="tsd-signature tsd-kind-icon">network<wbr>IdBinary<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">ArrayBuffer</span></div>
+					<a name="name" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagReadonly">Readonly</span> name</h3>
+					<div class="tsd-signature tsd-kind-icon">name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
+						<p>Implementation of Group.name</p>
 						<ul>
-							<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/4022d7f/packages/core/src/Network.ts#L160">packages/core/src/Network.ts:160</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The identifier this node has when connecting to the network.</p>
-						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="networkname" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagReadonly">Readonly</span> network<wbr>Name</h3>
-					<div class="tsd-signature tsd-kind-icon">network<wbr>Name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/4022d7f/packages/core/src/Network.ts#L165">packages/core/src/Network.ts:165</a></li>
+							<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/8996117/packages/core/src/Network.ts#L166">packages/core/src/Network.ts:166</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>The name of the network.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="networkidbinary" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagReadonly">Readonly</span> network<wbr>IdBinary</h3>
+					<div class="tsd-signature tsd-kind-icon">network<wbr>IdBinary<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">ArrayBuffer</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/8996117/packages/core/src/Network.ts#L161">packages/core/src/Network.ts:161</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The identifier this node has when connecting to the network.</p>
 						</div>
 					</div>
 				</section>
@@ -330,7 +337,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/4022d7f/packages/core/src/Network.ts#L314">packages/core/src/Network.ts:314</a></li>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/8996117/packages/core/src/Network.ts#L315">packages/core/src/Network.ts:315</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -354,7 +361,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/4022d7f/packages/core/src/Network.ts#L324">packages/core/src/Network.ts:324</a></li>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/8996117/packages/core/src/Network.ts#L325">packages/core/src/Network.ts:325</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -377,7 +384,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/4022d7f/packages/core/src/Network.ts#L303">packages/core/src/Network.ts:303</a></li>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/8996117/packages/core/src/Network.ts#L304">packages/core/src/Network.ts:304</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -400,7 +407,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/4022d7f/packages/core/src/Network.ts#L283">packages/core/src/Network.ts:283</a></li>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/8996117/packages/core/src/Network.ts#L284">packages/core/src/Network.ts:284</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -423,7 +430,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/4022d7f/packages/core/src/Network.ts#L293">packages/core/src/Network.ts:293</a></li>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/8996117/packages/core/src/Network.ts#L294">packages/core/src/Network.ts:294</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -449,7 +456,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/4022d7f/packages/core/src/Network.ts#L335">packages/core/src/Network.ts:335</a></li>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/8996117/packages/core/src/Network.ts#L336">packages/core/src/Network.ts:336</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -481,8 +488,9 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
+								<p>Implementation of Group.broadcast</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/4022d7f/packages/core/src/Network.ts#L426">packages/core/src/Network.ts:426</a></li>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/8996117/packages/core/src/Network.ts#L424">packages/core/src/Network.ts:424</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -529,7 +537,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/4022d7f/packages/core/src/Network.ts#L450">packages/core/src/Network.ts:450</a></li>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/8996117/packages/core/src/Network.ts#L448">packages/core/src/Network.ts:448</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -563,13 +571,14 @@
 					<a name="join" class="tsd-anchor"></a>
 					<h3>join</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">join<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">join<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
+								<p>Implementation of Group.join</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/4022d7f/packages/core/src/Network.ts#L365">packages/core/src/Network.ts:365</a></li>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/8996117/packages/core/src/Network.ts#L366">packages/core/src/Network.ts:366</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -577,7 +586,7 @@
 									<p>Join the network by starting a server and then looking for peers.</p>
 								</div>
 							</div>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
 							<p>  promise that resolves when the network is started, the value will
 							represent if the network was actually started or not.</p>
 						</li>
@@ -587,13 +596,14 @@
 					<a name="leave" class="tsd-anchor"></a>
 					<h3>leave</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">leave<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">leave<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
+								<p>Implementation of Group.leave</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/4022d7f/packages/core/src/Network.ts#L403">packages/core/src/Network.ts:403</a></li>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/8996117/packages/core/src/Network.ts#L402">packages/core/src/Network.ts:402</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -601,9 +611,8 @@
 									<p>Leave the currently joined network.</p>
 								</div>
 							</div>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span></h4>
-							<p>  promise that resolves when the network is stopped, the value will
-							represent if the network was actually stopper or not.</p>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<p>  promise that resolves when the network is stopped</p>
 						</li>
 					</ul>
 				</section>
@@ -664,6 +673,9 @@
 					<li class=" tsd-kind-reference tsd-parent-kind-module">
 						<a href="../modules/ataraxia.html#transport" class="tsd-kind-icon">Transport</a>
 					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-module tsd-has-type-parameter">
+						<a href="ataraxia.debugger.html" class="tsd-kind-icon">Debugger</a>
+					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-class tsd-parent-kind-module tsd-has-type-parameter">
@@ -676,10 +688,10 @@
 								<a href="ataraxia.network.html#endpoint" class="tsd-kind-icon">endpoint</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="ataraxia.network.html#networkidbinary" class="tsd-kind-icon">network<wbr>IdBinary</a>
+								<a href="ataraxia.network.html#name" class="tsd-kind-icon">name</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="ataraxia.network.html#networkname" class="tsd-kind-icon">network<wbr>Name</a>
+								<a href="ataraxia.network.html#networkidbinary" class="tsd-kind-icon">network<wbr>IdBinary</a>
 							</li>
 							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
 								<a href="ataraxia.network.html#networkid" class="tsd-kind-icon">network<wbr>Id</a>
@@ -718,6 +730,9 @@
 					<li class=" tsd-kind-class tsd-parent-kind-module tsd-has-type-parameter">
 						<a href="ataraxia.requestreplyhelper.html" class="tsd-kind-icon">Request<wbr>Reply<wbr>Helper</a>
 					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-module tsd-has-type-parameter">
+						<a href="ataraxia.synchronizedvalues.html" class="tsd-kind-icon">Synchronized<wbr>Values</a>
+					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-module tsd-has-type-parameter">
 						<a href="../interfaces/ataraxia.exchange.html" class="tsd-kind-icon">Exchange</a>
 					</li>
@@ -735,6 +750,9 @@
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-module">
 						<a href="../interfaces/ataraxia.requestreplyhelperoptions.html" class="tsd-kind-icon">Request<wbr>Reply<wbr>Helper<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module tsd-has-type-parameter">
+						<a href="../interfaces/ataraxia.synchronizedvaluesoptions.html" class="tsd-kind-icon">Synchronized<wbr>Values<wbr>Options</a>
 					</li>
 					<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter">
 						<a href="../modules/ataraxia.html#messagedata" class="tsd-kind-icon">Message<wbr>Data</a>

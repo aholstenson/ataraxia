@@ -124,8 +124,10 @@
 						<section class="tsd-index-section ">
 							<h3>Classes</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-class tsd-parent-kind-module tsd-has-type-parameter"><a href="../classes/ataraxia.debugger.html" class="tsd-kind-icon">Debugger</a></li>
 								<li class="tsd-kind-class tsd-parent-kind-module tsd-has-type-parameter"><a href="../classes/ataraxia.network.html" class="tsd-kind-icon">Network</a></li>
 								<li class="tsd-kind-class tsd-parent-kind-module tsd-has-type-parameter"><a href="../classes/ataraxia.requestreplyhelper.html" class="tsd-kind-icon">Request<wbr>Reply<wbr>Helper</a></li>
+								<li class="tsd-kind-class tsd-parent-kind-module tsd-has-type-parameter"><a href="../classes/ataraxia.synchronizedvalues.html" class="tsd-kind-icon">Synchronized<wbr>Values</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
@@ -137,6 +139,7 @@
 								<li class="tsd-kind-interface tsd-parent-kind-module tsd-has-type-parameter"><a href="../interfaces/ataraxia.node.html" class="tsd-kind-icon">Node</a></li>
 								<li class="tsd-kind-interface tsd-parent-kind-module"><a href="../interfaces/ataraxia.preparerequestoptions.html" class="tsd-kind-icon">Prepare<wbr>Request<wbr>Options</a></li>
 								<li class="tsd-kind-interface tsd-parent-kind-module"><a href="../interfaces/ataraxia.requestreplyhelperoptions.html" class="tsd-kind-icon">Request<wbr>Reply<wbr>Helper<wbr>Options</a></li>
+								<li class="tsd-kind-interface tsd-parent-kind-module tsd-has-type-parameter"><a href="../interfaces/ataraxia.synchronizedvaluesoptions.html" class="tsd-kind-icon">Synchronized<wbr>Values<wbr>Options</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
@@ -186,7 +189,7 @@
 					<div class="tsd-signature tsd-kind-icon">Message<wbr>Data&lt;MessageTypes, T&gt;<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">MessageTypes</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/4022d7f/packages/core/src/MessageData.ts#L4">packages/core/src/MessageData.ts:4</a></li>
+							<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/8996117/packages/core/src/MessageData.ts#L4">packages/core/src/MessageData.ts:4</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -210,7 +213,7 @@
 					<div class="tsd-signature tsd-kind-icon">Message<wbr>Type&lt;MessageTypes&gt;<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">MessageTypes</span><span class="tsd-signature-symbol"> &amp; </span><span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/4022d7f/packages/core/src/MessageType.ts#L4">packages/core/src/MessageType.ts:4</a></li>
+							<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/8996117/packages/core/src/MessageType.ts#L4">packages/core/src/MessageType.ts:4</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -231,7 +234,7 @@
 					<div class="tsd-signature tsd-kind-icon">Message<wbr>Union&lt;MessageTypes&gt;<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{</span><span class="tsd-signature-symbol">[ </span><span class="tsd-signature-type">P</span><span class="tsd-signature-symbol"> in </span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">MessageTypes</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">P</span><span class="tsd-signature-symbol"> extends </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> ? </span><a href="../interfaces/ataraxia.message.html" class="tsd-signature-type" data-tsd-kind="Interface">Message</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">MessageTypes</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">P</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> : </span><span class="tsd-signature-type">never</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">MessageTypes</span><span class="tsd-signature-symbol">]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/4022d7f/packages/core/src/MessageUnion.ts#L14">packages/core/src/MessageUnion.ts:14</a></li>
+							<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/8996117/packages/core/src/MessageUnion.ts#L14">packages/core/src/MessageUnion.ts:14</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -310,10 +313,16 @@
 						<a href="ataraxia.html#transport" class="tsd-kind-icon">Transport</a>
 					</li>
 					<li class=" tsd-kind-class tsd-parent-kind-module tsd-has-type-parameter">
+						<a href="../classes/ataraxia.debugger.html" class="tsd-kind-icon">Debugger</a>
+					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-module tsd-has-type-parameter">
 						<a href="../classes/ataraxia.network.html" class="tsd-kind-icon">Network</a>
 					</li>
 					<li class=" tsd-kind-class tsd-parent-kind-module tsd-has-type-parameter">
 						<a href="../classes/ataraxia.requestreplyhelper.html" class="tsd-kind-icon">Request<wbr>Reply<wbr>Helper</a>
+					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-module tsd-has-type-parameter">
+						<a href="../classes/ataraxia.synchronizedvalues.html" class="tsd-kind-icon">Synchronized<wbr>Values</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-module tsd-has-type-parameter">
 						<a href="../interfaces/ataraxia.exchange.html" class="tsd-kind-icon">Exchange</a>
@@ -332,6 +341,9 @@
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-module">
 						<a href="../interfaces/ataraxia.requestreplyhelperoptions.html" class="tsd-kind-icon">Request<wbr>Reply<wbr>Helper<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module tsd-has-type-parameter">
+						<a href="../interfaces/ataraxia.synchronizedvaluesoptions.html" class="tsd-kind-icon">Synchronized<wbr>Values<wbr>Options</a>
 					</li>
 					<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-has-type-parameter">
 						<a href="ataraxia.html#messagedata" class="tsd-kind-icon">Message<wbr>Data</a>

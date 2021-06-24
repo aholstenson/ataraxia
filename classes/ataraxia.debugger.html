@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>RequestReplyHelper | Ataraxia</title>
+	<title>Debugger | Ataraxia</title>
 	<meta name="description" content="Documentation for Ataraxia">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -58,10 +58,10 @@
 					<a href="../modules/ataraxia.html">ataraxia</a>
 				</li>
 				<li>
-					<a href="ataraxia.requestreplyhelper.html">RequestReplyHelper</a>
+					<a href="ataraxia.debugger.html">Debugger</a>
 				</li>
 			</ul>
-			<h1>Class RequestReplyHelper&lt;Result&gt;</h1>
+			<h1>Class Debugger&lt;T&gt;</h1>
 		</div>
 	</div>
 </header>
@@ -71,29 +71,17 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>Helper for managing requests and replies that are identified via a
-						number.</p>
+						<p>Helper for creating a good debug experience for Ataraxia classes. Builds
+							on top of <a href="https://github.com/visionmedia/debug">debug</a> but adds support
+						for emitting errors as events.</p>
 					</div>
-					<pre><code class="language-javascript"><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">helper</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">RequestReplyHelper</span><span style="color: #000000">({</span>
-<span style="color: #000000">  </span><span style="color: #001080">timeout:</span><span style="color: #000000"> </span><span style="color: #098658">30000</span>
-<span style="color: #000000">});</span>
-
-<span style="color: #008000">// Generate an id and get a promise for the request and pass the id somewhere</span>
-<span style="color: #0000FF">const</span><span style="color: #000000"> [ </span><span style="color: #0070C1">id</span><span style="color: #000000">, </span><span style="color: #0070C1">promise</span><span style="color: #000000"> ] = </span><span style="color: #001080">helper</span><span style="color: #000000">.</span><span style="color: #795E26">prepareRequest</span><span style="color: #000000">();</span>
-
-<span style="color: #008000">// Later on register a reply</span>
-<span style="color: #001080">helper</span><span style="color: #000000">.</span><span style="color: #795E26">registerReply</span><span style="color: #000000">(</span><span style="color: #001080">id</span><span style="color: #000000">, </span><span style="color: #001080">replyDataHere</span><span style="color: #000000">);</span>
-
-<span style="color: #008000">// Or an error if something goes wrong</span>
-<span style="color: #001080">helper</span><span style="color: #000000">.</span><span style="color: #795E26">registerError</span><span style="color: #000000">(</span><span style="color: #001080">id</span><span style="color: #000000">, </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #267F99">Error</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;Things went wrong&#039;</span><span style="color: #000000">));</span>
-</code></pre>
 				</div>
 			</section>
 			<section class="tsd-panel tsd-type-parameters">
 				<h3>Type parameters</h3>
 				<ul class="tsd-type-parameters">
 					<li>
-						<h4>Result</h4>
+						<h4>T<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span></h4>
 					</li>
 				</ul>
 			</section>
@@ -101,7 +89,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">RequestReplyHelper</span>
+						<span class="target">Debugger</span>
 					</li>
 				</ul>
 			</section>
@@ -112,15 +100,22 @@
 						<section class="tsd-index-section ">
 							<h3>Constructors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-has-type-parameter"><a href="ataraxia.requestreplyhelper.html#constructor" class="tsd-kind-icon">constructor</a></li>
+								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-has-type-parameter"><a href="ataraxia.debugger.html#constructor" class="tsd-kind-icon">constructor</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
+							<h3>Accessors</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="ataraxia.debugger.html#enabled" class="tsd-kind-icon">enabled</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="ataraxia.debugger.html#namespace" class="tsd-kind-icon">namespace</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class"><a href="ataraxia.debugger.html#onerror" class="tsd-kind-icon">on<wbr>Error</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="ataraxia.requestreplyhelper.html#preparerequest" class="tsd-kind-icon">prepare<wbr>Request</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="ataraxia.requestreplyhelper.html#registererror" class="tsd-kind-icon">register<wbr>Error</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="ataraxia.requestreplyhelper.html#registerreply" class="tsd-kind-icon">register<wbr>Reply</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="ataraxia.debugger.html#error" class="tsd-kind-icon">error</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="ataraxia.debugger.html#log" class="tsd-kind-icon">log</a></li>
 							</ul>
 						</section>
 					</div>
@@ -132,28 +127,116 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-has-type-parameter">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Request<wbr>Reply<wbr>Helper&lt;Result&gt;<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">?: </span><a href="../interfaces/ataraxia.requestreplyhelperoptions.html" class="tsd-signature-type" data-tsd-kind="Interface">RequestReplyHelperOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="ataraxia.requestreplyhelper.html" class="tsd-signature-type" data-tsd-kind="Class">RequestReplyHelper</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Result</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Debugger&lt;T&gt;<span class="tsd-signature-symbol">(</span>parent<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span>, namespace<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="ataraxia.debugger.html" class="tsd-signature-type" data-tsd-kind="Class">Debugger</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/8996117/packages/core/src/RequestReplyHelper.ts#L68">packages/core/src/RequestReplyHelper.ts:68</a></li>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/8996117/packages/core/src/Debugger.ts#L18">packages/core/src/Debugger.ts:18</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Create a new instance.</p>
+								</div>
+							</div>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
 							<ul class="tsd-type-parameters">
 								<li>
-									<h4>Result</h4>
+									<h4>T<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span></h4>
 								</li>
 							</ul>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> options: <a href="../interfaces/ataraxia.requestreplyhelperoptions.html" class="tsd-signature-type" data-tsd-kind="Interface">RequestReplyHelperOptions</a></h5>
+									<h5>parent: <span class="tsd-signature-type">T</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>-
+										object to use as this for emitted error events</p>
+									</div>
+								</li>
+								<li>
+									<h5>namespace: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>-
+										the namespace to use for the debug logging</p>
+									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="ataraxia.requestreplyhelper.html" class="tsd-signature-type" data-tsd-kind="Class">RequestReplyHelper</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Result</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="ataraxia.debugger.html" class="tsd-signature-type" data-tsd-kind="Class">Debugger</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Accessors</h2>
+				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class">
+					<a name="enabled" class="tsd-anchor"></a>
+					<h3>enabled</h3>
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> enabled<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/8996117/packages/core/src/Debugger.ts#L39">packages/core/src/Debugger.ts:39</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Get if the debugger prints messages.</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+							<p>  <code>true</code> if messages are printed</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class">
+					<a name="namespace" class="tsd-anchor"></a>
+					<h3>namespace</h3>
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> namespace<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/8996117/packages/core/src/Debugger.ts#L49">packages/core/src/Debugger.ts:49</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>The current namespace.</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+							<p>  namespace used to print messages</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class">
+					<a name="onerror" class="tsd-anchor"></a>
+					<h3>on<wbr>Error</h3>
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> onError<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Subscribable</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-symbol">[</span>error<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Error</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/8996117/packages/core/src/Debugger.ts#L59">packages/core/src/Debugger.ts:59</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Event emitted when an error occurs.</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Subscribable</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-symbol">[</span>error<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Error</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<p>  subscribable</p>
 						</li>
 					</ul>
 				</section>
@@ -161,73 +244,44 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Methods</h2>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="preparerequest" class="tsd-anchor"></a>
-					<h3>prepare<wbr>Request</h3>
+					<a name="error" class="tsd-anchor"></a>
+					<h3>error</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">prepare<wbr>Request<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">?: </span><a href="../interfaces/ataraxia.preparerequestoptions.html" class="tsd-signature-type" data-tsd-kind="Interface">PrepareRequestOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span>id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">, </span>result<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Result</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">]</span></li>
+						<li class="tsd-signature tsd-kind-icon">error<span class="tsd-signature-symbol">(</span>error<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Error</span>, formatter<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span>, <span class="tsd-signature-symbol">...</span>args<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/8996117/packages/core/src/RequestReplyHelper.ts#L100">packages/core/src/RequestReplyHelper.ts:100</a></li>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/8996117/packages/core/src/Debugger.ts#L85">packages/core/src/Debugger.ts:85</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Prepare a request, will return the identifier to use and a promise that
-									will resolve when the reply is registered.</p>
+									<p>Log and emit an error.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> options: <a href="../interfaces/ataraxia.preparerequestoptions.html" class="tsd-signature-type" data-tsd-kind="Interface">PrepareRequestOptions</a></h5>
+									<h5>error: <span class="tsd-signature-type">Error</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>-
-										options for this request</p>
-									</div>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-symbol">[</span>id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">, </span>result<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Result</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">]</span></h4>
-							<p>  array with request id and promise. The promise will resolve or reject
-							when a result or error is registered, or when it times out</p>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="registererror" class="tsd-anchor"></a>
-					<h3>register<wbr>Error</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">register<wbr>Error<span class="tsd-signature-symbol">(</span>id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, error<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Error</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/8996117/packages/core/src/RequestReplyHelper.ts#L146">packages/core/src/RequestReplyHelper.ts:146</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Register that an error occurred for the given identifier. This will
-									reject the promise associated with the identifier.</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>id: <span class="tsd-signature-type">number</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>-
-										identifier as given previously by <code>prepareRequest</code></p>
+										error that occurred</p>
 									</div>
 								</li>
 								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> error: <span class="tsd-signature-type">Error</span></h5>
+									<h5>formatter: <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol"> = &#x27;An error has occurred:&#x27;</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>-
-										optional error to reject with</p>
+										formatter</p>
+									</div>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagRest">Rest</span> <span class="tsd-signature-symbol">...</span>args: <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>-
+										arguments</p>
 									</div>
 								</li>
 							</ul>
@@ -236,38 +290,37 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="registerreply" class="tsd-anchor"></a>
-					<h3>register<wbr>Reply</h3>
+					<a name="log" class="tsd-anchor"></a>
+					<h3>log</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">register<wbr>Reply<span class="tsd-signature-symbol">(</span>id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, result<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Result</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">log<span class="tsd-signature-symbol">(</span>formatter<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, <span class="tsd-signature-symbol">...</span>args<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/8996117/packages/core/src/RequestReplyHelper.ts#L126">packages/core/src/RequestReplyHelper.ts:126</a></li>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/8996117/packages/core/src/Debugger.ts#L71">packages/core/src/Debugger.ts:71</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Register that a reply has been received for the given identifier. This
-									will resolve the promise associated with the identifier.</p>
+									<p>Log something.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>id: <span class="tsd-signature-type">number</span></h5>
+									<h5>formatter: <span class="tsd-signature-type">any</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>-
-										identifier as given previously by <code>prepareRequest</code></p>
+										formatter</p>
 									</div>
 								</li>
 								<li>
-									<h5>result: <span class="tsd-signature-type">Result</span></h5>
+									<h5><span class="tsd-flag ts-flagRest">Rest</span> <span class="tsd-signature-symbol">...</span>args: <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>-
-										the result to resolve with</p>
+										arguments</p>
 									</div>
 								</li>
 							</ul>
@@ -332,33 +385,39 @@
 					<li class=" tsd-kind-reference tsd-parent-kind-module">
 						<a href="../modules/ataraxia.html#transport" class="tsd-kind-icon">Transport</a>
 					</li>
-					<li class=" tsd-kind-class tsd-parent-kind-module tsd-has-type-parameter">
-						<a href="ataraxia.debugger.html" class="tsd-kind-icon">Debugger</a>
-					</li>
-					<li class=" tsd-kind-class tsd-parent-kind-module tsd-has-type-parameter">
-						<a href="ataraxia.network.html" class="tsd-kind-icon">Network</a>
-					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-class tsd-parent-kind-module tsd-has-type-parameter">
-						<a href="ataraxia.requestreplyhelper.html" class="tsd-kind-icon">Request<wbr>Reply<wbr>Helper</a>
+						<a href="ataraxia.debugger.html" class="tsd-kind-icon">Debugger</a>
 						<ul>
 							<li class=" tsd-kind-constructor tsd-parent-kind-class tsd-has-type-parameter">
-								<a href="ataraxia.requestreplyhelper.html#constructor" class="tsd-kind-icon">constructor</a>
+								<a href="ataraxia.debugger.html#constructor" class="tsd-kind-icon">constructor</a>
+							</li>
+							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
+								<a href="ataraxia.debugger.html#enabled" class="tsd-kind-icon">enabled</a>
+							</li>
+							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
+								<a href="ataraxia.debugger.html#namespace" class="tsd-kind-icon">namespace</a>
+							</li>
+							<li class=" tsd-kind-get-signature tsd-parent-kind-class">
+								<a href="ataraxia.debugger.html#onerror" class="tsd-kind-icon">on<wbr>Error</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="ataraxia.requestreplyhelper.html#preparerequest" class="tsd-kind-icon">prepare<wbr>Request</a>
+								<a href="ataraxia.debugger.html#error" class="tsd-kind-icon">error</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="ataraxia.requestreplyhelper.html#registererror" class="tsd-kind-icon">register<wbr>Error</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class">
-								<a href="ataraxia.requestreplyhelper.html#registerreply" class="tsd-kind-icon">register<wbr>Reply</a>
+								<a href="ataraxia.debugger.html#log" class="tsd-kind-icon">log</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
+					<li class=" tsd-kind-class tsd-parent-kind-module tsd-has-type-parameter">
+						<a href="ataraxia.network.html" class="tsd-kind-icon">Network</a>
+					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-module tsd-has-type-parameter">
+						<a href="ataraxia.requestreplyhelper.html" class="tsd-kind-icon">Request<wbr>Reply<wbr>Helper</a>
+					</li>
 					<li class=" tsd-kind-class tsd-parent-kind-module tsd-has-type-parameter">
 						<a href="ataraxia.synchronizedvalues.html" class="tsd-kind-icon">Synchronized<wbr>Values</a>
 					</li>
