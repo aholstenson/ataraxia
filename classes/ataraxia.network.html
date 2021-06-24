@@ -111,24 +111,24 @@
 					<p>It is possible to broadcast a message to all the known nodes via
 						<a href="ataraxia.network.html#broadcast">broadcast</a>, but as with regular messages no delivery is guaranteed
 					and large broadcasts are discouraged.</p>
-					<a href="#exchanges" id="exchanges" style="color: inherit; text-decoration: none;">
-						<h2>Exchanges</h2>
+					<a href="#groups" id="groups" style="color: inherit; text-decoration: none;">
+						<h2>Groups</h2>
 					</a>
-					<p>Exchanges are a way to create named sub-groups of the network that nodes can
-						join and leave as needed. Broadcasting a message on an exchange will only
-					send it to known members of the exchange.</p>
-					<pre><code class="language-typescript"><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">exchange</span><span style="color: #000000"> = </span><span style="color: #001080">net</span><span style="color: #000000">.</span><span style="color: #795E26">createExchange</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;name-of-exchange&#039;</span><span style="color: #000000">);</span>
+					<p>Groups are a way to create named area of the network that nodes can
+						join and leave as needed. Broadcasting a message on an group will only
+					send it to known members of the groups.</p>
+					<pre><code class="language-typescript"><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">group</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">NamedGroup</span><span style="color: #000000">(</span><span style="color: #001080">net</span><span style="color: #000000">, </span><span style="color: #A31515">&#039;name-of-group&#039;</span><span style="color: #000000">);</span>
 
-<span style="color: #008000">// Exchanges need to be joined</span>
-<span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">exchange</span><span style="color: #000000">.</span><span style="color: #795E26">join</span><span style="color: #000000">();</span>
+<span style="color: #008000">// Groups need to be joined</span>
+<span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">group</span><span style="color: #000000">.</span><span style="color: #795E26">join</span><span style="color: #000000">();</span>
 
 <span style="color: #008000">// Broadcast to the known members</span>
-<span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">exchange</span><span style="color: #000000">.</span><span style="color: #795E26">broadcast</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;typeOfMessage&#039;</span><span style="color: #000000">, </span><span style="color: #001080">dataOfMessage</span><span style="color: #000000">);</span>
+<span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">group</span><span style="color: #000000">.</span><span style="color: #795E26">broadcast</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;typeOfMessage&#039;</span><span style="color: #000000">, </span><span style="color: #001080">dataOfMessage</span><span style="color: #000000">);</span>
 </code></pre>
 					<a href="#typing-of-messages" id="typing-of-messages" style="color: inherit; text-decoration: none;">
 						<h2>Typing of messages</h2>
 					</a>
-					<p>The network and exchanges can be typed when using TypeScript.</p>
+					<p>The network and groups can be typed when using TypeScript.</p>
 					<p>The types are defined as an interface with the keys representing the
 					message types tied to the type of message:</p>
 					<pre><code class="language-typescript"><span style="color: #0000FF">interface</span><span style="color: #000000"> </span><span style="color: #267F99">EchoMessages</span><span style="color: #000000"> {</span>
@@ -136,19 +136,19 @@
 <span style="color: #000000">  </span><span style="color: #A31515">&#039;namespace:echo-reply&#039;</span><span style="color: #000000">: { </span><span style="color: #001080">reply</span><span style="color: #000000">: </span><span style="color: #267F99">string</span><span style="color: #000000"> };</span>
 <span style="color: #000000">}</span>
 </code></pre>
-					<p>An exchange can then be typed via:</p>
-					<pre><code class="language-typescript"><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">exchange</span><span style="color: #000000">: </span><span style="color: #267F99">Exchange</span><span style="color: #000000">&lt;</span><span style="color: #267F99">EchoMessages</span><span style="color: #000000">&gt; = </span><span style="color: #001080">net</span><span style="color: #000000">.</span><span style="color: #795E26">createExchange</span><span style="color: #000000">&lt;</span><span style="color: #267F99">EchoMessage</span><span style="color: #000000">&gt;(</span><span style="color: #A31515">&#039;echo&#039;</span><span style="color: #000000">);</span>
+					<p>An group can then be typed via:</p>
+					<pre><code class="language-typescript"><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">group</span><span style="color: #000000">: </span><span style="color: #267F99">Group</span><span style="color: #000000">&lt;</span><span style="color: #267F99">EchoMessages</span><span style="color: #000000">&gt; = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">NamedGroup</span><span style="color: #000000">&lt;</span><span style="color: #267F99">EchoMessage</span><span style="color: #000000">&gt;(</span><span style="color: #001080">net</span><span style="color: #000000">, </span><span style="color: #A31515">&#039;echo&#039;</span><span style="color: #000000">);</span>
 </code></pre>
 					<p>This will help TypeScript validate messages that are sent:</p>
 					<pre><code class="language-typescript"><span style="color: #008000">// TypeScript will allow this</span>
-<span style="color: #001080">exchange</span><span style="color: #000000">.</span><span style="color: #795E26">broadcast</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;namespace:echo&#039;</span><span style="color: #000000">, { </span><span style="color: #001080">message:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;Test&#039;</span><span style="color: #000000"> });</span>
+<span style="color: #001080">group</span><span style="color: #000000">.</span><span style="color: #795E26">broadcast</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;namespace:echo&#039;</span><span style="color: #000000">, { </span><span style="color: #001080">message:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;Test&#039;</span><span style="color: #000000"> });</span>
 
 <span style="color: #008000">// TypeScript will not allow these</span>
-<span style="color: #001080">exchange</span><span style="color: #000000">.</span><span style="color: #795E26">broadcast</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;namespace:echo&#039;</span><span style="color: #000000">, { </span><span style="color: #001080">msg:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;Test&#039;</span><span style="color: #000000"> });</span>
-<span style="color: #001080">exchange</span><span style="color: #000000">.</span><span style="color: #795E26">broadcast</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;namespace:e&#039;</span><span style="color: #000000">, { </span><span style="color: #001080">message:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;Test&#039;</span><span style="color: #000000"> });</span>
+<span style="color: #001080">group</span><span style="color: #000000">.</span><span style="color: #795E26">broadcast</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;namespace:echo&#039;</span><span style="color: #000000">, { </span><span style="color: #001080">msg:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;Test&#039;</span><span style="color: #000000"> });</span>
+<span style="color: #001080">group</span><span style="color: #000000">.</span><span style="color: #795E26">broadcast</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;namespace:e&#039;</span><span style="color: #000000">, { </span><span style="color: #001080">message:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;Test&#039;</span><span style="color: #000000"> });</span>
 </code></pre>
 					<p>The same is true for listeners:</p>
-					<pre><code class="language-typescript"><span style="color: #001080">exchange</span><span style="color: #000000">.</span><span style="color: #795E26">onMessage</span><span style="color: #000000">(</span><span style="color: #001080">msg</span><span style="color: #000000"> </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
+					<pre><code class="language-typescript"><span style="color: #001080">group</span><span style="color: #000000">.</span><span style="color: #795E26">onMessage</span><span style="color: #000000">(</span><span style="color: #001080">msg</span><span style="color: #000000"> </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
 <span style="color: #000000">  </span><span style="color: #AF00DB">if</span><span style="color: #000000">(</span><span style="color: #001080">msg</span><span style="color: #000000">.</span><span style="color: #001080">type</span><span style="color: #000000"> === </span><span style="color: #A31515">&#039;namespace:echo&#039;</span><span style="color: #000000">) {</span>
 <span style="color: #000000">     </span><span style="color: #008000">// In here msg.data will be of the type { message: string }</span>
 <span style="color: #000000">     </span><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">data</span><span style="color: #000000"> = </span><span style="color: #001080">msg</span><span style="color: #000000">.</span><span style="color: #001080">data</span><span style="color: #000000">;</span>
@@ -182,7 +182,7 @@
 			<section class="tsd-panel">
 				<h3>Implements</h3>
 				<ul class="tsd-hierarchy">
-					<li><span class="tsd-signature-type">Group</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">MessageTypes</span><span class="tsd-signature-symbol">&gt;</span></li>
+					<li><a href="../interfaces/ataraxia.group.html" class="tsd-signature-type" data-tsd-kind="Interface">Group</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">MessageTypes</span><span class="tsd-signature-symbol">&gt;</span></li>
 				</ul>
 			</section>
 			<section class="tsd-panel-group tsd-index-group">
@@ -218,7 +218,7 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="ataraxia.network.html#addtransport" class="tsd-kind-icon">add<wbr>Transport</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter"><a href="ataraxia.network.html#broadcast" class="tsd-kind-icon">broadcast</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter"><a href="ataraxia.network.html#createexchange" class="tsd-kind-icon">create<wbr>Exchange</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter"><a href="ataraxia.network.html#getservice" class="tsd-kind-icon">get<wbr>Service</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="ataraxia.network.html#join" class="tsd-kind-icon">join</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="ataraxia.network.html#leave" class="tsd-kind-icon">leave</a></li>
 							</ul>
@@ -238,7 +238,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/8996117/packages/core/src/Network.ts#L200">packages/core/src/Network.ts:200</a></li>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/b65b5a8/packages/core/src/Network.ts#L195">packages/core/src/Network.ts:195</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -284,7 +284,7 @@
 					<div class="tsd-signature tsd-kind-icon">endpoint<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/8996117/packages/core/src/Network.ts#L171">packages/core/src/Network.ts:171</a></li>
+							<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/b65b5a8/packages/core/src/Network.ts#L169">packages/core/src/Network.ts:169</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -298,9 +298,9 @@
 					<h3><span class="tsd-flag ts-flagReadonly">Readonly</span> name</h3>
 					<div class="tsd-signature tsd-kind-icon">name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
-						<p>Implementation of Group.name</p>
+						<p>Implementation of <a href="../interfaces/ataraxia.group.html">Group</a>.<a href="../interfaces/ataraxia.group.html#name">name</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/8996117/packages/core/src/Network.ts#L166">packages/core/src/Network.ts:166</a></li>
+							<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/b65b5a8/packages/core/src/Network.ts#L164">packages/core/src/Network.ts:164</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -315,7 +315,7 @@
 					<div class="tsd-signature tsd-kind-icon">network<wbr>IdBinary<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">ArrayBuffer</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/8996117/packages/core/src/Network.ts#L161">packages/core/src/Network.ts:161</a></li>
+							<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/b65b5a8/packages/core/src/Network.ts#L159">packages/core/src/Network.ts:159</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -337,7 +337,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/8996117/packages/core/src/Network.ts#L315">packages/core/src/Network.ts:315</a></li>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/b65b5a8/packages/core/src/Network.ts#L328">packages/core/src/Network.ts:328</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -360,8 +360,9 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/ataraxia.group.html">Group</a>.<a href="../interfaces/ataraxia.group.html#nodes">nodes</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/8996117/packages/core/src/Network.ts#L325">packages/core/src/Network.ts:325</a></li>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/b65b5a8/packages/core/src/Network.ts#L338">packages/core/src/Network.ts:338</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -383,8 +384,9 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/ataraxia.group.html">Group</a>.<a href="../interfaces/ataraxia.group.html#onmessage">onMessage</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/8996117/packages/core/src/Network.ts#L304">packages/core/src/Network.ts:304</a></li>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/b65b5a8/packages/core/src/Network.ts#L317">packages/core/src/Network.ts:317</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -406,8 +408,9 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/ataraxia.group.html">Group</a>.<a href="../interfaces/ataraxia.group.html#onnodeavailable">onNodeAvailable</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/8996117/packages/core/src/Network.ts#L284">packages/core/src/Network.ts:284</a></li>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/b65b5a8/packages/core/src/Network.ts#L297">packages/core/src/Network.ts:297</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -429,8 +432,9 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/ataraxia.group.html">Group</a>.<a href="../interfaces/ataraxia.group.html#onnodeunavailable">onNodeUnavailable</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/8996117/packages/core/src/Network.ts#L294">packages/core/src/Network.ts:294</a></li>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/b65b5a8/packages/core/src/Network.ts#L307">packages/core/src/Network.ts:307</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -456,7 +460,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/8996117/packages/core/src/Network.ts#L336">packages/core/src/Network.ts:336</a></li>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/b65b5a8/packages/core/src/Network.ts#L349">packages/core/src/Network.ts:349</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -488,9 +492,9 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Implementation of Group.broadcast</p>
+								<p>Implementation of <a href="../interfaces/ataraxia.group.html">Group</a>.<a href="../interfaces/ataraxia.group.html#broadcast">broadcast</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/8996117/packages/core/src/Network.ts#L424">packages/core/src/Network.ts:424</a></li>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/b65b5a8/packages/core/src/Network.ts#L437">packages/core/src/Network.ts:437</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -528,42 +532,60 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
-					<a name="createexchange" class="tsd-anchor"></a>
-					<h3>create<wbr>Exchange</h3>
+					<a name="getservice" class="tsd-anchor"></a>
+					<h3>get<wbr>Service</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
-						<li class="tsd-signature tsd-kind-icon">create<wbr>Exchange&lt;MT&gt;<span class="tsd-signature-symbol">(</span>id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/ataraxia.exchange.html" class="tsd-signature-type" data-tsd-kind="Interface">Exchange</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">MT</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Service&lt;T&gt;<span class="tsd-signature-symbol">(</span>factory<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">new </span><span class="tsd-signature-symbol">(</span>handle<span class="tsd-signature-symbol">: </span><a href="ataraxia.network.html" class="tsd-signature-type" data-tsd-kind="Class">Network</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/8996117/packages/core/src/Network.ts#L448">packages/core/src/Network.ts:448</a></li>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/b65b5a8/packages/core/src/Network.ts#L282">packages/core/src/Network.ts:282</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Create an exchange with the given id. This will create a sub-group of the
-									network that nodes can join, leave and easily broadcast to.</p>
+									<p>Get a service as a singleton. This is useful for starting a single
+									instance of shared services.</p>
 								</div>
 							</div>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
 							<ul class="tsd-type-parameters">
 								<li>
-									<h4>MT<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span> = <span class="tsd-signature-type">any</span></h4>
+									<h4>T</h4>
 								</li>
 							</ul>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>id: <span class="tsd-signature-type">string</span></h5>
+									<h5>factory: <span class="tsd-signature-symbol">new </span><span class="tsd-signature-symbol">(</span>handle<span class="tsd-signature-symbol">: </span><a href="ataraxia.network.html" class="tsd-signature-type" data-tsd-kind="Class">Network</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">T</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>-
-										exchange to join</p>
+										constructor that takes instance of network</p>
 									</div>
+									<ul class="tsd-parameters">
+										<li class="tsd-parameter-signature">
+											<ul class="tsd-signatures tsd-kind-constructor">
+												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">new </span><span class="tsd-signature-symbol">(</span>handle<span class="tsd-signature-symbol">: </span><a href="ataraxia.network.html" class="tsd-signature-type" data-tsd-kind="Class">Network</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span></li>
+											</ul>
+											<ul class="tsd-descriptions">
+												<li class="tsd-description">
+													<h4 class="tsd-parameters-title">Parameters</h4>
+													<ul class="tsd-parameters">
+														<li>
+															<h5>handle: <a href="ataraxia.network.html" class="tsd-signature-type" data-tsd-kind="Class">Network</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h5>
+														</li>
+													</ul>
+													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">T</span></h4>
+												</li>
+											</ul>
+										</li>
+									</ul>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="../interfaces/ataraxia.exchange.html" class="tsd-signature-type" data-tsd-kind="Interface">Exchange</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">MT</span><span class="tsd-signature-symbol">&gt;</span></h4>
-							<p>  instance of Exchange</p>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">T</span></h4>
+							<p>  instance of factory</p>
 						</li>
 					</ul>
 				</section>
@@ -576,9 +598,9 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Implementation of Group.join</p>
+								<p>Implementation of <a href="../interfaces/ataraxia.group.html">Group</a>.<a href="../interfaces/ataraxia.group.html#join">join</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/8996117/packages/core/src/Network.ts#L366">packages/core/src/Network.ts:366</a></li>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/b65b5a8/packages/core/src/Network.ts#L379">packages/core/src/Network.ts:379</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -601,9 +623,9 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Implementation of Group.leave</p>
+								<p>Implementation of <a href="../interfaces/ataraxia.group.html">Group</a>.<a href="../interfaces/ataraxia.group.html#leave">leave</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/8996117/packages/core/src/Network.ts#L402">packages/core/src/Network.ts:402</a></li>
+									<li>Defined in <a href="https://github.com/aholstenson/ataraxia/blob/b65b5a8/packages/core/src/Network.ts#L415">packages/core/src/Network.ts:415</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -676,6 +698,9 @@
 					<li class=" tsd-kind-class tsd-parent-kind-module tsd-has-type-parameter">
 						<a href="ataraxia.debugger.html" class="tsd-kind-icon">Debugger</a>
 					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-module tsd-has-type-parameter">
+						<a href="ataraxia.namedgroup.html" class="tsd-kind-icon">Named<wbr>Group</a>
+					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-class tsd-parent-kind-module tsd-has-type-parameter">
@@ -715,7 +740,7 @@
 								<a href="ataraxia.network.html#broadcast" class="tsd-kind-icon">broadcast</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
-								<a href="ataraxia.network.html#createexchange" class="tsd-kind-icon">create<wbr>Exchange</a>
+								<a href="ataraxia.network.html#getservice" class="tsd-kind-icon">get<wbr>Service</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="ataraxia.network.html#join" class="tsd-kind-icon">join</a>
@@ -734,7 +759,7 @@
 						<a href="ataraxia.synchronizedvalues.html" class="tsd-kind-icon">Synchronized<wbr>Values</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-module tsd-has-type-parameter">
-						<a href="../interfaces/ataraxia.exchange.html" class="tsd-kind-icon">Exchange</a>
+						<a href="../interfaces/ataraxia.group.html" class="tsd-kind-icon">Group</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-module tsd-has-type-parameter">
 						<a href="../interfaces/ataraxia.message.html" class="tsd-kind-icon">Message</a>
