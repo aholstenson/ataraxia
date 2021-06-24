@@ -93,6 +93,9 @@ export class TopologyTester {
 				bTopology: bInfo.topology
 			};
 
+			aPeer.connect();
+			bPeer.connect();
+
 			info.aTopology.addPeer(info.aPeer);
 			info.bTopology.addPeer(info.bPeer);
 

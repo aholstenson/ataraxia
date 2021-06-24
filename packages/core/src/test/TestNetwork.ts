@@ -94,7 +94,7 @@ export class TestNetwork {
 		if(! info) {
 			const [ aPeer, bPeer ] = peersBetween(aInfo.id, bInfo.id);
 			info = {
-				type: ConnectionType.Both,
+				type: ConnectionType.None,
 				aId: a,
 				aPeer: aPeer,
 				aTransport: aInfo.transport,
@@ -135,18 +135,14 @@ export class TestNetwork {
 					// No connection at all, connect both peers
 					info.aPeer.connect();
 					info.bPeer.connect();
-					info.aTransport.addPeer(info.aPeer);
-					info.bTransport.addPeer(info.bPeer);
 					break;
 				case ConnectionType.Forward:
 					// A is connected to B, but B is not connected to A
 					info.bPeer.connect();
-					info.bTransport.addPeer(info.bPeer);
 					break;
 				case ConnectionType.Backward:
 					// B is connected to A, but A is not connected to B
 					info.aPeer.connect();
-					info.aTransport.addPeer(info.aPeer);
 					break;
 			}
 		} else if(type === ConnectionType.None) {
@@ -166,12 +162,10 @@ export class TestNetwork {
 						break;
 					case ConnectionType.None:
 						info.aPeer.connect();
-						info.aTransport.addPeer(info.aPeer);
 						break;
 					case ConnectionType.Backward:
 						info.bPeer.disconnect();
 						info.aPeer.connect();
-						info.aTransport.addPeer(info.aPeer);
 						break;
 				}
 			} else {
@@ -181,12 +175,10 @@ export class TestNetwork {
 						break;
 					case ConnectionType.None:
 						info.bPeer.connect();
-						info.bTransport.addPeer(info.bPeer);
 						break;
 					case ConnectionType.Forward:
 						info.aPeer.disconnect();
 						info.bPeer.connect();
-						info.aTransport.addPeer(info.aPeer);
 						break;
 				}
 			}

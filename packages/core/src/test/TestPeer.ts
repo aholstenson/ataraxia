@@ -93,8 +93,8 @@ export function peersBetween(first: ArrayBuffer, second: ArrayBuffer): [ TestPee
 	a.other = b;
 	b.other = a;
 
-	a.forceConnect(second);
-	b.forceConnect(first);
+	a.id = second;
+	b.id = first;
 
 	return [ a, b ];
 }
