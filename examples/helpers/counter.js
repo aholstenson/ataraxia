@@ -1,20 +1,18 @@
-const { Exchange } = require('../../packages/core');
+const { NamedGroup } = require('../../packages/core');
 
 module.exports = async function(net) {
-
 	let counter = 0;
 
-	const exchange = net.createExchange('counter');
-	exchange.onNodeAvailable(node => {
+	const group = new NamedGroup(net, 'counter');
+	group.onNodeAvailable(node => {
 		node.send('hello', { counter: counter })
 			.catch(e => console.log('Timed out sending hello'));
 	})
 
-	await exchange.join();
+	await group.join();
 
 	// Increment and broadcast counter to all nodes every five seconds
 	setInterval(() => {
-		exchange.broadcast('counter', { current: ++counter });
+		group.broadcast('counter', { current: ++counter });
 	}, 5000);
-
 }

@@ -63,7 +63,8 @@ export * from './MessageData';
 export * from './MessageType';
 export * from './MessageUnion';
 
-export * from './exchange/Exchange';
+export * from './Group';
+export * from './group/NamedGroup';
 export * from './RequestReplyHelper';
 
 export * from './SynchronizedValues';

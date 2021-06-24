@@ -2,6 +2,8 @@ import chalk from 'chalk';
 import { Minimatch } from 'minimatch';
 import { Argv } from 'yargs';
 
+import { NamedGroup } from 'ataraxia';
+
 import { indent, log, logInfo } from '../log';
 import { createNetwork } from '../utils/createNetwork';
 
@@ -16,9 +18,9 @@ export const builder = (yargs: Argv) =>
 			string: true,
 			description: 'Optional filter to apply to message type, supports glob expressions'
 		})
-		.option('exchange', {
+		.option('group', {
 			string: true,
-			description: 'Optional exchange to join'
+			description: 'Optional group to join'
 		});
 
 export const handler = async (args: any) => {
@@ -37,6 +39,6 @@ export const handler = async (args: any) => {
 	await net.join();
 
 	if(args.exchange) {
-		await net.createExchange(args.exchange).join();
+		await new NamedGroup(net, args.group).join();
 	}
 };

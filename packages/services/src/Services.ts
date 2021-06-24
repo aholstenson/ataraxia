@@ -2,8 +2,9 @@ import { Event, Subscribable } from 'atvik';
 import debug from 'debug';
 
 import {
+	Group,
 	Network,
-	Exchange,
+	NamedGroup,
 	Node,
 	MessageUnion,
 	RequestReplyHelper
@@ -218,7 +219,7 @@ export type LocalService<T> = T
 export class Services {
 	private readonly debug: debug.Debugger;
 	private readonly nodes: Map<string, ServiceNodeData>;
-	private readonly exchange: Exchange<ServiceMessages>;
+	private readonly group: Group<ServiceMessages>;
 
 	private readonly serviceAvailableEvent: Event<this, [ service: Service ]>;
 	private readonly serviceUnavailableEvent: Event<this, [ service: Service ]>;
@@ -252,10 +253,10 @@ export class Services {
 
 		this.version = 0;
 
-		this.exchange = network.createExchange('service');
-		this.exchange.onMessage(this.handleMessage.bind(this));
-		this.exchange.onNodeAvailable(this.handleNodeAvailable.bind(this));
-		this.exchange.onNodeUnavailable(this.handleNodeUnavailable.bind(this));
+		this.group = new NamedGroup(network, 'services');
+		this.group.onMessage(this.handleMessage.bind(this));
+		this.group.onNodeAvailable(this.handleNodeAvailable.bind(this));
+		this.group.onNodeUnavailable(this.handleNodeUnavailable.bind(this));
 
 		this.localServices = new Map();
 		this._services = new Map();
@@ -302,7 +303,7 @@ export class Services {
 	 *   promise that resolves when services have started
 	 */
 	public join(): Promise<void> {
-		return this.exchange.join();
+		return this.group.join();
 	}
 
 	/**
@@ -312,7 +313,7 @@ export class Services {
 	 *   promise that resolves when services have stopped
 	 */
 	public leave(): Promise<void> {
-		return this.exchange.leave();
+		return this.group.leave();
 	}
 
 	/**
@@ -412,7 +413,7 @@ export class Services {
 		this.version++;
 
 		// Broadcast that the service is now available
-		this.exchange.broadcast('service:available', {
+		this.group.broadcast('service:available', {
 			version: this.version,
 			def: toServiceDef(reflect)
 		}).catch(err => this.debug('Error occurred during service broadcast', err));
@@ -444,13 +445,13 @@ export class Services {
 			this.localServices.delete(reflect.id);
 
 			// Broadcast that the service is no longer available
-			this.exchange.broadcast('service:unavailable', {
+			this.group.broadcast('service:unavailable', {
 				version: this.version,
 				service: reflect.id
 			}).catch(err => this.debug('Error occurred during service broadcast', err));
 		} else {
 			// Broadcast the changed service
-			this.exchange.broadcast('service:available', {
+			this.group.broadcast('service:available', {
 				version: this.version,
 				def: toServiceDef(reflect)
 			}).catch(err => this.debug('Error occurred during service broadcast', err));
@@ -563,7 +564,7 @@ export class Services {
 	}
 
 	/**
-	 * Handle a new node joining the service exchange. Will request a list of
+	 * Handle a new node joining the service group. Will request a list of
 	 * services from the joining node.
 	 *
 	 * @param node -
@@ -583,7 +584,7 @@ export class Services {
 	}
 
 	/**
-	 * Handle a node leaving the service exchange.
+	 * Handle a node leaving the service group.
 	 *
 	 * @param node -
 	 *   node that is now unavailable
@@ -613,7 +614,7 @@ export class Services {
 
 	/**
 	 * Handle an incoming message from nodes that are apart of the service
-	 * exchange.
+	 * group.
 	 *
 	 * @param msg -
 	 *   incoming message

@@ -3,8 +3,6 @@ import { Event } from 'atvik';
 import { Transport, generateId, encodeId } from 'ataraxia-transport';
 
 import { Debugger } from './Debugger';
-import { Exchange } from './exchange/Exchange';
-import { Exchanges } from './exchange/Exchanges';
 import { Group } from './Group';
 import { MessageData } from './MessageData';
 import { MessageType } from './MessageType';
@@ -85,25 +83,25 @@ export interface NetworkOptions {
  * {@link broadcast}, but as with regular messages no delivery is guaranteed
  * and large broadcasts are discouraged.
  *
- * ## Exchanges
+ * ## Groups
  *
- * Exchanges are a way to create named sub-groups of the network that nodes can
- * join and leave as needed. Broadcasting a message on an exchange will only
- * send it to known members of the exchange.
+ * Groups are a way to create named area of the network that nodes can
+ * join and leave as needed. Broadcasting a message on an group will only
+ * send it to known members of the groups.
  *
  * ```typescript
- * const exchange = net.createExchange('name-of-exchange');
+ * const group = new NamedGroup(net, 'name-of-group');
  *
- * // Exchanges need to be joined
- * await exchange.join();
+ * // Groups need to be joined
+ * await group.join();
  *
  * // Broadcast to the known members
- * await exchange.broadcast('typeOfMessage', dataOfMessage);
+ * await group.broadcast('typeOfMessage', dataOfMessage);
  * ```
  *
  * ## Typing of messages
  *
- * The network and exchanges can be typed when using TypeScript.
+ * The network and groups can be typed when using TypeScript.
  *
  * The types are defined as an interface with the keys representing the
  * message types tied to the type of message:
@@ -115,27 +113,27 @@ export interface NetworkOptions {
  * }
  * ```
  *
- * An exchange can then be typed via:
+ * An group can then be typed via:
  *
  * ```typescript
- * const exchange: Exchange<EchoMessages> = net.createExchange<EchoMessage>('echo');
+ * const group: Group<EchoMessages> = new NamedGroup<EchoMessage>(net, 'echo');
  * ```
  *
  * This will help TypeScript validate messages that are sent:
  *
  * ```typescript
  * // TypeScript will allow this
- * exchange.broadcast('namespace:echo', { message: 'Test' });
+ * group.broadcast('namespace:echo', { message: 'Test' });
  *
  * // TypeScript will not allow these
- * exchange.broadcast('namespace:echo', { msg: 'Test' });
- * exchange.broadcast('namespace:e', { message: 'Test' });
+ * group.broadcast('namespace:echo', { msg: 'Test' });
+ * group.broadcast('namespace:e', { message: 'Test' });
  * ```
  *
  * The same is true for listeners:
  *
  * ```typescript
- * exchange.onMessage(msg => {
+ * group.onMessage(msg => {
  *   if(msg.type === 'namespace:echo') {
  *      // In here msg.data will be of the type { message: string }
  *      const data = msg.data;
@@ -190,10 +188,7 @@ export class Network<MessageTypes extends object = any> implements Group<Message
 	 */
 	readonly #nodes: Map<string, NetworkNode>;
 
-	/**
-	 * Tracking for exchanges.
-	 */
-	readonly #exchanges: Exchanges;
+	private readonly services: Map<any, any>;
 
 	readonly #nodeAvailableEvent: Event<this, [ node: Node<MessageTypes> ]>;
 	readonly #nodeUnavailableEvent: Event<this, [ node: Node<MessageTypes> ]>;
@@ -239,7 +234,7 @@ export class Network<MessageTypes extends object = any> implements Group<Message
 
 		this.#nodes = new Map();
 
-		this.#exchanges = new Exchanges(this);
+		this.services = new Map();
 
 		// Setup the topology of the network
 		this.#topology = new Topology(this, options);
@@ -273,6 +268,24 @@ export class Network<MessageTypes extends object = any> implements Group<Message
 
 		// Add all the transports if given via options
 		options.transports?.forEach(t => this.addTransport(t));
+	}
+
+	/**
+	 * Get a service as a singleton. This is useful for starting a single
+	 * instance of shared services.
+	 *
+	 * @param factory -
+	 *   constructor that takes instance of network
+	 * @returns
+	 *   instance of factory
+	 */
+	public getService<T>(factory: (new (handle: Network) => T)): T {
+		let instance = this.services.get(factory);
+		if(instance) return instance;
+
+		instance = new factory(this);
+		this.services.set(factory, instance);
+		return instance;
 	}
 
 	/**
@@ -424,7 +437,7 @@ export class Network<MessageTypes extends object = any> implements Group<Message
 	public broadcast<T extends MessageType<MessageTypes>>(type: T, data: MessageData<MessageTypes, T>): Promise<void> {
 		const promises: Promise<void>[] = [];
 
-		// Send to all nodes that have joined the exchange
+		// Send to all nodes that have joined the group
 		for(const node of this.#nodes.values()) {
 			promises.push(node.send(type, data)
 				.catch(ex => {
@@ -434,18 +447,5 @@ export class Network<MessageTypes extends object = any> implements Group<Message
 
 		return Promise.all(promises)
 			.then(() => undefined);
-	}
-
-	/**
-	 * Create an exchange with the given id. This will create a sub-group of the
-	 * network that nodes can join, leave and easily broadcast to.
-	 *
-	 * @param id -
-	 *   exchange to join
-	 * @returns
-	 *   instance of Exchange
-	 */
-	public createExchange<MT extends object = any>(id: string): Exchange<MT> {
-		return this.#exchanges.createExchange(id);
 	}
 }

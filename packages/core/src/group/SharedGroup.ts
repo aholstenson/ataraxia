@@ -1,75 +1,75 @@
 import debug from 'debug';
 
 import { Message } from '../Message';
-import { Network } from '../Network';
 import { Node } from '../Node';
 
-import { ExchangeImpl } from './ExchangeImpl';
-import { ExchangeMessages } from './ExchangeMessages';
+import { NamedGroup } from './NamedGroup';
+
+export interface GroupImpl {
+	handleNodeAvailable(node: Node): void;
+
+	handleNodeUnavailable(node: Node): void;
+
+	handleMessage(message: Message): void;
+}
 
 /**
- * Shared information about an exchange.
+ * Shared information about an group.
  */
-export class SharedExchange {
-	/**
-	 * Network instance.
-	 */
-	private readonly net: Network<ExchangeMessages>;
-
+export class SharedGroup {
 	/**
 	 * Debugger for log messages.
 	 */
 	public readonly debug: debug.Debugger;
 
 	/**
-	 * Identifier of this exchange.
+	 * Identifier of this group.
 	 */
 	public readonly id: string;
 
 	/**
-	 * Nodes that have joined this exchange.
+	 * Nodes that have joined this group.
 	 */
 	public readonly nodes: Map<string, Node>;
 
 	/**
-	 * All the active instances of this exchange.
+	 * All the active instances of this group.
 	 */
-	private readonly instances: Set<ExchangeImpl<any>>;
+	private readonly instances: Set<GroupImpl>;
 
 	/**
-	 * Callback used to tell the parent Exchanges if this exchange has any
+	 * Callback used to tell the parent groups if this group has any
 	 * active instances.
 	 */
 	private readonly activeCallback: (active: boolean) => Promise<void>;
 
 	public constructor(
-		net: Network<ExchangeMessages>,
+		networkName: string,
 		id: string,
 		activeCallback: (active: boolean) => Promise<void>
 	) {
-		this.net = net;
 		this.id = id;
 		this.activeCallback = activeCallback;
 
 		this.nodes = new Map();
 
-		this.debug = debug('ataraxia:' + net.name + ':exchange:' + id);
+		this.debug = debug('ataraxia:' + networkName + ':group:' + id);
 
 		this.instances = new Set();
 	}
 
 	/**
-	 * Get if this exchange is currently joined by this node.
+	 * Get if this group is currently joined by this node.
 	 *
 	 * @returns
-	 *   `true` if this exchange is currently joined
+	 *   `true` if this group is currently joined
 	 */
 	public isJoined() {
 		return this.instances.size > 0;
 	}
 
 	/**
-	 * Check if a certain node is a member of this exchange.
+	 * Check if a certain node is a member of this group.
 	 *
 	 * @param node -
 	 *   node to check of
@@ -81,7 +81,7 @@ export class SharedExchange {
 	}
 
 	/**
-	 * Get if this exchange has any members, local or remote.
+	 * Get if this group has any members, local or remote.
 	 *
 	 * @returns
 	 *   `true` if any members present
@@ -91,7 +91,7 @@ export class SharedExchange {
 	}
 
 	/**
-	 * Handle that a new node is joining this exchange.
+	 * Handle that a new node is joining this group.
 	 *
 	 * @param node -
 	 *   node that is joining
@@ -108,7 +108,7 @@ export class SharedExchange {
 	}
 
 	/**
-	 * Handle that a node may be leaving this exchange.
+	 * Handle that a node may be leaving this group.
 	 *
 	 * @param node -
 	 *   node that is leaving
@@ -138,7 +138,7 @@ export class SharedExchange {
 	}
 
 	/**
-	 * Broadcast a message to all nodes that have joined this exchange.
+	 * Broadcast a message to all nodes that have joined this group.
 	 *
 	 * @param type -
 	 *   the type of message to send
@@ -150,7 +150,7 @@ export class SharedExchange {
 	public broadcast(type: string, payload: any): Promise<void> {
 		const promises: Promise<void>[] = [];
 
-		// Send to all nodes that have joined the exchange
+		// Send to all nodes that have joined the group
 		for(const node of this.nodes.values()) {
 			promises.push(node.send(type, payload)
 				.catch(ex => {
@@ -163,12 +163,12 @@ export class SharedExchange {
 	}
 
 	/**
-	 * Join a local exchange instance.
+	 * Join a local group instance.
 	 *
 	 * @param instance -
 	 *   instance that is joining
 	 */
-	public async join(instance: ExchangeImpl<any>): Promise<void> {
+	public async join(instance: GroupImpl): Promise<void> {
 		this.instances.add(instance);
 
 		if(this.instances.size === 1) {
@@ -178,13 +178,13 @@ export class SharedExchange {
 	}
 
 	/**
-	 * Leave this exchange, sending a message to all current nodes that we
+	 * Leave this group, sending a message to all current nodes that we
 	 * are leaving.
 	 *
 	 * @param instance -
 	 *   instance that is leaving
 	 */
-	public async leave(instance: ExchangeImpl<any>): Promise<void> {
+	public async leave(instance: GroupImpl): Promise<void> {
 		this.instances.delete(instance);
 
 		if(this.instances.size === 0) {

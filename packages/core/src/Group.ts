@@ -33,17 +33,17 @@ export interface Group<MessageTypes extends object = any> {
 	readonly name: string;
 
 	/**
-	 * Event emitted when a new node joins this exchange.
+	 * Event emitted when a new node joins this group.
 	 */
 	readonly onNodeAvailable: Subscribable<this, [ node: Node<MessageTypes> ]>;
 
 	/**
-	 * Event emitted when a node leaves this exchange.
+	 * Event emitted when a node leaves this group.
 	 */
 	readonly onNodeUnavailable: Subscribable<this, [ node: Node<MessageTypes> ]>;
 
 	/**
-	 * Event emitted when a message is received on this exchange.
+	 * Event emitted when a message is received on this group.
 	 */
 	readonly onMessage: Subscribable<this, [ message: MessageUnion<MessageTypes> ]>;
 
@@ -53,7 +53,7 @@ export interface Group<MessageTypes extends object = any> {
 	readonly nodes: ReadonlyArray<Node>;
 
 	/**
-	 * Broadcast a message to all nodes that have joined this exchange.
+	 * Broadcast a message to all nodes that have joined this group.
 	 *
 	 * @param type -
 	 *   the type of message to send
@@ -66,12 +66,12 @@ export interface Group<MessageTypes extends object = any> {
 	): Promise<void>;
 
 	/**
-	 * Join this exchange.
+	 * Join this group.
 	 */
 	join(): Promise<void>;
 
 	/**
-	 * Leave this exchange.
+	 * Leave this group.
 	 */
 	leave(): Promise<void>;
 }
