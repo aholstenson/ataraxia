@@ -32,7 +32,7 @@ export const handler = async (args: any) => {
 		log(indent(2, message.data));
 	});
 
-	logInfo('Joining', chalk.magenta(net.networkName), 'as', chalk.blue(net.networkId));
+	logInfo('Joining', chalk.magenta(net.name), 'as', chalk.blue(net.networkId));
 
 	await net.join();
 

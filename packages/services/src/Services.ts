@@ -243,7 +243,7 @@ export class Services {
 	private readonly calls: RequestReplyHelper<any>;
 
 	public constructor(network: Network) {
-		this.debug = debug('ataraxia:' + network.networkName + ':services');
+		this.debug = debug('ataraxia:' + network.name + ':services');
 		this.nodes = new Map();
 
 		this.serviceAvailableEvent = new Event(this);

@@ -5,6 +5,7 @@ import { Transport, generateId, encodeId } from 'ataraxia-transport';
 
 import { Exchange } from './exchange/Exchange';
 import { Exchanges } from './exchange/Exchanges';
+import { Group } from './Group';
 import { MessageData } from './MessageData';
 import { MessageType } from './MessageType';
 import { MessageUnion } from './MessageUnion';
@@ -148,7 +149,7 @@ export interface NetworkOptions {
  * });
  * ```
  */
-export class Network<MessageTypes extends object = any> {
+export class Network<MessageTypes extends object = any> implements Group<MessageTypes> {
 	/**
 	 * Debugger for log messages.
 	 */
@@ -162,7 +163,7 @@ export class Network<MessageTypes extends object = any> {
 	/**
 	 * The name of the network.
 	 */
-	public readonly networkName: string;
+	public readonly name: string;
 
 	/**
 	 * If this node is connecting to the network as an endpoint.
@@ -226,7 +227,7 @@ export class Network<MessageTypes extends object = any> {
 		this.#debug = debug(debugNamespace);
 
 		this.networkIdBinary = generateId();
-		this.networkName = options.name;
+		this.name = options.name;
 		this.endpoint = options.endpoint || false;
 
 		this.#transports = [];
@@ -345,7 +346,7 @@ export class Network<MessageTypes extends object = any> {
 		if(this.#active) {
 			transport.start({
 				networkId: this.networkIdBinary,
-				networkName: this.networkName,
+				networkName: this.name,
 				endpoint: this.endpoint,
 				debugNamespace: this.#debug.namespace
 			})
@@ -362,14 +363,14 @@ export class Network<MessageTypes extends object = any> {
 	 *   promise that resolves when the network is started, the value will
 	 *   represent if the network was actually started or not.
 	 */
-	public async join(): Promise<boolean> {
-		if(this.#active) return false;
+	public async join(): Promise<void> {
+		if(this.#active) return;
 
 		this.#debug('About to join network as ' + this.networkId);
 
 		const options = {
 			networkId: this.networkIdBinary,
-			networkName: this.networkName,
+			networkName: this.name,
 			endpoint: this.endpoint,
 			debugNamespace: this.#debug.namespace
 		};
@@ -382,7 +383,6 @@ export class Network<MessageTypes extends object = any> {
 		// Start all the transports
 		try {
 			await Promise.all(this.#transports.map(t => t.start(options)));
-			return true;
 		} catch(err) {
 			// Stop the topology if an error occurs
 			await this.#topology.stop();
@@ -397,11 +397,10 @@ export class Network<MessageTypes extends object = any> {
 	 * Leave the currently joined network.
 	 *
 	 * @returns
-	 *   promise that resolves when the network is stopped, the value will
-	 *   represent if the network was actually stopper or not.
+	 *   promise that resolves when the network is stopped
 	 */
-	public async leave(): Promise<boolean> {
-		if(! this.#active) return false;
+	public async leave(): Promise<void> {
+		if(! this.#active) return;
 
 		// Stop the topology
 		await this.#topology.stop();
@@ -409,7 +408,6 @@ export class Network<MessageTypes extends object = any> {
 		// Stop all the transports
 		await Promise.all(this.#transports.map(t => t.stop()));
 		this.#active = false;
-		return true;
 	}
 
 	/**

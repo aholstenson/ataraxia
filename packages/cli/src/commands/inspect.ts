@@ -49,7 +49,7 @@ export const handler = async (args: any) => {
 		log(chalk.red(' Unavailable '), node.id);
 	});
 
-	logInfo('Joining', chalk.magenta(net.networkName), 'as', chalk.blue(net.networkId));
+	logInfo('Joining', chalk.magenta(net.name), 'as', chalk.blue(net.networkId));
 
 	await net.join();
 

@@ -90,7 +90,7 @@ export class Topology {
 	 * @param options -
 	 *   options to apply
 	 */
-	public constructor(parent: Pick<Network, 'networkName' | 'networkIdBinary'>, options: TopologyOptions) {
+	public constructor(parent: Pick<Network, 'name' | 'networkIdBinary'>, options: TopologyOptions) {
 		this.endpoint = options.endpoint || false;
 		this.broadcastTimeout = null;
 
@@ -101,7 +101,7 @@ export class Topology {
 		this.unavailableEvent = new Event(this);
 		this.dataEvent = new Event(this);
 
-		this.debug = debug('ataraxia:' + parent.networkName + ':topology');
+		this.debug = debug('ataraxia:' + parent.name + ':topology');
 
 		this.self = new TopologyNode(this, parent.networkIdBinary);
 		this.self.direct = true;

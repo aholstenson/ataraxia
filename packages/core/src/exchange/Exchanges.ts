@@ -27,7 +27,7 @@ export class Exchanges {
 
 		this.exchanges = new Map();
 
-		this.debug = debug('ataraxia:' + net.networkName + ':exchanges');
+		this.debug = debug('ataraxia:' + net.name + ':exchanges');
 
 		this.net.onMessage(this.handleMessage.bind(this));
 		this.net.onNodeAvailable(this.handleNodeAvailable.bind(this));

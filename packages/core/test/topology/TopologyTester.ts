@@ -58,7 +58,7 @@ export class TopologyTester {
 
 				topology: new Topology({
 					networkIdBinary: generatedId,
-					networkName: id
+					name: id
 				}, {})
 			};
 

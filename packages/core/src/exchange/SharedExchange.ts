@@ -53,7 +53,7 @@ export class SharedExchange {
 
 		this.nodes = new Map();
 
-		this.debug = debug('ataraxia:' + net.networkName + ':exchange:' + id);
+		this.debug = debug('ataraxia:' + net.name + ':exchange:' + id);
 
 		this.instances = new Set();
 	}
