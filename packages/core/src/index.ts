@@ -53,6 +53,8 @@ export {
 	Transport
 } from 'ataraxia-transport';
 
+export * from './Debugger';
+
 export * from './Network';
 export * from './Node';
 

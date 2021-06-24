@@ -1,8 +1,8 @@
 import { Event } from 'atvik';
-import debug from 'debug';
 
 import { Transport, generateId, encodeId } from 'ataraxia-transport';
 
+import { Debugger } from './Debugger';
 import { Exchange } from './exchange/Exchange';
 import { Exchanges } from './exchange/Exchanges';
 import { Group } from './Group';
@@ -153,7 +153,7 @@ export class Network<MessageTypes extends object = any> implements Group<Message
 	/**
 	 * Debugger for log messages.
 	 */
-	readonly #debug: debug.Debugger;
+	private readonly debug: Debugger<this>;
 
 	/**
 	 * The identifier this node has when connecting to the network.
@@ -224,7 +224,7 @@ export class Network<MessageTypes extends object = any> implements Group<Message
 		}
 
 		const debugNamespace = 'ataraxia:' + options.name;
-		this.#debug = debug(debugNamespace);
+		this.debug = new Debugger(this, debugNamespace);
 
 		this.networkIdBinary = generateId();
 		this.name = options.name;
@@ -348,10 +348,10 @@ export class Network<MessageTypes extends object = any> implements Group<Message
 				networkId: this.networkIdBinary,
 				networkName: this.name,
 				endpoint: this.endpoint,
-				debugNamespace: this.#debug.namespace
+				debugNamespace: this.debug.namespace
 			})
 				.catch(ex => {
-					this.#debug('Could not start transport', ex);
+					this.debug.error(ex, 'Could not start transport:');
 				});
 		}
 	}
@@ -366,13 +366,13 @@ export class Network<MessageTypes extends object = any> implements Group<Message
 	public async join(): Promise<void> {
 		if(this.#active) return;
 
-		this.#debug('About to join network as ' + this.networkId);
+		this.debug.log('About to join network as ' + this.networkId);
 
 		const options = {
 			networkId: this.networkIdBinary,
 			networkName: this.name,
 			endpoint: this.endpoint,
-			debugNamespace: this.#debug.namespace
+			debugNamespace: this.debug.namespace
 		};
 
 		this.#active = true;
@@ -428,7 +428,7 @@ export class Network<MessageTypes extends object = any> implements Group<Message
 		for(const node of this.#nodes.values()) {
 			promises.push(node.send(type, data)
 				.catch(ex => {
-					this.#debug('Could not broadcast to ' + node.id, ex);
+					this.debug.error(ex, 'Could not broadcast to ' + node.id + ':');
 				}));
 		}
 
