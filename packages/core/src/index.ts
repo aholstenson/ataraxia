@@ -65,3 +65,5 @@ export * from './MessageUnion';
 
 export * from './exchange/Exchange';
 export * from './RequestReplyHelper';
+
+export * from './SynchronizedValues';
