@@ -1,3 +1,4 @@
+import { Node } from '../src/Node';
 import { SynchronizedValues, SynchronizedValuesOptions } from '../src/SynchronizedValues';
 import { TestNetwork } from '../src/test';
 
@@ -91,6 +92,38 @@ describe('SynchronizedValues', () => {
 		await sleep();
 
 		expect(stateEventCount).toBe(2);
+	});
+
+	xit('Set, A <-> B, twice', async () => {
+		testNetwork.bidirectional('a', 'b');
+
+		await testNetwork.consolidate();
+
+		const aState = instance('a');
+		const bState = instance('b');
+
+		let stateEventCount = 0;
+		let updatedStateEventCount = 0;
+		bState.onUpdate((node, value) => {
+			if(value === 'aValue') stateEventCount++;
+			if(value === 'aValueUpdated') updatedStateEventCount++;
+		});
+
+		aState.onUpdate((node, value) => {
+			if(value === 'bValue') stateEventCount++;
+			if(value === 'bValueUpdated') updatedStateEventCount++;
+		});
+
+		aState.setLocal('aValue');
+		bState.setLocal('bValue');
+		await sleep();
+
+		aState.setLocal('aValueUpdated');
+		bState.setLocal('bValueUpdated');
+		await sleep();
+
+		expect(stateEventCount).toBe(2);
+		expect(updatedStateEventCount).toBe(2);
 	});
 
 	it('Sync, B creates instance after A', async () => {
@@ -204,5 +237,59 @@ describe('SynchronizedValues', () => {
 		await sleep();
 
 		expect(stateEventCount).toBe(1);
+	});
+
+	describe('Set and get, A <-> B', () => {
+		let aNode: Node;
+		let bNode: Node;
+		let aState: SynchronizedValues<any>;
+		let bState: SynchronizedValues<any>;
+
+		beforeEach(async () => {
+			testNetwork.bidirectional('a', 'b');
+
+			await testNetwork.consolidate();
+
+			const aNet = testNetwork.network('a');
+			const bNet = testNetwork.network('b');
+			expect(aNet.nodes.length).toEqual(1);
+			expect(bNet.nodes.length).toEqual(1);
+
+			aNode = bNet.nodes[0];
+			bNode = aNet.nodes[0];
+
+			aState = instance('a');
+			bState = instance('b');
+		});
+
+		it('values are initially undefined', async () => {
+			expect(aState.get(bNode)).toBeUndefined();
+			expect(bState.get(aNode)).toBeUndefined();
+		});
+
+		it('set and get once', async () => {
+			aState.setLocal('aValue');
+			bState.setLocal('bValue');
+			await sleep();
+
+			expect(aState.get(bNode)).toBe('bValue');
+			expect(bState.get(aNode)).toBe('aValue');
+		});
+
+		xit('set and get twice', async () => {
+			aState.setLocal('aValueInitial');
+			bState.setLocal('bValueInitial');
+			await sleep();
+
+			expect(aState.get(bNode)).toBe('bValueInitial');
+			expect(bState.get(aNode)).toBe('aValueInitial');
+
+			aState.setLocal('aValueUpdated');
+			bState.setLocal('bValueUpdated');
+			await sleep();
+
+			expect(aState.get(bNode)).toBe('bValueUpdated');
+			expect(bState.get(aNode)).toBe('aValueUpdated');
+		});
 	});
 });
