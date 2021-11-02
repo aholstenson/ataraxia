@@ -26,6 +26,7 @@ describe('SynchronizedValues', () => {
 	});
 
 	afterEach(async () => {
+		await sleep(); // allow all pending promises to exit cleanly
 		for(let i = cleanups.length - 1; i >= 0; i--) {
 			await cleanups[i]();
 		}
@@ -94,7 +95,7 @@ describe('SynchronizedValues', () => {
 		expect(stateEventCount).toBe(2);
 	});
 
-	xit('Set, A <-> B, twice', async () => {
+	it('Set, A <-> B, twice', async () => {
 		testNetwork.bidirectional('a', 'b');
 
 		await testNetwork.consolidate();
@@ -276,7 +277,7 @@ describe('SynchronizedValues', () => {
 			expect(bState.get(aNode)).toBe('aValue');
 		});
 
-		xit('set and get twice', async () => {
+		it('set and get twice', async () => {
 			aState.setLocal('aValueInitial');
 			bState.setLocal('bValueInitial');
 			await sleep();
