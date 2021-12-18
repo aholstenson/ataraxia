@@ -12,16 +12,16 @@ import { ServiceUnavailableMessage } from './ServiceUnavailableMessage';
  * Types of messages used by Services.
  */
 export interface ServiceMessages {
-	'service:list-request': ServiceListRequestMessage;
-	'service:list-reply': ServiceListReplyMessage;
+	'at:service:list-request': ServiceListRequestMessage;
+	'at:service:list-reply': ServiceListReplyMessage;
 
-	'service:invoke-request': ServiceInvokeRequest;
-	'service:invoke-reply': ServiceInvokeReply;
+	'at:service:invoke-request': ServiceInvokeRequest;
+	'at:service:invoke-reply': ServiceInvokeReply;
 
-	'service:available': ServiceAvailableMessage;
-	'service:unavailable': ServiceUnavailableMessage;
+	'at:service:available': ServiceAvailableMessage;
+	'at:service:unavailable': ServiceUnavailableMessage;
 
-	'service:event-subscribe': ServiceEventSubscribeMessage;
-	'service:event-unsubscribe': ServiceEventUnsubscribeMessage;
-	'service:event-emit': ServiceEventEmitMessage;
+	'at:service:event-subscribe': ServiceEventSubscribeMessage;
+	'at:service:event-unsubscribe': ServiceEventUnsubscribeMessage;
+	'at:service:event-emit': ServiceEventEmitMessage;
 }

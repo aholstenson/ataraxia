@@ -413,7 +413,7 @@ export class Services {
 		this.version++;
 
 		// Broadcast that the service is now available
-		this.group.broadcast('service:available', {
+		this.group.broadcast('at:service:available', {
 			version: this.version,
 			def: toServiceDef(reflect)
 		}).catch(err => this.debug('Error occurred during service broadcast', err));
@@ -445,13 +445,13 @@ export class Services {
 			this.localServices.delete(reflect.id);
 
 			// Broadcast that the service is no longer available
-			this.group.broadcast('service:unavailable', {
+			this.group.broadcast('at:service:unavailable', {
 				version: this.version,
 				service: reflect.id
 			}).catch(err => this.debug('Error occurred during service broadcast', err));
 		} else {
 			// Broadcast the changed service
-			this.group.broadcast('service:available', {
+			this.group.broadcast('at:service:available', {
 				version: this.version,
 				def: toServiceDef(reflect)
 			}).catch(err => this.debug('Error occurred during service broadcast', err));
@@ -579,7 +579,7 @@ export class Services {
 
 		this.nodes.set(node.id, state);
 
-		node.send('service:list-request', { lastVersion: 0 })
+		node.send('at:service:list-request', { lastVersion: 0 })
 			.catch(err => this.debug('Unable to request listing of services', err));
 	}
 
@@ -621,31 +621,31 @@ export class Services {
 	 */
 	private handleMessage(msg: MessageUnion<ServiceMessages>) {
 		switch(msg.type) {
-			case 'service:list-request':
+			case 'at:service:list-request':
 				this.handleServiceListRequest(msg.source, msg.data);
 				break;
-			case 'service:list-reply':
+			case 'at:service:list-reply':
 				this.handleServiceListReply(msg.source, msg.data);
 				break;
-			case 'service:invoke-request':
+			case 'at:service:invoke-request':
 				this.handleServiceInvokeRequest(msg.source, msg.data);
 				break;
-			case 'service:invoke-reply':
+			case 'at:service:invoke-reply':
 				this.handleServiceInvokeReply(msg.data);
 				break;
-			case 'service:available':
+			case 'at:service:available':
 				this.handleServiceAvailable(msg.source, msg.data);
 				break;
-			case 'service:unavailable':
+			case 'at:service:unavailable':
 				this.handleServiceUnavailable(msg.source, msg.data);
 				break;
-			case 'service:event-subscribe':
+			case 'at:service:event-subscribe':
 				this.handleServiceEventSubscribe(msg.source, msg.data);
 				break;
-			case 'service:event-unsubscribe':
+			case 'at:service:event-unsubscribe':
 				this.handleServiceEventUnsubscribe(msg.source, msg.data);
 				break;
-			case 'service:event-emit':
+			case 'at:service:event-emit':
 				this.handleServiceEventEmit(msg.source, msg.data);
 				break;
 		}
@@ -668,7 +668,7 @@ export class Services {
 			services.push(toServiceDef(service.reflect));
 		}
 
-		node.send('service:list-reply', {
+		node.send('at:service:list-reply', {
 			version: this.version,
 			services: services
 		})
@@ -759,7 +759,7 @@ export class Services {
 			data.version = message.version;
 		} else {
 			// There is a gap in our data, request the list of services
-			node.send('service:list-request', { lastVersion: data.version })
+			node.send('at:service:list-request', { lastVersion: data.version })
 				.catch(err => this.debug('Unable to request listing of services', err));
 		}
 	}
@@ -789,7 +789,7 @@ export class Services {
 			data.version = message.version;
 		} else {
 			// There is a gap in our data, request the list of services
-			node.send('service:list-request', { lastVersion: data.version })
+			node.send('at:service:list-request', { lastVersion: data.version })
 				.catch(err => this.debug('Unable to request listing of services', err));
 		}
 	}
@@ -806,7 +806,7 @@ export class Services {
 	private handleServiceInvokeRequest(node: Node<ServiceMessages>, message: ServiceInvokeRequest) {
 		const service = this.localServices.get(message.service);
 		if(! service) {
-			node.send('service:invoke-reply', {
+			node.send('at:service:invoke-reply', {
 				id: message.id,
 				error: 'Service with id `' + message.service + '` is not available'
 			})
@@ -817,7 +817,7 @@ export class Services {
 
 		service.reflect.apply(message.method, message.arguments)
 			.catch(err => {
-				return node.send('service:invoke-reply', {
+				return node.send('at:service:invoke-reply', {
 					id: message.id,
 					error: err instanceof Error
 						? err.message + ' (method `' + message.method + '` on `' + message.service + '`)'
@@ -825,7 +825,7 @@ export class Services {
 				});
 			})
 			.then(result => {
-				return node.send('service:invoke-reply', {
+				return node.send('at:service:invoke-reply', {
 					id: message.id,
 					result: result
 				});
@@ -873,7 +873,7 @@ export class Services {
 
 		const event = message.event;
 		const handler = (...args: any) => {
-			node.send('service:event-emit', {
+			node.send('at:service:event-emit', {
 				service: service.reflect.id,
 				event: event,
 				arguments: args
@@ -942,7 +942,7 @@ export class Services {
 				const [ id, promise ] = self.calls.prepareRequest();
 
 				try {
-					await node.send('service:invoke-request', {
+					await node.send('at:service:invoke-request', {
 						id: id,
 						service: service,
 						method: method,
@@ -956,14 +956,14 @@ export class Services {
 			},
 
 			async requestSubscribe(event) {
-				await node.send('service:event-subscribe', {
+				await node.send('at:service:event-subscribe', {
 					service: service,
 					event: event
 				});
 			},
 
 			async requestUnsubscribe(event) {
-				await node.send('service:event-unsubscribe', {
+				await node.send('at:service:event-unsubscribe', {
 					service: service,
 					event: event
 				});
