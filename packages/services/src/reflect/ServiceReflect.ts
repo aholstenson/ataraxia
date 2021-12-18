@@ -2,8 +2,8 @@ import { AsyncSubscriptionHandle, Listener } from 'atvik';
 
 import { BasicValue } from 'ataraxia-service-contracts';
 
-import { ServiceEventDef } from '../defs/ServiceEventDef';
-import { ServiceMethodDef } from '../defs/ServiceMethodDef';
+import { ServiceEventDef } from '../defs/ServiceEventDef.js';
+import { ServiceMethodDef } from '../defs/ServiceMethodDef.js';
 
 /**
  * API for reflection on a service, allows for calling methods in a generic

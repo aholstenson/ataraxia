@@ -1,4 +1,4 @@
-import { ServiceParameterContract } from './ServiceParameterContract';
+import { ServiceParameterContract } from './ServiceParameterContract.js';
 
 /**
  * Event contract for a service.

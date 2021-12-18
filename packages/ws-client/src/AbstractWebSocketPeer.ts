@@ -9,7 +9,7 @@ import {
 	TransportOptions
 } from 'ataraxia-transport';
 
-import { WebSocket } from './WebSocket';
+import { WebSocket } from './WebSocket.js';
 
 /**
  * Abstract implementation of a peer suitable for use with a WebSocket

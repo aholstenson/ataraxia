@@ -1,8 +1,8 @@
 /* eslint-disable no-param-reassign */
 import { decodeId, encodeId } from 'ataraxia-transport';
 
-import { peersBetween, TestPeer } from '../../src/test';
-import { Topology } from '../../src/topology';
+import { peersBetween, TestPeer } from '../../src/test/index.js';
+import { Topology } from '../../src/topology/index.js';
 
 interface NodeInfo {
 	id: ArrayBuffer;

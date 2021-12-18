@@ -1,4 +1,4 @@
-import { BasicValue } from './BasicValue';
+import { BasicValue } from './BasicValue.js';
 
 /**
  * Declaration of a specific type of data, used to convert to and from this

@@ -1,2 +1,2 @@
-export * from './IdMap';
-export * from './IdSet';
+export * from './IdMap.js';
+export * from './IdSet.js';

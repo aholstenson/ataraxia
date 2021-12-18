@@ -1,14 +1,14 @@
 import { Event } from 'atvik';
 
-import { Group } from '../Group';
-import { MessageData } from '../MessageData';
-import { MessageType } from '../MessageType';
-import { MessageUnion } from '../MessageUnion';
-import { Network } from '../Network';
-import { Node } from '../Node';
+import { Group } from '../Group.js';
+import { MessageData } from '../MessageData.js';
+import { MessageType } from '../MessageType.js';
+import { MessageUnion } from '../MessageUnion.js';
+import { Network } from '../Network.js';
+import { Node } from '../Node.js';
 
-import { GroupManager } from './GroupManager';
-import { GroupImpl, SharedGroup } from './SharedGroup';
+import { GroupManager } from './GroupManager.js';
+import { GroupImpl, SharedGroup } from './SharedGroup.js';
 
 /**
  * Group with a specific name, lets nodes in the network join and leave as

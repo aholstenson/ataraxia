@@ -3,7 +3,7 @@ import { AsyncEvent, AsyncSubscribable } from 'atvik';
 import { ServiceContract, stringType } from 'ataraxia-service-contracts';
 import { TestNetwork } from 'ataraxia/test';
 
-import { Services } from '../src/Services';
+import { Services } from '../src/Services.js';
 
 interface TestService {
 	onHello: AsyncSubscribable<this, [ string ]>;

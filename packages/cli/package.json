@@ -10,12 +10,12 @@
     "mesh networking",
     "messaging"
   ],
-  "main": "./dist/cjs/index.js",
+  "type": "module",
   "bin": {
-    "ataraxia": "./dist/cjs/index.js"
+    "ataraxia": "./dist/esm/index.js"
   },
   "scripts": {
-    "build": "tsc --project tsconfig.build.json --module commonjs --target es5 --outDir dist/cjs",
+    "build": "tsc --project tsconfig.build.json --outDir dist/esm",
     "prebuild": "rimraf dist",
     "prepublishOnly": "npm run build"
   },

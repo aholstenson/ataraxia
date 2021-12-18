@@ -1,4 +1,4 @@
-import { ServiceParameterDef } from './ServiceParameterDef';
+import { ServiceParameterDef } from './ServiceParameterDef.js';
 
 /**
  * Method definition for a service.

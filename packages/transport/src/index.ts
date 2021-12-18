@@ -4,19 +4,19 @@
  *
  * @module ataraxia-transport
  */
-export * from './auth';
-export * from './ids';
+export * from './auth/index.js';
+export * from './ids.js';
 
-export * from './BackOff';
+export * from './BackOff.js';
 
-export * from './Transport';
-export * from './AbstractTransport';
-export * from './TransportOptions';
+export * from './Transport.js';
+export * from './AbstractTransport.js';
+export * from './TransportOptions.js';
 
-export * from './messages';
-export * from './binary';
+export * from './messages/index.js';
+export * from './binary/index.js';
 
-export * from './DisconnectReason';
+export * from './DisconnectReason.js';
 
-export * from './Peer';
-export * from './AbstractPeer';
+export * from './Peer.js';
+export * from './AbstractPeer.js';

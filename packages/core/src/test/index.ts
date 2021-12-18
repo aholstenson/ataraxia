@@ -1,3 +1,3 @@
-export * from './TestNetwork';
-export * from './TestPeer';
-export * from './TestTransport';
+export * from './TestNetwork.js';
+export * from './TestPeer.js';
+export * from './TestTransport.js';

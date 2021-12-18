@@ -2,11 +2,11 @@ import { AsyncSubscriptionHandle, Listener } from 'atvik';
 
 import { ServiceContract, ServiceParameterContract } from 'ataraxia-service-contracts';
 
-import { ServiceEventDef } from '../defs/ServiceEventDef';
-import { ServiceMethodDef } from '../defs/ServiceMethodDef';
-import { ServiceParameterDef } from '../defs/ServiceParameterDef';
+import { ServiceEventDef } from '../defs/ServiceEventDef.js';
+import { ServiceMethodDef } from '../defs/ServiceMethodDef.js';
+import { ServiceParameterDef } from '../defs/ServiceParameterDef.js';
 
-import { ServiceReflect } from './ServiceReflect';
+import { ServiceReflect } from './ServiceReflect.js';
 
 /**
  * Implementation of `ServiceReflect` for local services. This implementation

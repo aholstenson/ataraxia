@@ -2,14 +2,14 @@ import { Event } from 'atvik';
 
 import { Transport, generateId, encodeId } from 'ataraxia-transport';
 
-import { Debugger } from './Debugger';
-import { Group } from './Group';
-import { MessageData } from './MessageData';
-import { MessageType } from './MessageType';
-import { MessageUnion } from './MessageUnion';
-import { NetworkNode } from './NetworkNode';
-import { Node } from './Node';
-import { Topology } from './topology';
+import { Debugger } from './Debugger.js';
+import { Group } from './Group.js';
+import { MessageData } from './MessageData.js';
+import { MessageType } from './MessageType.js';
+import { MessageUnion } from './MessageUnion.js';
+import { NetworkNode } from './NetworkNode.js';
+import { Node } from './Node.js';
+import { Topology } from './topology/index.js';
 
 /**
  * Options that can be provided for `Network`.

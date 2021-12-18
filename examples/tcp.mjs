@@ -1,20 +1,27 @@
 /**
- * This example starts a network named `example` and uses a machine-local
- * transport with a socket placed in the temporary folder of the machine.
+ * This example starts a network named `example` and uses a TCP transport with
+ * discovery of peers on the same network using mDNS.
  *
  * It will log when new nodes are discovered and when messages are received.
  * In addition to this it sends a hello to nodes when they are seen and
  * broadcasts a counter every 5 seconds to all current nodes.
  */
 
-const { Network, AnonymousAuth } = require('../packages/core');
-const { MachineLocalTransport } = require('../packages/local');
+import { Network, AnonymousAuth } from 'ataraxia';
+import { TCPTransport, TCPPeerMDNSDiscovery } from 'ataraxia-tcp';
+
+import { counter } from './helpers/counter.mjs';
 
 const net = new Network({
 	name: 'example',
 
 	transports: [
-		new MachineLocalTransport()
+		new TCPTransport({
+			discovery: new TCPPeerMDNSDiscovery(),
+			authentication: [
+				new AnonymousAuth()
+			]
+		})
 	]
 });
 
@@ -33,11 +40,8 @@ net.onMessage(msg => {
 });
 
 // Start the network
-net.join()
-	.then(() => {
-		console.log('Network has been joined with id', net.networkId);
+await net.join();
+console.log('Network has been joined with id', net.networkId);
 
-		// Start our helper
-		return require('./helpers/counter')(net);
-	})
-	.catch(err => console.error(err));
+// Start our helper
+counter(net);

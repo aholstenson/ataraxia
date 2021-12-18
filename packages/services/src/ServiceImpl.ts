@@ -10,13 +10,13 @@ import {
 
 import { BasicValue, ServiceContract, ServiceEventContract, ServiceParameterContract } from 'ataraxia-service-contracts';
 
-import { ServiceEventDef } from './defs/ServiceEventDef';
-import { ServiceMethodDef } from './defs/ServiceMethodDef';
-import { ServiceParameterDef } from './defs/ServiceParameterDef';
-import { MergedServiceReflect } from './reflect/MergedServiceReflect';
-import { ServiceReflect } from './reflect/ServiceReflect';
-import { Service } from './Service';
-import { Services } from './Services';
+import { ServiceEventDef } from './defs/ServiceEventDef.js';
+import { ServiceMethodDef } from './defs/ServiceMethodDef.js';
+import { ServiceParameterDef } from './defs/ServiceParameterDef.js';
+import { MergedServiceReflect } from './reflect/MergedServiceReflect.js';
+import { ServiceReflect } from './reflect/ServiceReflect.js';
+import { Service } from './Service.js';
+import { Services } from './Services.js';
 
 /**
  * Implementation of {@link Service}.

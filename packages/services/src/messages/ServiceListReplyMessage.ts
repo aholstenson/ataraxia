@@ -1,4 +1,4 @@
-import { ServiceDef } from '../defs/ServiceDef';
+import { ServiceDef } from '../defs/ServiceDef.js';
 
 /**
  * Response to a request to list services.

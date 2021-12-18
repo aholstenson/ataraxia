@@ -6,7 +6,7 @@ import {
 	AnonymousAuth,
 	TransportOptions,
 	generateId
-} from '../src';
+} from '../src/index.js';
 
 describe('Transport: AbstractPeer', function() {
 	it('Server and client can negotiate', done => {

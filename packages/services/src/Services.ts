@@ -11,7 +11,7 @@ import {
 } from 'ataraxia';
 import { ServiceContract } from 'ataraxia-service-contracts';
 
-import { ServiceDef } from './defs/ServiceDef';
+import { ServiceDef } from './defs/ServiceDef.js';
 import {
 	ServiceMessages,
 	ServiceListRequestMessage,
@@ -24,15 +24,15 @@ import {
 	ServiceEventSubscribeMessage,
 	ServiceEventUnsubscribeMessage
 } from './messages';
-import { LocalServiceReflect } from './reflect/LocalServiceReflect';
-import { MergedServiceReflect } from './reflect/MergedServiceReflect';
-import { RemoteServiceHelper } from './reflect/RemoteServiceHelper';
-import { RemoteServiceReflect } from './reflect/RemoteServiceReflect';
-import { ServiceReflect } from './reflect/ServiceReflect';
-import { Service } from './Service';
-import { ServiceHandle } from './ServiceHandle';
-import { ServiceImpl } from './ServiceImpl';
-import { ServiceInfo } from './ServiceInfo';
+import { LocalServiceReflect } from './reflect/LocalServiceReflect.js';
+import { MergedServiceReflect } from './reflect/MergedServiceReflect.js';
+import { RemoteServiceHelper } from './reflect/RemoteServiceHelper.js';
+import { RemoteServiceReflect } from './reflect/RemoteServiceReflect.js';
+import { ServiceReflect } from './reflect/ServiceReflect.js';
+import { Service } from './Service.js';
+import { ServiceHandle } from './ServiceHandle.js';
+import { ServiceImpl } from './ServiceImpl.js';
+import { ServiceInfo } from './ServiceInfo.js';
 
 /**
  * Type definition for local services. Supports three cases:

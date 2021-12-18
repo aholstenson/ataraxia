@@ -1,27 +1,21 @@
 /**
- * This example starts a network named `example` and uses a WebSocket server
- * transport on port 7000. WebSocket clients can then connect to this server
- * via the example `ws-client.js`.
+ * This example starts a network named `example` and uses a machine-local
+ * transport with a socket placed in the temporary folder of the machine.
  *
  * It will log when new nodes are discovered and when messages are received.
  * In addition to this it sends a hello to nodes when they are seen and
  * broadcasts a counter every 5 seconds to all current nodes.
  */
+import { Network } from 'ataraxia';
+import { MachineLocalTransport } from 'ataraxia-local';
 
-const { Network, AnonymousAuth } = require('../packages/core');
-const { WebSocketServerTransport } = require('../packages/ws-server');
+import { counter } from './helpers/counter.mjs';
 
 const net = new Network({
 	name: 'example',
 
 	transports: [
-		// Add the WebSocket transport auto-starting a server on port 7000
-		new WebSocketServerTransport({
-			port: 7000,
-			authentication: [
-				new AnonymousAuth()
-			]
-		})
+		new MachineLocalTransport()
 	]
 });
 
@@ -40,11 +34,8 @@ net.onMessage(msg => {
 });
 
 // Start the network
-net.join()
-	.then(() => {
-		console.log('Network has been joined with id', net.networkId);
+await net.join();
+console.log('Network has been joined with id', net.networkId);
 
-		// Start our helper
-		return require('./helpers/counter')(net);
-	})
-	.catch(err => console.error(err));
+// Start our helper
+counter(net);

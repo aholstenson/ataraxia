@@ -1,6 +1,6 @@
 import { Network } from 'ataraxia';
 
-import { logError } from '../log';
+import { logError } from '../log.js';
 
 /**
  * Stop a network and then exit the process.

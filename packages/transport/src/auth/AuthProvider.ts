@@ -1,6 +1,6 @@
-import { AuthClientFlow } from './AuthClientFlow';
-import { AuthContext } from './AuthContext';
-import { AuthServerFlow } from './AuthServerFlow';
+import { AuthClientFlow } from './AuthClientFlow.js';
+import { AuthContext } from './AuthContext.js';
+import { AuthServerFlow } from './AuthServerFlow.js';
 
 /**
  * Authentication provider responsible for creating and managing authentication

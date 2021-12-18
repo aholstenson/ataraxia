@@ -2,13 +2,13 @@ import { inspect } from 'util';
 
 import { Encoder, Decoder } from '@stablelib/cbor';
 import { Event } from 'atvik';
-import { debug } from 'debug';
+import debug from 'debug';
 
 import { encodeId } from 'ataraxia-transport';
 
-import { Message } from './Message';
-import { Node } from './Node';
-import { Topology } from './topology';
+import { Message } from './Message.js';
+import { Node } from './Node.js';
+import { Topology } from './topology/index.js';
 
 /**
  * Node in the network. Thin wrapper around a topology node to provide a

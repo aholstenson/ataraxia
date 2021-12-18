@@ -1,9 +1,9 @@
 import debug from 'debug';
 
-import { Message } from '../Message';
-import { Node } from '../Node';
+import { Message } from '../Message.js';
+import { Node } from '../Node.js';
 
-import { NamedGroup } from './NamedGroup';
+import { NamedGroup } from './NamedGroup.js';
 
 export interface GroupImpl {
 	handleNodeAvailable(node: Node): void;

@@ -1,6 +1,6 @@
-import { Node } from '../../src/Node';
-import { PerNodeState, PerNodeStateOptions } from '../../src/state/PerNodeState';
-import { TestNetwork } from '../../src/test';
+import { Node } from '../../src/Node.js';
+import { PerNodeState, PerNodeStateOptions } from '../../src/state/PerNodeState.js';
+import { TestNetwork } from '../../src/test/index.js';
 
 const sleep = (len: number = 100) => {
 	return new Promise(resolve => setTimeout(resolve, len));

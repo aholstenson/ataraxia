@@ -1,2 +1,2 @@
-export * from './decodeBinaryPeerMessage';
-export * from './encodeBinaryPeerMessage';
+export * from './decodeBinaryPeerMessage.js';
+export * from './encodeBinaryPeerMessage.js';

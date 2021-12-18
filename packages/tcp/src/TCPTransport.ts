@@ -4,9 +4,9 @@ import { ServicePublisher, ServiceDiscovery, MultiAddressService, HostAndPort } 
 
 import { AbstractTransport, AuthProvider, encodeId, TransportOptions } from 'ataraxia-transport';
 
-import { TCPClientPeer } from './TCPClientPeer';
-import { TCPPeerDiscovery } from './TCPPeerDiscovery';
-import { TCPServerPeer } from './TCPServerPeer';
+import { TCPClientPeer } from './TCPClientPeer.js';
+import { TCPPeerDiscovery } from './TCPPeerDiscovery.js';
+import { TCPServerPeer } from './TCPServerPeer.js';
 
 /**
  * Options that can be used for a TCP transport.

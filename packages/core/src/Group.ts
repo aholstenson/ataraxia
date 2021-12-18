@@ -1,9 +1,9 @@
 import { Subscribable } from 'atvik';
 
-import { MessageData } from './MessageData';
-import { MessageType } from './MessageType';
-import { MessageUnion } from './MessageUnion';
-import { Node } from './Node';
+import { MessageData } from './MessageData.js';
+import { MessageType } from './MessageType.js';
+import { MessageUnion } from './MessageUnion.js';
+import { Node } from './Node.js';
 
 /**
  * Groups are a collection of nodes that can be reached in some way. This may

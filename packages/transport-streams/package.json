@@ -7,13 +7,13 @@
   "keywords": [
     "ataraxia"
   ],
-  "main": "./dist/cjs/index.js",
-  "module": "./dist/esm/index.js",
+  "type": "module",
+  "main": "./dist/esm/index.js",
   "types": "./dist/types/index.d.ts",
   "sideEffects": false,
   "scripts": {
     "lint": "tslint  --project tsconfig.build.json -t codeFrame 'src/**/*.ts' 'test/**/*.ts'",
-    "build": "tsc --project tsconfig.build.json --module commonjs --outDir dist/cjs",
+    "build": "tsc --project tsconfig.build.json --outDir dist/esm",
     "prebuild": "rimraf dist",
     "prepublishOnly": "npm run build"
   },

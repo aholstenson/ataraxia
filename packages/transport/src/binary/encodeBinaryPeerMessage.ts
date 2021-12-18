@@ -12,7 +12,7 @@ import {
 	DataMessage,
 	DataAckMessage,
 	DataRejectMessage
-} from '../messages';
+} from '../messages/index.js';
 
 import {
 	TAG_PING,
@@ -31,7 +31,7 @@ import {
 	TAG_DATA_REJECT,
 	TAG_BEGIN,
 	TAG_BYE
-} from './tags';
+} from './tags.js';
 
 /**
  * Encode a peer message into a binary format.

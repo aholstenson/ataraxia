@@ -1,8 +1,8 @@
 import { Subscribable } from 'atvik';
 
-import { MessageData } from './MessageData';
-import { MessageType } from './MessageType';
-import { MessageUnion } from './MessageUnion';
+import { MessageData } from './MessageData.js';
+import { MessageType } from './MessageType.js';
+import { MessageUnion } from './MessageUnion.js';
 
 /**
  * Node within the network. Nodes are individual instances that you can

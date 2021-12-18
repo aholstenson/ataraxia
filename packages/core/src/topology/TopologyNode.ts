@@ -2,9 +2,9 @@ import { INode } from '@tyriar/fibonacci-heap';
 
 import { encodeId, Peer, NodeRoutingDetails } from 'ataraxia-transport';
 
-import { IdSet } from '../id';
+import { IdSet } from '../id/index.js';
 
-import { Topology } from './Topology';
+import { Topology } from './Topology.js';
 
 /**
  * An edge between two nodes.

@@ -4,7 +4,7 @@
  *
  * @module ataraxia-transport-streams
  */
-export * from './binaryStreams';
+export * from './binaryStreams.js';
 
-export * from './StreamingPeer';
-export * from './EncryptedStreamingPeer';
+export * from './StreamingPeer.js';
+export * from './EncryptedStreamingPeer.js';

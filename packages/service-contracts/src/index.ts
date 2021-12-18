@@ -43,14 +43,14 @@
  * @module ataraxia-service-contracts
  */
 
-export * from './BasicValue';
-export * from './DataType';
-export * from './dataTypes';
+export * from './BasicValue.js';
+export * from './DataType.js';
+export * from './dataTypes.js';
 
-export * from './ServiceContract';
-export * from './ServiceMethodContract';
-export * from './ServiceEventContract';
-export * from './ServiceParameterContract';
+export * from './ServiceContract.js';
+export * from './ServiceMethodContract.js';
+export * from './ServiceEventContract.js';
+export * from './ServiceParameterContract.js';
 
 export { AsyncEvent } from 'atvik';
 export type {

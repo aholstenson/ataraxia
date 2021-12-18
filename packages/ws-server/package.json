@@ -4,13 +4,14 @@
   "description": "WebSocket server for Ataraxia P2P messaging",
   "license": "MIT",
   "repository": "https://github.com/aholstenson/ataraxia/tree/master/packages/ws-server",
-  "main": "./dist/cjs/index.js",
+  "type": "module",
+  "main": "./dist/esm/index.js",
   "types": "./dist/types/index.d.ts",
   "scripts": {
-    "test:watch": "jest --watch",
+    "test:watch": "cross-env NODE_OPTIONS=--experimental-vm-modules jest --watch",
     "ci": "npm run coverage && npm run lint",
-    "coverage": "jest --coverage",
-    "build": "tsc --project tsconfig.build.json --module commonjs --outDir dist/cjs",
+    "coverage": "cross-env NODE_OPTIONS=--experimental-vm-modules jest --coverage",
+    "build": "tsc --project tsconfig.build.json --outDir dist/esm",
     "prebuild": "rimraf dist",
     "prepublishOnly": "npm run build"
   },

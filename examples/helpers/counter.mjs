@@ -1,6 +1,6 @@
-const { NamedGroup } = require('../../packages/core');
+import { NamedGroup } from 'ataraxia';
 
-module.exports = async function(net) {
+export async function counter(net) {
 	let counter = 0;
 
 	const group = new NamedGroup(net, 'counter');

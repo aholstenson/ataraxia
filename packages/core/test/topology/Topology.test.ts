@@ -1,4 +1,4 @@
-import { TopologyTester } from './TopologyTester';
+import { TopologyTester } from './TopologyTester.js';
 
 describe('Topology', () => {
 	it('Fully-connected - 2 peers', async () => {
