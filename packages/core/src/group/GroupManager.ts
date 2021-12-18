@@ -40,7 +40,7 @@ export class GroupManager {
 	 *   node that is available
 	 */
 	private handleNodeAvailable(node: Node<GroupMessages>) {
-		node.send('group:query', undefined)
+		node.send('at:group:query', undefined)
 			.catch(err => this.debug('Failed to ask node about group membership', err));
 	}
 
@@ -59,16 +59,16 @@ export class GroupManager {
 
 	private handleMessage(msg: MessageUnion<GroupMessages>) {
 		switch(msg.type) {
-			case 'group:join':
+			case 'at:group:join':
 				this.handleGroupJoin(msg.source, msg.data.id);
 				break;
-			case 'group:leave':
+			case 'at:group:leave':
 				this.handleGroupLeave(msg.source, msg.data.id);
 				break;
-			case 'group:membership':
+			case 'at:group:membership':
 				this.handleGroupMembership(msg.source, msg.data.groups);
 				break;
-			case 'group:query':
+			case 'at:group:query':
 				this.handleGroupQuery(msg.source);
 				break;
 			default:
@@ -157,7 +157,7 @@ export class GroupManager {
 			}
 		}
 
-		node.send('group:membership', { groups: memberOf })
+		node.send('at:group:membership', { groups: memberOf })
 			.catch(err => this.debug('Could not send membership reply to', node.id, err));
 	}
 
@@ -170,9 +170,9 @@ export class GroupManager {
 		if(! group) {
 			group = new SharedGroup(this.net.name, id, async active => {
 				if(active) {
-					await this.net.broadcast('group:join', { id: id });
+					await this.net.broadcast('at:group:join', { id: id });
 				} else {
-					await this.net.broadcast('group:leave', { id: id });
+					await this.net.broadcast('at:group:leave', { id: id });
 
 					// Drop group tracking if it doesn't have any members
 					const current = this.groups.get(id);

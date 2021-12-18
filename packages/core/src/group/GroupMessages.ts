@@ -6,8 +6,8 @@ import { GroupMembership } from './GroupMembership';
  * Types of messages used to keep track of members in groups.
  */
 export interface GroupMessages {
-	'group:join': GroupJoin;
-	'group:leave': GroupLeave;
-	'group:membership': GroupMembership;
-	'group:query': undefined;
+	'at:group:join': GroupJoin;
+	'at:group:leave': GroupLeave;
+	'at:group:membership': GroupMembership;
+	'at:group:query': undefined;
 }
