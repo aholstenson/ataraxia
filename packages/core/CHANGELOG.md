@@ -3,6 +3,30 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.12.0](https://github.com/aholstenson/ataraxia/tree/master/packages/core/compare/v0.11.0...v0.12.0) (2021-12-18)
+
+
+### Bug Fixes
+
+* **core:** Do not duplicate peers in TestNetwork ([36d6e66](https://github.com/aholstenson/ataraxia/tree/master/packages/core/commit/36d6e667ba7f3b6fcc0cf831fc40b68c9af8dd99))
+* **core:** Fix SynchronizedValues when setLocal called multiple times ([31a0848](https://github.com/aholstenson/ataraxia/tree/master/packages/core/commit/31a084888c31a67690cedf58db9e08dcdf1a9719))
+* **core:** Own instance should not be visible as node ([accc64c](https://github.com/aholstenson/ataraxia/tree/master/packages/core/commit/accc64c052dd9cc1af187ee3c52b27e50fe7d157))
+
+
+### Features
+
+* **core:** Add gossip for group membership ([46420ae](https://github.com/aholstenson/ataraxia/tree/master/packages/core/commit/46420aeee0ee458433c768bfd291ff91b6e1df4f))
+* **core:** Add Gossiper helper ([d5cc740](https://github.com/aholstenson/ataraxia/tree/master/packages/core/commit/d5cc7400afd571afe96ee711daee6a38a70324d8))
+* **core:** Apper peer names to debug namespace of TestNetwork ([4022d7f](https://github.com/aholstenson/ataraxia/tree/master/packages/core/commit/4022d7f94074eaa522ce7a53ae2c211000739768))
+* **core:** Group interface to represent entire network or sub-sets of it ([061bd6b](https://github.com/aholstenson/ataraxia/tree/master/packages/core/commit/061bd6b7d7bdd37be75fdb5a28b522e30e7948a9))
+* **core:** Introduce groups joinable via NamedGroup ([b65b5a8](https://github.com/aholstenson/ataraxia/tree/master/packages/core/commit/b65b5a80ef376a4fb2b71119f26b11f1bf0dad63))
+* **core:** Shared Debugger abstraction ([689e63e](https://github.com/aholstenson/ataraxia/tree/master/packages/core/commit/689e63e0a52dc65371039d7aecd7d56a8114f4b1))
+* **core:** SynchronizedValues for easy sharing of values between nodes ([8996117](https://github.com/aholstenson/ataraxia/tree/master/packages/core/commit/89961178914c75e1fa4a2155ae676a23c636b030))
+
+
+
+
+
 # [0.11.0](https://github.com/aholstenson/ataraxia/tree/master/packages/core/compare/v0.10.0...v0.11.0) (2021-06-17)
 
 

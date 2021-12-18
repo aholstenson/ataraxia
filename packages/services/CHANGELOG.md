@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.12.0](https://github.com/aholstenson/ataraxia/tree/master/packages/services/compare/v0.11.0...v0.12.0) (2021-12-18)
+
+
+### Features
+
+* **core:** Group interface to represent entire network or sub-sets of it ([061bd6b](https://github.com/aholstenson/ataraxia/tree/master/packages/services/commit/061bd6b7d7bdd37be75fdb5a28b522e30e7948a9))
+* **core:** Introduce groups joinable via NamedGroup ([b65b5a8](https://github.com/aholstenson/ataraxia/tree/master/packages/services/commit/b65b5a80ef376a4fb2b71119f26b11f1bf0dad63))
+
+
+
+
+
 # [0.11.0](https://github.com/aholstenson/ataraxia/tree/master/packages/services/compare/v0.10.0...v0.11.0) (2021-06-17)
 
 

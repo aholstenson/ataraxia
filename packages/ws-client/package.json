@@ -1,6 +1,6 @@
 {
   "name": "ataraxia-ws-client",
-  "version": "0.11.0",
+  "version": "0.12.0",
   "description": "WebSocket client for Ataraxia P2P messaging",
   "license": "MIT",
   "repository": "https://github.com/aholstenson/ataraxia/tree/master/packages/ws-client",
@@ -17,7 +17,7 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "ataraxia-transport": "^0.11.0",
+    "ataraxia-transport": "^0.12.0",
     "debug": "^4.3.3"
   }
 }

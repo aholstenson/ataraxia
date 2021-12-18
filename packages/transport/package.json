@@ -1,6 +1,6 @@
 {
   "name": "ataraxia-transport",
-  "version": "0.11.0",
+  "version": "0.12.0",
   "description": "Base for for connecting to and communicating with peers in an Ataraxia network",
   "license": "MIT",
   "repository": "https://github.com/aholstenson/ataraxia/tree/master/packages/transport",

@@ -1,6 +1,6 @@
 {
   "name": "ataraxia-hyperswarm",
-  "version": "0.11.0",
+  "version": "0.12.0",
   "description": "Hyperswarm transport for Ataraxia P2P messaging",
   "license": "MIT",
   "repository": "https://github.com/aholstenson/ataraxia/tree/master/packages/hyperswarm",
@@ -14,8 +14,8 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "ataraxia-transport": "^0.11.0",
-    "ataraxia-transport-streams": "^0.11.0",
+    "ataraxia-transport": "^0.12.0",
+    "ataraxia-transport-streams": "^0.12.0",
     "debug": "^4.3.3",
     "hyperswarm": "^2.15.3"
   }
