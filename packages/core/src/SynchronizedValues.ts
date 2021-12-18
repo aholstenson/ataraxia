@@ -1,6 +1,7 @@
 import { Event, Subscribable, SubscriptionHandle } from 'atvik';
 
 import { Debugger } from './Debugger';
+import { Gossiper } from './Gossiper';
 import { Group } from './Group';
 import { MessageUnion } from './MessageUnion';
 import { Node } from './Node';
@@ -70,6 +71,8 @@ export class SynchronizedValues<V> {
 	 */
 	private readonly handles: ReadonlyArray<SubscriptionHandle>;
 
+	private readonly gossiper: Gossiper<Message>;
+
 	/**
 	 * Increasing version number of the local value. This will increase every
 	 * time the local value is set.
@@ -124,6 +127,12 @@ export class SynchronizedValues<V> {
 		for(const node of group.nodes) {
 			this.handleNodeAvailable(node);
 		}
+
+		// Request values from a random node every 30 seconds
+		this.gossiper = new Gossiper(group, {
+			intervalInMs: 30000,
+			gossip: this.requestValue.bind(this)
+		});
 	}
 
 	/**
@@ -140,6 +149,8 @@ export class SynchronizedValues<V> {
 				clearTimeout(nodeState.expiration);
 			}
 		}
+
+		this.gossiper.destroy();
 	}
 
 	/**
@@ -182,7 +193,7 @@ export class SynchronizedValues<V> {
 			const nodeState = this.nodes.get(node.id);
 			if(! nodeState) continue;
 
-			this.sendStatePatch(node, nodeState.knownLocalVersion);
+			this.sendStatePatch(nodeState, node);
 		}
 	}
 
@@ -210,14 +221,13 @@ export class SynchronizedValues<V> {
 			// No state for need, initialize
 			nodeState = {
 				available: true,
-				knownLocalVersion: 0,
+				assumedLocalVersion: 0,
 				version: 0
 			};
 
 			this.nodes.set(node.id, nodeState);
 		} else {
 			// Node has become available before it was removed
-
 			if(nodeState.expiration) {
 				// Stop the scheduled removal
 				clearTimeout(nodeState.expiration);
@@ -278,7 +288,8 @@ export class SynchronizedValues<V> {
 
 				const lastVersion = message.data.lastVersion;
 				if(lastVersion < this.localVersion) {
-					this.sendStatePatch(message.source, lastVersion);
+					nodeState.assumedLocalVersion = lastVersion;
+					this.sendStatePatch(nodeState, message.source);
 				} else {
 					this.debug.log(
 						message.source.id, 'requested changes from',
@@ -303,11 +314,18 @@ export class SynchronizedValues<V> {
 
 				const patch = message.data;
 				if(patch.baseVersion !== nodeState.version) {
+					// The baseVersion we have is not the base version of the
+					// patch.
+					//
+					// To deal with this we request the data again, allowing
+					// the remote node to send us back fresh data.
 					this.debug.log(
 						'Received an update from', message.source.id,
 						'with version', patch.baseVersion, 'but currently at',
 						nodeState.version, '- patch will be skipped'
 					);
+
+					this.requestValue(message.source);
 					return;
 				}
 
@@ -315,29 +333,6 @@ export class SynchronizedValues<V> {
 				nodeState.value = value;
 				nodeState.version = patch.version;
 				this.updateEvent.emit(message.source, value);
-
-				message.source.send('sync-value:patch-applied', {
-					name: this.name,
-					version: patch.version,
-				}).catch(err => {
-					this.debug.error(err, 'Failed to acknowledge patch application to', message.source.id);
-				});
-
-				break;
-			}
-			case 'sync-value:patch-applied':
-			{
-				// Only handle messages intended for us
-				if(message.data.name !== this.name) return;
-
-				// If no node state we don't handle the message
-				const nodeState = this.nodes.get(message.source.id);
-				if(! nodeState) return;
-
-				const version = message.data.version;
-				if(nodeState.knownLocalVersion < version) {
-					nodeState.knownLocalVersion = version;
-				}
 
 				break;
 			}
@@ -347,26 +342,41 @@ export class SynchronizedValues<V> {
 	/**
 	 * Generate and send a patch to a node.
 	 *
+	 * @param nodeState -
+	 *   the current state the node
 	 * @param node -
 	 *   node the patch is being sent to
-	 * @param lastVersion -
-	 *   the version to generate a patch from
 	 */
-	private sendStatePatch(node: Node<Message>, lastVersion: number): void {
-		this.debug.log('Sending back changes between', lastVersion, 'and', this.localVersion, 'to', node.id);
+	private sendStatePatch(nodeState: NodeState<V>, node: Node<Message>): void {
+		this.debug.log('Sending back changes between', nodeState.assumedLocalVersion, 'and', this.localVersion, 'to', node.id);
 
 		if(typeof this.localValue === 'undefined') return;
 
-		const patch = this.generatePatch(this.localValue, this.localVersion);
+		const patch = this.generatePatch(this.localValue, nodeState.assumedLocalVersion);
+		const nodeVersion = nodeState.assumedLocalVersion;
+		nodeState.assumedLocalVersion = this.localVersion;
 		node.send('sync-value:patch', {
 			name: this.name,
-			baseVersion: lastVersion,
+			baseVersion: nodeVersion,
 			version: this.localVersion,
 			value: patch
 		}).catch(err => {
 			// Patch could not be sent, log and emit error
 			this.debug.error(err, 'Failed to send patch reply to', node.id);
 		});
+	}
+
+	private requestValue(node: Node<Message>) {
+		const nodeState = this.nodes.get(node.id);
+		if(! nodeState) {
+			return;
+		}
+
+		// Request anything that has changed from the tracked version
+		node.send('sync-value:request', {
+			name: this.name,
+			lastVersion: nodeState.version
+		}).catch(err => this.debug.error(err, 'Failed to ask node', node.id, 'about state:'));
 	}
 }
 
@@ -384,7 +394,7 @@ interface NodeState<V> {
 	/**
 	 * The last version of data we broadcasted.
 	 */
-	knownLocalVersion: number;
+	assumedLocalVersion: number;
 
 	/**
 	 * The version of data we have.
@@ -398,17 +408,14 @@ interface NodeState<V> {
 }
 
 interface Message {
-	'sync-value:request': {
-		name: string;
-		lastVersion: number;
-	};
+	'sync-value:request': ValueRequest;
 
 	'sync-value:patch': PatchMessage;
+}
 
-	'sync-value:patch-applied': {
-		name: string;
-		version: number;
-	};
+interface ValueRequest {
+	name: string;
+	lastVersion: number;
 }
 
 interface PatchMessage {
