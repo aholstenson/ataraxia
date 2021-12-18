@@ -1,4 +1,4 @@
-declare module 'noise-secret-stream' {
+declare module '@hyperswarm/secret-stream' {
 	import { Duplex } from 'stream';
 
 	export interface NoiseSecretStreamOptions {
@@ -10,5 +10,8 @@ declare module 'noise-secret-stream' {
 
 	export default class NoiseSecretStream extends Duplex {
 		public constructor(isInitiator: boolean, stream?: Duplex, options?: NoiseSecretStreamOptions);
+
+		public publicKey: Buffer;
+		public remotePublicKey: Buffer;
 	}
 }

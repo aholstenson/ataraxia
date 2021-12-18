@@ -18,9 +18,9 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
+    "@hyperswarm/secret-stream": "^5.1.4",
     "@stablelib/cbor": "^1.0.1",
     "ataraxia-transport": "^0.11.0",
-    "debug": "^4.3.3",
-    "noise-secret-stream": "^4.2.0"
+    "debug": "^4.3.3"
   }
 }

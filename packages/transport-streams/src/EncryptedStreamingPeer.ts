@@ -1,6 +1,6 @@
 import { Duplex } from 'stream';
 
-import NoiseSecretStream from 'noise-secret-stream';
+import NoiseSecretStream from '@hyperswarm/secret-stream';
 
 import { StreamingPeer } from './StreamingPeer';
 
@@ -11,10 +11,21 @@ import { StreamingPeer } from './StreamingPeer';
  * with [secret streams from libsodium](https://libsodium.gitbook.io/doc/secret-key_cryptography/secretstream).
  */
 export class EncryptedStreamingPeer extends StreamingPeer {
+	private secretStream?: NoiseSecretStream;
+
 	protected setStream(stream: Duplex, client: boolean) {
+		this.secretStream = new NoiseSecretStream(client, stream);
 		super.setStream(
-			new NoiseSecretStream(client, stream),
+			this.secretStream,
 			client
 		);
+	}
+
+	protected localPublicSecurity(): ArrayBuffer | undefined {
+		return this.secretStream?.publicKey;
+	}
+
+	protected remotePublicSecurity(): ArrayBuffer | undefined {
+		return this.secretStream?.remotePublicKey;
 	}
 }

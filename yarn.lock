@@ -372,6 +372,18 @@
     nanoresource "^1.3.0"
     utp-native "^2.2.1"
 
+"@hyperswarm/secret-stream@^5.1.4":
+  version "5.1.4"
+  resolved "https://registry.yarnpkg.com/@hyperswarm/secret-stream/-/secret-stream-5.1.4.tgz#830b186da8db772d5d4d7635ce7544c107b349e0"
+  integrity sha512-SIbQLqeIyJrPO1J9+KCrZRM3VoOjkPNCEvsMm9yVfKe8BNzFgAogOmH/wNTqK0GguU8H+k58ZuyFbWJRX2BbjQ==
+  dependencies:
+    b4a "^1.1.0"
+    noise-curve-ed "^1.0.2"
+    noise-handshake "^2.1.0"
+    sodium-secretstream "^1.0.0"
+    sodium-universal "^3.0.4"
+    streamx "^2.10.2"
+
 "@istanbuljs/load-nyc-config@^1.0.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@istanbuljs/load-nyc-config/-/load-nyc-config-1.1.0.tgz#fd3db1d59ecf7cf121e80650bb86712f9b55eced"
@@ -5401,17 +5413,6 @@ noise-handshake@^2.1.0:
     hmac-blake2b "^2.0.0"
     nanoassert "^2.0.0"
     sodium-universal "^3.0.4"
-
-noise-secret-stream@^4.2.0:
-  version "4.2.0"
-  resolved "https://registry.yarnpkg.com/noise-secret-stream/-/noise-secret-stream-4.2.0.tgz#9822f1a923b810781ede475965cce427a63d6633"
-  integrity sha512-dfYUJdG1VAKy1Oc2xl8YDJCkht9cOTFqqMr2if2l+NoYmqktmwxtrNJLhrJnBA6DLc9+QoOAJ/VTND153MBkKA==
-  dependencies:
-    noise-curve-ed "^1.0.2"
-    noise-handshake "^2.1.0"
-    sodium-secretstream "^1.0.0"
-    sodium-universal "^3.0.4"
-    streamx "^2.10.2"
 
 nopt@^4.0.1:
   version "4.0.3"
