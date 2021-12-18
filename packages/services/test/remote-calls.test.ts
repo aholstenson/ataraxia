@@ -116,7 +116,9 @@ describe('Services: Remote Calls', () => {
 		await bServices.join();
 
 		let availableCount = 0;
-		bServices.onServiceAvailable(s => availableCount++);
+		bServices.onServiceAvailable(s => {
+			availableCount++;
+		});
 
 		aServices.register('test', TestService.implement({
 			async hello(what: string) {
@@ -147,7 +149,9 @@ describe('Services: Remote Calls', () => {
 		await bServices.join();
 
 		let unavailableCount = 0;
-		bServices.onServiceUnavailable(s => unavailableCount++);
+		bServices.onServiceUnavailable(s => {
+			unavailableCount++;
+		});
 
 		const handle = aServices.register('test', TestService.implement({
 			async hello(what: string) {
@@ -183,7 +187,9 @@ describe('Services: Remote Calls', () => {
 
 		const service = bServices.get('test');
 		let availableCount = 0;
-		service.onAvailable(() => availableCount++);
+		service.onAvailable(() => {
+			availableCount++;
+		});
 
 		aServices.register('test', TestService.implement({
 			async hello(what: string) {
@@ -215,7 +221,9 @@ describe('Services: Remote Calls', () => {
 
 		const service = bServices.get('test');
 		let unavailableCount = 0;
-		service.onUnavailable(() => unavailableCount++);
+		service.onUnavailable(() => {
+			unavailableCount++;
+		});
 
 		const handle = aServices.register('test', TestService.implement({
 			async hello(what: string) {

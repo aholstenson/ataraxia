@@ -1,4 +1,12 @@
-import { AsyncEvent, AsyncSubscribable, AsyncSubscriptionHandle, createAsyncSubscribable, Event, Listener, Subscribable, SubscriptionHandle } from 'atvik';
+import {
+	AsyncSubscribable,
+	AsyncSubscriptionHandle,
+	createAsyncSubscribable,
+	Event,
+	Listener,
+	Subscribable,
+	SubscriptionHandle
+} from 'atvik';
 
 import { BasicValue, ServiceContract, ServiceEventContract, ServiceParameterContract } from 'ataraxia-service-contracts';
 
@@ -6,9 +14,9 @@ import { ServiceEventDef } from './defs/ServiceEventDef';
 import { ServiceMethodDef } from './defs/ServiceMethodDef';
 import { ServiceParameterDef } from './defs/ServiceParameterDef';
 import { MergedServiceReflect } from './reflect/MergedServiceReflect';
+import { ServiceReflect } from './reflect/ServiceReflect';
 import { Service } from './Service';
 import { Services } from './Services';
-import { ServiceReflect } from './reflect/ServiceReflect';
 
 /**
  * Implementation of {@link Service}.
@@ -205,14 +213,12 @@ function createEventBridge<T>(
 		},
 
 		async unsubscribe(listener) {
-			const result = event.unsubscribe(listener);
+			event.unsubscribe(listener);
 
 			if(! event.hasListeners) {
 				await handle?.unsubscribe();
 				handle = undefined;
 			}
-
-			return result;
 		}
 	});
 }

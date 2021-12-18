@@ -16,7 +16,7 @@
   "dependencies": {
     "ataraxia-transport": "^0.11.0",
     "ataraxia-transport-streams": "^0.11.0",
-    "debug": "^4.3.1",
+    "debug": "^4.3.3",
     "hyperswarm": "^2.15.3"
   }
 }

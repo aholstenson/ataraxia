@@ -219,11 +219,11 @@ export abstract class AbstractPeer implements Peer {
 	 * @param reason -
 	 *   reason for disconnect
 	 */
-	protected abort(message: string, error?: Error, reason: DisconnectReason = DisconnectReason.NegotiationFailed) {
+	protected abort(message: string, error?: unknown, reason: DisconnectReason = DisconnectReason.NegotiationFailed) {
 		clearTimeout(this.helloTimeout);
 
 		this.debug(message, 'reason=', DisconnectReason[reason], 'error=', error);
-		this.requestDisconnect(reason, error);
+		this.requestDisconnect(reason, error instanceof Error ? error : new Error(String(error)));
 	}
 
 	/**

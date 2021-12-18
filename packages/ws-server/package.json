@@ -17,10 +17,10 @@
   "dependencies": {
     "ataraxia-transport": "^0.11.0",
     "ataraxia-ws-client": "^0.11.0",
-    "debug": "^4.3.1",
-    "ws": "^7.4.6"
+    "debug": "^4.3.3",
+    "ws": "^8.3.0"
   },
   "devDependencies": {
-    "@types/ws": "^7.4.4"
+    "@types/ws": "^8.2.2"
   }
 }

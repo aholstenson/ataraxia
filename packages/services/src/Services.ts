@@ -949,7 +949,7 @@ export class Services {
 						arguments: args
 					});
 				} catch(err) {
-					self.calls.registerError(id, err);
+					self.calls.registerError(id, err instanceof Error ? err : new Error(String(err)));
 				}
 
 				return promise;

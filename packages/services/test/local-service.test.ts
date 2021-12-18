@@ -313,7 +313,9 @@ describe('Services: Local', () => {
 		const services = new Services(net);
 
 		let availableCount = 0;
-		services.onServiceAvailable(s => availableCount++);
+		services.onServiceAvailable(s => {
+			availableCount++;
+		});
 
 		services.register('test', TestService.implement({
 			async hello(what: string) {
@@ -328,7 +330,9 @@ describe('Services: Local', () => {
 		const services = new Services(net);
 
 		let unavailableCount = 0;
-		services.onServiceUnavailable(s => unavailableCount++);
+		services.onServiceUnavailable(s => {
+			unavailableCount++;
+		});
 
 		const handle = services.register('test', TestService.implement({
 			async hello(what: string) {
@@ -346,7 +350,9 @@ describe('Services: Local', () => {
 
 		const service = services.get('test');
 		let availableCount = 0;
-		service.onAvailable(() => availableCount++);
+		service.onAvailable(() => {
+			availableCount++;
+		});
 
 		services.register('test', TestService.implement({
 			async hello(what: string) {
@@ -362,7 +368,9 @@ describe('Services: Local', () => {
 
 		const service = services.get('test');
 		let unavailableCount = 0;
-		service.onUnavailable(() => unavailableCount++);
+		service.onUnavailable(() => {
+			unavailableCount++;
+		});
 
 		const handle = services.register('test', TestService.implement({
 			async hello(what: string) {
