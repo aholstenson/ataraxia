@@ -6,4 +6,9 @@ export interface GroupMembership {
 	 * All groups the node is a member of.
 	 */
 	groups: string[];
+
+	/**
+	 * Version of the group membership.
+	 */
+	version: number;
 }

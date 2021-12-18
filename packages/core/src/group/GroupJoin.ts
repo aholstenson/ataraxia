@@ -6,4 +6,9 @@ export interface GroupJoin {
 	 * Identifier of the group being joined.
 	 */
 	id: string;
+
+	/**
+	 * Version of the group membership.
+	 */
+	version: number;
 }

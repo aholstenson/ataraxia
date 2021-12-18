@@ -6,4 +6,9 @@ export interface GroupLeave {
 	 * Group to leave.
 	 */
 	id: string;
+
+	/**
+	 * Version of the group membership.
+	 */
+	version: number;
 }

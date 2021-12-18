@@ -3,8 +3,12 @@ import debug from 'debug';
 import { MessageUnion } from '../MessageUnion';
 import { Network } from '../Network';
 import { Node } from '../Node';
+import { GroupJoin } from './GroupJoin';
+import { GroupLeave } from './GroupLeave';
+import { GroupMembership } from './GroupMembership';
 
 import { GroupMessages } from './GroupMessages';
+import { GroupQuery } from './GroupQuery';
 import { SharedGroup } from './SharedGroup';
 
 /**
@@ -20,12 +24,23 @@ export class GroupManager {
 
 	private readonly groups: Map<string, SharedGroup>;
 
+	/**
+	 * Nodes currently being tracked.
+	 */
+	private readonly nodes: Map<string, NodeState>;
+
+	private version: number;
+	private gossipTimer: any;
+
 	public constructor(net: Network) {
+		this.debug = debug('ataraxia:' + net.name + ':groups');
+
 		this.net = net;
 
 		this.groups = new Map();
+		this.nodes = new Map();
 
-		this.debug = debug('ataraxia:' + net.name + ':groups');
+		this.version = 0;
 
 		this.net.onMessage(this.handleMessage.bind(this));
 		this.net.onNodeAvailable(this.handleNodeAvailable.bind(this));
@@ -40,8 +55,27 @@ export class GroupManager {
 	 *   node that is available
 	 */
 	private handleNodeAvailable(node: Node<GroupMessages>) {
-		node.send('at:group:query', undefined)
+		let nodeState = this.nodes.get(node.id);
+		if(! nodeState) {
+			// No state for need, initialize
+			nodeState = {
+				observedVersion: 0
+			};
+
+			this.nodes.set(node.id, nodeState);
+		}
+
+		// Request group membership
+		node.send('at:group:query', {
+			version: nodeState.observedVersion
+		})
 			.catch(err => this.debug('Failed to ask node about group membership', err));
+
+		if(! this.gossipTimer) {
+			// Register a timer for requesting group membership from a random
+			// node every 15 seconds
+			this.gossipTimer = setInterval(this.gossip.bind(this), 15000);
+		}
 	}
 
 	/**
@@ -52,24 +86,47 @@ export class GroupManager {
 	 *   node that is no longer available
 	 */
 	private handleNodeUnavailable(node: Node) {
+		const nodeState = this.nodes.get(node.id);
+		if(! nodeState) return;
+
 		for(const group of this.groups.values()) {
 			group.handleNodeLeave(node);
 		}
+
+		this.nodes.delete(node.id);
+		if(this.nodes.size === 0) {
+			clearInterval(this.gossipTimer);
+			this.gossipTimer = undefined;
+		}
+	}
+
+	private gossip() {
+		const nodes = this.net.nodes;
+		const idx = Math.floor(Math.random() * nodes.length);
+		const node = nodes[idx];
+
+		const nodeState = this.nodes.get(node.id);
+		if(! nodeState) return;
+
+		node.send('at:group:query', {
+			version: nodeState.observedVersion
+		})
+			.catch(err => this.debug('Failed to ask node about group membership', err));
 	}
 
 	private handleMessage(msg: MessageUnion<GroupMessages>) {
 		switch(msg.type) {
 			case 'at:group:join':
-				this.handleGroupJoin(msg.source, msg.data.id);
+				this.handleGroupJoin(msg.source, msg.data);
 				break;
 			case 'at:group:leave':
-				this.handleGroupLeave(msg.source, msg.data.id);
+				this.handleGroupLeave(msg.source, msg.data);
 				break;
 			case 'at:group:membership':
-				this.handleGroupMembership(msg.source, msg.data.groups);
+				this.handleGroupMembership(msg.source, msg.data);
 				break;
 			case 'at:group:query':
-				this.handleGroupQuery(msg.source);
+				this.handleGroupQuery(msg.source, msg.data);
 				break;
 			default:
 				// Forward other messages to groups
@@ -85,11 +142,17 @@ export class GroupManager {
 	 *
 	 * @param node -
 	 *   node message comes from
-	 * @param id -
-	 *   id of group being joined
+	 * @param msg -
+	 *   message received
 	 */
-	private handleGroupJoin(node: Node, id: string) {
-		const group = this.ensureSharedGroup(id);
+	private handleGroupJoin(node: Node, msg: GroupJoin) {
+		const nodeState = this.nodes.get(node.id);
+		if(! nodeState) {
+			return;
+		}
+
+		nodeState.observedVersion = msg.version;
+		const group = this.ensureSharedGroup(msg.id);
 		group.handleNodeJoin(node);
 	}
 
@@ -98,11 +161,16 @@ export class GroupManager {
 	 *
 	 * @param node -
 	 *   node message comes from
-	 * @param id -
-	 *   group being left
+	 * @param msg -
+	 *   message describing group being left
 	 */
-	private handleGroupLeave(node: Node, id: string) {
-		const group = this.groups.get(id);
+	private handleGroupLeave(node: Node, msg: GroupLeave) {
+		const nodeState = this.nodes.get(node.id);
+		if(nodeState) {
+			nodeState.observedVersion = msg.version;
+		}
+
+		const group = this.groups.get(msg.id);
 		if(! group) return;
 
 		// Stop tracking the node as part of the group
@@ -110,7 +178,7 @@ export class GroupManager {
 
 		if(! group.hasMembers()) {
 			// If the group doesn't have any members we drop it
-			this.groups.delete(id);
+			this.groups.delete(msg.id);
 		}
 	}
 
@@ -120,11 +188,18 @@ export class GroupManager {
 	 *
 	 * @param node -
 	 *   node message comes from
-	 * @param groups -
-	 *   groups that the node is a member of
+	 * @param msg -
+	 *   message containing group membership
 	 */
-	private handleGroupMembership(node: Node, groups: string[]) {
-		const set = new Set(groups);
+	private handleGroupMembership(node: Node, msg: GroupMembership) {
+		const nodeState = this.nodes.get(node.id);
+		if(! nodeState) {
+			return;
+		}
+
+		nodeState.observedVersion = msg.version;
+
+		const set = new Set(msg.groups);
 		for(const id of set) {
 			// Make sure that we are a member of all the groups
 			this.ensureSharedGroup(id).handleNodeJoin(node);
@@ -144,11 +219,21 @@ export class GroupManager {
 		}
 	}
 
-	/*
+	/**
 	 * Handle a request by another node to tell us about the groups we are
 	 * a member of.
+	 *
+	 * @param node -
+	 *   node that requested our membership
+	 * @param msg -
+	 *   message containing query information
 	 */
-	private handleGroupQuery(node: Node<GroupMessages>) {
+	private handleGroupQuery(node: Node<GroupMessages>, msg: GroupQuery) {
+		if(this.version === msg.version) {
+			// Node requested the current version, no need to reply
+			return;
+		}
+
 		// Collect all the groups we are a member of
 		const memberOf: string[] = [];
 		for(const group of this.groups.values()) {
@@ -157,7 +242,10 @@ export class GroupManager {
 			}
 		}
 
-		node.send('at:group:membership', { groups: memberOf })
+		node.send('at:group:membership', {
+			version: this.version,
+			groups: memberOf
+		})
 			.catch(err => this.debug('Could not send membership reply to', node.id, err));
 	}
 
@@ -170,9 +258,11 @@ export class GroupManager {
 		if(! group) {
 			group = new SharedGroup(this.net.name, id, async active => {
 				if(active) {
-					await this.net.broadcast('at:group:join', { id: id });
+					this.version++;
+					await this.net.broadcast('at:group:join', { id: id, version: this.version });
 				} else {
-					await this.net.broadcast('at:group:leave', { id: id });
+					this.version++;
+					await this.net.broadcast('at:group:leave', { id: id, version: this.version });
 
 					// Drop group tracking if it doesn't have any members
 					const current = this.groups.get(id);
@@ -186,4 +276,11 @@ export class GroupManager {
 		}
 		return group;
 	}
+}
+
+interface NodeState {
+	/**
+	 * The version of group membership that has been observed.
+	 */
+	observedVersion: number;
 }
