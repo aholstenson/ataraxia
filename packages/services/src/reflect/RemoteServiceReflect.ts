@@ -69,12 +69,12 @@ export class RemoteServiceReflect extends ServiceReflect {
 		return true;
 	}
 
-	public emitEvent(event: string, args: ReadonlyArray<any>) {
+	public async emitEvent(event: string, args: ReadonlyArray<any>): Promise<void> {
 		const listeners = this.eventRegistrations.get(event);
 		if(! listeners) return;
 
 		for(const l of listeners) {
-			l(...args);
+			await l(...args);
 		}
 	}
 }

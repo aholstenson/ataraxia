@@ -932,7 +932,8 @@ export class Services {
 		const reflect = data.services.get(message.service);
 		if(! reflect) return;
 
-		reflect.emitEvent(message.event, message.arguments);
+		reflect.emitEvent(message.event, message.arguments)
+			.catch(err => this.debug('Unable to emit event;', err));
 	}
 
 	private createRemoteServiceHelper(node: Node<ServiceMessages>, service: string): RemoteServiceHelper {
