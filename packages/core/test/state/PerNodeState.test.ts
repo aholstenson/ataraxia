@@ -1,15 +1,15 @@
-import { Node } from '../src/Node';
-import { SynchronizedValues, SynchronizedValuesOptions } from '../src/SynchronizedValues';
-import { TestNetwork } from '../src/test';
+import { Node } from '../../src/Node';
+import { PerNodeState, PerNodeStateOptions } from '../../src/state/PerNodeState';
+import { TestNetwork } from '../../src/test';
 
 const sleep = (len: number = 100) => {
 	return new Promise(resolve => setTimeout(resolve, len));
 };
 
-const instance = (name: string, stateName: string = 'test', options?: SynchronizedValuesOptions<any>) => {
+const instance = (name: string, stateName: string = 'test', options?: PerNodeStateOptions<any>) => {
 	const net = testNetwork.network(name);
 
-	const result = new SynchronizedValues(net, stateName, options);
+	const result = new PerNodeState(net, stateName, options);
 	cleanups.push(async () => result.destroy());
 	return result;
 };
@@ -243,8 +243,8 @@ describe('SynchronizedValues', () => {
 	describe('Set and get, A <-> B', () => {
 		let aNode: Node;
 		let bNode: Node;
-		let aState: SynchronizedValues<any>;
-		let bState: SynchronizedValues<any>;
+		let aState: PerNodeState<any>;
+		let bState: PerNodeState<any>;
 
 		beforeEach(async () => {
 			testNetwork.bidirectional('a', 'b');

@@ -1,15 +1,15 @@
 import { Event, Subscribable, SubscriptionHandle } from 'atvik';
 
-import { Debugger } from './Debugger';
-import { Gossiper } from './Gossiper';
-import { Group } from './Group';
-import { MessageUnion } from './MessageUnion';
-import { Node } from './Node';
+import { Debugger } from '../Debugger';
+import { Gossiper } from '../Gossiper';
+import { Group } from '../Group';
+import { MessageUnion } from '../MessageUnion';
+import { Node } from '../Node';
 
 /**
- * Options for {@link SynchronizedValues}.
+ * Options for {@link PerNodeState}.
  */
-export interface SynchronizedValuesOptions<V, P = any> {
+export interface PerNodeStateOptions<V, P = any> {
 	/**
 	 * Default value to initialize this node to.
 	 */
@@ -33,7 +33,7 @@ export interface SynchronizedValuesOptions<V, P = any> {
  * nodes will keep track of them.
  *
  * ```javascript
- * const values = new SynchronizedValues(networkOrGroup, 'name-of-value', {
+ * const values = new PerNodeState(networkOrGroup, 'name-of-value', {
  *   defaultValue: []
  * });
  *
@@ -42,7 +42,7 @@ export interface SynchronizedValuesOptions<V, P = any> {
  * ]);
  * ```
  */
-export class SynchronizedValues<V> {
+export class PerNodeState<V> {
 	/**
 	 * Debugger for messages and errors.
 	 */
@@ -97,7 +97,7 @@ export class SynchronizedValues<V> {
 	public constructor(
 		group: Group,
 		name: string,
-		options?: SynchronizedValuesOptions<V>
+		options?: PerNodeStateOptions<V>
 	) {
 		this.group = group;
 		this.name = name;
@@ -238,7 +238,7 @@ export class SynchronizedValues<V> {
 		}
 
 		// Request anything that has changed from the tracked version
-		node.send('sync-value:request', {
+		node.send('at:node-state:request', {
 			name: this.name,
 			lastVersion: nodeState.version
 		}).catch(err => this.debug.error(err, 'Failed to ask node', node.id, 'about state:'));
@@ -271,7 +271,7 @@ export class SynchronizedValues<V> {
 
 	private handleMessage(message: MessageUnion<Message>): void {
 		switch(message.type) {
-			case 'sync-value:request':
+			case 'at:node-state:request':
 			{
 				/*
 				 * State from a certain version onwards has been requested,
@@ -299,7 +299,7 @@ export class SynchronizedValues<V> {
 
 				break;
 			}
-			case 'sync-value:patch':
+			case 'at:node-state:patch':
 			{
 				/**
 				 * Incoming patch of data. Merge it and emit new state.
@@ -355,7 +355,7 @@ export class SynchronizedValues<V> {
 		const patch = this.generatePatch(this.localValue, nodeState.assumedLocalVersion);
 		const nodeVersion = nodeState.assumedLocalVersion;
 		nodeState.assumedLocalVersion = this.localVersion;
-		node.send('sync-value:patch', {
+		node.send('at:node-state:patch', {
 			name: this.name,
 			baseVersion: nodeVersion,
 			version: this.localVersion,
@@ -373,7 +373,7 @@ export class SynchronizedValues<V> {
 		}
 
 		// Request anything that has changed from the tracked version
-		node.send('sync-value:request', {
+		node.send('at:node-state:request', {
 			name: this.name,
 			lastVersion: nodeState.version
 		}).catch(err => this.debug.error(err, 'Failed to ask node', node.id, 'about state:'));
@@ -408,9 +408,9 @@ interface NodeState<V> {
 }
 
 interface Message {
-	'sync-value:request': ValueRequest;
+	'at:node-state:request': ValueRequest;
 
-	'sync-value:patch': PatchMessage;
+	'at:node-state:patch': PatchMessage;
 }
 
 interface ValueRequest {

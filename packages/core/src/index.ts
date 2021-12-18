@@ -68,4 +68,4 @@ export * from './group/NamedGroup';
 export * from './RequestReplyHelper';
 
 export * from './Gossiper';
-export * from './SynchronizedValues';
+export * from './state/PerNodeState';

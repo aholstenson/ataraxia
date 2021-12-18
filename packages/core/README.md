@@ -112,6 +112,77 @@ net.addTransport(new MachineLocalTransport([
 await net.join();
 ```
 
+### Built-in primitives
+
+#### Groups
+
+Support for groups are built into the core library, allowing nodes to join
+a subset of the network and keep track of members of that subset.
+
+```javascript
+import { Group } from 'ataraxia';
+
+const group = new Group(net, 'name-of-group');
+
+// Join a group
+await group.join();
+
+// Leave a group
+await group.leave();
+```
+
+#### `PerNodeState`
+
+`PerNodeState` is a utility that can be used to keep track of a certain value
+on every node in a certain group or network.
+
+```javascript
+import { PerNodeState } from 'ataraxia';
+
+const state = new PerNodeState(net, 'name-of-state');
+
+state.onUpdate((node, newState) => ...);
+
+await state.set(dataHere);
+```
+
+`PerNodeState` supports sending differences between two versions:
+
+```javascript
+import { PerNodeState } from 'ataraxia';
+
+const state = new PerNodeState(net, 'name-of-state', {
+  defaultValue: [],
+
+  applyPatch(current, diff) {
+    // Append only merge
+    return [ ...current, diff ];
+  },
+
+  generatePatch(value, lastVersion) {
+    // value is the current value
+    // lastVersion is the last version a node synced from us
+    const result = [];
+    for(let i = 0; i < value.length; i++) {
+      if(value[i].version > lastVersion) {
+        result.push(value[i]);
+      }
+    }
+    return result;
+  }
+});
+
+state.onUpdate((node, newState) => ...);
+
+await state.set([
+  ...state.get(),
+  {
+      version: state.version(),
+      name: 'super-value'
+  }
+]);
+```
+
 ### Support for services
 
 Services are supported via `ataraxia-services`, where objects can be registered
