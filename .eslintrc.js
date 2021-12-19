@@ -201,7 +201,7 @@ module.exports = {
 			definedTags: [ 'remarks', 'typeParam' ]
 		} ],
 
-		'import/extensions': [ 'error' ],
+		'import/extensions': [ 'error', 'ignorePackages' ],
 		'import/first': [ 'warn' ],
 		'import/no-self-import': [ 'error' ],
 
