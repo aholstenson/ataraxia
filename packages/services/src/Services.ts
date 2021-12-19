@@ -23,7 +23,7 @@ import {
 	ServiceEventEmitMessage,
 	ServiceEventSubscribeMessage,
 	ServiceEventUnsubscribeMessage
-} from './messages';
+} from './messages/index.js';
 import { LocalServiceReflect } from './reflect/LocalServiceReflect.js';
 import { MergedServiceReflect } from './reflect/MergedServiceReflect.js';
 import { RemoteServiceHelper } from './reflect/RemoteServiceHelper.js';
