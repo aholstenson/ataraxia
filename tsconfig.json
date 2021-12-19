@@ -9,7 +9,9 @@
 		"paths": {
 			"ataraxia": [ "./packages/core/src" ],
 			"ataraxia-*": [ "./packages/*/src" ]
-		}
+		},
+
+		"experimentalDecorators": true
 	},
 	"include": [ "packages/*/src" ],
 	"exclude": [ "**/node_modules/**", "**/dist/**" ],
