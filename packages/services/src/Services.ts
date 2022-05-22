@@ -751,6 +751,7 @@ export class Services {
 			this.updateServiceReflect(existing, reflect);
 		} else {
 			// Register that the service is reachable through this node
+			data.services.set(id, reflect);
 			this.registerServiceReflect(reflect);
 		}
 
