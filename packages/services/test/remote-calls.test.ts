@@ -1,6 +1,7 @@
 import { ServiceContract, stringType } from 'ataraxia-service-contracts';
 import { TestNetwork } from 'ataraxia/test';
 
+import { ServiceHandle } from '../src/ServiceHandle';
 import { Services } from '../src/Services';
 
 interface TestService {
@@ -162,6 +163,50 @@ describe('Services: Remote Calls', () => {
 		await testNetwork.consolidate();
 
 		handle.unregister();
+
+		await testNetwork.consolidate();
+
+		expect(unavailableCount).toBe(1);
+
+		await aServices.leave();
+		await bServices.leave();
+		await testNetwork.shutdown();
+	});
+
+	it('onServiceUnavailable triggers (delayed service registration)', async () => {
+		const testNetwork = new TestNetwork();
+		testNetwork.bidirectional('a', 'b');
+
+		const a = testNetwork.network('a');
+		const b = testNetwork.network('b');
+
+		const aServices = new Services(a);
+		const bServices = new Services(b);
+
+		await aServices.join();
+		await bServices.join();
+
+		let unavailableCount = 0;
+		bServices.onServiceUnavailable(s => {
+			unavailableCount++;
+		});
+
+		let handle: ServiceHandle | undefined;
+		await new Promise<void>(r => {
+			setTimeout(async () => {
+				handle = aServices.register('test', TestService.implement({
+					async hello(what: string) {
+						return 'Hello ' + what + '!';
+					}
+				}));
+
+				await testNetwork.consolidate();
+
+				r();
+			}, 500);
+		});
+
+		handle?.unregister();
 
 		await testNetwork.consolidate();
 
