@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.12.1](https://github.com/aholstenson/ataraxia/compare/v0.12.0...v0.12.1) (2022-05-23)
+
+
+### Bug Fixes
+
+* **services:** Fix onServiceUnavailable not triggered if service registration is triggered after node is available ([0ccf852](https://github.com/aholstenson/ataraxia/commit/0ccf852f6c9226798f337b11109da7ba243d5e1e))
+
+
+
+
+
 # [0.12.0](https://github.com/aholstenson/ataraxia/compare/v0.11.0...v0.12.0) (2021-12-18)
 
 
