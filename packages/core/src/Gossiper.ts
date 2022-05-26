@@ -28,6 +28,9 @@ export class Gossiper<V extends object> {
 
 	private findAndGossip() {
 		const nodes = this.group.nodes;
+		if(nodes.length === 0) {
+			return;
+		}
 		const idx = Math.floor(Math.random() * nodes.length);
 
 		const node = nodes[idx];
