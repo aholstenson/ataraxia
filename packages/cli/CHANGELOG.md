@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.12.2](https://github.com/aholstenson/ataraxia/compare/v0.12.1...v0.12.2) (2022-05-27)
+
+**Note:** Version bump only for package ataraxia-cli
+
+
+
+
+
 # [0.12.0](https://github.com/aholstenson/ataraxia/tree/master/packages/cli/compare/v0.11.0...v0.12.0) (2021-12-18)
 
 

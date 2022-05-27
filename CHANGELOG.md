@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.12.2](https://github.com/aholstenson/ataraxia/compare/v0.12.1...v0.12.2) (2022-05-27)
+
+
+### Bug Fixes
+
+* **core:** Fix findAndGossip was not checking if group nodes length was empty before picking node ([df08fb4](https://github.com/aholstenson/ataraxia/commit/df08fb4a63fdbcdd2624f6233cec00639b31cc9c))
+
+
+
+
+
 ## [0.12.1](https://github.com/aholstenson/ataraxia/compare/v0.12.0...v0.12.1) (2022-05-23)
 
 

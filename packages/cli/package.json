@@ -1,6 +1,6 @@
 {
   "name": "ataraxia-cli",
-  "version": "0.12.0",
+  "version": "0.12.2",
   "description": "Command-line client for inspecting Ataraxia networks",
   "license": "MIT",
   "repository": "https://github.com/aholstenson/ataraxia/tree/master/packages/cli",
@@ -20,7 +20,7 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "ataraxia": "^0.12.0",
+    "ataraxia": "^0.12.2",
     "ataraxia-hyperswarm": "^0.12.0",
     "ataraxia-local": "^0.12.0",
     "ataraxia-tcp": "^0.12.0",
