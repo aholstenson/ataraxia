@@ -8,8 +8,12 @@
     "ataraxia"
   ],
   "type": "module",
-  "main": "./dist/esm/index.js",
-  "types": "./dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/types/index.d.ts",
+      "import": "./dist/esm/index.js"
+    }
+  },
   "sideEffects": false,
   "scripts": {
     "lint": "tslint  --project tsconfig.build.json -t codeFrame 'src/**/*.ts' 'test/**/*.ts'",

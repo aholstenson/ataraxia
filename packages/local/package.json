@@ -5,8 +5,12 @@
   "license": "MIT",
   "repository": "https://github.com/aholstenson/ataraxia/tree/master/packages/local",
   "type": "module",
-  "main": "./dist/esm/index.js",
-  "types": "./dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/types/index.d.ts",
+      "import": "./dist/esm/index.js"
+    }
+  },
   "scripts": {
     "ci": "npm run coverage && npm run lint",
     "coverage": "cross-env NODE_OPTIONS=--experimental-vm-modules jest --coverage",

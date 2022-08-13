@@ -1,8 +1,8 @@
 module.exports = {
-	preset: 'ts-jest/presets/js-with-ts-esm',
+	preset: 'ts-jest/presets/default-esm',
 	globals: {
 		'ts-jest': {
-			tsconfig: '<rootDir>/tsconfig.build.json',
+			tsconfig: '<rootDir>/tsconfig.test.json',
 			useESM: true
 		},
 	},

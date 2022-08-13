@@ -4,10 +4,8 @@
 	"compilerOptions": {
 		"baseUrl": ".",
 		"rootDir": "./src",
-		"outDir": "dist/cjs",
+		"outDir": "dist/esm",
 		"declarationDir": "dist/types",
 	},
-	"include": [
-		"src"
-	]
+	"include": [ "src" ]
 }

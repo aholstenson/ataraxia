@@ -1,3 +1,5 @@
+.DS_Store
+
 apidocs
 node_modules
 dist

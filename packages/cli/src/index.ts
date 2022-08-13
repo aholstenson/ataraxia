@@ -5,7 +5,7 @@ import { hideBin } from 'yargs/helpers';
 import { inspectCommand } from './commands/inspect.js';
 import { listenCommand } from './commands/listen.js';
 
-yargs(hideBin(process.argv))
+await yargs(hideBin(process.argv))
 	.usage('Usage: $0 <command> [options]')
 	.command(inspectCommand)
 	.command(listenCommand)

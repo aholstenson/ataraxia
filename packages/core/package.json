@@ -11,8 +11,16 @@
     "messaging"
   ],
   "type": "module",
-  "main": "./dist/esm/index.js",
-  "types": "./dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/types/index.d.ts",
+      "import": "./dist/esm/index.js"
+    },
+    "./test": {
+      "types": "./dist/types/test/index.d.ts",
+      "import": "./dist/esm/test/index.js"
+    }
+  },
   "sideEffects": false,
   "scripts": {
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest",
