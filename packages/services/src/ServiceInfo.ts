@@ -1,6 +1,6 @@
-import { MergedServiceReflect } from './reflect/MergedServiceReflect';
-import { ServiceReflect } from './reflect/ServiceReflect';
-import { ServiceImpl } from './ServiceImpl';
+import { MergedServiceReflect } from './reflect/MergedServiceReflect.js';
+import { ServiceReflect } from './reflect/ServiceReflect.js';
+import { ServiceImpl } from './ServiceImpl.js';
 
 /**
  * Information that is kept about a service locally.

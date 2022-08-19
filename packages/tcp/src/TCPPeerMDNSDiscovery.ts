@@ -1,6 +1,6 @@
 import { MDNSServiceDiscovery, MDNSServicePublisher } from 'tinkerhub-mdns';
 
-import { TCPPeerDiscovery, TCPDiscoveryDetails, TCPServerDetails } from './TCPPeerDiscovery';
+import { TCPPeerDiscovery, TCPDiscoveryDetails, TCPServerDetails } from './TCPPeerDiscovery.js';
 
 /**
  * Discovery of peers using mDNS and DNS-SD on the local network. Will announce

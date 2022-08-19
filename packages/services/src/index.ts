@@ -54,8 +54,8 @@
  * @module ataraxia-services
  */
 
-export * from './Services';
-export * from './Service';
-export * from './ServiceHandle';
+export * from './Services.js';
+export * from './Service.js';
+export * from './ServiceHandle.js';
 
 export * from 'ataraxia-service-contracts';

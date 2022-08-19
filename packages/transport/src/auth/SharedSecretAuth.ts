@@ -1,12 +1,11 @@
 import { Encoder, Decoder } from '@stablelib/cbor';
 import { hmac } from 'fast-sha256';
+import randomBytes from 'pure-randombytes';
 
-import { randomBytes } from '../randomBytes';
-
-import { AuthClientFlow, AuthClientReplyType } from './AuthClientFlow';
-import { AuthContext } from './AuthContext';
-import { AuthProvider } from './AuthProvider';
-import { AuthServerFlow, AuthServerReplyType } from './AuthServerFlow';
+import { AuthClientFlow, AuthClientReplyType } from './AuthClientFlow.js';
+import { AuthContext } from './AuthContext.js';
+import { AuthProvider } from './AuthProvider.js';
+import { AuthServerFlow, AuthServerReplyType } from './AuthServerFlow.js';
 
 /**
  * Options for `SharedSecretAuth`. Used to provide the shared secret.

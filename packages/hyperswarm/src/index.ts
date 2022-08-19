@@ -30,4 +30,4 @@
  * @module ataraxia-hyperswarm
  */
 
-export * from './HyperswarmTransport';
+export * from './HyperswarmTransport.js';

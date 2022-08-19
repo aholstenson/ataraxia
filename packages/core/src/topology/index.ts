@@ -1,2 +1,2 @@
-export * from './TopologyNode';
-export * from './Topology';
+export * from './TopologyNode.js';
+export * from './Topology.js';

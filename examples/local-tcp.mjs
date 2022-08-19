@@ -8,9 +8,11 @@
  * broadcasts a counter every 5 seconds to all current nodes.
  */
 
-const { Network, AnonymousAuth } = require('../packages/core');
-const { MachineLocalTransport } = require('../packages/local');
-const { TCPTransport, TCPPeerMDNSDiscovery } = require('../packages/tcp');
+import { Network, AnonymousAuth } from 'ataraxia';
+import { MachineLocalTransport } from 'ataraxia-local';
+import { TCPTransport, TCPPeerMDNSDiscovery } from 'ataraxia-tcp';
+
+import { counter } from './helpers/counter.mjs';
 
 const net = new Network({
 	name: 'example'
@@ -46,11 +48,8 @@ net.onMessage(msg => {
 });
 
 // Start the network
-net.join()
-	.then(() => {
-		console.log('Network has been joined with id', net.networkId);
+await net.join();
+console.log('Network has been joined with id', net.networkId);
 
-		// Start our helper
-		return require('./helpers/counter')(net);
-	})
-	.catch(err => console.error(err));
+// Start our helper
+counter(net);

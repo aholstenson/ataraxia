@@ -13,12 +13,12 @@ import {
 	sameId
 } from 'ataraxia-transport';
 
-import { IdMap, IdSet } from '../id';
-import { Network } from '../Network';
+import { IdMap, IdSet } from '../id/index.js';
+import { Network } from '../Network.js';
 
-import { Messaging } from './Messaging';
-import { Routing } from './Routing';
-import { TopologyNode } from './TopologyNode';
+import { Messaging } from './Messaging.js';
+import { Routing } from './Routing.js';
+import { TopologyNode } from './TopologyNode.js';
 
 /**
  * Internal details kept for a peer.

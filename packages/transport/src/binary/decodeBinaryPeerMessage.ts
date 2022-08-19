@@ -2,7 +2,7 @@ import { Decoder } from '@stablelib/cbor';
 
 import {
 	PeerMessageType,
-} from '../messages';
+} from '../messages/index.js';
 
 import {
 	TAG_PING,
@@ -21,7 +21,7 @@ import {
 	TAG_DATA_REJECT,
 	TAG_BYE,
 	TAG_BEGIN
-} from './tags';
+} from './tags.js';
 
 /**
  * Decode a peer message from the given buffer.

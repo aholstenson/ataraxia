@@ -1,12 +1,12 @@
-import { ServiceAvailableMessage } from './ServiceAvailableMessage';
-import { ServiceEventEmitMessage } from './ServiceEventEmitMessage';
-import { ServiceEventSubscribeMessage } from './ServiceEventSubscribeMessage';
-import { ServiceEventUnsubscribeMessage } from './ServiceEventUnsubscribeMessage';
-import { ServiceInvokeReply } from './ServiceInvokeReply';
-import { ServiceInvokeRequest } from './ServiceInvokeRequest';
-import { ServiceListReplyMessage } from './ServiceListReplyMessage';
-import { ServiceListRequestMessage } from './ServiceListRequestMessage';
-import { ServiceUnavailableMessage } from './ServiceUnavailableMessage';
+import { ServiceAvailableMessage } from './ServiceAvailableMessage.js';
+import { ServiceEventEmitMessage } from './ServiceEventEmitMessage.js';
+import { ServiceEventSubscribeMessage } from './ServiceEventSubscribeMessage.js';
+import { ServiceEventUnsubscribeMessage } from './ServiceEventUnsubscribeMessage.js';
+import { ServiceInvokeReply } from './ServiceInvokeReply.js';
+import { ServiceInvokeRequest } from './ServiceInvokeRequest.js';
+import { ServiceListReplyMessage } from './ServiceListReplyMessage.js';
+import { ServiceListRequestMessage } from './ServiceListRequestMessage.js';
+import { ServiceUnavailableMessage } from './ServiceUnavailableMessage.js';
 
 /**
  * Types of messages used by Services.

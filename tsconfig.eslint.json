@@ -1,16 +1,4 @@
 {
-	"extends": "./tsconfig.settings.json",
-	"compilerOptions": {
-		"module": "commonjs",
-
-		"noEmit": true,
-
-		"baseUrl": ".",
-		"paths": {
-			"ataraxia": [ "./packages/core/src" ],
-			"ataraxia-*": [ "./packages/*/src" ]
-		},
-	},
+	"extends": "./tsconfig.json",
 	"include": [ "packages/*/src", "packages/*/test" ],
-	"exclude": [ "**/node_modules/**", "**/dist/**" ]
 }

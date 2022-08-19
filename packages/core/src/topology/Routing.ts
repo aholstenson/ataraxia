@@ -4,9 +4,9 @@ import debugFactory from 'debug';
 
 import { encodeId, Peer } from 'ataraxia-transport';
 
-import { IdMap } from '../id';
+import { IdMap } from '../id/index.js';
 
-import { TopologyNode } from './TopologyNode';
+import { TopologyNode } from './TopologyNode.js';
 
 /**
  * Abstraction to help with finding the best route for a packet.

@@ -7,7 +7,7 @@ import {
 	PeerMessageType
 } from 'ataraxia-transport';
 
-import { encodePeerPacket, PeerPacketDecodingStream } from './binaryStreams';
+import { encodePeerPacket, PeerPacketDecodingStream } from './binaryStreams.js';
 
 /**
  * Peer that connects via a binary streaming protocol.

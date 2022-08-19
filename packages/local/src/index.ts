@@ -21,4 +21,4 @@
  * @module ataraxia-local
  */
 
-export * from './MachineLocalTransport';
+export * from './MachineLocalTransport.js';

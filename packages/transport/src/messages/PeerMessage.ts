@@ -1,12 +1,12 @@
-import { AuthDataMessage } from './AuthDataMessage';
-import { AuthMessage } from './AuthMessage';
-import { DataMessage, DataAckMessage, DataRejectMessage } from './DataMessage';
-import { HelloMessage } from './HelloMessage';
-import { NodeDetailsMessage } from './NodeDetailsMessage';
-import { NodeRequestMessage } from './NodeRequestMessage';
-import { NodeSummaryMessage } from './NodeSummaryMessage';
-import { PeerMessageType } from './PeerMessageType';
-import { SelectMessage } from './SelectMessage';
+import { AuthDataMessage } from './AuthDataMessage.js';
+import { AuthMessage } from './AuthMessage.js';
+import { DataMessage, DataAckMessage, DataRejectMessage } from './DataMessage.js';
+import { HelloMessage } from './HelloMessage.js';
+import { NodeDetailsMessage } from './NodeDetailsMessage.js';
+import { NodeRequestMessage } from './NodeRequestMessage.js';
+import { NodeSummaryMessage } from './NodeSummaryMessage.js';
+import { PeerMessageType } from './PeerMessageType.js';
+import { SelectMessage } from './SelectMessage.js';
 
 /**
  * Map between type enum and the actual message type.

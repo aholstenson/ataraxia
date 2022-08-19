@@ -4,8 +4,8 @@ import {
 	TransportOptions
 } from 'ataraxia-transport';
 
-import { WebSocketClientPeer } from './WebSocketClientPeer';
-import { WebSocketFactory } from './WebSocketFactory';
+import { WebSocketClientPeer } from './WebSocketClientPeer.js';
+import { WebSocketFactory } from './WebSocketFactory.js';
 
 /**
  * Options that can be used with `WebSocketClientTransport`.

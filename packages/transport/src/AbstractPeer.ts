@@ -1,6 +1,6 @@
 import { FailureDetector } from 'adaptive-accrual-failure-detector';
 import { Event } from 'atvik';
-import { debug } from 'debug';
+import debug from 'debug';
 
 import {
 	AuthProvider,
@@ -10,9 +10,9 @@ import {
 	AuthServerReply,
 	AuthClientReplyType,
 	AuthClientReply
-} from './auth';
-import { DisconnectReason } from './DisconnectReason';
-import { noId, encodeId } from './ids';
+} from './auth/index.js';
+import { DisconnectReason } from './DisconnectReason.js';
+import { noId, encodeId } from './ids.js';
 import {
 	PeerMessageType,
 	PeerMessage,
@@ -20,9 +20,9 @@ import {
 	SelectMessage,
 	AuthMessage,
 	AuthDataMessage
-} from './messages';
-import { Peer } from './Peer';
-import { TransportOptions } from './TransportOptions';
+} from './messages/index.js';
+import { Peer } from './Peer.js';
+import { TransportOptions } from './TransportOptions.js';
 
 /**
  * The interval at which pings are sent.

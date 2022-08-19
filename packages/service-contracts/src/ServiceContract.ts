@@ -1,9 +1,9 @@
 import { AsyncSubscribable } from 'atvik';
 
-import { DataType } from './DataType';
-import { ServiceEventContract } from './ServiceEventContract';
-import { ServiceMethodContract } from './ServiceMethodContract';
-import { ServiceParameterContract } from './ServiceParameterContract';
+import { DataType } from './DataType.js';
+import { ServiceEventContract } from './ServiceEventContract.js';
+import { ServiceMethodContract } from './ServiceMethodContract.js';
+import { ServiceParameterContract } from './ServiceParameterContract.js';
 
 const contractMarker = Symbol('serviceContract');
 

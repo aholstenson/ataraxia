@@ -1,10 +1,10 @@
 import { Event } from 'atvik';
 import debug from 'debug';
 
-import { encodeId } from './ids';
-import { Peer } from './Peer';
-import { Transport } from './Transport';
-import { TransportOptions } from './TransportOptions';
+import { encodeId } from './ids.js';
+import { Peer } from './Peer.js';
+import { Transport } from './Transport.js';
+import { TransportOptions } from './TransportOptions.js';
 
 /**
  * Abstract base for implementing transports. Implements common behavior to

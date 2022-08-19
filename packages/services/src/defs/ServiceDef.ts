@@ -1,5 +1,5 @@
-import { ServiceEventDef } from './ServiceEventDef';
-import { ServiceMethodDef } from './ServiceMethodDef';
+import { ServiceEventDef } from './ServiceEventDef.js';
+import { ServiceMethodDef } from './ServiceMethodDef.js';
 
 /**
  * Definition of a service.

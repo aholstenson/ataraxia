@@ -53,19 +53,19 @@ export {
 	Transport
 } from 'ataraxia-transport';
 
-export * from './Debugger';
+export * from './Debugger.js';
 
-export * from './Network';
-export * from './Node';
+export * from './Network.js';
+export * from './Node.js';
 
-export * from './Message';
-export * from './MessageData';
-export * from './MessageType';
-export * from './MessageUnion';
+export * from './Message.js';
+export * from './MessageData.js';
+export * from './MessageType.js';
+export * from './MessageUnion.js';
 
-export * from './Group';
-export * from './group/NamedGroup';
-export * from './RequestReplyHelper';
+export * from './Group.js';
+export * from './group/NamedGroup.js';
+export * from './RequestReplyHelper.js';
 
-export * from './Gossiper';
-export * from './state/PerNodeState';
+export * from './Gossiper.js';
+export * from './state/PerNodeState.js';

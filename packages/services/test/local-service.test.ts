@@ -1,8 +1,8 @@
 import { Network } from 'ataraxia';
 import { AsyncEvent, AsyncSubscribable, serviceContract, ServiceContract, stringType } from 'ataraxia-service-contracts';
 
-import { ServiceHandle } from '../src/ServiceHandle';
-import { Services } from '../src/Services';
+import { ServiceHandle } from '../src/ServiceHandle.js';
+import { Services } from '../src/Services.js';
 
 // Fake network used by tests, not actually started
 const net = new Network({

@@ -1,7 +1,7 @@
 import { Subscribable } from 'atvik';
 
-import { Peer } from './Peer';
-import { TransportOptions } from './TransportOptions';
+import { Peer } from './Peer.js';
+import { TransportOptions } from './TransportOptions.js';
 
 /**
  * Transport that can be used to connect peers together. Transports are how

@@ -2,7 +2,7 @@ import { Duplex } from 'stream';
 
 import NoiseSecretStream from '@hyperswarm/secret-stream';
 
-import { StreamingPeer } from './StreamingPeer';
+import { StreamingPeer } from './StreamingPeer.js';
 
 /**
  * Peer that uses Node streams and automatically applies two-way encryption.

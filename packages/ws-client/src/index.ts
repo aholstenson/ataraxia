@@ -30,8 +30,8 @@
  * @module ataraxia-ws-client
  */
 
-export * from './WebSocket';
-export * from './WebSocketFactory';
+export * from './WebSocket.js';
+export * from './WebSocketFactory.js';
 
-export * from './AbstractWebSocketPeer';
-export * from './WebSocketClientTransport';
+export * from './AbstractWebSocketPeer.js';
+export * from './WebSocketClientTransport.js';

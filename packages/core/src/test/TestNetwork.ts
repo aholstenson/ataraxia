@@ -1,8 +1,8 @@
 /* eslint-disable no-param-reassign */
-import { Network } from '../Network';
+import { Network } from '../Network.js';
 
-import { peersBetween, TestPeer } from './TestPeer';
-import { TestTransport } from './TestTransport';
+import { peersBetween, TestPeer } from './TestPeer.js';
+import { TestTransport } from './TestTransport.js';
 
 interface NodeInfo {
 	id: ArrayBuffer;

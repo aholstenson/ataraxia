@@ -12,7 +12,7 @@ import {
 	sameId
 } from 'ataraxia-transport';
 
-import { Routing } from './Routing';
+import { Routing } from './Routing.js';
 
 const MAX_DELAY = 5000;
 

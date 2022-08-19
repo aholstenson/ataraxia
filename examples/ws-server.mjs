@@ -7,19 +7,19 @@
  * In addition to this it sends a hello to nodes when they are seen and
  * broadcasts a counter every 5 seconds to all current nodes.
  */
-const WebSocket = require('../packages/ws-server/node_modules/ws');
 
-const { Network, AnonymousAuth } = require('../packages/core');
-const { WebSocketClientTransport } = require('../packages/ws-client');
+import { Network, AnonymousAuth } from 'ataraxia';
+import { WebSocketServerTransport } from 'ataraxia-ws-server';
+
+import { counter } from './helpers/counter.mjs';
 
 const net = new Network({
 	name: 'example',
 
 	transports: [
-		// Add the WebSocket transport and connect to port 7000
-		new WebSocketClientTransport({
-			url: 'ws://127.0.0.1:7000',
-			webSocketFactory: url => new WebSocket(url),
+		// Add the WebSocket transport auto-starting a server on port 7000
+		new WebSocketServerTransport({
+			port: 7000,
 			authentication: [
 				new AnonymousAuth()
 			]
@@ -42,11 +42,9 @@ net.onMessage(msg => {
 });
 
 // Start the network
-net.join()
-	.then(() => {
-		console.log('Network has been joined with id', net.networkId);
+await net.join();
+console.log('Network has been joined with id', net.networkId);
 
-		// Start our helper
-		return require('./helpers/counter')(net);
-	})
-	.catch(err => console.error(err));
+// Start our helper
+counter(net);
+

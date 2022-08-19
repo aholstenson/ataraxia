@@ -2,12 +2,12 @@ import { AsyncSubscriptionHandle, Listener } from 'atvik';
 
 import { BasicValue } from 'ataraxia-service-contracts';
 
-import { ServiceDef } from '../defs/ServiceDef';
-import { ServiceEventDef } from '../defs/ServiceEventDef';
-import { ServiceMethodDef } from '../defs/ServiceMethodDef';
+import { ServiceDef } from '../defs/ServiceDef.js';
+import { ServiceEventDef } from '../defs/ServiceEventDef.js';
+import { ServiceMethodDef } from '../defs/ServiceMethodDef.js';
 
-import { RemoteServiceHelper } from './RemoteServiceHelper';
-import { ServiceReflect } from './ServiceReflect';
+import { RemoteServiceHelper } from './RemoteServiceHelper.js';
+import { ServiceReflect } from './ServiceReflect.js';
 
 /**
  * Implementation of `ServiceReflect` for remote services.

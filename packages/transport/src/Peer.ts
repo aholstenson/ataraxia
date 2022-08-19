@@ -1,7 +1,7 @@
 import { Subscribable } from 'atvik';
 
-import { PeerMessage } from './messages/PeerMessage';
-import { PeerMessageType } from './messages/PeerMessageType';
+import { PeerMessage } from './messages/PeerMessage.js';
+import { PeerMessageType } from './messages/PeerMessageType.js';
 
 /**
  * Peer that represents a connection between two transport instances. Peers

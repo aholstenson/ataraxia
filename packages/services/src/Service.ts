@@ -2,8 +2,8 @@ import { AsyncSubscriptionHandle, Listener, Subscribable } from 'atvik';
 
 import { BasicValue, ServiceContract } from 'ataraxia-service-contracts';
 
-import { ServiceEventDef } from './defs/ServiceEventDef';
-import { ServiceMethodDef } from './defs/ServiceMethodDef';
+import { ServiceEventDef } from './defs/ServiceEventDef.js';
+import { ServiceMethodDef } from './defs/ServiceMethodDef.js';
 
 /**
  * Service that may be callable somewhere in the network. Provides utilities

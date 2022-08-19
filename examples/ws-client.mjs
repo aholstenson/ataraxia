@@ -1,21 +1,27 @@
 /**
- * This example starts a network named `example` and uses a TCP transport with
- * discovery of peers on the same network using mDNS.
+ * This example starts a network named `example` and uses a WebSocket server
+ * transport on port 7000. WebSocket clients can then connect to this server
+ * via the example `ws-client.js`.
  *
  * It will log when new nodes are discovered and when messages are received.
  * In addition to this it sends a hello to nodes when they are seen and
  * broadcasts a counter every 5 seconds to all current nodes.
  */
+import WebSocket from 'ws';
 
-const { Network, AnonymousAuth } = require('../packages/core');
-const { TCPTransport, TCPPeerMDNSDiscovery } = require('../packages/tcp');
+import { Network, AnonymousAuth } from 'ataraxia';
+import { WebSocketClientTransport } from 'ataraxia-ws-client';
+
+import { counter } from './helpers/counter.mjs';
 
 const net = new Network({
 	name: 'example',
 
 	transports: [
-		new TCPTransport({
-			discovery: new TCPPeerMDNSDiscovery(),
+		// Add the WebSocket transport and connect to port 7000
+		new WebSocketClientTransport({
+			url: 'ws://127.0.0.1:7000',
+			webSocketFactory: url => new WebSocket(url),
 			authentication: [
 				new AnonymousAuth()
 			]
@@ -38,11 +44,8 @@ net.onMessage(msg => {
 });
 
 // Start the network
-net.join()
-	.then(() => {
-		console.log('Network has been joined with id', net.networkId);
+await net.join();
+console.log('Network has been joined with id', net.networkId);
 
-		// Start our helper
-		return require('./helpers/counter')(net);
-	})
-	.catch(err => console.error(err));
+// Start our helper
+counter(net);

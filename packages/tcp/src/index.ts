@@ -33,7 +33,7 @@
  * @module ataraxia-tcp
  */
 
-export * from './TCPPeerDiscovery';
-export * from './TCPPeerMDNSDiscovery';
+export * from './TCPPeerDiscovery.js';
+export * from './TCPPeerMDNSDiscovery.js';
 
-export * from './TCPTransport';
+export * from './TCPTransport.js';

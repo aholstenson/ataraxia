@@ -1,5 +1,5 @@
-import { DataType } from './DataType';
-import { ServiceParameterContract } from './ServiceParameterContract';
+import { DataType } from './DataType.js';
+import { ServiceParameterContract } from './ServiceParameterContract.js';
 
 /**
  * Method contract for a service.

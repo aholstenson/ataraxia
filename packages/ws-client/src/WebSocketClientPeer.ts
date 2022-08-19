@@ -5,8 +5,8 @@ import {
 	TransportOptions
 } from 'ataraxia-transport';
 
-import { AbstractWebSocketPeer } from './AbstractWebSocketPeer';
-import { WebSocketFactory } from './WebSocketFactory';
+import { AbstractWebSocketPeer } from './AbstractWebSocketPeer.js';
+import { WebSocketFactory } from './WebSocketFactory.js';
 
 export class WebSocketClientPeer extends AbstractWebSocketPeer {
 	private readonly factory: WebSocketFactory;

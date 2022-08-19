@@ -1,5 +1,5 @@
-import { Group } from './Group';
-import { Node } from './Node';
+import { Group } from './Group.js';
+import { Node } from './Node.js';
 
 export interface GossiperOptions<V extends object> {
 	/**

@@ -26,4 +26,4 @@
  * @module ataraxia-ws-server
  */
 
-export * from './WebSocketServerTransport';
+export * from './WebSocketServerTransport.js';

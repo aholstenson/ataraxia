@@ -1,6 +1,6 @@
-import { AuthClientFlow } from './AuthClientFlow';
-import { AuthProvider } from './AuthProvider';
-import { AuthServerFlow, AuthServerReplyType } from './AuthServerFlow';
+import { AuthClientFlow } from './AuthClientFlow.js';
+import { AuthProvider } from './AuthProvider.js';
+import { AuthServerFlow, AuthServerReplyType } from './AuthServerFlow.js';
 
 /**
  * Anonymous authentication. Allows anyone to connect to the network without

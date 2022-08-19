@@ -1,4 +1,4 @@
-import { ServiceParameterDef } from './ServiceParameterDef';
+import { ServiceParameterDef } from './ServiceParameterDef.js';
 
 /**
  * Event definition for a service.

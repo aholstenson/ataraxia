@@ -1,4 +1,4 @@
-import { Message } from './Message';
+import { Message } from './Message.js';
 
 /**
  * Type generator for creating a union of Message types. This allows for checks

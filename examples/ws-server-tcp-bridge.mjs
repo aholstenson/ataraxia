@@ -6,9 +6,9 @@
  * It will log when new nodes are discovered.
  */
 
-const { Network, AnonymousAuth } = require('../packages/core');
-const { WebSocketServerTransport } = require('../packages/ws-server');
-const { TCPTransport, TCPPeerMDNSDiscovery } = require('../packages/tcp');
+import { Network, AnonymousAuth } from 'ataraxia';
+import { WebSocketServerTransport } from 'ataraxia-ws-server';
+import { TCPTransport, TCPPeerMDNSDiscovery } from 'ataraxia-tcp';
 
 const net = new Network({
 	name: 'example',
@@ -44,6 +44,5 @@ net.onNodeUnavailable(node => {
 });
 
 // Start the network
-net.join()
-	.then(() => console.log('Network has been joined with id', net.networkId))
-	.catch(err => console.error(err));
+await net.join();
+console.log('Network has been joined with id', net.networkId);

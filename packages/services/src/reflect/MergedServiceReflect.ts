@@ -2,7 +2,7 @@ import { AsyncSubscriptionHandle, Listener } from 'atvik';
 
 import { BasicValue } from 'ataraxia-service-contracts';
 
-import { ServiceReflect } from './ServiceReflect';
+import { ServiceReflect } from './ServiceReflect.js';
 
 /**
  * `ServiceReflect` that merges several other reflects together.

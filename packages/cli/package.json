@@ -10,12 +10,12 @@
     "mesh networking",
     "messaging"
   ],
-  "main": "./dist/cjs/index.js",
+  "type": "module",
   "bin": {
-    "ataraxia": "./dist/cjs/index.js"
+    "ataraxia": "./dist/esm/index.js"
   },
   "scripts": {
-    "build": "tsc --project tsconfig.build.json --module commonjs --target es5 --outDir dist/cjs",
+    "build": "tsc --project tsconfig.build.json --outDir dist/esm",
     "prebuild": "rimraf dist",
     "prepublishOnly": "npm run build"
   },
@@ -24,10 +24,10 @@
     "ataraxia-hyperswarm": "^0.12.0",
     "ataraxia-local": "^0.12.0",
     "ataraxia-tcp": "^0.12.0",
-    "chalk": "^5.0.0",
-    "minimatch": "^3.0.4",
-    "prettyjson": "^1.2.1",
-    "yargs": "^17.3.0"
+    "chalk": "^5.0.1",
+    "minimatch": "^5.1.0",
+    "prettyjson": "^1.2.5",
+    "yargs": "^17.5.1"
   },
   "devDependencies": {
     "@types/minimatch": "^3.0.5",

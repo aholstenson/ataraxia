@@ -1,14 +1,14 @@
-export * from './PeerMessageType';
-export * from './PeerMessage';
+export * from './PeerMessageType.js';
+export * from './PeerMessage.js';
 
-export * from './HelloMessage';
-export * from './SelectMessage';
+export * from './HelloMessage.js';
+export * from './SelectMessage.js';
 
-export * from './AuthMessage';
-export * from './AuthDataMessage';
+export * from './AuthMessage.js';
+export * from './AuthDataMessage.js';
 
-export * from './NodeSummaryMessage';
-export * from './NodeRequestMessage';
-export * from './NodeDetailsMessage';
+export * from './NodeSummaryMessage.js';
+export * from './NodeRequestMessage.js';
+export * from './NodeDetailsMessage.js';
 
-export * from './DataMessage';
+export * from './DataMessage.js';

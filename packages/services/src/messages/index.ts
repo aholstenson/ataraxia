@@ -1,14 +1,14 @@
-export * from './ServiceMessages';
+export * from './ServiceMessages.js';
 
-export * from './ServiceListRequestMessage';
-export * from './ServiceListReplyMessage';
+export * from './ServiceListRequestMessage.js';
+export * from './ServiceListReplyMessage.js';
 
-export * from './ServiceInvokeRequest';
-export * from './ServiceInvokeReply';
+export * from './ServiceInvokeRequest.js';
+export * from './ServiceInvokeReply.js';
 
-export * from './ServiceAvailableMessage';
-export * from './ServiceUnavailableMessage';
+export * from './ServiceAvailableMessage.js';
+export * from './ServiceUnavailableMessage.js';
 
-export * from './ServiceEventSubscribeMessage';
-export * from './ServiceEventUnsubscribeMessage';
-export * from './ServiceEventEmitMessage';
+export * from './ServiceEventSubscribeMessage.js';
+export * from './ServiceEventUnsubscribeMessage.js';
+export * from './ServiceEventEmitMessage.js';

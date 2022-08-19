@@ -1,10 +1,10 @@
 import { Event, Subscribable, SubscriptionHandle } from 'atvik';
 
-import { Debugger } from '../Debugger';
-import { Gossiper } from '../Gossiper';
-import { Group } from '../Group';
-import { MessageUnion } from '../MessageUnion';
-import { Node } from '../Node';
+import { Debugger } from '../Debugger.js';
+import { Gossiper } from '../Gossiper.js';
+import { Group } from '../Group.js';
+import { MessageUnion } from '../MessageUnion.js';
+import { Node } from '../Node.js';
 
 /**
  * Options for {@link PerNodeState}.

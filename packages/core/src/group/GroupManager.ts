@@ -1,15 +1,15 @@
 import debug from 'debug';
 
-import { MessageUnion } from '../MessageUnion';
-import { Network } from '../Network';
-import { Node } from '../Node';
-import { GroupJoin } from './GroupJoin';
-import { GroupLeave } from './GroupLeave';
-import { GroupMembership } from './GroupMembership';
+import { MessageUnion } from '../MessageUnion.js';
+import { Network } from '../Network.js';
+import { Node } from '../Node.js';
+import { GroupJoin } from './GroupJoin.js';
+import { GroupLeave } from './GroupLeave.js';
+import { GroupMembership } from './GroupMembership.js';
 
-import { GroupMessages } from './GroupMessages';
-import { GroupQuery } from './GroupQuery';
-import { SharedGroup } from './SharedGroup';
+import { GroupMessages } from './GroupMessages.js';
+import { GroupQuery } from './GroupQuery.js';
+import { SharedGroup } from './SharedGroup.js';
 
 /**
  * Manager for all group instances that a node is a member of.

@@ -3,10 +3,10 @@ import { HyperswarmTransport } from 'ataraxia-hyperswarm';
 import { MachineLocalTransport } from 'ataraxia-local';
 import { TCPTransport, TCPPeerMDNSDiscovery } from 'ataraxia-tcp';
 
-import { logInfo } from '../log';
+import { logInfo } from '../log.js';
 
-import { resolveAuth } from './resolveAuth';
-import { stopNetwork } from './stopNetwork';
+import { resolveAuth } from './resolveAuth.js';
+import { stopNetwork } from './stopNetwork.js';
 
 /**
  * Create a network based on command line arguments.

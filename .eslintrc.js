@@ -178,7 +178,6 @@ module.exports = {
 
 		'tsdoc/syntax': [ 'warn' ],
 		'jsdoc/check-alignment': [ 'warn' ],
-		'jsdoc/check-examples': [ 'warn' ],
 		'jsdoc/check-param-names': [ 'warn', {
 			checkDestructured: false
 		} ],
@@ -202,7 +201,7 @@ module.exports = {
 			definedTags: [ 'remarks', 'typeParam' ]
 		} ],
 
-		'import/extensions': [ 'error' ],
+		'import/extensions': [ 'error', 'ignorePackages' ],
 		'import/first': [ 'warn' ],
 		'import/no-self-import': [ 'error' ],
 

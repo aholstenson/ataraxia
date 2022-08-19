@@ -1,8 +1,8 @@
 import { ServiceContract, stringType } from 'ataraxia-service-contracts';
 import { TestNetwork } from 'ataraxia/test';
 
-import { ServiceHandle } from '../src/ServiceHandle';
-import { Services } from '../src/Services';
+import { ServiceHandle } from '../src/ServiceHandle.js';
+import { Services } from '../src/Services.js';
 
 interface TestService {
 	hello(what: string): Promise<string>;

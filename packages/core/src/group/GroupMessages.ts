@@ -1,7 +1,7 @@
-import { GroupJoin } from './GroupJoin';
-import { GroupLeave } from './GroupLeave';
-import { GroupMembership } from './GroupMembership';
-import { GroupQuery } from './GroupQuery';
+import { GroupJoin } from './GroupJoin.js';
+import { GroupLeave } from './GroupLeave.js';
+import { GroupMembership } from './GroupMembership.js';
+import { GroupQuery } from './GroupQuery.js';
 
 /**
  * Types of messages used to keep track of members in groups.
